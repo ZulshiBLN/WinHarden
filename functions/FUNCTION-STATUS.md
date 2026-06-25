@@ -6,7 +6,7 @@ Arbeitsstand und Modul-Informationen für alle PowerShell-Funktionen.
 **Infrastruktur-Phase:** ✅ Complete (9 ADRs, build.ps1, .editorconfig, PSScriptAnalyzerSettings.psd1)  
 **Implementation-Phase:** 🚀 In Progress (Core Module ✅, System/User/Maintenance ⏳)
 
-**Core Module Status:** [OK] COMPLETE – All 8 public + 2 private functions implemented and tested
+**Core Module Status:** [OK] COMPLETE – All 7 public + 3 private functions implemented and tested
 - **Total Tests:** 34/34 PASSED (100%)
 - **Build Time:** <2 seconds
 - **Next:** System.psm1, User.psm1, Maintenance.psm1
@@ -20,25 +20,27 @@ Basis-Funktionen für Logging, Config, Fehlerbehandlung. **MUST-HAVE für alle a
 | Funktion | Modul | Status | Beschreibung | Last Updated | Tests | Coverage |
 |----------|-------|--------|-------------|--------------|-------|----------|
 | Write-Log | Core | `[OK]` | CSV-basierte zentrale Logging-Funktion (ADR-005) | 2026-06-25 | [OK] 9 tests | 95%+ |
-| Clean-OldLogs | Core | `[OK]` | Log-Cleanup mit 7-Tage Retention (ADR-005) | 2026-06-25 | [OK] 2 tests | 95%+ |
+| _CleanupOldLogs | Core | `[OK]` | Log-Cleanup mit 7-Tage Retention (ADR-005) | 2026-06-25 | [OK] 2 tests | 95%+ |
 | Write-ErrorLog | Core | `[OK]` | Error-Handling Wrapper (ADR-004) | 2026-06-25 | [OK] 1 test | 95%+ |
 | Test-NotNullOrEmpty | Core | `[OK]` | Parameter-Validation Helper (ADR-004) | 2026-06-25 | [OK] 5 tests | 95%+ |
 | Test-ValidPath | Core | `[OK]` | Path-Validation Helper (ADR-004) | 2026-06-25 | [OK] 3 tests | 95%+ |
 | ConvertTo-MaskedString | Core | `[OK]` | Sensitive Data Masking (ADR-005) | 2026-06-25 | [OK] 3 tests | 95%+ |
 | Get-ModuleVersion | Core | `[OK]` | Version & Module Info (ADR-008) | 2026-06-25 | [OK] 2 tests | 95%+ |
 | Test-WinOpsKitDependencies | Core | `[OK]` | External Module Dependency Check (ADR-009) | 2026-06-25 | [OK] 4 tests | 95%+ |
-| _Mask-SensitiveData | Core | `[OK]` | Private: Sensitive data regex masking | 2026-06-25 | [OK] 3 tests | 95%+ |
-| _Should-LogLevel | Core | `[OK]` | Private: Log-level hierarchy check | 2026-06-25 | [OK] 4 tests | 95%+ |
+| _MaskSensitiveData | Core | `[OK]` | Private: Sensitive data regex masking | 2026-06-25 | [OK] 3 tests | 95%+ |
+| _TestLogLevel | Core | `[OK]` | Private: Log-level hierarchy check | 2026-06-25 | [OK] 4 tests | 95%+ |
 
 ---
 
 ## System Module
 
-Funktionen für Windows Server-Administration (Registry, Services, Hardware, etc.). **Depends on Core.**
+Funktionen für Exchange Online Verwaltung. **Depends on Core.**
 
 | Funktion | Modul | Status | Beschreibung | Last Updated | Tests | Coverage |
 |----------|-------|--------|-------------|--------------|-------|----------|
-| (geplant) | System | `[ ]` | - | - | - | - |
+| New-ExchangeOnlineConnection | System | `[OK]` | Exchange Online Connection mit multiple Auth-Methoden | 2026-06-25 | [!!] 20 tests | TBD |
+| _ValidateExchangeModuleAvailable | System | `[OK]` | Private: Modul-Validierung | 2026-06-25 | [!!] 3 tests | TBD |
+| _VerifyExchangeOnlineConnection | System | `[OK]` | Private: Verbindungs-Verifikation | 2026-06-25 | [!!] 3 tests | TBD |
 
 ---
 
