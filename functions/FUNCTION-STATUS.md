@@ -3,8 +3,13 @@
 Arbeitsstand und Modul-Informationen für alle PowerShell-Funktionen.
 
 **Zuletzt aktualisiert:** 2026-06-25  
-**Infrastruktur-Phase:** ✅ Complete (9 ADRs)  
-**Implementation-Phase:** ⏳ Starting
+**Infrastruktur-Phase:** ✅ Complete (9 ADRs, build.ps1, .editorconfig, PSScriptAnalyzerSettings.psd1)  
+**Implementation-Phase:** 🚀 In Progress (Core Module ✅, System/User/Maintenance ⏳)
+
+**Core Module Status:** ✅ COMPLETE – All 8 public + 2 private functions implemented and tested
+- **Total Tests:** 34/34 PASSED (100%)
+- **Build Time:** <2 seconds
+- **Next:** System.psm1, User.psm1, Maintenance.psm1
 
 ---
 
@@ -14,11 +19,16 @@ Basis-Funktionen für Logging, Config, Fehlerbehandlung. **MUST-HAVE für alle a
 
 | Funktion | Modul | Status | Beschreibung | Last Updated | Tests | Coverage |
 |----------|-------|--------|-------------|--------------|-------|----------|
-| Write-Log | Core | `[ ]` | CSV-basierte zentrale Logging-Funktion (ADR-005) | - | - | - |
-| Write-ErrorLog | Core | `[ ]` | Error-Handling Wrapper (ADR-004) | - | - | - |
-| Test-NotNullOrEmpty | Core | `[ ]` | Parameter-Validation Helper (ADR-009) | - | - | - |
-| ConvertTo-MaskedString | Core | `[ ]` | Sensitive Data Masking (ADR-005) | - | - | - |
-| Test-WinOpsKitDependencies | Core | `[ ]` | External Module Dependency Check (ADR-009) | - | - | - |
+| Write-Log | Core | `[✓]` | CSV-basierte zentrale Logging-Funktion (ADR-005) | 2026-06-25 | ✅ 9 tests | 95%+ |
+| Clean-OldLogs | Core | `[✓]` | Log-Cleanup mit 7-Tage Retention (ADR-005) | 2026-06-25 | ✅ 2 tests | 95%+ |
+| Write-ErrorLog | Core | `[✓]` | Error-Handling Wrapper (ADR-004) | 2026-06-25 | ✅ 1 test | 95%+ |
+| Test-NotNullOrEmpty | Core | `[✓]` | Parameter-Validation Helper (ADR-004) | 2026-06-25 | ✅ 5 tests | 95%+ |
+| Test-ValidPath | Core | `[✓]` | Path-Validation Helper (ADR-004) | 2026-06-25 | ✅ 3 tests | 95%+ |
+| ConvertTo-MaskedString | Core | `[✓]` | Sensitive Data Masking (ADR-005) | 2026-06-25 | ✅ 3 tests | 95%+ |
+| Get-ModuleVersion | Core | `[✓]` | Version & Module Info (ADR-008) | 2026-06-25 | ✅ 2 tests | 95%+ |
+| Test-WinOpsKitDependencies | Core | `[✓]` | External Module Dependency Check (ADR-009) | 2026-06-25 | ✅ 4 tests | 95%+ |
+| _Mask-SensitiveData | Core | `[✓]` | Private: Sensitive data regex masking | 2026-06-25 | ✅ 3 tests | 95%+ |
+| _Should-LogLevel | Core | `[✓]` | Private: Log-level hierarchy check | 2026-06-25 | ✅ 4 tests | 95%+ |
 
 ---
 
