@@ -754,4 +754,216 @@ It "checks something"
 **Related ADRs:**
 - **ADR-004:** Error Handling Convention (Tests für Exceptions)
 - **ADR-007:** Naming Conventions (Test-Naming)
+
+---
+
+### ADR-008: Modul-Import-Strategie
+
+**Status:** ✅ ACCEPTED
+
+**Context:**
+WinOpsKit hat mehrere Funktions-Module (System, User, Maintenance, etc.). Die Import-Strategie muss klären:
+1. Wie werden Module organisiert (1x .psm1 oder separate)?
+2. Wie werden Dependencies gelöst (alle funktionieren)?
+3. Wie wird Script-Initialisierung sauber (nur nötige Funktionen)?
+
+**Decision:**
+
+**Modul-Struktur:**
+- **Getrennte Module** (nicht alles in 1 .psm1):
+  - `Core.psm1` – Zentrale Basis-Funktionen (IMMER laden)
+  - `System.psm1` – System-Admin Funktionen (optional)
+  - `User.psm1` – User/Group Management (optional)
+  - `Maintenance.psm1` – Updates, Cleanup, Monitoring (optional)
+
+**Core-Modul Inhalte (IMMER verfügbar):**
+- `Write-Log` – Zentrale Logging-Funktion
+- `Write-Error` Wrapper – Error-Handling Basis
+- `Test-* Validatoren` – Parameter-Validation Helpers
+- `ConvertTo-MaskedString` – Sensitive Data Masking
+- `Get-ModuleVersion` – Version Info
+
+**Script-Initialisierung:**
+```powershell
+# Minimum Setup (alle Scripts)
+. "$PSScriptRoot/modules/Core.psm1"  # IMMER laden
+
+# Optional: Zusätzliche Module
+. "$PSScriptRoot/modules/System.psm1"   # Nur wenn System-Funktionen nötig
+. "$PSScriptRoot/modules/User.psm1"     # Nur wenn User-Funktionen nötig
+```
+
+**Oder mit Import-Funktion (eleganter):**
+```powershell
+function Import-WinOpsKit {
+    param(
+        [string[]]$Modules = @('Core'),  # Core immer
+        [switch]$All                      # Alle Module
+    )
+    
+    if ($All) { $Modules = @('Core', 'System', 'User', 'Maintenance') }
+    
+    foreach ($module in $Modules) {
+        $path = "$PSScriptRoot/modules/$module.psm1"
+        if (Test-Path $path) {
+            . $path
+        }
+    }
+}
+
+# Usage:
+Import-WinOpsKit -Modules @('Core', 'System')
+# oder
+Import-WinOpsKit -All
+```
+
+**Dependency Resolution:**
+- Core-Modul als **Basis für alles** (alle anderen nutzen Write-Log)
+- Andere Module können aufeinander aufbauen (System ruft User-Funktionen auf)
+- Reihenfolge beim Import beachten:
+  1. Core.psm1 (obligatorisch)
+  2. System.psm1
+  3. User.psm1
+  4. Maintenance.psm1
+
+**Load-Performance:**
+- **On-Startup:** Nur Core laden (schnell)
+- **Dann:** Zusätzliche Module bei Bedarf laden
+- Nicht lazy-load einzelne Funktionen (zu komplex)
+- Jedes Modul lädt komplett oder gar nicht
+
+**Global Scope:**
+- Alle Funktionen landen im **Global Scope** (nach Import)
+- Kein `$script:` private Scope (würde Dependencies komplizieren)
+- Private Helper-Funktionen: Prefix `_` (z.B. `_ValidateServerName`)
+
+**Consequences:**
+- (+) Einfache, klare Struktur
+- (+) Core ist immer verfügbar (keine Überraschungen)
+- (+) Saubere Abhängigkeitsauflösung
+- (+) Auf-Startup schnell (Core ist klein)
+- (+) Scripts sind einfach zu schreiben (funktionen verfügbar)
+- (-) Core muss stabil sein (alle hängen dran)
+- (-) Global Scope könnte zu Naming-Konflikten führen (Regel 8: Naming verhindert das)
+
+**Alternatives:**
+- Alles in 1 .psm1 (monolithisch, schwer zu warten)
+- Lazy-load Funktionen on-demand (komplex, schwer zu debuggen)
+- Keine Module, nur dot-sourcing (unstrukturiert)
+- Private Scopes für alle (Abhängigkeiten unmöglich)
+
+**Implementation Notes:**
+
+**Verzeichnis-Struktur:**
+```
+WinOpsKit/
+├── modules/
+│   ├── Core.psm1
+│   ├── System.psm1
+│   ├── User.psm1
+│   └── Maintenance.psm1
+├── scripts/
+│   └── Backup-Server.ps1
+└── functions/
+    ├── Core/
+    ├── System/
+    ├── User/
+    └── Maintenance/
+```
+
+**Core.psm1 Struktur:**
+```powershell
+# Core.psm1 – Zentrale Basis-Funktionen
+
+# Logging
+function Write-Log {
+    # Implementation (siehe ADR-005)
+}
+
+# Error Helper
+function Write-ErrorLog {
+    param([string]$Message)
+    Write-Log -Message $Message -Level Error
+}
+
+# Validation Helpers
+function Test-NotNullOrEmpty {
+    param([string]$Value, [string]$Name)
+    if ([string]::IsNullOrEmpty($Value)) {
+        throw "$Name cannot be null or empty"
+    }
+}
+
+# Sensitive Data
+function ConvertTo-MaskedString {
+    param([string]$InputString)
+    # Maskieren (siehe ADR-005)
+}
+
+# Export (optional)
+Export-ModuleMember -Function @(
+    'Write-Log',
+    'Write-ErrorLog',
+    'Test-NotNullOrEmpty',
+    'ConvertTo-MaskedString'
+)
+```
+
+**System.psm1 Struktur:**
+```powershell
+# System.psm1 – System-Admin Funktionen
+
+# Braucht Core verfügbar
+# (Core muss vorher geladen sein)
+
+function Get-SystemInfo {
+    param([string]$ComputerName)
+    
+    Write-Log -Message "Getting info for $ComputerName" -Level Info
+    # ...
+}
+
+function Test-ServerHealth {
+    param([string]$ServerName)
+    
+    if (-not (Test-NotNullOrEmpty $ServerName)) {
+        throw "Server name invalid"
+    }
+    # ...
+}
+```
+
+**Script-Initialization (Beispiel):**
+```powershell
+# Backup-Server.ps1
+
+# Import Core (immer)
+. "$PSScriptRoot/../modules/Core.psm1"
+
+# Import nur nötige Module
+. "$PSScriptRoot/../modules/System.psm1"
+
+# Jetzt können alle Funktionen genutzt werden
+function Backup-Server {
+    param([string]$ServerName)
+    
+    $info = Get-SystemInfo -ComputerName $ServerName
+    Write-Log -Message "Server info: $info" -Level Info
+    
+    # Backup logic
+}
+
+# Main
+try {
+    Backup-Server -ServerName 'SRV01'
+}
+catch {
+    Write-ErrorLog -Message "Backup failed: $_"
+    exit 1
+}
+```
+
+**Related ADRs:**
+- **ADR-004:** Error Handling Convention (nutzt Core-Error-Funktionen)
+- **ADR-005:** Logging Strategy (Write-Log in Core)
 ```

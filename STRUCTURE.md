@@ -123,6 +123,21 @@ Siehe **[ADR-005](DECISIONS.md)** für vollständigen Kontext.
 
 ---
 
+## 11. MODUL-IMPORT-STRATEGIE
+
+Siehe **[ADR-008](DECISIONS.md)** für vollständigen Kontext.
+
+- **Regel 11.1:** Getrennte Module (nicht alles in 1 .psm1): `Core.psm1`, `System.psm1`, `User.psm1`, `Maintenance.psm1`
+- **Regel 11.2:** Core-Modul ist **Basis für alles** (Write-Log, Error-Helpers, Validatoren, Masking)
+- **Regel 11.3:** Core-Modul IMMER laden (erste Zeile in Scripts)
+- **Regel 11.4:** Zusätzliche Module on-demand laden (nur wenn nötig)
+- **Regel 11.5:** Import-Reihenfolge: Core → System → User → Maintenance (abhängigkeiten beachten)
+- **Regel 11.6:** Alle Funktionen in **Global Scope** (nach Import)
+- **Regel 11.7:** Private Helper-Funktionen: Prefix `_` (z.B. `_ValidateServerName`)
+- **Regel 11.8:** Load-Performance: On-Startup nur Core, dann optional andere Module
+
+---
+
 ## Verzeichnis-Übersicht
 
 ```
@@ -152,5 +167,5 @@ Folgende Standards müssen noch in [DECISIONS.md](DECISIONS.md) als ADRs dokumen
 - [✓] **ADR-005:** Logging Strategy – ACCEPTED
 - [✓] **ADR-006:** Code Style & PSScriptAnalyzer Rules – ACCEPTED
 - [✓] **ADR-007:** Naming Conventions (Funktions-Präfixe, Parameter, Variablen) – ACCEPTED
-- [ ] **ADR-008:** Modul-Import-Strategie
+- [✓] **ADR-008:** Modul-Import-Strategie (Core-Modul + Optional) – ACCEPTED
 - [ ] **ADR-009:** Dependency Management zwischen Funktionen
