@@ -38,11 +38,8 @@ Zentrale Dokumentation für Architektur-Entscheidungen, die das Projekt massgebl
 WinOpsKit benötigt eine klare Struktur für Wiederverwendbarkeit, Testbarkeit und Wartbarkeit. PowerShell-Code sollte nicht monolithisch sein.
 
 **Decision:**
-- Funktionen leben in `functions/` mit Kategorien (Core, System, User, Maintenance)
-- Scripts leben in `scripts/` und bauen modular auf Funktionen auf
-- Tests leben in `tests/` parallel zur Funktionsstruktur
-- Jede Funktion muss wiederverwendbar, allgemeingültig und performance-optimiert sein
-- `functions/FUNCTION-STATUS.md` dokumentiert den Arbeitsstand
+Modulare PowerShell-Architektur mit klarer Trennung von Funktionen, Scripts und Tests. 
+Siehe **[STRUCTURE.md](STRUCTURE.md)** für konkrete Implementierungs-Regeln (Regel 1.1-5.1).
 
 **Consequences:**
 - (+) Hohe Wiederverwendbarkeit durch klare Trennung
