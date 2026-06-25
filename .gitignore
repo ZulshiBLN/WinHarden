@@ -1,0 +1,22 @@
+# Local Configuration & Secrets
+.env
+.env.local
+*.local.json
+
+# Logs
+*.log
+
+# IDE
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary & Build
+*.tmp
+temp/
+dist/

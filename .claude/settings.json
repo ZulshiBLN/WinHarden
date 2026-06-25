@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git *)",
+      "Edit(*.ps1)",
+      "Edit(*.json)",
+      "Edit(*.md)"
+    ]
+  }
+}
