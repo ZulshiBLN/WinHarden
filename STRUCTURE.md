@@ -99,6 +99,21 @@ Siehe **[ADR-004](DECISIONS.md)** für vollständigen Kontext.
 
 ---
 
+## 10. LOGGING STRATEGY
+
+Siehe **[ADR-005](DECISIONS.md)** für vollständigen Kontext.
+
+- **Regel 10.1:** Logging-Ziel: Datei `$PSScriptRoot\logs\log_YYYY-MM-DD.csv` (tägliche Rotation)
+- **Regel 10.2:** Log-Format: CSV mit Spalten: Timestamp, Level, Caller, Function, LineNumber, Message
+- **Regel 10.3:** Log-Levels: Error, Warning, Info, Debug, Verbose (Hierarchie in dieser Reihenfolge)
+- **Regel 10.4:** Zentrale Logging-Funktion: `Write-Log` -Message, -Level, -Caller
+- **Regel 10.5:** Sensitive Data Maskieren: `*password*`, `*token*`, `*secret*`, `*apikey*`, `*credential*` → `***`
+- **Regel 10.6:** Caller Info: Funktions-Name, Zeilen-Nummer (aus CallStack)
+- **Regel 10.7:** Log-Level-Kontrolle: `$env:LOG_LEVEL` oder `-Verbose`/`-Debug` Flags
+- **Regel 10.8:** Retention: Automatisch löschen nach 7 Tagen (via `Clean-OldLogs`)
+
+---
+
 ## Verzeichnis-Übersicht
 
 ```
@@ -124,9 +139,9 @@ Folgende Standards müssen noch in [DECISIONS.md](DECISIONS.md) als ADRs dokumen
 
 - [✓] **ADR-002:** PowerShell-Version (5.1 vs. 7.x compatibility) – ACCEPTED
 - [✓] **ADR-004:** Error Handling Convention – ACCEPTED
+- [✓] **ADR-005:** Logging Strategy – ACCEPTED
 - [✓] **ADR-006:** Code Style & PSScriptAnalyzer Rules – ACCEPTED
 - [✓] **ADR-007:** Naming Conventions (Funktions-Präfixe, Parameter, Variablen) – ACCEPTED
 - [ ] **ADR-003:** Testing Framework (Pester 5.x setup)
-- [ ] **ADR-005:** Logging Strategy
 - [ ] **ADR-008:** Modul-Import-Strategie
 - [ ] **ADR-009:** Dependency Management zwischen Funktionen

@@ -403,4 +403,167 @@ function Delete-Item {
 
 **Related ADRs:**
 - **ADR-005:** Logging Strategy (definiert zentrale Logging-Funktion)
+
+---
+
+### ADR-005: Logging Strategy
+
+**Status:** ✅ ACCEPTED
+
+**Context:**
+Logging ist kritisch für Troubleshooting und Compliance. PowerShell-Scripts brauchen eine zentrale, konsistente Logging-Strategie, die Fehler und Operationen protokolliert, ohne sensitive Daten zu exponieren.
+
+**Decision:**
+
+**Logging-Ziele:**
+- Datei-basiert: `$PSScriptRoot\logs\`
+- Format: CSV (strukturiert, leicht zu analysieren)
+- Datei-Name: `log_YYYY-MM-DD.csv` (tägliche Rotation)
+
+**Log-Levels (in dieser Hierarchie):**
+1. **Error** - Kritische Fehler (immer loggen)
+2. **Warning** - Potenzielle Probleme (meist loggen)
+3. **Info** - Standard-Operationen (loggen wenn NICHT `-Verbose`)
+4. **Debug** - Detaillierte Debug-Info (loggen nur bei `-Debug`)
+5. **Verbose** - Sehr detailliert (loggen nur bei `-Verbose`)
+
+**Zentrale Logging-Funktion: `Write-Log`**
+- Parameter: `-Message`, `-Level`, `-Caller` (optional)
+- CSV-Spalten:
+  ```
+  Timestamp, Level, Caller, Function, LineNumber, Message
+  2026-06-25 14:23:45.123, ERROR, Get-ServerStatus:42, Get-ServerStatus, 42, "Failed to connect to server: ***"
+  ```
+
+**Sensitive Data Masking:**
+- Automatisches Maskieren bekannter sensitive Parameter:
+  - `*password*`, `*token*`, `*secret*`, `*apikey*`, `*credential*`
+  - Ersetzung: `***` (3 Sternchen)
+- Auch Parameter-Werte maskieren wenn Name sensitive ist
+- Beispiel: `"Password: ***"` statt `"Password: SecureP@ssw0rd"`
+
+**Caller Info:**
+- Funktions-Name (aus CallStack)
+- Zeilen-Nummer (aus CallStack)
+- Optional: Parameter (maskiert)
+
+**Log-Rotation & Retention:**
+- **Daily Files:** Ein CSV-Datei pro Tag (`log_2026-06-25.csv`)
+- **Retention:** Automatisch löschen nach **7 Tagen**
+- **Cleanup:** Läuft beim `Write-Log` erste Aufruf pro Tag
+
+**LogLevel-Kontrolle:**
+- Über `$env:LOG_LEVEL` (z.B. `$env:LOG_LEVEL = 'Debug'`)
+- Default: `Info` (keine Debug/Verbose ohne Umgebungsvariable)
+- Cmdlet-Parameter `-Verbose` und `-Debug` steuern auch LogLevel
+
+**Consequences:**
+- (+) Zentrale, strukturierte Logging-Strategie
+- (+) CSV leicht zu analysieren und zu parsen
+- (+) Sensitive Daten automatisch maskiert (compliance)
+- (+) Caller Info hilft bei Troubleshooting
+- (+) Tägliche Rotation reduziert Datei-Größe
+- (-) CSV-Header muss konsistent sein
+- (-) 7-Tage-Retention könnte zu Datenverlust führen (bei Audits beachten)
+- (-) Maskieren kann legitime Daten verstecken (Fehler-Kontexte)
+
+**Alternatives:**
+- JSON-Logging (komplexer, aber besser strukturiert)
+- Event Viewer (Windows-spezifisch, schwerer zu parsen)
+- keine Logging (unmöglich zu debuggen)
+- Plaintext (unklar, schwer zu parsen)
+
+**Implementation Notes:**
+
+**CSV-Header:**
+```
+Timestamp,Level,Caller,Function,LineNumber,Message
+```
+
+**Write-Log Funktion:**
+```powershell
+function Write-Log {
+    param(
+        [Parameter(Mandatory)]
+        [string]$Message,
+        
+        [ValidateSet('Error', 'Warning', 'Info', 'Debug', 'Verbose')]
+        [string]$Level = 'Info',
+        
+        [string]$Caller = (Get-PSCallStack)[1].FunctionName
+    )
+    
+    # Beispiel-Logik (vereinfacht)
+    $timestamp = Get-Date -Format 'yyyy-MM-dd HH:mm:ss.fff'
+    $logPath = Join-Path $PSScriptRoot "logs/log_$((Get-Date).ToString('yyyy-MM-dd')).csv"
+    
+    # Sensitive Data Maskieren
+    $maskedMessage = Mask-SensitiveData $Message
+    
+    # CSV-Eintrag
+    $logEntry = "$timestamp,$Level,$Caller,<function>,<line>,$maskedMessage"
+    Add-Content -Path $logPath -Value $logEntry
+    
+    # Auch auf Console ausgeben (bei bestimmtem LogLevel)
+    if (Should-LogLevel $Level) {
+        Write-Host "[$Level] $maskedMessage"
+    }
+}
+
+function Mask-SensitiveData {
+    param([string]$InputString)
+    
+    $sensitivePrefixes = @('password', 'token', 'secret', 'apikey', 'credential', 'api_key', 'private_key')
+    
+    foreach ($prefix in $sensitivePrefixes) {
+        $InputString = $InputString -replace "(?i)$prefix\s*[:=]\s*[^\s,;]*", "$prefix = ***"
+    }
+    
+    return $InputString
+}
+
+function Should-LogLevel {
+    param([string]$Level)
+    
+    $logLevel = $env:LOG_LEVEL ?? 'Info'
+    $hierarchy = @('Error', 'Warning', 'Info', 'Debug', 'Verbose')
+    
+    return $hierarchy.IndexOf($Level) -le $hierarchy.IndexOf($logLevel)
+}
+
+function Clean-OldLogs {
+    param([int]$DaysToKeep = 7)
+    
+    $logDir = Join-Path $PSScriptRoot 'logs'
+    if (-not (Test-Path $logDir)) { return }
+    
+    $cutoffDate = (Get-Date).AddDays(-$DaysToKeep)
+    Get-ChildItem $logDir -Filter 'log_*.csv' | Where-Object { $_.LastWriteTime -lt $cutoffDate } | Remove-Item -Force
+}
+```
+
+**Beispiel Log-Datei:**
+```csv
+Timestamp,Level,Caller,Function,LineNumber,Message
+2026-06-25 14:23:45.123,Error,Get-ServerStatus,Get-ServerStatus,42,Failed to connect to server SRV01: Connection timeout
+2026-06-25 14:23:50.456,Warning,Get-ServerStatus,Get-ServerStatus,48,Server SRV01 returned empty result set
+2026-06-25 14:24:00.789,Info,Initialize-Backup,Initialize-Backup,15,Backup started for path: \\server\share
+2026-06-25 14:24:15.012,Error,Invoke-Backup,Invoke-Backup,32,Authentication failed - credentials: *** (masked)
+2026-06-25 14:24:20.345,Debug,Test-Config,Test-Config,10,Configuration parameter ApiKey set to: ***
+```
+
+**Sensitive Data Masking Beispiele:**
+```
+Input:  "Password: SecureP@ss, Token: abc123xyz"
+Output: "Password: ***, Token: ***"
+
+Input:  "API_KEY=secret_12345 connection successful"
+Output: "API_KEY=*** connection successful"
+
+Input:  "Credentials: (Username=admin, Password=P@ss123)"
+Output: "Credentials: (Username=admin, Password=***)"
+```
+
+**Related ADRs:**
+- **ADR-004:** Error Handling Convention (nutzt Write-Log)
 ```
