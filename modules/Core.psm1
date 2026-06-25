@@ -79,7 +79,7 @@ function _Should-LogLevel {
         [string]$Level
     )
 
-    $logLevel = $env:LOG_LEVEL ?? 'Info'
+    $logLevel = if ([string]::IsNullOrEmpty($env:LOG_LEVEL)) { 'Info' } else { $env:LOG_LEVEL }
     $hierarchy = @('Error', 'Warning', 'Info', 'Debug', 'Verbose')
 
     $currentIndex = $hierarchy.IndexOf($Level)

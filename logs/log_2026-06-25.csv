@@ -1,0 +1,9 @@
+2026-06-25 21:36:13.001,Error,<ScriptBlock>,<function>,<line>,Critical error occurred
+2026-06-25 21:36:13.056,Error,<ScriptBlock>,<function>,<line>,TestParam cannot be null or empty
+2026-06-25 21:36:13.083,Error,<ScriptBlock>,<function>,<line>,TestParam cannot be null or empty
+2026-06-25 21:36:13.094,Error,<ScriptBlock>,<function>,<line>,TestParam cannot be null or empty
+2026-06-25 21:36:13.106,Error,<ScriptBlock>,<function>,<line>,ComputerName cannot be null or empty
+2026-06-25 21:36:13.137,Error,<ScriptBlock>,<function>,<line>,TestPath does not exist: C:\NonExistent\Path\That\Does\Not\Exist
+2026-06-25 21:36:13.193,Error,<ScriptBlock>,<function>,<line>,TestPath does not exist: C:\InvalidPath
+2026-06-25 21:36:13.338,Warning,<ScriptBlock>,<function>,<line>,Missing external module: NonExistentModule123xyz
+2026-06-25 21:36:13.395,Warning,<ScriptBlock>,<function>,<line>,Missing external module: NonExistentModule999
