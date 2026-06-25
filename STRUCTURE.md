@@ -86,11 +86,16 @@ Siehe **[ADR-007](DECISIONS.md)** für vollständigen Kontext.
 
 ## 9. ERROR HANDLING
 
-*(Noch zu definieren)*
+Siehe **[ADR-004](DECISIONS.md)** für vollständigen Kontext.
 
-- Try-Catch-Standard
-- Logging-Integration
-- Exit-Code-Konventionen
+- **Regel 9.1:** Try-Catch nur wo nötig (externe Ressourcen, bekannte Fehlerquellen)
+- **Regel 9.2:** Terminating Errors: `throw` Exception (stoppt sofort)
+- **Regel 9.3:** Non-Terminating Errors: `Write-Error` (setzt ErrorActionPreference)
+- **Regel 9.4:** ErrorActionPreference: Default `Stop` (Fehler sind terminating)
+- **Regel 9.5:** Alle Errors werden **automatisch geloggt** (zentrale Logging-Funktion, siehe ADR-005)
+- **Regel 9.6:** Parameter Validation: Nutze `[ValidateNotNullOrEmpty()]`, `[ValidateSet(...)]`, etc.
+- **Regel 9.7:** WhatIf & Confirm: Fehlerbehandlung läuft gleich wie normalem Run
+- **Regel 9.8:** Script Exit-Codes: 0=OK, 1=General Error, 2=Cmdlet Error, 3+=Custom
 
 ---
 
@@ -118,10 +123,10 @@ WinOpsKit/
 Folgende Standards müssen noch in [DECISIONS.md](DECISIONS.md) als ADRs dokumentiert werden:
 
 - [✓] **ADR-002:** PowerShell-Version (5.1 vs. 7.x compatibility) – ACCEPTED
+- [✓] **ADR-004:** Error Handling Convention – ACCEPTED
 - [✓] **ADR-006:** Code Style & PSScriptAnalyzer Rules – ACCEPTED
 - [✓] **ADR-007:** Naming Conventions (Funktions-Präfixe, Parameter, Variablen) – ACCEPTED
 - [ ] **ADR-003:** Testing Framework (Pester 5.x setup)
-- [ ] **ADR-004:** Error Handling Convention
 - [ ] **ADR-005:** Logging Strategy
 - [ ] **ADR-008:** Modul-Import-Strategie
 - [ ] **ADR-009:** Dependency Management zwischen Funktionen

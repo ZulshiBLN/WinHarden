@@ -257,3 +257,150 @@ function Test-Something {
     $SystemInfo = "data"  # Should be $systemInfo
 }
 ```
+
+---
+
+### ADR-004: Error Handling Convention
+
+**Status:** ✅ ACCEPTED
+
+**Context:**
+Konsistente Fehlerbehandlung ist kritisch für robuste PowerShell-Scripts. PowerShell hat verschiedene Error-Handling-Mechanismen (Try-Catch, ErrorActionPreference, Write-Error, Throw), die konsistent genutzt werden müssen.
+
+**Decision:**
+
+**Try-Catch Nutzung:**
+- Nur wo **nötig** verwenden, nicht standardmäßig um alle Code wrappen
+- Nutzen für externe Ressourcen (Datei-Zugriff, Netzwerk, Registry) oder bekannte Fehlerquellen
+- Nicht für interne Code-Logik verwenden
+
+**Fehlerbehandlung-Strategie:**
+- **Terminating Errors:** `throw` Exception (stoppt Ausführung sofort)
+- **Non-Terminating Errors:** `Write-Error` (gibt Error aus, setzt `$?` zu `$false`, aber setzt ErrorActionPreference)
+- **ErrorActionPreference:** Default `Stop` (behandelt Fehler als terminating)
+
+**Automatisches Logging:**
+- Alle Errors werden **automatisch geloggt** (siehe ADR-005 für Logging-Implementation)
+- Try-Catch sollte Fehler fangen, loggen, und neu-werfen oder Write-Error aufrufen
+- Keine doppelten Logs (Logging-Funktion ist zentral)
+
+**Exit-Codes (für Scripts, nicht Funktionen):**
+- `0` = Erfolgreich
+- `1` = General Error (unerwarteter Fehler)
+- `2` = Cmdlet Error (PowerShell Fehler)
+- `3+` = Custom Exit Codes (projekt-spezifisch)
+
+**WhatIf & Confirm:**
+- Fehlerbehandlung läuft **gleich** wie bei normalem Run
+- `-WhatIf` ändert Fehler-Handling nicht
+- Errors werden auch bei WhatIf geworfen/geloggt
+
+**Parameter Validation:**
+- Nutze **PowerShell Validation Attributes** (nicht manuelle Checks):
+  - `[ValidateNotNullOrEmpty()]`
+  - `[ValidateSet(...)]`
+  - `[ValidateRange(...)]`
+  - `[ValidateScript({...})]`
+  - `[ValidatePath]`
+- Diese werfen automatisch Errors bei ungültigen Inputs
+
+**Consequences:**
+- (+) Fehler stoppen Ausführung sofort (kein stummes Fehlschlag)
+- (+) Zentrale Fehler-Handling & Logging reduziert Redundanz
+- (+) ValidationAttributes sind lesbar und wartbar
+- (+) Exit-Codes ermöglichen Scripting in Batch/Automation
+- (-) `ErrorActionPreference Stop` ist streng (könnte manchmal zu restriktiv sein)
+- (-) Braucht zentrale Logging-Funktion (ADR-005)
+- (-) Try-Catch wird oft nicht gebraucht (könnte Code-Komplexität senken)
+
+**Alternatives:**
+- `ErrorActionPreference Continue` (weniger restriktiv, aber Fehler können ignoriert werden)
+- Alle Errors als Write-Error (nicht streng genug)
+- Jede Funktion mit eigenem Try-Catch (redundant, schwer zu maintainen)
+
+**Implementation Notes:**
+
+```powershell
+# [YES - ErrorActionPreference Stop, Validation Attributes]
+function Get-ServerStatus {
+    param(
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [string]$ComputerName,
+        
+        [ValidateSet('Running', 'Stopped', 'Paused')]
+        [string[]]$States = @('Running')
+    )
+    
+    # Try-Catch nur für externe Ressource (Netzwerk-Call)
+    try {
+        $server = Get-ADComputer -Identity $ComputerName -ErrorAction Stop
+    }
+    catch {
+        Write-Error "Failed to find server '$ComputerName': $_"
+        return
+    }
+    
+    # Interne Logik ohne Try-Catch
+    $processes = Get-Process
+    return $processes | Where-Object { $_.ProcessName -in @('svchost', 'system') }
+}
+
+# [YES - Throw for terminating errors]
+function New-Backup {
+    param(
+        [Parameter(Mandatory)]
+        [ValidatePath]
+        [string]$SourcePath
+    )
+    
+    if (-not (Test-Path $SourcePath)) {
+        throw "Source path does not exist: $SourcePath"
+    }
+    
+    # ... Backup logic
+}
+
+# [YES - Script with Exit Codes]
+try {
+    & ./Backup-Server.ps1 -ServerName "SRV01"
+    exit 0
+}
+catch {
+    Write-Error "Backup failed: $_"
+    exit 1
+}
+
+# [NO - Too much Try-Catch]
+function Get-Data {
+    try {
+        $item = $items[0]  # No exception possible here
+        try {
+            $value = $item.Property  # Also no exception
+        }
+        catch { Write-Error $_; return }
+    }
+    catch { Write-Error $_; return }
+}
+
+# [NO - Manual validation instead of Attributes]
+function Get-Items {
+    param([string]$Name)
+    
+    if ([string]::IsNullOrEmpty($Name)) {
+        throw "Name is required"  # Use [ValidateNotNullOrEmpty()] instead
+    }
+}
+
+# [NO - Write-Error for terminating errors]
+function Delete-Item {
+    if (-not $Path) {
+        Write-Error "Path is required"  # Should throw or use [ValidateNotNullOrEmpty()]
+        return
+    }
+}
+```
+
+**Related ADRs:**
+- **ADR-005:** Logging Strategy (definiert zentrale Logging-Funktion)
+```
