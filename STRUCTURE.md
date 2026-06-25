@@ -43,9 +43,21 @@ Performance-optimiert, dokumentiert, robust:
 
 ---
 
-## 6. NAMING CONVENTIONS
+## 6. POWERSHELL-VERSION & COMPATIBILITY
 
-*(Noch zu definieren – siehe [DECISIONS.md](DECISIONS.md) für zukünftige ADRs)*
+Siehe **[ADR-002](DECISIONS.md)** für vollständigen Kontext.
+
+- **Regel 6.1:** Minimum PowerShell 5.1, Dual-Support für 5.1 und 7.x
+- **Regel 6.2:** Moderne Cmdlets nutzen (Get-Process statt ps, Get-Item statt dir)
+- **Regel 6.3:** PowerShell-7-Features nur mit Runtime-Check: `if ($PSVersionTable.PSVersion.Major -ge 7) { ... }`
+- **Regel 6.4:** Keine Breaking Changes zwischen 5.1 und 7.x (5.1-kompatible Syntax default)
+- **Regel 6.5:** Windows-only Code (keine cross-plattform Umschreibungen)
+
+---
+
+## 7. NAMING CONVENTIONS
+
+*(Noch zu definieren – siehe [DECISIONS.md](DECISIONS.md) ADR-007)*
 
 - Funktions-Präfixe (Get-, Set-, Test-, New-, Remove-, etc.)
 - Dateibenennungs-Standard
@@ -96,7 +108,7 @@ WinOpsKit/
 
 Folgende Standards müssen noch in [DECISIONS.md](DECISIONS.md) als ADRs dokumentiert werden:
 
-- [ ] **ADR-002:** PowerShell-Version (5.1 vs. 7.x compatibility)
+- [✓] **ADR-002:** PowerShell-Version (5.1 vs. 7.x compatibility) – ACCEPTED
 - [ ] **ADR-003:** Testing Framework (Pester 5.x setup)
 - [ ] **ADR-004:** Error Handling Convention
 - [ ] **ADR-005:** Logging Strategy
