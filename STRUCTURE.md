@@ -157,17 +157,25 @@ Siehe **[ADR-009](DECISIONS.md)** für vollständigen Kontext.
 
 ```
 WinOpsKit/
-├── functions/              # Wiederverwendbare PowerShell-Funktionen
+├── functions/              # Wiederverwendbare PowerShell-Funktionen (Source)
 │   ├── FUNCTION-STATUS.md  # Arbeitsstand und Modul-Info (von Hand gepflegt)
 │   ├── Core/
 │   ├── System/
 │   ├── User/
 │   └── Maintenance/
-├── scripts/                # Hauptscripte (modular aus functions aufgebaut)
+├── modules/                # Geladene PowerShell-Module (exports)
+│   ├── Core.psm1           # Zentrale Basis-Funktionen (IMMER laden)
+│   ├── System.psm1         # System-Admin Funktionen (optional)
+│   ├── User.psm1           # User/Group Management (optional)
+│   └── Maintenance.psm1    # Updates, Cleanup, Monitoring (optional)
+├── scripts/                # Hauptscripte (modular aus modules aufgebaut)
 ├── tests/                  # Test-Funktionen (pro function/ eine entsprechende)
+│   └── fixtures/           # Test-Daten (JSON, CSV, PowerShell-Objekte)
+├── logs/                   # Runtime Logs (CSV, täglich rotiert, 7-Tage Retention)
+├── build.ps1               # Build-Script (PSScriptAnalyzer, Pester, Coverage-Check)
 ├── CLAUDE.md               # Collaboration Rules & Best Practices
 ├── DECISIONS.md            # Architectural Decision Records (ADRs)
-└── STRUCTURE.md            # Diese Datei
+└── STRUCTURE.md            # Diese Datei (Regeln)
 ```
 
 ---

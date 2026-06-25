@@ -6,7 +6,7 @@ PowerShell Automation & Operations Toolkit für Windows Server-Administration.
 
 ## Projekt-Kontext
 
-**Status:** Neues Projekt, noch in Early Exploration  
+**Status:** ✅ Infrastruktur-Phase COMPLETE (9 ADRs accepted) – Implementation startet  
 **Sprache:** PowerShell 5.1 (Windows)  
 **Ziel:** Sichere, performante, tokensparende Zusammenarbeit mit Claude
 
@@ -273,21 +273,29 @@ git push origin <dev/branch>
 
 ---
 
-## Next Steps für WinOpsKit-Setup
+## Next Steps für WinOpsKit Implementation
 
-**Phase 1: Infrastruktur & Standards (Planung)**
-- [✓] Verzeichnisstruktur erstellen (✓ ADR-001 ACCEPTED)
-- [ ] Fehlende ADRs schreiben (siehe Roadmap in [STRUCTURE.md](STRUCTURE.md))
-  - [ ] ADR-002: PowerShell-Version & Compatibility
-  - [ ] ADR-003: Testing Framework (Pester)
-  - [ ] ADR-004: Error Handling Convention
-  - [ ] ADR-005: Logging Strategy
+**Phase 1: Infrastruktur & Standards ✅ COMPLETE**
+- [✓] Verzeichnisstruktur erstellen (ADR-001)
+- [✓] ADR-002: PowerShell-Version & Compatibility
+- [✓] ADR-003: Testing Framework (Pester 5.x, 95% Coverage)
+- [✓] ADR-004: Error Handling Convention
+- [✓] ADR-005: Logging Strategy (CSV, 7-Tage Retention)
+- [✓] ADR-006: Code Style & PSScriptAnalyzer Rules
+- [✓] ADR-007: Naming Conventions (Approved Verbs, camelCase)
+- [✓] ADR-008: Modul-Import-Strategie (Core-Modul + Optional)
+- [✓] ADR-009: Dependency Management (Linear Hierarchy)
 
-**Phase 2: Implementierung (Code)**
-- [ ] Core/Logging.ps1 (nach ADR-005)
-- [ ] Core/Config.ps1
-- [ ] Pester-Test-Infrastruktur
-- [ ] Erste Public Functions (System, User, Maintenance)
+**Phase 2: Implementation (Code)**
+- [ ] build.ps1 erstellen (PSScriptAnalyzer, Pester, Coverage-Check)
+- [ ] Core.psm1 schreiben:
+  - [ ] Write-Log Funktion (ADR-005)
+  - [ ] Error-Handling Helpers (ADR-004)
+  - [ ] Validation Helpers (Test-NotNullOrEmpty, etc.)
+  - [ ] Sensitive Data Masking (ADR-005)
+  - [ ] Test-WinOpsKitDependencies Helper (ADR-009)
+- [ ] System.psm1, User.psm1, Maintenance.psm1 (initial)
+- [ ] Erste Funktionen mit Tests (95% Coverage via ADR-003)
 - [ ] Beispiele & Dokumentation
 
 ---
