@@ -251,68 +251,13 @@ git push origin <dev/branch>
 
 ---
 
-## Tech-Stack (WinOpsKit)
-
-| Bereich | Technology |
-|---------|------------|
-| **Sprache** | PowerShell 5.1+ |
-| **Shell** | Git Bash (POSIX) / PowerShell |
-| **OS** | Windows 11 Pro, Windows Server 2016+ |
-| **Umgebung** | VS Code oder PowerShell ISE |
-
----
-
-## Architektur & Implementierungs-Standards
+## Dokumentation & Referenzen
 
 **Architektur-Entscheidungen (WHY):**
-- Siehe [DECISIONS.md](DECISIONS.md) für alle ADRs (Kontext, Gründe, Alternativen)
+- Siehe [DECISIONS.md](DECISIONS.md) für alle 9 ADRs (Kontext, Gründe, Alternativen)
 
 **Implementierungs-Regeln (HOW):**
-- Siehe [STRUCTURE.md](STRUCTURE.md) für alle konkreten Standards (Regeln 1.1-5.1)
-- Siehe [STRUCTURE.md Roadmap](STRUCTURE.md#roadmap-fehlende-definitionen) für geplante ADRs
+- Siehe [STRUCTURE.md](STRUCTURE.md) für alle 12 Regel-Blöcke (Regeln 1.1-12.8)
 
----
-
-## Next Steps für WinOpsKit Implementation
-
-**Phase 1: Infrastruktur & Standards ✅ COMPLETE**
-- [✓] Verzeichnisstruktur erstellen (ADR-001)
-- [✓] ADR-002: PowerShell-Version & Compatibility
-- [✓] ADR-003: Testing Framework (Pester 5.x, 95% Coverage)
-- [✓] ADR-004: Error Handling Convention
-- [✓] ADR-005: Logging Strategy (CSV, 7-Tage Retention)
-- [✓] ADR-006: Code Style & PSScriptAnalyzer Rules
-- [✓] ADR-007: Naming Conventions (Approved Verbs, camelCase)
-- [✓] ADR-008: Modul-Import-Strategie (Core-Modul + Optional)
-- [✓] ADR-009: Dependency Management (Linear Hierarchy)
-
-**Phase 2: Implementation (Code)**
-- [ ] build.ps1 erstellen (PSScriptAnalyzer, Pester, Coverage-Check)
-- [ ] Core.psm1 schreiben:
-  - [ ] Write-Log Funktion (ADR-005)
-  - [ ] Error-Handling Helpers (ADR-004)
-  - [ ] Validation Helpers (Test-NotNullOrEmpty, etc.)
-  - [ ] Sensitive Data Masking (ADR-005)
-  - [ ] Test-WinOpsKitDependencies Helper (ADR-009)
-- [ ] System.psm1, User.psm1, Maintenance.psm1 (initial)
-- [ ] Erste Funktionen mit Tests (95% Coverage via ADR-003)
-- [ ] Beispiele & Dokumentation
-
----
-
-## Memory & Collaboration Hints
-
-[YES] **Kommunikation mit Claude:**
-- Ziele & Kontext clear kommunizieren
-- Blockers sofort erwähnen
-- Explizite Genehmigung für destructive Ops
-
-[YES] **Token-Sparsam arbeiten:**
-- Kleine, fokussierte Requests
-- Zwischen-Ergebnisse in `.md` Files speichern (nicht in Conversation nachladen)
-- Grep/Glob statt große Dateien teilen
-
-[YES] **Sicherheit first:**
-- Keine Secrets in Prompts
-- Code-Reviews für sensitive Änderungen
-- Validation only at boundaries
+**Arbeitsstand & Tracking:**
+- Siehe [FUNCTION-STATUS.md](functions/FUNCTION-STATUS.md) für aktuellen Status der Funktionen
