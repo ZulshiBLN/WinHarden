@@ -10,6 +10,13 @@ PowerShell Automation & Operations Toolkit für Windows Server-Administration.
 **Sprache:** PowerShell 5.1 (Windows)  
 **Ziel:** Sichere, performante, tokensparende Zusammenarbeit mit Claude
 
+**Wichtige Dokumente:**
+- 📋 **[STRUCTURE.md](STRUCTURE.md)** – Projekt-Struktur, Naming Conventions, Modul-Aufbau
+- ✅ **[DECISIONS.md](DECISIONS.md)** – Architectural Decision Records (ADRs)
+- 🔧 **[CLAUDE.md](CLAUDE.md)** (dieses Dokument) – Collaboration Rules & Best Practices
+
+➡️ **STRUCTURE.md und CLAUDE.md zusammen lesen für vollständigen Kontext!**
+
 ---
 
 ## Allgemeine Collaboration Rules (Claude Best Practices)
