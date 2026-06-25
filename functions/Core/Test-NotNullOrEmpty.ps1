@@ -22,8 +22,8 @@ function Test-NotNullOrEmpty {
 
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory = $true)]
-        [ValidateNotNullOrEmpty()]
+        [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
+        [AllowEmptyString()]
         [string]
         $Value,
 
@@ -32,6 +32,7 @@ function Test-NotNullOrEmpty {
         $Name = 'Value'
     )
 
+    # Validate that value is not null, empty, or whitespace
     if ([string]::IsNullOrWhiteSpace($Value)) {
         $errorMessage = "$Name cannot be null or empty"
         Write-Log -Message $errorMessage -Level Error

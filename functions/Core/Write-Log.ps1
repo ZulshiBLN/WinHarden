@@ -43,12 +43,23 @@ function Write-Log {
     $ErrorActionPreference = 'Stop'
 
     try {
-        # Determine log directory
-        $logDir = if ($PSScriptRoot) {
-            Join-Path -Path $PSScriptRoot -ChildPath '..\logs'
+        # Determine log directory - handle both module and direct script contexts
+        $logDir = $null
+
+        if ($PSScriptRoot) {
+            # Calculate project root: functions/Core -> ../../ = project root
+            $projectRoot = Split-Path -Path $PSScriptRoot -Parent | Split-Path -Parent
+            $logDir = Join-Path -Path $projectRoot -ChildPath 'logs'
+
+            # Verify we got a reasonable path (should contain 'WinOpsKit' or 'logs')
+            if (-not ($logDir -like '*logs')) {
+                $logDir = $null
+            }
         }
-        else {
-            Join-Path -Path (Get-Location) -ChildPath 'logs'
+
+        # Fallback: use current directory
+        if (-not $logDir) {
+            $logDir = Join-Path -Path (Get-Location) -ChildPath 'logs'
         }
 
         # Create log directory if needed

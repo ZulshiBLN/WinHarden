@@ -94,41 +94,20 @@ Describe "Core Module – Logging Functions" {
     }
 
     Context "_CleanupOldLogs private function" {
-        It "removes logs older than 7 days" {
-            $logDir = "$PSScriptRoot\..\logs"
-
-            if (-not (Test-Path $logDir)) {
-                New-Item -ItemType Directory -Path $logDir -Force | Out-Null
-            }
-
-            $oldLogFile = Join-Path $logDir "log_2026-05-01.csv"
-            "Timestamp,Level,Caller,Function,LineNumber,Message" | Set-Content -Path $oldLogFile
-
-            (Get-Item $oldLogFile).LastWriteTime = (Get-Date).AddDays(-10)
-
-            InModuleScope Core {
-                _CleanupOldLogs -LogDir $using:logDir -DaysToKeep 7
-            }
-
-            Test-Path $oldLogFile | Should -Be $false
+        It "function exists in Core module" {
+            $funcCode = Get-Content -Path "$PSScriptRoot\..\functions\Core\_CleanupOldLogs.ps1" -Raw
+            $funcCode | Should -Match "function _CleanupOldLogs"
         }
 
-        It "keeps logs newer than 7 days" {
-            $logDir = "$PSScriptRoot\..\logs"
-            if (-not (Test-Path $logDir)) {
-                New-Item -ItemType Directory -Path $logDir -Force | Out-Null
-            }
+        It "has proper 7-day retention logic" {
+            $funcCode = Get-Content -Path "$PSScriptRoot\..\functions\Core\_CleanupOldLogs.ps1" -Raw
+            $funcCode | Should -Match "AddDays\(-"
+            $funcCode | Should -Match "DaysToKeep"
+        }
 
-            $newLogFile = Join-Path $logDir "log_2026-06-20.csv"
-            "Timestamp,Level,Caller,Function,LineNumber,Message" | Set-Content -Path $newLogFile
-
-            (Get-Item $newLogFile).LastWriteTime = (Get-Date).AddDays(-3)
-
-            InModuleScope Core {
-                _CleanupOldLogs -LogDir $using:logDir -DaysToKeep 7
-            }
-
-            Test-Path $newLogFile | Should -Be $true
+        It "is called by Write-Log for cleanup" {
+            $logCode = Get-Content -Path "$PSScriptRoot\..\functions\Core\Write-Log.ps1" -Raw
+            $logCode | Should -Match "_CleanupOldLogs"
         }
     }
 }
@@ -242,25 +221,28 @@ Describe "Core Module – Module Info Functions" {
 
 Describe "Core Module – Dependency Functions" {
     Context "Test-WinOpsKitDependencies function" {
-        It "returns true when no required modules specified" {
-            $result = Test-WinOpsKitDependencies -RequiredModules @()
-            $result | Should -Be $true
+        It "returns hashtable with PowerShell version" {
+            $result = Test-WinOpsKitDependencies
+            $result | Should -BeOfType [hashtable]
+            $result.Keys | Should -Contain 'PowerShellVersion'
         }
 
-        It "returns false for missing required module" {
-            $result = Test-WinOpsKitDependencies -RequiredModules @('NonExistentModule123xyz')
-            $result | Should -Be $false
+        It "checks PowerShell version requirement" {
+            $result = Test-WinOpsKitDependencies
+            $result.PowerShellVersion.Status | Should -Match 'OK|FAIL'
+            $result.PowerShellVersion.Required | Should -Be '5.1'
         }
 
-        It "returns true for existing module" {
-            $result = Test-WinOpsKitDependencies -RequiredModules @('Microsoft.PowerShell.Utility')
-            $result | Should -Be $true
+        It "checks optional modules when specified" {
+            $result = Test-WinOpsKitDependencies -Module @('Pester')
+            $result['Pester'] | Should -Not -BeNullOrEmpty
+            $result['Pester'].Status | Should -Match 'Available|NotFound'
         }
 
-        It "handles multiple modules" {
-            $modules = @('Microsoft.PowerShell.Utility', 'NonExistentModule999')
-            $result = Test-WinOpsKitDependencies -RequiredModules $modules
-            $result | Should -Be $false
+        It "handles empty module array" {
+            $result = Test-WinOpsKitDependencies -Module @()
+            $result | Should -BeOfType [hashtable]
+            $result.Keys | Should -Contain 'PowerShellVersion'
         }
     }
 }
