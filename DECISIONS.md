@@ -151,10 +151,109 @@ Konsistente Code-Formatierung ist wichtig für Lesbarkeit und Wartbarkeit. PSScr
 - **Line Length:** Anstreben ~100-120 Zeichen, Lesbarkeit > Regel
   ```powershell
   # [OK - Lesbar, auch über 120 Zeichen]
-  $LongVariableName = Get-ChildItem -Path $VeryLongPath -Filter $ComplexFilter -ErrorAction Stop
+  $longVariableName = Get-ChildItem -Path $veryLongPath -Filter $complexFilter -ErrorAction Stop
   ```
 - **Exceptions:** Nur mit Kommentar, z.B.:
   ```powershell
   # PSScriptAnalyzer ignore PSUseApprovedVerbs
   function Initialize-SpecialContext { }
   ```
+
+---
+
+### ADR-007: Naming Conventions (Funktionen, Parameter, Variablen)
+
+**Status:** ✅ ACCEPTED
+
+**Context:**
+Konsistente Naming-Konventionen sind kritisch für Lesbarkeit und Verständlichkeit. PowerShell hat Conventions, die befolgt werden sollten, mit einigen Projekt-spezifischen Ergänzungen.
+
+**Decision:**
+
+**Funktions-Namen:**
+- **Approved Verbs:** Nur PowerShell-Approved Verbs verwenden (Get, Set, Test, New, Remove, Add, Clear, etc.)
+- **Format:** `Verb-Noun` (z.B. `Get-SystemInfo`, `Test-ServiceHealth`)
+- **Private Funktionen:** Prefix `_` (z.B. `_GetSystemDetails`)
+
+**Parameter-Namen:**
+- **Singular/Plural:** Singular wenn Parameter **einen** Wert nimmt, Plural wenn **mehrere** (z.B. `$Server` vs. `$Servers`)
+- **Format:** PascalCase (z.B. `$ComputerName`, `$ProcessList`)
+
+**Variablen-Namen:**
+- **Format:** camelCase (z.B. `$systemInfo`, `$isHealthy`, `$errorCount`)
+- **Prefix für Typen:** Optional aber konsistent (z.B. `$strName`, `$intCount`)
+
+**Boolean-Funktionen:**
+- **Präfix:** `Is` (z.B. `Is-SystemHealthy`, `Is-ServiceRunning`)
+
+**Datei-Namen:**
+- **Match Funktions-Name:** Dateiname == Funktions-Name (z.B. `Get-SystemInfo.ps1`)
+- **Private Funktionen:** `_PrivateFunction.ps1`
+
+**Consequences:**
+- (+) Sofort erkennbar: Funktion vs. Variable vs. Parameter
+- (+) PowerShell-Standard + Projekt-Konventionen konsistent
+- (+) PSScriptAnalyzer validiert Approved Verbs automatisch
+- (-) Mehr Regeln zu merken
+- (-) Umbenennungen nötig wenn vorhandene Code nicht komform
+
+**Alternatives:**
+- Keine Konventionen (völliges Chaos)
+- Nur PowerShell-Standards ohne Projekt-Ergänzungen (weniger Klarheit)
+- SCREAMING_SNAKE_CASE überall (nicht PowerShell-Standard)
+
+**Implementation Notes:**
+
+```powershell
+# [YES - Approved Verb, PascalCase Parameter, camelCase Variable]
+function Get-ServerStatus {
+    param(
+        [string]$ComputerName,
+        [string[]]$Services  # Plural: mehrere Werte
+    )
+    
+    $isHealthy = $true
+    $serviceCount = 0
+    
+    foreach ($service in $Services) {
+        if (-not (Get-Service -Name $service -ErrorAction SilentlyContinue)) {
+            $isHealthy = $false
+        }
+        $serviceCount++
+    }
+    
+    return @{
+        ComputerName = $ComputerName
+        IsHealthy    = $isHealthy
+        ServiceCount = $serviceCount
+    }
+}
+
+# [YES - Boolean function mit Is-Prefix]
+function Is-ServiceRunning {
+    param([string]$ServiceName)
+    
+    $service = Get-Service -Name $ServiceName -ErrorAction SilentlyContinue
+    return $null -ne $service -and $service.Status -eq 'Running'
+}
+
+# [YES - Private function mit _ Prefix]
+function _ValidateInput {
+    param([string]$InputValue)
+    
+    return -not [string]::IsNullOrWhiteSpace($InputValue)
+}
+
+# [NO - Non-approved verb]
+function Fetch-Data { }  # Use Get-Data instead
+
+# [NO - Parameter plural wenn nur ein Wert]
+function Get-Process {
+    param([string[]]$ProcessNames)  # Should be $ProcessName if singular
+}
+
+# [NO - Variable in PascalCase]
+function Test-Something {
+    $SystemInfo = "data"  # Should be $systemInfo
+}
+```

@@ -71,11 +71,16 @@ Siehe **[ADR-006](DECISIONS.md)** für vollständigen Kontext.
 
 ## 8. NAMING CONVENTIONS
 
-*(Noch zu definieren – siehe [DECISIONS.md](DECISIONS.md) ADR-007)*
+Siehe **[ADR-007](DECISIONS.md)** für vollständigen Kontext.
 
-- Funktions-Präfixe (Get-, Set-, Test-, New-, Remove-, etc.)
-- Dateibenennungs-Standard
-- Variablennamen-Standard
+- **Regel 8.1:** Funktions-Präfixe: PowerShell Approved Verbs (Get, Set, Test, New, Remove, Add, Clear, etc.)
+- **Regel 8.2:** Funktions-Format: `Verb-Noun` (z.B. `Get-SystemInfo`)
+- **Regel 8.3:** Private Funktionen: Prefix `_` (z.B. `_PrivateHelper`)
+- **Regel 8.4:** Parameter-Namen: PascalCase (z.B. `$ComputerName`)
+- **Regel 8.5:** Parameter-Plural: Plural (`$Servers`) wenn mehrere Werte, Singular (`$Server`) wenn ein Wert
+- **Regel 8.6:** Variablen-Namen: camelCase (z.B. `$systemInfo`, `$isHealthy`)
+- **Regel 8.7:** Boolean-Funktionen: Prefix `Is` (z.B. `Is-SystemHealthy`)
+- **Regel 8.8:** Datei-Namen: Funktions-Name == Datei-Name (z.B. `Get-SystemInfo.ps1`)
 
 ---
 
@@ -114,9 +119,9 @@ Folgende Standards müssen noch in [DECISIONS.md](DECISIONS.md) als ADRs dokumen
 
 - [✓] **ADR-002:** PowerShell-Version (5.1 vs. 7.x compatibility) – ACCEPTED
 - [✓] **ADR-006:** Code Style & PSScriptAnalyzer Rules – ACCEPTED
+- [✓] **ADR-007:** Naming Conventions (Funktions-Präfixe, Parameter, Variablen) – ACCEPTED
 - [ ] **ADR-003:** Testing Framework (Pester 5.x setup)
 - [ ] **ADR-004:** Error Handling Convention
 - [ ] **ADR-005:** Logging Strategy
-- [ ] **ADR-007:** Naming Conventions (Funktions-Präfixe, etc.)
 - [ ] **ADR-008:** Modul-Import-Strategie
 - [ ] **ADR-009:** Dependency Management zwischen Funktionen
