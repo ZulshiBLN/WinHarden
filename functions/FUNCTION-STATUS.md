@@ -48,9 +48,19 @@ Funktionen für Exchange Online Verwaltung. **Depends on Core.**
 
 Funktionen für User/Group Management, Permissions, etc. **Depends on Core + System.**
 
+**Status:** Skeleton ready – Ready for implementation  
+**Module Loader:** [User.psm1](../modules/User.psm1) ✅  
+**Function Directory:** [functions/User/](../functions/User/)  
+
 | Funktion | Modul | Status | Beschreibung | Last Updated | Tests | Coverage |
 |----------|-------|--------|-------------|--------------|-------|----------|
-| (geplant) | User | `[ ]` | - | - | - | - |
+| (reserved) | User | `[WIP]` | Awaiting implementation | 2026-06-25 | - | - |
+
+**Implementation Notes:**
+- Module loader ready (imports Core module automatically)
+- Directory structure created
+- ADR-008 (Module Import Strategy) compliant
+- Ready for function implementation
 
 ---
 
@@ -58,9 +68,19 @@ Funktionen für User/Group Management, Permissions, etc. **Depends on Core + Sys
 
 Funktionen für Updates, Cleanup, Monitoring, etc. **Depends on Core + System + User.**
 
+**Status:** Skeleton ready – Ready for implementation  
+**Module Loader:** [Maintenance.psm1](../modules/Maintenance.psm1) ✅  
+**Function Directory:** [functions/Maintenance/](../functions/Maintenance/)  
+
 | Funktion | Modul | Status | Beschreibung | Last Updated | Tests | Coverage |
 |----------|-------|--------|-------------|--------------|-------|----------|
-| (geplant) | Maintenance | `[ ]` | - | - | - | - |
+| (reserved) | Maintenance | `[WIP]` | Awaiting implementation | 2026-06-25 | - | - |
+
+**Implementation Notes:**
+- Module loader ready (imports Core, System, User modules automatically)
+- Directory structure created
+- ADR-009 (Dependency Hierarchy) compliant
+- Ready for function implementation
 
 ---
 
