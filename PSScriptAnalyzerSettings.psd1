@@ -70,5 +70,16 @@
             Enable = $true
             CheckForFormatter = $false
         }
+
+        # EXCEPTION: Disable PSUseSingularNouns for Test-WinOpsKitDependencies
+        # Reason: Plural "Dependencies" is semantically correct because:
+        # - Function validates MULTIPLE dependencies (PowerShell version + modules)
+        # - Returns MULTIPLE result entries (hash with multiple keys)
+        # - Accepts MULTIPLE modules (array parameter)
+        # - Follows PowerShell precedent: Get-ChildItem, Get-Module (plural nouns)
+        # Status: This is a documented exception to the naming rule
+        PSUseSingularNouns = @{
+            Enable = $false
+        }
     }
 }

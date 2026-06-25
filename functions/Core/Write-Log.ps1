@@ -93,11 +93,20 @@ function Write-Log {
             'Message'    = $maskedMessage
         }
 
+        # Handle -WhatIf parameter (gracefully handle in both Interactive and NonInteractive modes)
+        if ($WhatIfPreference) {
+            Write-Verbose "WhatIf: Would log '$Message' (level: $Level) to $logFile"
+            return
+        }
+
         # Write header if file doesn't exist
         if (-not (Test-Path -Path $logFile -PathType Leaf)) {
-            if ($PSCmdlet.ShouldProcess("Log file", "Create and write header")) {
+            try {
                 $header = $csvEntry.Keys -join ','
                 Add-Content -Path $logFile -Value $header -Encoding UTF8 -ErrorAction Stop
+            }
+            catch {
+                Write-Error -Message "Failed to write log header: $_" -ErrorAction Continue
             }
         }
 
@@ -113,8 +122,11 @@ function Write-Log {
         }
         $csvRow = $values -join ','
 
-        if ($PSCmdlet.ShouldProcess("Log file", "Append log entry")) {
+        try {
             Add-Content -Path $logFile -Value $csvRow -Encoding UTF8 -ErrorAction Stop
+        }
+        catch {
+            Write-Error -Message "Failed to append log entry: $_" -ErrorAction Continue
         }
 
         # Also output to PowerShell stream based on level

@@ -93,7 +93,7 @@ Describe "Core Module – Logging Functions" {
         }
     }
 
-    Context "Clean-OldLogs function" {
+    Context "_CleanupOldLogs private function" {
         It "removes logs older than 7 days" {
             $logDir = "$PSScriptRoot\..\logs"
 
@@ -106,7 +106,9 @@ Describe "Core Module – Logging Functions" {
 
             (Get-Item $oldLogFile).LastWriteTime = (Get-Date).AddDays(-10)
 
-            Clean-OldLogs -DaysToKeep 7
+            InModuleScope Core {
+                _CleanupOldLogs -LogDir $using:logDir -DaysToKeep 7
+            }
 
             Test-Path $oldLogFile | Should -Be $false
         }
@@ -122,7 +124,9 @@ Describe "Core Module – Logging Functions" {
 
             (Get-Item $newLogFile).LastWriteTime = (Get-Date).AddDays(-3)
 
-            Clean-OldLogs -DaysToKeep 7
+            InModuleScope Core {
+                _CleanupOldLogs -LogDir $using:logDir -DaysToKeep 7
+            }
 
             Test-Path $newLogFile | Should -Be $true
         }
@@ -193,24 +197,24 @@ Describe "Core Module – Validation Functions" {
 Describe "Core Module – Data Masking Functions" {
     Context "ConvertTo-MaskedString function" {
         It "masks password" {
-            $input = "password=MySecret123"
-            $output = ConvertTo-MaskedString -InputString $input
+            $testInput = "password=MySecret123"
+            $output = ConvertTo-MaskedString -InputString $testInput
             $output | Should -Match "password=\*\*\*"
             $output | Should -Not -Match "MySecret123"
         }
 
         It "masks multiple sensitive keywords" {
-            $input = "password=secret1 token=token2 apikey=key3"
-            $output = ConvertTo-MaskedString -InputString $input
+            $testInput = "password=secret1 token=token2 apikey=key3"
+            $output = ConvertTo-MaskedString -InputString $testInput
             $output | Should -Match "password=\*\*\*"
             $output | Should -Match "token=\*\*\*"
             $output | Should -Match "apikey=\*\*\*"
         }
 
         It "preserves non-sensitive content" {
-            $input = "Server connection to SRV01 successful"
-            $output = ConvertTo-MaskedString -InputString $input
-            $output | Should -Be $input
+            $testInput = "Server connection to SRV01 successful"
+            $output = ConvertTo-MaskedString -InputString $testInput
+            $output | Should -Be $testInput
         }
     }
 }
@@ -262,10 +266,10 @@ Describe "Core Module – Dependency Functions" {
 }
 
 Describe "Core Module – Private Functions (InModuleScope)" {
-    Context "_Mask-SensitiveData private function" {
+    Context "_MaskSensitiveData private function" {
         It "masks password parameter" {
             InModuleScope Core {
-                $result = _Mask-SensitiveData -InputString "password=secret123"
+                $result = _MaskSensitiveData -InputString "password=secret123"
                 $result | Should -Match "password=\*\*\*"
                 $result | Should -Not -Match "secret123"
             }
@@ -273,7 +277,7 @@ Describe "Core Module – Private Functions (InModuleScope)" {
 
         It "masks multiple parameters" {
             InModuleScope Core {
-                $result = _Mask-SensitiveData -InputString "user=admin password=pass123 token=token456"
+                $result = _MaskSensitiveData -InputString "user=admin password=pass123 token=token456"
                 $result | Should -Match "password=\*\*\*"
                 $result | Should -Match "token=\*\*\*"
             }
@@ -281,35 +285,35 @@ Describe "Core Module – Private Functions (InModuleScope)" {
 
         It "is case-insensitive" {
             InModuleScope Core {
-                $result = _Mask-SensitiveData -InputString "PASSWORD=secret123 Token=token123"
+                $result = _MaskSensitiveData -InputString "PASSWORD=secret123 Token=token123"
                 $result | Should -Match "password=\*\*\*"
                 $result | Should -Match "token=\*\*\*"
             }
         }
     }
 
-    Context "_Should-LogLevel private function" {
+    Context "_TestLogLevel private function" {
         BeforeEach {
             $env:LOG_LEVEL = 'Info'
         }
 
         It "returns true for Error level when LOG_LEVEL is Info" {
             InModuleScope Core {
-                $result = _Should-LogLevel -Level 'Error'
+                $result = _TestLogLevel -Level 'Error'
                 $result | Should -Be $true
             }
         }
 
         It "returns true for Info level when LOG_LEVEL is Info" {
             InModuleScope Core {
-                $result = _Should-LogLevel -Level 'Info'
+                $result = _TestLogLevel -Level 'Info'
                 $result | Should -Be $true
             }
         }
 
         It "returns false for Debug level when LOG_LEVEL is Info" {
             InModuleScope Core {
-                $result = _Should-LogLevel -Level 'Debug'
+                $result = _TestLogLevel -Level 'Debug'
                 $result | Should -Be $false
             }
         }
@@ -317,7 +321,7 @@ Describe "Core Module – Private Functions (InModuleScope)" {
         It "respects LOG_LEVEL env variable" {
             $env:LOG_LEVEL = 'Debug'
             InModuleScope Core {
-                $result = _Should-LogLevel -Level 'Debug'
+                $result = _TestLogLevel -Level 'Debug'
                 $result | Should -Be $true
             }
         }
