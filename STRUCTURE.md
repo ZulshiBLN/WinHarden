@@ -138,6 +138,21 @@ Siehe **[ADR-008](DECISIONS.md)** für vollständigen Kontext.
 
 ---
 
+## 12. DEPENDENCY MANAGEMENT
+
+Siehe **[ADR-009](DECISIONS.md)** für vollständigen Kontext.
+
+- **Regel 12.1:** Linear Dependency Hierarchy: Core → System → User → Maintenance (keine Rückwärts-Dependencies)
+- **Regel 12.2:** Modul N darf nur Modul M aufrufen wenn M < N in Hierarchie
+- **Regel 12.3:** Inter-Module Dependencies explizit dokumentieren (Kommentar: `# DEPENDS ON: ...`)
+- **Regel 12.4:** Test-Mocking für alle Inter-Modul-Aufrufe (ADR-003)
+- **Regel 12.5:** External Dependencies optional deklarieren (Kommentar: `# REQUIRES (optional): ...`)
+- **Regel 12.6:** Graceful Degradation: External Module fehlt → Loggen + Error + Continue (nicht throw)
+- **Regel 12.7:** PowerShell-Version Constraint: Minimum 5.1, Runtime-Checks für 7.x Features (ADR-002)
+- **Regel 12.8:** Optional: `Test-WinOpsKitDependencies` Helper-Funktion in Core (nicht blocking)
+
+---
+
 ## Verzeichnis-Übersicht
 
 ```
@@ -157,15 +172,18 @@ WinOpsKit/
 
 ---
 
-## Roadmap: Fehlende Definitionen
+## Status: Infrastruktur-Phase ✅ COMPLETE
 
-Folgende Standards müssen noch in [DECISIONS.md](DECISIONS.md) als ADRs dokumentiert werden:
+Alle 9 ADRs sind dokumentiert und akzeptiert:
 
-- [✓] **ADR-002:** PowerShell-Version (5.1 vs. 7.x compatibility) – ACCEPTED
-- [✓] **ADR-003:** Testing Framework (Pester 5.x, 95% Coverage) – ACCEPTED
-- [✓] **ADR-004:** Error Handling Convention – ACCEPTED
-- [✓] **ADR-005:** Logging Strategy – ACCEPTED
-- [✓] **ADR-006:** Code Style & PSScriptAnalyzer Rules – ACCEPTED
-- [✓] **ADR-007:** Naming Conventions (Funktions-Präfixe, Parameter, Variablen) – ACCEPTED
-- [✓] **ADR-008:** Modul-Import-Strategie (Core-Modul + Optional) – ACCEPTED
-- [ ] **ADR-009:** Dependency Management zwischen Funktionen
+- [✓] **ADR-001:** Modulare PowerShell-Architektur mit Funktionen & Scripts
+- [✓] **ADR-002:** PowerShell-Version (5.1 vs. 7.x compatibility)
+- [✓] **ADR-003:** Testing Framework (Pester 5.x, 95% Coverage)
+- [✓] **ADR-004:** Error Handling Convention
+- [✓] **ADR-005:** Logging Strategy (CSV-basiert, 7-Tage Retention)
+- [✓] **ADR-006:** Code Style & PSScriptAnalyzer Rules (K&R, 4-Space)
+- [✓] **ADR-007:** Naming Conventions (Approved Verbs, camelCase)
+- [✓] **ADR-008:** Modul-Import-Strategie (Core-Modul + Optional)
+- [✓] **ADR-009:** Dependency Management (Linear Hierarchy, Graceful Degradation)
+
+**Nächste Phase:** Implementation (Code schreiben)

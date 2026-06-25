@@ -966,4 +966,231 @@ catch {
 **Related ADRs:**
 - **ADR-004:** Error Handling Convention (nutzt Core-Error-Funktionen)
 - **ADR-005:** Logging Strategy (Write-Log in Core)
+
+---
+
+### ADR-009: Dependency Management zwischen Funktionen
+
+**Status:** ✅ ACCEPTED
+
+**Context:**
+Mit mehreren Modulen (Core, System, User, Maintenance) müssen Abhängigkeiten zwischen Funktionen gemanagt werden. Ziele:
+1. Zirkuläre Abhängigkeiten verhindern
+2. Klare Dependency-Hierarchie etablieren
+3. External Dependencies optional halten
+4. Version-Kompatibilität sichern (PowerShell 5.1+)
+
+**Decision:**
+
+**Circular Dependencies Prevention:**
+- **Linear Dependency Hierarchy:**
+  ```
+  Core (keine Dependencies)
+    ↓
+  System (darf Core nutzen)
+    ↓
+  User (darf Core + System nutzen)
+    ↓
+  Maintenance (darf Core + System + User nutzen)
+  ```
+- **Regel:** Modul N darf nur Modul M aufrufen wenn M < N in Hierarchie
+- **Keine Rückwärts-Abhängigkeiten:** System darf NOT User aufrufen, User darf NOT Maintenance aufrufen
+
+**Inter-Module Dependencies:**
+- **Explizit dokumentieren** (Kommentar oben in Funktion):
+  ```powershell
+  # DEPENDS ON: Write-Log (Core), Test-NotNullOrEmpty (Core)
+  # OPTIONAL: Get-UserInfo (User.psm1)
+  ```
+- **Test-Mocking** für alle Inter-Modul-Aufrufe (siehe ADR-003)
+- Kein direct `.psm1` Import nötig (alles lädt beim Script-Start, ADR-008)
+
+**External Dependencies (PowerShell-Module, APIs, etc.):**
+- **Deklarieren optional:**
+  ```powershell
+  # REQUIRES (optional): ActiveDirectory Module 2.0+
+  # REQUIRES (optional): Az.Storage Module 4.0+
+  ```
+- **Graceful Degradation:** Wenn externe Module fehlen, loggen + Error + return gracefully
+- **Nicht hard-require:** WinOpsKit funktioniert ohne externe Modules (nur mit Einschränkungen)
+- Nutzen von `Test-WinOpsKitDependencies` Helper (optional)
+
+**Version Constraints:**
+- **Minimum PowerShell:** 5.1 (alle Funktionen, siehe ADR-002)
+- **Keine Version-Pinning:** Zu restriktiv
+- **Modern Features nutzen mit Checks:** `if ($PSVersionTable.PSVersion.Major -ge 7) { ... }`
+- **Breaking Changes:** Neue ADR schreiben wenn Major-Version inkompatibel
+
+**Dependency Validation (Helper-Funktion in Core):**
+```powershell
+function Test-WinOpsKitDependencies {
+    param([string[]]$RequiredModules = @())
+    
+    $missing = @()
+    foreach ($module in $RequiredModules) {
+        if (-not (Get-Module $module -ListAvailable)) {
+            $missing += $module
+            Write-Log "Missing module: $module" -Level Warning
+        }
+    }
+    
+    if ($missing) {
+        Write-Host "Install: Install-Module $($missing -join ', ')"
+        return $false
+    }
+    return $true
+}
+```
+- Optional, nicht blocking (graceful)
+- Script kann selbst entscheiden: fail hard oder continue
+
+**Consequences:**
+- (+) Keine zirkulären Dependencies (saubere Architektur)
+- (+) Klare Hierarchie (einfach zu verstehen)
+- (+) External Modules optional (höhere Kompatibilität)
+- (+) PowerShell 5.1+ überall (breite Unterstützung)
+- (+) Test-Mocking verhindert aktuell-Abhängigkeiten (ADR-003)
+- (-) Linear Hierarchy ist streng (könnte manchmal zu viel sein)
+- (-) Graceful Degradation kann Error-Handling komplizieren
+- (-) Dokumentation (DEPENDS ON) muss manuell gepflegt werden
+
+**Alternatives:**
+- Keine Hierarchie (Chaos)
+- Automatische Dependency Resolution (zu komplex)
+- Hard-require alle Modules (zu restriktiv)
+- Keine External-Module Support (Limited)
+
+**Implementation Notes:**
+
+**Dependency Documentation (Beispiel):**
+```powershell
+# functions/System/Get-SystemInfo.ps1
+
+# DEPENDS ON: Write-Log (Core), Test-NotNullOrEmpty (Core)
+# OPTIONAL: Get-UserInfo (User.psm1) – test-mocked
+# REQUIRES (optional): ActiveDirectory Module 2.0+
+
+function Get-SystemInfo {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [string]$ComputerName,
+        
+        [switch]$IncludeADInfo  # Requires AD module
+    )
+    
+    Write-Log "Getting system info for $ComputerName" -Level Info
+    
+    # Internal dependency (User-Modul)
+    $userInfo = Get-UserInfo -ComputerName $ComputerName
+    
+    $systemInfo = @{
+        ComputerName = $ComputerName
+        Users        = $userInfo
+    }
+    
+    # External dependency (optional)
+    if ($IncludeADInfo) {
+        if (-not (Test-WinOpsKitDependencies -RequiredModules @('ActiveDirectory'))) {
+            Write-Log "Skipping AD info: ActiveDirectory module not available" -Level Warning
+            $systemInfo['ADInfo'] = $null
+        }
+        else {
+            try {
+                $systemInfo['ADInfo'] = Get-ADComputer -Identity $ComputerName
+            }
+            catch {
+                Write-Log "Failed to get AD info: $_" -Level Error
+                $systemInfo['ADInfo'] = $null
+            }
+        }
+    }
+    
+    return $systemInfo
+}
+```
+
+**Modul-Hierarchie im Code:**
+```powershell
+# Core.psm1 – Keine Dependencies
+function Write-Log { ... }
+function Test-NotNullOrEmpty { ... }
+
+# System.psm1 – Depends on Core
+function Get-SystemInfo {
+    Write-Log "..."  # OK: Core ist verfügbar
+    Get-UserInfo     # ERROR: User-Modul wird NICHT hier aufgerufen
+}
+
+# User.psm1 – Depends on Core + System
+function Get-UserInfo {
+    Write-Log "..."           # OK
+    Get-SystemInfo            # OK: System < User in Hierarchie
+}
+
+# Maintenance.psm1 – Depends on Core + System + User
+function Invoke-SystemMaintenance {
+    Write-Log "..."           # OK
+    Get-SystemInfo            # OK
+    Get-UserInfo              # OK
+}
+```
+
+**Script-Initialization mit Dependency Check:**
+```powershell
+# Backup-Server.ps1
+
+# Import Core (immer)
+. "$PSScriptRoot/../modules/Core.psm1"
+
+# Import Optional Modules
+. "$PSScriptRoot/../modules/System.psm1"
+. "$PSScriptRoot/../modules/User.psm1"
+
+# Check External Dependencies
+if (-not (Test-WinOpsKitDependencies -RequiredModules @('ActiveDirectory'))) {
+    Write-Log "Warning: AD functions will be limited" -Level Warning
+    # Continue anyway (graceful degradation)
+}
+
+# Main
+function Backup-Server {
+    param([string]$ServerName)
+    
+    $info = Get-SystemInfo -ComputerName $ServerName
+    Write-Log "System info: $info" -Level Info
+}
+```
+
+**Testing Dependencies (ADR-003 + ADR-009):**
+```powershell
+# tests/Get-SystemInfo.Tests.ps1
+
+Describe "Get-SystemInfo with AD" {
+    BeforeEach {
+        # Mock external AD dependency
+        Mock Get-ADComputer {
+            return @{ Name = 'SRV01'; Enabled = $true }
+        }
+        
+        # Mock User-Modul dependency
+        Mock Get-UserInfo {
+            return @{ Count = 5; Users = @() }
+        }
+    }
+    
+    It "returns system info with AD data" {
+        $result = Get-SystemInfo -ComputerName 'SRV01' -IncludeADInfo
+        $result.ADInfo.Name | Should -Be 'SRV01'
+    }
+}
+```
+
+**Related ADRs:**
+- **ADR-002:** PowerShell-Version (Version Constraints)
+- **ADR-003:** Testing Framework (Test-Mocking für Dependencies)
+- **ADR-004:** Error Handling (Graceful Degradation)
+- **ADR-005:** Logging Strategy (Dependency Logging)
+- **ADR-008:** Modul-Import (Linear Hierarchy)
 ```
