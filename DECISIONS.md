@@ -90,3 +90,71 @@ Windows Server-Umgebungen haben gemischte PowerShell-Versionen:
 - Moderne Cmdlets: Bevorzuge `Get-*` Pattern über Aliase
 - 7.x-Features: Nutze innerhalb von `if ($PSVersionTable.PSVersion.Major -ge 7) { ... }`
 - Deprecated Functions dokumentieren mit `# PSv5.1: Use X instead of Y`
+
+---
+
+### ADR-006: Code Style & PSScriptAnalyzer Rules
+
+**Status:** ✅ ACCEPTED
+
+**Context:**
+Konsistente Code-Formatierung ist wichtig für Lesbarkeit und Wartbarkeit. PSScriptAnalyzer ist das Standard-Linting-Tool für PowerShell und sollte in den Build-Prozess integriert sein.
+
+**Decision:**
+- **PSScriptAnalyzer Ruleset:** Vordefiniertes Ruleset (PSGallery Standard)
+- **Linting vor Commit:** Build-Check mit PSScriptAnalyzer (muss BESTEHEN vor jedem Commit)
+- **Indentation:** 4 Spaces (nicht Tabs)
+- **Line Length:** Optimiert auf Lesbarkeit (keine strikte Limit, aber ca. 120 Zeichen anstreben)
+- **Bracing Style:** K&R Style – `{` auf gleicher Zeile (z.B. `if ($x) {`)
+- **Format-Exceptions:** Erlaubt wenn für Lesbarkeit notwendig (mit `# PSScriptAnalyzer ignore [rule]` Kommentar)
+
+**Consequences:**
+- (+) Konsistente Code-Formatierung across Team/Sessions
+- (+) Automatische Qualitäts-Checks vor Commits
+- (+) PSScriptAnalyzer findet viele Common Pitfalls
+- (-) Build-Check könnte lokal fehlschlagen (muss lokal PSScriptAnalyzer haben)
+- (-) Strikte Regeln können manchmal Lesbarkeit beeinträchtigen (daher Exceptions erlaubt)
+
+**Alternatives:**
+- Manuelle Code Reviews statt Linting (zeitaufwendig, inkonsistent)
+- Keine Formatierungs-Standards (Code-Zoo, schwer zu lesen)
+- Custom PSScriptAnalyzer Rules (zu komplex für diesen Stage)
+
+**Implementation Notes:**
+- `build.ps1` soll PSScriptAnalyzer laufen lassen: `Invoke-ScriptAnalyzer -Path ./functions, ./scripts, ./tests -IncludeRule PSGallery`
+- `.editorconfig` oder `PSScriptAnalyzerSettings.psd1` für lokale IDE-Integration
+- **K&R Bracing:**
+  ```powershell
+  # [YES]
+  if ($condition) {
+      Write-Host "Hello"
+  }
+  
+  # [NO]
+  if ($condition)
+  {
+      Write-Host "Hello"
+  }
+  ```
+- **4-Space Indentation:**
+  ```powershell
+  function Test-Something {
+      param(
+          [string]$Name
+      )
+      
+      if ($Name) {
+          Write-Host "Name: $Name"
+      }
+  }
+  ```
+- **Line Length:** Anstreben ~100-120 Zeichen, Lesbarkeit > Regel
+  ```powershell
+  # [OK - Lesbar, auch über 120 Zeichen]
+  $LongVariableName = Get-ChildItem -Path $VeryLongPath -Filter $ComplexFilter -ErrorAction Stop
+  ```
+- **Exceptions:** Nur mit Kommentar, z.B.:
+  ```powershell
+  # PSScriptAnalyzer ignore PSUseApprovedVerbs
+  function Initialize-SpecialContext { }
+  ```

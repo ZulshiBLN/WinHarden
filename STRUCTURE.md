@@ -55,7 +55,21 @@ Siehe **[ADR-002](DECISIONS.md)** für vollständigen Kontext.
 
 ---
 
-## 7. NAMING CONVENTIONS
+## 7. CODE STYLE & LINTING
+
+Siehe **[ADR-006](DECISIONS.md)** für vollständigen Kontext.
+
+- **Regel 7.1:** PSScriptAnalyzer mit PSGallery-Standard Ruleset verwenden
+- **Regel 7.2:** Linting-Check vor jedem Commit (via `build.ps1`)
+- **Regel 7.3:** 4-Space Indentation (keine Tabs)
+- **Regel 7.4:** K&R Bracing Style – `{` auf gleicher Zeile
+- **Regel 7.5:** Line Length optimiert auf Lesbarkeit (~100-120 Zeichen anstreben, aber nicht strikte Limit)
+- **Regel 7.6:** Format-Exceptions erlaubt mit `# PSScriptAnalyzer ignore [rule]` Kommentar
+- **Regel 7.7:** `.editorconfig` oder `PSScriptAnalyzerSettings.psd1` für IDE-Integration
+
+---
+
+## 8. NAMING CONVENTIONS
 
 *(Noch zu definieren – siehe [DECISIONS.md](DECISIONS.md) ADR-007)*
 
@@ -65,23 +79,13 @@ Siehe **[ADR-002](DECISIONS.md)** für vollständigen Kontext.
 
 ---
 
-## 7. ERROR HANDLING
+## 9. ERROR HANDLING
 
 *(Noch zu definieren)*
 
 - Try-Catch-Standard
 - Logging-Integration
 - Exit-Code-Konventionen
-
----
-
-## 8. CODE STYLE & LINTING
-
-*(Noch zu definieren)*
-
-- PSScriptAnalyzer-Rules
-- Indentation & Formatierung
-- Kommentar-Standard
 
 ---
 
@@ -109,10 +113,10 @@ WinOpsKit/
 Folgende Standards müssen noch in [DECISIONS.md](DECISIONS.md) als ADRs dokumentiert werden:
 
 - [✓] **ADR-002:** PowerShell-Version (5.1 vs. 7.x compatibility) – ACCEPTED
+- [✓] **ADR-006:** Code Style & PSScriptAnalyzer Rules – ACCEPTED
 - [ ] **ADR-003:** Testing Framework (Pester 5.x setup)
 - [ ] **ADR-004:** Error Handling Convention
 - [ ] **ADR-005:** Logging Strategy
-- [ ] **ADR-006:** Code Style & PSScriptAnalyzer Rules
 - [ ] **ADR-007:** Naming Conventions (Funktions-Präfixe, etc.)
 - [ ] **ADR-008:** Modul-Import-Strategie
 - [ ] **ADR-009:** Dependency Management zwischen Funktionen
