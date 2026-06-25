@@ -4,7 +4,8 @@
       "Bash(git *)",
       "Edit(*.ps1)",
       "Edit(*.json)",
-      "Edit(*.md)"
+      "Edit(*.md)",
+      "Read(//c/Users/MichelBrosche/.claude/projects/c--Repos-WinOpsKit/memory/**)"
     ]
   }
 }
