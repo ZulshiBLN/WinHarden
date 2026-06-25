@@ -11,11 +11,11 @@ PowerShell Automation & Operations Toolkit für Windows Server-Administration.
 **Ziel:** Sichere, performante, tokensparende Zusammenarbeit mit Claude
 
 **Wichtige Dokumente:**
-- 📋 **[STRUCTURE.md](STRUCTURE.md)** – Projekt-Struktur, Naming Conventions, Modul-Aufbau
-- ✅ **[DECISIONS.md](DECISIONS.md)** – Architectural Decision Records (ADRs)
+- 📋 **[STRUCTURE.md](STRUCTURE.md)** – Konkrete Implementierungs-Regeln (HOW)
+- ✅ **[DECISIONS.md](DECISIONS.md)** – Architektur-Entscheidungen & Begründungen (WHY)
 - 🔧 **[CLAUDE.md](CLAUDE.md)** (dieses Dokument) – Collaboration Rules & Best Practices
 
-➡️ **STRUCTURE.md und CLAUDE.md zusammen lesen für vollständigen Kontext!**
+➡️ **Lese-Reihenfolge:** DECISIONS.md (Kontext) → STRUCTURE.md (Regeln) → CLAUDE.md (Collaboration)**
 
 ---
 
@@ -127,38 +127,49 @@ Nach Änderungen updaten wenn:
 Immer kompakt formulieren.
 
 **Regel 5.3 - Dokumentation vor Code**
-Neue Features:
-1. Entweder `/plan` starten (größere Architektur-Änderungen)
-2. Oder direkt in CLAUDE.md updaten (kleine Additions)
+Neue Features nach Scope:
+1. **Architektur-Entscheidung** (massgebliche Änderung) → ADR in [DECISIONS.md](DECISIONS.md)
+2. **Implementierungs-Regel** (konkrete Standard) → Regel in [STRUCTURE.md](STRUCTURE.md)
+3. **Collaboration-Update** (Claude-spezifisch) → Anpassung in [CLAUDE.md](CLAUDE.md)
+4. **Große Features** → `/plan` starten vor Code
 
 ---
 
 ### Decision Making & Architecture
 
-**Regel 5.4 - Große Entscheidungen in DECISIONS.md erfassen**
-Jede Entscheidung, die das Projekt **massgeblich verändert**, muss dokumentiert werden:
+**Regel 5.4 - Architektur-Entscheidungen in DECISIONS.md (ADRs)**
+Nur Entscheidungen, die das Projekt **massgeblich ändern**, bekommen eine ADR:
 
-**Was ist "massgeblich"?**
+**Gehört in DECISIONS.md (massgebliche Entscheidung):**
 - [YES] Projekt-Struktur / Architektur (Folder-Layout, Module-Design)
-- [YES] Tech-Stack Änderungen (neue Frameworks, Libraries)
-- [YES] Prozess-Entscheidungen (Testing-Framework, Versioning, Logging)
-- [YES] Design-Patterns (Function-Conventions, Error-Handling)
-- [NO] Kleine Entscheidungen: Einzelne Function-Namen, lokale Bugfixes
+- [YES] Tech-Stack Änderungen (neue Frameworks, Libraries, PowerShell-Version)
+- [YES] Prozess-Entscheidungen (Testing-Framework, Versioning, Logging-Strategie)
+- [YES] Design-Patterns (Error-Handling Philosophie, große Conventions)
 
-**Wie dokumentieren?**
+**Gehört in STRUCTURE.md (konkrete Regel):**
+- Implementierungs-Standards (Naming, Kommentare, Code-Style)
+- Verzeichnis-Layout
+- Anforderungen pro Funktion
+
+**Gehört NICHT in ADR (lokale Entscheidungen):**
+- Einzelne Function-Namen oder lokale Bugfixes
+- Taktische Implementierungen
+
+**Wie ADR schreiben?**
 1. Neue ADR in [DECISIONS.md](DECISIONS.md) hinzufügen
 2. Status setzen: `[PENDING]`, `[ACCEPTED]`, `[REJECTED]`, `[SUPERSEDED]`
 3. Context + Decision + Consequences + Alternatives
-4. Im Code referenzieren wenn relevant: `# See ADR-002 for logging strategy`
+4. Im Code referenzieren wenn relevant: `# See ADR-002 for error handling strategy`
+5. Auf [STRUCTURE.md](STRUCTURE.md) verweisen für Implementierungs-Details
 
 **Beispiel:**
 ```markdown
-## ADR-003: Modulare Function-Design-Regeln
+## ADR-002: PowerShell-Version & Compatibility
 
-**Status:** ✅ ACCEPTED
+**Status:** [PENDING]
 
-**Context:** Functions müssen wiederverwendbar sein...
-**Decision:** Alle Parameter generisch, strukturierte Output...
+**Context:** Sollen wir 5.1 oder 7.x unterstützen?...
+**Decision:** PowerShell 5.1+ mit optional 7.x...
 **Consequences:** (Positiv/Negativ)
 ```
 
@@ -251,19 +262,32 @@ git push origin <dev/branch>
 
 ---
 
-## Architektur-Entscheidungen
+## Architektur & Implementierungs-Standards
 
-Siehe [DECISIONS.md](DECISIONS.md) für alle Architectural Decision Records (ADRs).
+**Architektur-Entscheidungen (WHY):**
+- Siehe [DECISIONS.md](DECISIONS.md) für alle ADRs (Kontext, Gründe, Alternativen)
+
+**Implementierungs-Regeln (HOW):**
+- Siehe [STRUCTURE.md](STRUCTURE.md) für alle konkreten Standards (Regeln 1.1-5.1)
+- Siehe [STRUCTURE.md Roadmap](STRUCTURE.md#roadmap-fehlende-definitionen) für geplante ADRs
 
 ---
 
 ## Next Steps für WinOpsKit-Setup
 
-- [ ] Verzeichnisstruktur erstellen (nach DECISIONS.md ADR-001)
-- [ ] Core/Logging.ps1 implementieren (ADR-002)
-- [ ] Core/Config.ps1 implementieren (ADR-004)
+**Phase 1: Infrastruktur & Standards (Planung)**
+- [✓] Verzeichnisstruktur erstellen (✓ ADR-001 ACCEPTED)
+- [ ] Fehlende ADRs schreiben (siehe Roadmap in [STRUCTURE.md](STRUCTURE.md))
+  - [ ] ADR-002: PowerShell-Version & Compatibility
+  - [ ] ADR-003: Testing Framework (Pester)
+  - [ ] ADR-004: Error Handling Convention
+  - [ ] ADR-005: Logging Strategy
+
+**Phase 2: Implementierung (Code)**
+- [ ] Core/Logging.ps1 (nach ADR-005)
+- [ ] Core/Config.ps1
+- [ ] Pester-Test-Infrastruktur
 - [ ] Erste Public Functions (System, User, Maintenance)
-- [ ] Pester-Test-Infrastruktur (ADR-005)
 - [ ] Beispiele & Dokumentation
 
 ---
