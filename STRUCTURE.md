@@ -29,9 +29,18 @@ Performance-optimiert, dokumentiert, robust:
 
 ---
 
-## 4. TESTING
+## 4. TESTING (Pester 5.x)
 
-- **Regel 4.1:** Pro Funktion muss eine Test-Funktion unter `tests/` existieren (gleiche Anforderungen wie Production-Funktionen)
+Siehe **[ADR-003](DECISIONS.md)** für vollständigen Kontext.
+
+- **Regel 4.1:** Pro Funktion muss eine Test-Datei unter `tests/` existieren: `<FunctionName>.Tests.ps1`
+- **Regel 4.2:** Pester 5.x (mindestens 5.0+)
+- **Regel 4.3:** Code Coverage Minimum: **95%** (via `Invoke-Pester -CodeCoverage`)
+- **Regel 4.4:** Nutze **Pester `Mock`** für externe Dependencies (APIs, Dateisystem, Registry)
+- **Regel 4.5:** Assertion Style: Standard Pester Assertions (`Should -Be`, `Should -Throw`, `Should -Match`, etc.)
+- **Regel 4.6:** Test-Data: Nutze **Fixtures** in `tests/fixtures/` (JSON, CSV, oder PowerShell-Objekte)
+- **Regel 4.7:** Test-Struktur: `Describe` → `Context` → `It` (aussagekräftige Namen)
+- **Regel 4.8:** Test-Runner: Lokal PowerShell via `Invoke-Pester` (in `build.ps1`)
 
 ---
 
@@ -138,10 +147,10 @@ WinOpsKit/
 Folgende Standards müssen noch in [DECISIONS.md](DECISIONS.md) als ADRs dokumentiert werden:
 
 - [✓] **ADR-002:** PowerShell-Version (5.1 vs. 7.x compatibility) – ACCEPTED
+- [✓] **ADR-003:** Testing Framework (Pester 5.x, 95% Coverage) – ACCEPTED
 - [✓] **ADR-004:** Error Handling Convention – ACCEPTED
 - [✓] **ADR-005:** Logging Strategy – ACCEPTED
 - [✓] **ADR-006:** Code Style & PSScriptAnalyzer Rules – ACCEPTED
 - [✓] **ADR-007:** Naming Conventions (Funktions-Präfixe, Parameter, Variablen) – ACCEPTED
-- [ ] **ADR-003:** Testing Framework (Pester 5.x setup)
 - [ ] **ADR-008:** Modul-Import-Strategie
 - [ ] **ADR-009:** Dependency Management zwischen Funktionen

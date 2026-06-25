@@ -566,4 +566,192 @@ Output: "Credentials: (Username=admin, Password=***)"
 
 **Related ADRs:**
 - **ADR-004:** Error Handling Convention (nutzt Write-Log)
+
+---
+
+### ADR-003: Testing Framework (Pester 5.x)
+
+**Status:** ✅ ACCEPTED
+
+**Context:**
+Automatisierte Tests sind kritisch für Qualitätsicherung und Regression-Verhinderung. Pester ist das Standard-Testing-Framework für PowerShell und sollte für alle Funktionen genutzt werden.
+
+**Decision:**
+
+**Pester-Version:**
+- **Pester 5.x** (modern, aktuell gewartet, bessere Features)
+- Mindestanforderung: Pester 5.0+
+
+**Test-Struktur:**
+- Tests in `tests/` Verzeichnis (parallel zu `functions/`)
+- Test-Datei-Name: `<FunctionName>.Tests.ps1` (z.B. `Get-SystemInfo.Tests.ps1`)
+- Jede Produktivfunktion MUSS eine entsprechende Test-Funktion haben
+- Tests in eigenen `.Tests.ps1` Dateien organisieren
+
+**Test-Mocking:**
+- Nutzen von **Pester `Mock`** für externe Dependencies (APIs, Dateisystem, Registry, etc.)
+- `InModuleScope` nur wenn nötig (private Funktionen testen)
+- Mock mit `-ParameterFilter` für präzise Kontrolle
+
+**Code Coverage:**
+- **Minimum 95%** Code Coverage für alle Funktionen
+- Coverage-Report via `Invoke-Pester -CodeCoverage`
+- Ausnahmen nur mit explizitem Kommentar (z.B. `# Code Coverage Exception: Cannot mock registry access`)
+
+**Test-Runner:**
+- **Lokal PowerShell** (via `Invoke-Pester` im `build.ps1`)
+- Keine CI/CD Pipeline zwingend (aber möglich)
+- Test-Run vor jedem Commit (über Git Hook oder manual)
+
+**Assertion Style:**
+- Nutze **Standard Pester Assertions** (am weitesten verbreitet):
+  - `Should -Be` (Gleichheit)
+  - `Should -Throw` (Exception werfen)
+  - `Should -Exist` (Datei/Verzeichnis existiert)
+  - `Should -Match` (Regex-Matching)
+  - `Should -BeTrue`, `Should -BeFalse` (Boolean)
+  - `Should -Contain` (Array-Membership)
+  - `Should -BeNullOrEmpty`, `Should -Not.BeNullOrEmpty`
+  - Custom Assertions via Assertion Scopes erlaubt
+
+**Test-Data:**
+- **Fixtures:** Externe Test-Daten-Dateien unter `tests/fixtures/`
+- Format: JSON, CSV, oder PowerShell-Objekte (je nach Usecase)
+- Beispiel: `tests/fixtures/TestServers.json` mit Mock-Server-Daten
+- Setup & Teardown via `BeforeEach` / `AfterEach` Blocks
+
+**Test-Konventionen:**
+- **Describe Block:** Funktion testen (z.B. `Describe "Get-SystemInfo"`)
+- **Context Block:** Spezifischer Use-Case (z.B. `Context "When server is online"`)
+- **It Block:** Einzelner Test (z.B. `It "returns system info"`)
+- Aussagekräftige Test-Namen (nicht nur `Test 1`, `Test 2`)
+
+**Consequences:**
+- (+) 95% Coverage findet die meisten Bugs
+- (+) Pester 5.x ist modern und aktiv gepflegt
+- (+) Mocking isoliert Tests (schnell, zuverlässig)
+- (+) Fixtures ermöglichen realistische Test-Daten
+- (-) 95% Coverage ist streng (kann zeitaufwendig sein)
+- (-) Mocking kann zu False-Positives führen (echte externe Fehler nicht fangen)
+- (-) Fixture-Management muss gepflegt werden
+
+**Alternatives:**
+- Keine Tests (unakzeptabel)
+- Integration Tests statt Unit Tests (langsam, instabil)
+- Lower Coverage 80% (zu viele Bugs durchgehen)
+- Pester 4.x (legacy, weniger Features)
+
+**Implementation Notes:**
+
+**Pester Test-Struktur:**
+```powershell
+# tests/Get-SystemInfo.Tests.ps1
+
+BeforeAll {
+    # Import function
+    . "$PSScriptRoot/../functions/System/Get-SystemInfo.ps1"
+    
+    # Load fixtures
+    $testServers = @(
+        @{ Name = 'SRV01'; Online = $true; CPU = 4 }
+        @{ Name = 'SRV02'; Online = $false; CPU = 8 }
+    )
+}
+
+Describe "Get-SystemInfo" {
+    Context "When server is online" {
+        BeforeEach {
+            Mock Get-WmiObject {
+                return @{ TotalPhysicalMemory = 16384 }
+            } -ParameterFilter { $Class -eq 'Win32_ComputerSystemProduct' }
+        }
+        
+        It "returns system information" {
+            $result = Get-SystemInfo -ComputerName 'SRV01'
+            $result | Should -Not -BeNullOrEmpty
+            $result.ComputerName | Should -Be 'SRV01'
+        }
+        
+        It "returns CPU count" {
+            $result = Get-SystemInfo -ComputerName 'SRV01'
+            $result.CPUCount | Should -BeGreaterThan 0
+        }
+    }
+    
+    Context "When server is offline" {
+        BeforeEach {
+            Mock Get-WmiObject {
+                throw "RPC server is unavailable"
+            }
+        }
+        
+        It "throws error when cannot connect" {
+            { Get-SystemInfo -ComputerName 'OFFLINE' } | Should -Throw
+        }
+    }
+    
+    Context "When parameter is invalid" {
+        It "throws for empty ComputerName" {
+            { Get-SystemInfo -ComputerName '' } | Should -Throw
+        }
+        
+        It "throws for null ComputerName" {
+            { Get-SystemInfo -ComputerName $null } | Should -Throw
+        }
+    }
+}
+```
+
+**Fixtures-Beispiel:**
+```powershell
+# tests/fixtures/TestServers.json
+[
+    {
+        "Name": "SRV01",
+        "Online": true,
+        "OS": "Windows Server 2022",
+        "CPUCount": 4,
+        "Memory": 16384
+    },
+    {
+        "Name": "SRV02",
+        "Online": false,
+        "OS": "Windows Server 2019",
+        "CPUCount": 8,
+        "Memory": 32768
+    }
+]
+
+# Im Test:
+$fixtures = Get-Content "$PSScriptRoot/fixtures/TestServers.json" | ConvertFrom-Json
+$testServers = $fixtures
+```
+
+**Code Coverage Report:**
+```powershell
+# In build.ps1
+$codeCoverage = Invoke-Pester -Path ./tests -CodeCoverage ./functions -PassThru
+$coverage = ($codeCoverage.CodeCoverage.NumberOfCommandsExecuted / $codeCoverage.CodeCoverage.NumberOfCommandsMissed) * 100
+
+if ($coverage -lt 95) {
+    throw "Code coverage is $coverage%, but 95% is required"
+}
+```
+
+**Test-Konventionen (Naming):**
+```powershell
+# [YES - Aussagekräftig]
+Describe "Get-SystemInfo"
+Context "When server is online and has valid credentials"
+It "returns complete system information including CPU and memory"
+
+# [NO - Zu generisch]
+Describe "Function"
+Context "Test 1"
+It "checks something"
+```
+
+**Related ADRs:**
+- **ADR-004:** Error Handling Convention (Tests für Exceptions)
+- **ADR-007:** Naming Conventions (Test-Naming)
 ```
