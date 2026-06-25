@@ -2,29 +2,8 @@
 
 Zentrale Dokumentation für Architektur-Entscheidungen, die das Projekt massgeblich beeinflussen.
 
----
-
-## ADR-Vorlage
-
-```markdown
-## ADR-XXX: [Kurzer Titel]
-
-**Status:** [PENDING | ACCEPTED | REJECTED | SUPERSEDED]
-
-**Context:** 
-[Beschreibung des Problems/Kontexts]
-
-**Decision:** 
-[Was wurde entschieden?]
-
-**Consequences:** 
-- [Positive Auswirkungen]
-- [Negative Auswirkungen]
-
-**Alternatives:** 
-- [Alternative 1]
-- [Alternative 2]
-```
+**Alle ADRs:** ADR-001 bis ADR-009 (✅ ACCEPTED)  
+**Konkrete Implementierungs-Regeln:** Siehe [STRUCTURE.md](STRUCTURE.md) (Regeln 1.1-12.8)
 
 ---
 
@@ -121,43 +100,9 @@ Konsistente Code-Formatierung ist wichtig für Lesbarkeit und Wartbarkeit. PSScr
 - Custom PSScriptAnalyzer Rules (zu komplex für diesen Stage)
 
 **Implementation Notes:**
-- `build.ps1` soll PSScriptAnalyzer laufen lassen: `Invoke-ScriptAnalyzer -Path ./functions, ./scripts, ./tests -IncludeRule PSGallery`
-- `.editorconfig` oder `PSScriptAnalyzerSettings.psd1` für lokale IDE-Integration
-- **K&R Bracing:**
-  ```powershell
-  # [YES]
-  if ($condition) {
-      Write-Host "Hello"
-  }
-  
-  # [NO]
-  if ($condition)
-  {
-      Write-Host "Hello"
-  }
-  ```
-- **4-Space Indentation:**
-  ```powershell
-  function Test-Something {
-      param(
-          [string]$Name
-      )
-      
-      if ($Name) {
-          Write-Host "Name: $Name"
-      }
-  }
-  ```
-- **Line Length:** Anstreben ~100-120 Zeichen, Lesbarkeit > Regel
-  ```powershell
-  # [OK - Lesbar, auch über 120 Zeichen]
-  $longVariableName = Get-ChildItem -Path $veryLongPath -Filter $complexFilter -ErrorAction Stop
-  ```
-- **Exceptions:** Nur mit Kommentar, z.B.:
-  ```powershell
-  # PSScriptAnalyzer ignore PSUseApprovedVerbs
-  function Initialize-SpecialContext { }
-  ```
+- See **[STRUCTURE.md Regel 7.1-7.7](STRUCTURE.md#7-code-style--linting)** for complete code-style rules (K&R bracing, 4-space indentation, line length, exceptions)
+- `build.ps1` runs PSScriptAnalyzer before tests
+- `.editorconfig` and `PSScriptAnalyzerSettings.psd1` provide IDE/Linting config
 
 ---
 

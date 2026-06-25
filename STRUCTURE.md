@@ -178,7 +178,7 @@ WinOpsKit/
 
 ---
 
-## Status: Infrastruktur-Phase ✅ COMPLETE
+## Status: Infrastruktur-Phase [OK] COMPLETE
 
 Alle 9 ADRs sind dokumentiert und akzeptiert:
 
