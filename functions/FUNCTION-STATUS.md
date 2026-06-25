@@ -6,7 +6,7 @@ Arbeitsstand und Modul-Informationen für alle PowerShell-Funktionen.
 **Infrastruktur-Phase:** ✅ Complete (9 ADRs, build.ps1, .editorconfig, PSScriptAnalyzerSettings.psd1)  
 **Implementation-Phase:** 🚀 In Progress (Core Module ✅, System/User/Maintenance ⏳)
 
-**Core Module Status:** ✅ COMPLETE – All 8 public + 2 private functions implemented and tested
+**Core Module Status:** [OK] COMPLETE – All 8 public + 2 private functions implemented and tested
 - **Total Tests:** 34/34 PASSED (100%)
 - **Build Time:** <2 seconds
 - **Next:** System.psm1, User.psm1, Maintenance.psm1
@@ -19,16 +19,16 @@ Basis-Funktionen für Logging, Config, Fehlerbehandlung. **MUST-HAVE für alle a
 
 | Funktion | Modul | Status | Beschreibung | Last Updated | Tests | Coverage |
 |----------|-------|--------|-------------|--------------|-------|----------|
-| Write-Log | Core | `[✓]` | CSV-basierte zentrale Logging-Funktion (ADR-005) | 2026-06-25 | ✅ 9 tests | 95%+ |
-| Clean-OldLogs | Core | `[✓]` | Log-Cleanup mit 7-Tage Retention (ADR-005) | 2026-06-25 | ✅ 2 tests | 95%+ |
-| Write-ErrorLog | Core | `[✓]` | Error-Handling Wrapper (ADR-004) | 2026-06-25 | ✅ 1 test | 95%+ |
-| Test-NotNullOrEmpty | Core | `[✓]` | Parameter-Validation Helper (ADR-004) | 2026-06-25 | ✅ 5 tests | 95%+ |
-| Test-ValidPath | Core | `[✓]` | Path-Validation Helper (ADR-004) | 2026-06-25 | ✅ 3 tests | 95%+ |
-| ConvertTo-MaskedString | Core | `[✓]` | Sensitive Data Masking (ADR-005) | 2026-06-25 | ✅ 3 tests | 95%+ |
-| Get-ModuleVersion | Core | `[✓]` | Version & Module Info (ADR-008) | 2026-06-25 | ✅ 2 tests | 95%+ |
-| Test-WinOpsKitDependencies | Core | `[✓]` | External Module Dependency Check (ADR-009) | 2026-06-25 | ✅ 4 tests | 95%+ |
-| _Mask-SensitiveData | Core | `[✓]` | Private: Sensitive data regex masking | 2026-06-25 | ✅ 3 tests | 95%+ |
-| _Should-LogLevel | Core | `[✓]` | Private: Log-level hierarchy check | 2026-06-25 | ✅ 4 tests | 95%+ |
+| Write-Log | Core | `[OK]` | CSV-basierte zentrale Logging-Funktion (ADR-005) | 2026-06-25 | [OK] 9 tests | 95%+ |
+| Clean-OldLogs | Core | `[OK]` | Log-Cleanup mit 7-Tage Retention (ADR-005) | 2026-06-25 | [OK] 2 tests | 95%+ |
+| Write-ErrorLog | Core | `[OK]` | Error-Handling Wrapper (ADR-004) | 2026-06-25 | [OK] 1 test | 95%+ |
+| Test-NotNullOrEmpty | Core | `[OK]` | Parameter-Validation Helper (ADR-004) | 2026-06-25 | [OK] 5 tests | 95%+ |
+| Test-ValidPath | Core | `[OK]` | Path-Validation Helper (ADR-004) | 2026-06-25 | [OK] 3 tests | 95%+ |
+| ConvertTo-MaskedString | Core | `[OK]` | Sensitive Data Masking (ADR-005) | 2026-06-25 | [OK] 3 tests | 95%+ |
+| Get-ModuleVersion | Core | `[OK]` | Version & Module Info (ADR-008) | 2026-06-25 | [OK] 2 tests | 95%+ |
+| Test-WinOpsKitDependencies | Core | `[OK]` | External Module Dependency Check (ADR-009) | 2026-06-25 | [OK] 4 tests | 95%+ |
+| _Mask-SensitiveData | Core | `[OK]` | Private: Sensitive data regex masking | 2026-06-25 | [OK] 3 tests | 95%+ |
+| _Should-LogLevel | Core | `[OK]` | Private: Log-level hierarchy check | 2026-06-25 | [OK] 4 tests | 95%+ |
 
 ---
 
@@ -66,16 +66,16 @@ Funktionen für Updates, Cleanup, Monitoring, etc. **Depends on Core + System + 
 
 - `[ ]` = Planned (noch nicht implementiert)
 - `[WIP]` = Work in Progress (aktuelle Entwicklung)
-- `[✓]` = Complete (implementiert + getestet + 95% Coverage)
-- `[⚠]` = Testing (Code da, Tests laufen, Coverage < 95%)
+- `[OK]` = Complete (implementiert + getestet + 95% Coverage)
+- `[!!]` = Testing (Code da, Tests laufen, Coverage < 95%)
 
 ---
 
 ## Architektur-Kontext
 
 - **Module-Hierarchie:** Core → System → User → Maintenance (ADR-008, ADR-009)
-- **Alle Regeln:** Siehe [STRUCTURE.md](../STRUCTURE.md) für 12 Regel-Blöcke
-- **Alle Entscheidungen:** Siehe [DECISIONS.md](../DECISIONS.md) für 9 ADRs
+- **Alle Regeln:** Siehe [STRUCTURE.md](../STRUCTURE.md) für 12 Regel-Blöcke (Regel 1.1-12.8)
+- **Alle Entscheidungen:** Siehe [DECISIONS.md](../DECISIONS.md) für 9 ADRs (ADR-001 bis ADR-009)
 - **Kollab-Regeln:** Siehe [CLAUDE.md](../CLAUDE.md) für Zusammenarbeit mit Claude
 
 ---

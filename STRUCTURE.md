@@ -50,8 +50,6 @@ Siehe **[ADR-003](DECISIONS.md)** für vollständigen Kontext.
 
 ---
 
----
-
 ## 6. POWERSHELL-VERSION & COMPATIBILITY
 
 Siehe **[ADR-002](DECISIONS.md)** für vollständigen Kontext.
@@ -184,14 +182,14 @@ WinOpsKit/
 
 Alle 9 ADRs sind dokumentiert und akzeptiert:
 
-- [✓] **ADR-001:** Modulare PowerShell-Architektur mit Funktionen & Scripts
-- [✓] **ADR-002:** PowerShell-Version (5.1 vs. 7.x compatibility)
-- [✓] **ADR-003:** Testing Framework (Pester 5.x, 95% Coverage)
-- [✓] **ADR-004:** Error Handling Convention
-- [✓] **ADR-005:** Logging Strategy (CSV-basiert, 7-Tage Retention)
-- [✓] **ADR-006:** Code Style & PSScriptAnalyzer Rules (K&R, 4-Space)
-- [✓] **ADR-007:** Naming Conventions (Approved Verbs, camelCase)
-- [✓] **ADR-008:** Modul-Import-Strategie (Core-Modul + Optional)
-- [✓] **ADR-009:** Dependency Management (Linear Hierarchy, Graceful Degradation)
+- [OK] **ADR-001:** Modulare PowerShell-Architektur mit Funktionen & Scripts
+- [OK] **ADR-002:** PowerShell-Version (5.1 vs. 7.x compatibility)
+- [OK] **ADR-003:** Testing Framework (Pester 5.x, 95% Coverage)
+- [OK] **ADR-004:** Error Handling Convention
+- [OK] **ADR-005:** Logging Strategy (CSV-basiert, 7-Tage Retention)
+- [OK] **ADR-006:** Code Style & PSScriptAnalyzer Rules (K&R, 4-Space)
+- [OK] **ADR-007:** Naming Conventions (Approved Verbs, camelCase)
+- [OK] **ADR-008:** Modul-Import-Strategie (Core-Modul + Optional)
+- [OK] **ADR-009:** Dependency Management (Linear Hierarchy, Graceful Degradation)
 
 **Nächste Phase:** Implementation (Code schreiben)
