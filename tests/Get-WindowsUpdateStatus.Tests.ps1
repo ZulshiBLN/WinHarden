@@ -8,141 +8,357 @@ AfterAll {
 }
 
 Describe "Get-WindowsUpdateStatus" {
-    Context "Parameter Validation" {
-        It "accepts ComputerName parameter" {
-            { Get-WindowsUpdateStatus -ComputerName 'localhost' -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
+    Context "Successful Update Search" {
+        It "returns PSCustomObject with update counts when updates available" {
+            InModuleScope System {
+                $mockUpdate1 = New-Object PSObject -Property @{
+                    Categories = New-Object PSObject -Property @{
+                        Name = @('Security Updates')
+                    }
+                }
 
-        It "accepts multiple computer names" {
-            { Get-WindowsUpdateStatus -ComputerName @('localhost', '127.0.0.1') -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
+                $mockUpdate2 = New-Object PSObject -Property @{
+                    Categories = New-Object PSObject -Property @{
+                        Name = @('Critical Updates')
+                    }
+                }
 
-        It "accepts Detailed switch" {
-            { Get-WindowsUpdateStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
+                $mockUpdate3 = New-Object PSObject -Property @{
+                    Categories = New-Object PSObject -Property @{
+                        Name = @('Updates')
+                    }
+                }
 
-        It "accepts IncludePendingUpdates switch" {
-            { Get-WindowsUpdateStatus -IncludePendingUpdates -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
+                $mockSearchResult = New-Object PSObject -Property @{
+                    Updates = @($mockUpdate1, $mockUpdate2, $mockUpdate3)
+                }
 
-        It "works without parameters for local computer" {
-            { Get-WindowsUpdateStatus -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-    }
+                $mockUpdateSearcher = New-Object PSObject
+                $mockUpdateSearcher | Add-Member -MemberType ScriptMethod -Name "Search" -Value {
+                    param($query)
+                    return $mockSearchResult
+                }
 
-    Context "Update Status Information" {
-        It "returns update status object" {
-            $status = Get-WindowsUpdateStatus -ErrorAction SilentlyContinue
-            if ($status) {
-                $status | Should -Not -BeNullOrEmpty
+                $mockUpdateSession = New-Object PSObject
+                $mockUpdateSession | Add-Member -MemberType ScriptMethod -Name "CreateUpdateSearcher" -Value {
+                    return $mockUpdateSearcher
+                }
+
+                Mock -CommandName New-Object -MockWith {
+                    param($ComObject)
+                    if ($ComObject -eq 'Microsoft.Update.Session') {
+                        return $mockUpdateSession
+                    }
+                    return & $true @args
+                } -ParameterFilter { $ComObject -eq 'Microsoft.Update.Session' }
+
+                Mock -CommandName Write-Log
+
+                $result = Get-WindowsUpdateStatus
+
+                $result | Should -Not -BeNullOrEmpty
+                $result.AvailableUpdates | Should -Be 3
+                $result.SecurityUpdates | Should -Be 1
+                $result.CriticalUpdates | Should -Be 1
+                $result.OtherUpdates | Should -Be 1
             }
         }
 
-        It "includes total updates count" {
-            { Get-WindowsUpdateStatus -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "returns zero counts when no updates available" {
+            InModuleScope System {
+                $mockSearchResult = New-Object PSObject -Property @{
+                    Updates = @()
+                }
+
+                $mockUpdateSearcher = New-Object PSObject
+                $mockUpdateSearcher | Add-Member -MemberType ScriptMethod -Name "Search" -Value {
+                    param($query)
+                    return $mockSearchResult
+                }
+
+                $mockUpdateSession = New-Object PSObject
+                $mockUpdateSession | Add-Member -MemberType ScriptMethod -Name "CreateUpdateSearcher" -Value {
+                    return $mockUpdateSearcher
+                }
+
+                Mock -CommandName New-Object -MockWith {
+                    param($ComObject)
+                    if ($ComObject -eq 'Microsoft.Update.Session') {
+                        return $mockUpdateSession
+                    }
+                    return & $true @args
+                } -ParameterFilter { $ComObject -eq 'Microsoft.Update.Session' }
+
+                Mock -CommandName Write-Log
+
+                $result = Get-WindowsUpdateStatus
+
+                $result.AvailableUpdates | Should -Be 0
+                $result.SecurityUpdates | Should -Be 0
+                $result.CriticalUpdates | Should -Be 0
+            }
         }
 
-        It "includes installed updates count" {
-            { Get-WindowsUpdateStatus -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
+        It "logs search completion message" {
+            InModuleScope System {
+                $mockSearchResult = New-Object PSObject -Property @{
+                    Updates = @()
+                }
 
-        It "includes pending updates count" {
-            { Get-WindowsUpdateStatus -IncludePendingUpdates -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
+                $mockUpdateSearcher = New-Object PSObject
+                $mockUpdateSearcher | Add-Member -MemberType ScriptMethod -Name "Search" -Value {
+                    param($query)
+                    return $mockSearchResult
+                }
 
-        It "includes failed updates count" {
-            { Get-WindowsUpdateStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
+                $mockUpdateSession = New-Object PSObject
+                $mockUpdateSession | Add-Member -MemberType ScriptMethod -Name "CreateUpdateSearcher" -Value {
+                    return $mockUpdateSearcher
+                }
+
+                Mock -CommandName New-Object -MockWith {
+                    param($ComObject)
+                    if ($ComObject -eq 'Microsoft.Update.Session') {
+                        return $mockUpdateSession
+                    }
+                    return & $true @args
+                } -ParameterFilter { $ComObject -eq 'Microsoft.Update.Session' }
+
+                Mock -CommandName Write-Log
+
+                Get-WindowsUpdateStatus
+
+                Assert-MockCalled -CommandName Write-Log -Times 2
+            }
         }
     }
 
-    Context "Security Update Tracking" {
-        It "identifies security updates separately" {
-            { Get-WindowsUpdateStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
+    Context "Error Handling" {
+        It "logs and throws error when COM object creation fails" {
+            InModuleScope System {
+                Mock -CommandName New-Object -MockWith {
+                    throw [System.Exception]::new("COM object not available")
+                } -ParameterFilter { $ComObject -eq 'Microsoft.Update.Session' }
+
+                Mock -CommandName Write-Log
+
+                { Get-WindowsUpdateStatus } | Should -Throw "COM object not available"
+            }
         }
 
-        It "counts critical updates" {
-            { Get-WindowsUpdateStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
+        It "throws terminating error on exception" {
+            InModuleScope System {
+                Mock -CommandName New-Object -MockWith {
+                    throw [System.Exception]::new("Test error")
+                } -ParameterFilter { $ComObject -eq 'Microsoft.Update.Session' }
 
-        It "counts important updates" {
-            { Get-WindowsUpdateStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
+                Mock -CommandName Write-Log
 
-        It "identifies definition updates" {
-            { Get-WindowsUpdateStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-    }
-
-    Context "Update Status Categories" {
-        It "identifies available updates" {
-            { Get-WindowsUpdateStatus -IncludePendingUpdates -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "identifies in-progress updates" {
-            { Get-WindowsUpdateStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "identifies installed updates" {
-            { Get-WindowsUpdateStatus -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "identifies failed updates" {
-            { Get-WindowsUpdateStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
+                { Get-WindowsUpdateStatus } | Should -Throw "Test error"
+            }
         }
     }
 
-    Context "Update Dates and Times" {
-        It "includes last update check time" {
-            { Get-WindowsUpdateStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
+    Context "Update Categorization" {
+        It "correctly identifies security updates" {
+            InModuleScope System {
+                $mockSecurityUpdate = New-Object PSObject -Property @{
+                    Categories = New-Object PSObject -Property @{
+                        Name = @('Security Updates')
+                    }
+                }
+
+                $mockSearchResult = New-Object PSObject -Property @{
+                    Updates = @($mockSecurityUpdate)
+                }
+
+                $mockUpdateSearcher = New-Object PSObject
+                $mockUpdateSearcher | Add-Member -MemberType ScriptMethod -Name "Search" -Value {
+                    param($query)
+                    return $mockSearchResult
+                }
+
+                $mockUpdateSession = New-Object PSObject
+                $mockUpdateSession | Add-Member -MemberType ScriptMethod -Name "CreateUpdateSearcher" -Value {
+                    return $mockUpdateSearcher
+                }
+
+                Mock -CommandName New-Object -MockWith {
+                    param($ComObject)
+                    if ($ComObject -eq 'Microsoft.Update.Session') {
+                        return $mockUpdateSession
+                    }
+                    return & $true @args
+                } -ParameterFilter { $ComObject -eq 'Microsoft.Update.Session' }
+
+                Mock -CommandName Write-Log
+
+                $result = Get-WindowsUpdateStatus
+
+                $result.SecurityUpdates | Should -Be 1
+                $result.CriticalUpdates | Should -Be 0
+                $result.SecurityUpdatesList | Should -Not -BeNullOrEmpty
+                @($result.SecurityUpdatesList).Count | Should -Be 1
+            }
         }
 
-        It "includes last successful update time" {
-            { Get-WindowsUpdateStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "correctly identifies critical updates" {
+            InModuleScope System {
+                $mockCriticalUpdate = New-Object PSObject -Property @{
+                    Categories = New-Object PSObject -Property @{
+                        Name = @('Critical Updates')
+                    }
+                }
+
+                $mockSearchResult = New-Object PSObject -Property @{
+                    Updates = @($mockCriticalUpdate)
+                }
+
+                $mockUpdateSearcher = New-Object PSObject
+                $mockUpdateSearcher | Add-Member -MemberType ScriptMethod -Name "Search" -Value {
+                    param($query)
+                    return $mockSearchResult
+                }
+
+                $mockUpdateSession = New-Object PSObject
+                $mockUpdateSession | Add-Member -MemberType ScriptMethod -Name "CreateUpdateSearcher" -Value {
+                    return $mockUpdateSearcher
+                }
+
+                Mock -CommandName New-Object -MockWith {
+                    param($ComObject)
+                    if ($ComObject -eq 'Microsoft.Update.Session') {
+                        return $mockUpdateSession
+                    }
+                    return & $true @args
+                } -ParameterFilter { $ComObject -eq 'Microsoft.Update.Session' }
+
+                Mock -CommandName Write-Log
+
+                $result = Get-WindowsUpdateStatus
+
+                $result.CriticalUpdates | Should -Be 1
+                $result.SecurityUpdates | Should -Be 0
+                $result.CriticalUpdatesList | Should -Not -BeNullOrEmpty
+                @($result.CriticalUpdatesList).Count | Should -Be 1
+            }
         }
 
-        It "includes next scheduled update check" {
-            { Get-WindowsUpdateStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "separates other updates from security and critical" {
+            InModuleScope System {
+                $mockOtherUpdate = New-Object PSObject -Property @{
+                    Categories = New-Object PSObject -Property @{
+                        Name = @('Updates')
+                    }
+                }
+
+                $mockSearchResult = New-Object PSObject -Property @{
+                    Updates = @($mockOtherUpdate)
+                }
+
+                $mockUpdateSearcher = New-Object PSObject
+                $mockUpdateSearcher | Add-Member -MemberType ScriptMethod -Name "Search" -Value {
+                    param($query)
+                    return $mockSearchResult
+                }
+
+                $mockUpdateSession = New-Object PSObject
+                $mockUpdateSession | Add-Member -MemberType ScriptMethod -Name "CreateUpdateSearcher" -Value {
+                    return $mockUpdateSearcher
+                }
+
+                Mock -CommandName New-Object -MockWith {
+                    param($ComObject)
+                    if ($ComObject -eq 'Microsoft.Update.Session') {
+                        return $mockUpdateSession
+                    }
+                    return & $true @args
+                } -ParameterFilter { $ComObject -eq 'Microsoft.Update.Session' }
+
+                Mock -CommandName Write-Log
+
+                $result = Get-WindowsUpdateStatus
+
+                $result.OtherUpdates | Should -Be 1
+                $result.SecurityUpdates | Should -Be 0
+                $result.CriticalUpdates | Should -Be 0
+            }
         }
     }
 
-    Context "Remote Computer Support" {
-        It "retrieves status for remote computer" {
-            { Get-WindowsUpdateStatus -ComputerName 'localhost' -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
+    Context "WhatIf Support" {
+        It "supports -WhatIf parameter" {
+            InModuleScope System {
+                $mockSearchResult = New-Object PSObject -Property @{
+                    Updates = @()
+                }
 
-        It "handles unreachable remote computer" {
-            { Get-WindowsUpdateStatus -ComputerName 'nonexistent.invalid' -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
+                $mockUpdateSearcher = New-Object PSObject
+                $mockUpdateSearcher | Add-Member -MemberType ScriptMethod -Name "Search" -Value {
+                    param($query)
+                    return $mockSearchResult
+                }
 
-        It "accepts credential for remote connection" {
-            $credential = New-Object System.Management.Automation.PSCredential('user', (ConvertTo-SecureString 'pass' -AsPlainText -Force))
-            { Get-WindowsUpdateStatus -ComputerName 'localhost' -Credential $credential -ErrorAction SilentlyContinue } | Should -Not -Throw
+                $mockUpdateSession = New-Object PSObject
+                $mockUpdateSession | Add-Member -MemberType ScriptMethod -Name "CreateUpdateSearcher" -Value {
+                    return $mockUpdateSearcher
+                }
+
+                Mock -CommandName New-Object -MockWith {
+                    param($ComObject)
+                    if ($ComObject -eq 'Microsoft.Update.Session') {
+                        return $mockUpdateSession
+                    }
+                    return & $true @args
+                } -ParameterFilter { $ComObject -eq 'Microsoft.Update.Session' }
+
+                Mock -CommandName Write-Log
+
+                $result = Get-WindowsUpdateStatus -WhatIf
+
+                $result | Should -Not -BeNullOrEmpty
+            }
         }
     }
 
     Context "Output Format" {
-        It "returns PSCustomObject by default" {
-            { Get-WindowsUpdateStatus -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
+        It "returns object with required properties" {
+            InModuleScope System {
+                $mockSearchResult = New-Object PSObject -Property @{
+                    Updates = @()
+                }
 
-        It "supports Format parameter for CSV" {
-            { Get-WindowsUpdateStatus -Format CSV -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
+                $mockUpdateSearcher = New-Object PSObject
+                $mockUpdateSearcher | Add-Member -MemberType ScriptMethod -Name "Search" -Value {
+                    param($query)
+                    return $mockSearchResult
+                }
 
-        It "supports Format parameter for JSON" {
-            { Get-WindowsUpdateStatus -Format JSON -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-    }
+                $mockUpdateSession = New-Object PSObject
+                $mockUpdateSession | Add-Member -MemberType ScriptMethod -Name "CreateUpdateSearcher" -Value {
+                    return $mockUpdateSearcher
+                }
 
-    Context "Documentation" {
-        It "has complete help documentation" {
-            $help = Get-Help Get-WindowsUpdateStatus
-            $help.Synopsis | Should -Not -BeNullOrEmpty
-        }
+                Mock -CommandName New-Object -MockWith {
+                    param($ComObject)
+                    if ($ComObject -eq 'Microsoft.Update.Session') {
+                        return $mockUpdateSession
+                    }
+                    return & $true @args
+                } -ParameterFilter { $ComObject -eq 'Microsoft.Update.Session' }
 
-        It "includes parameter descriptions" {
-            $help = Get-Help Get-WindowsUpdateStatus
-            $help.Parameters.Parameter.Name | Should -Contain 'ComputerName'
+                Mock -CommandName Write-Log
+
+                $result = Get-WindowsUpdateStatus
+
+                $result.PSObject.Properties.Name | Should -Contain 'AvailableUpdates'
+                $result.PSObject.Properties.Name | Should -Contain 'SecurityUpdates'
+                $result.PSObject.Properties.Name | Should -Contain 'CriticalUpdates'
+                $result.PSObject.Properties.Name | Should -Contain 'OtherUpdates'
+                $result.PSObject.Properties.Name | Should -Contain 'AllUpdates'
+                $result.PSObject.Properties.Name | Should -Contain 'SecurityUpdatesList'
+                $result.PSObject.Properties.Name | Should -Contain 'CriticalUpdatesList'
+            }
         }
     }
 }

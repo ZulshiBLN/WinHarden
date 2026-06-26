@@ -59,7 +59,8 @@ $driftFunctions = @(
 
 # Public functions to load (System Status)
 $systemStatusFunctions = @(
-    'Get-PendingRebootStatus'
+    'Get-PendingRebootStatus',
+    'Get-WindowsUpdateStatus'
 )
 
 $publicFunctions = $hardeningFunctions + $driftFunctions + $systemStatusFunctions
