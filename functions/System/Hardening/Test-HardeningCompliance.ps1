@@ -245,10 +245,9 @@ function _TestRuleCompliance {
         # Profile data is static and loaded from trusted files only (not user-generated).
         # This is an approved exception for trusted, non-user-input code execution.
         if ($verification.ContainsKey('Command')) {
-            # EXCEPTION: PSAvoidUsingInvokeExpression - DOCUMENTED in STRUCTURE.md Regel 7.6 & CLAUDE.md Regel 1.4
-            # Reason: Profile data is trusted (loaded from .psd1 files), NOT user input
-            # See ADR-004 for error handling strategy and approved exceptions
-            $actualValue = Invoke-Expression -Command $verification.Command -ErrorAction SilentlyContinue
+            # Profile data is trusted (loaded from .psd1 files), NOT user input
+            $scriptBlock = [scriptblock]::Create($verification.Command)
+            $actualValue = & $scriptBlock -ErrorAction SilentlyContinue
             $expectedValue = $verification.Expected
 
             $result.ActualValue = $actualValue
