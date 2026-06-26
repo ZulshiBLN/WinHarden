@@ -79,7 +79,7 @@ function New-HardeningSchedule {
     REPORTS: Generated in C:\ProgramData\WinOpsKit\Reports by default
     #>
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'High')]
     param(
         [Parameter(Mandatory = $false)]
         [string]
@@ -204,12 +204,18 @@ Export-HardeningReport -ComplianceReport `$compliance -Format '$ReportFormat' -O
         $taskSettings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable
 
         # Register task
-        Register-ScheduledTask -TaskName $TaskName `
-            -Action $taskAction `
-            -Trigger $taskTrigger `
-            -Principal $taskPrincipal `
-            -Settings $taskSettings `
-            -Force | Out-Null
+        if ($PSCmdlet.ShouldProcess($TaskName, "Create scheduled hardening task")) {
+            Register-ScheduledTask -TaskName $TaskName `
+                -Action $taskAction `
+                -Trigger $taskTrigger `
+                -Principal $taskPrincipal `
+                -Settings $taskSettings `
+                -Force | Out-Null
+        }
+        else {
+            Write-Log -Message "Scheduled task creation cancelled by user" -Level Info
+            return
+        }
 
         Write-Log -Message "Hardening schedule created: $TaskName" -Level Info
 

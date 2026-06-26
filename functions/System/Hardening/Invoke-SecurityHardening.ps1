@@ -432,7 +432,7 @@ function _ApplyAuditRule {
             'No Auditing'
         }
 
-        $output = auditpol /set /category:$category //$auditSetting 2>&1
+        auditpol /set /category:$category //$auditSetting 2>&1 | Out-Null
         Write-Log -Message "Audit policy set: $category = $auditSetting" -Level Info
     }
 }

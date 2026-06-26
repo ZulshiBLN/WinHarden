@@ -92,13 +92,16 @@ function Export-HardeningReport {
         $HistoricalReports
     )
 
-    $ErrorActionPreference = 'Stop'
+    begin {
+        $ErrorActionPreference = 'Stop'
+    }
 
-    try {
-        Write-Log -Message "Generating $Format hardening report" -Level Info
+    process {
+        try {
+            Write-Log -Message "Generating $Format hardening report" -Level Info
 
-        # Generate report content based on format
-        $reportContent = switch ($Format) {
+            # Generate report content based on format
+            $reportContent = switch ($Format) {
             'JSON' {
                 _GenerateJsonReport -Report $ComplianceReport -IncludeRuleDetails:$IncludeRuleDetails
             }
