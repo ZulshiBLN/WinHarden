@@ -80,15 +80,18 @@ Security profiles for different deployment scenarios. Each profile builds on pre
 |---------|-------|------------|--------------|-----------------|--------|
 | **Basis** | 12 | 7 | 2x Critical, 9x High, 1x Low | Minimum hardening for all systems | `[OK]` |
 | **Recommended** | 21 | 10 | 3x Critical, 15x High, 3x Medium, 1x Low | Standard enterprise deployments (default) | `[OK]` |
-| **Strict** | 28+ | 11+ | Higher concentration of Critical/High | High-security environments (gov, finance) | `[OK]` |
+| **Strict** | 36 | 11+ | 6x Critical, 25x High, 4x Medium, 1x Low | High-security environments (gov, finance) | `[OK]` |
 
 **Profile Inheritance:** Strict ⊃ Recommended ⊃ Basis
 
 **Testing:**
-- ✅ 28 unit tests for Get-HardeningProfile (all profiles load correctly)
+- ✅ 36 unit tests for Get-HardeningProfile (all profiles load correctly)
+- ✅ Profile completeness validation: Strict contains all Recommended rules + 15 Strict-specific
 - ✅ Profile filtering by OS type (Client vs. Server) and version
 - ✅ OS support validation (Windows 11 Client, Server 2019/2022/2025)
 - ✅ Rule structure and property validation
+- ✅ Inheritance validation: Strict properly extends Recommended
+- ✅ No duplicate rules across profiles
 
 **Note:** Profiles use safe, structured Verification format (no string-based code evaluation) — see ADR-004 for security details.
 

@@ -214,4 +214,60 @@ Describe "Get-HardeningProfile" {
             $severities.Count | Should -BeGreaterThan 1
         }
     }
+
+    Context "Profile Inheritance and Completeness" {
+        It "Strict profile has expected rule count for Client (35 = 36 total - 1 Server-only rule)" {
+            $profile = Get-HardeningProfile -ProfileName Strict -TargetSystem Client
+            $profile.RuleCount | Should -Be 35
+        }
+
+        It "Strict profile has expected rule count for Server (36 = 21 Recommended + 15 Strict-specific)" {
+            $profile = Get-HardeningProfile -ProfileName Strict -TargetSystem Server
+            $profile.RuleCount | Should -Be 36
+        }
+
+        It "Recommended profile has expected rule count (21)" {
+            $profile = Get-HardeningProfile -ProfileName Recommended -TargetSystem Client
+            $profile.RuleCount | Should -Be 21
+        }
+
+        It "Strict profile contains all Recommended base rules" {
+            $recommendedProfile = Get-HardeningProfile -ProfileName Recommended -TargetSystem Client
+            $strictProfile = Get-HardeningProfile -ProfileName Strict -TargetSystem Client
+
+            foreach ($rule in $recommendedProfile.Rules) {
+                $strictProfile.Rules.Name -contains $rule.Name | Should -Be $true
+            }
+        }
+
+        It "Strict profile has no duplicate rule names" {
+            $profile = Get-HardeningProfile -ProfileName Strict -TargetSystem Client
+            $ruleNames = @($profile.Rules | ForEach-Object { $_.Name })
+            $uniqueNames = @($ruleNames | Select-Object -Unique)
+            $ruleNames.Count | Should -Be $uniqueNames.Count
+        }
+
+        It "Strict profile contains strict-specific rules" {
+            $profile = Get-HardeningProfile -ProfileName Strict -TargetSystem Client
+            $strictSpecificRules = @($profile.Rules | Where-Object { $_.Name -match '-Strict$' })
+            $strictSpecificRules.Count | Should -BeGreaterThan 0
+        }
+
+        It "Strict password length rule is stricter than Recommended" {
+            $recommendedProfile = Get-HardeningProfile -ProfileName Recommended -TargetSystem Client
+            $strictProfile = Get-HardeningProfile -ProfileName Strict -TargetSystem Client
+
+            $recRule = $recommendedProfile.Rules | Where-Object { $_.Name -eq 'Account-MinimumPasswordLength' }
+            $strictRule = $strictProfile.Rules | Where-Object { $_.Name -eq 'Account-MinimumPasswordLength-Strict' }
+
+            $recRule.RuleDefinition.Value | Should -Be 12
+            $strictRule.RuleDefinition.Value | Should -Be 14
+        }
+
+        It "Strict profile metadata declares InheritsFrom" {
+            $profile = Get-HardeningProfile -ProfileName Strict -TargetSystem Client
+            $profile.ProfileMetadata.Keys -contains 'InheritsFrom' | Should -Be $true
+            $profile.ProfileMetadata.InheritsFrom | Should -Be 'Recommended'
+        }
+    }
 }
