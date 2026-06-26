@@ -30,7 +30,8 @@ $publicFunctions = @(
     'New-ExchangeOnlineConnection',
     'New-HardeningSession',
     'Get-HardeningProfile',
-    'Invoke-SecurityHardening'
+    'Invoke-SecurityHardening',
+    'Test-HardeningCompliance'
 )
 
 # Private helper functions to load

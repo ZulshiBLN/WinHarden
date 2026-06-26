@@ -297,3 +297,978 @@
 2026-06-26 10:33:55.731,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
 2026-06-26 10:33:55.760,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Server, OSVersion=2022"
 2026-06-26 10:33:55.765,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:38:17.948,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:38:17.973,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:18.001,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:18.009,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=00ae5b16-6e0d-47b9-ba45-4727e6992f5b, Rules=12"
+2026-06-26 10:38:18.054,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-26 10:38:18.060,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:18.072,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:18.094,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:18.114,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:18.702,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:18.718,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:18.732,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:18.783,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:18.797,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:18.810,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:18.833,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:18.846,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:18.869,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:18.899,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 8.33% compliant (1/12 rules)
+2026-06-26 10:38:18.976,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:38:18.984,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:18.993,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:19.002,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=7707e7b6-6b2e-4927-98b3-55206a6957d9, Rules=12"
+2026-06-26 10:38:19.013,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-26 10:38:19.019,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:19.031,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:19.045,Info,Test-HardeningCompliance,Test-HardeningCompliance,101,Testing 1 filtered rules
+2026-06-26 10:38:19.051,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:19.062,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 0% compliant (0/1 rules)
+2026-06-26 10:38:19.078,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:38:19.084,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:19.094,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:19.102,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=52da5539-8ef4-4fcb-83fa-de7ec913d808, Rules=12"
+2026-06-26 10:38:19.120,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-26 10:38:19.126,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:19.137,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:19.147,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:19.215,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:19.234,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:19.240,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:19.251,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:19.298,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:19.303,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:19.314,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:19.332,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:19.339,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:19.347,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:19.357,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 8.33% compliant (1/12 rules)
+2026-06-26 10:38:19.377,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:38:19.382,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:19.393,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:19.400,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=c9e82b36-d47c-4502-af7c-a29a57eb5ed1, Rules=12"
+2026-06-26 10:38:19.417,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Remediate"
+2026-06-26 10:38:19.423,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:19.433,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:19.443,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:19.451,Warning,Test-HardeningCompliance,Test-HardeningCompliance,121,Attempting to remediate rule: Account-MinimumPasswordLength
+2026-06-26 10:38:19.472,Warning,_RemediateRule,_RemediateRule,320,Remediation failed for rule Account-MinimumPasswordLength: Requested registry access is not allowed.
+2026-06-26 10:38:19.478,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:19.486,Warning,Test-HardeningCompliance,Test-HardeningCompliance,121,Attempting to remediate rule: Account-PasswordComplexity
+2026-06-26 10:38:19.498,Warning,_RemediateRule,_RemediateRule,320,Remediation failed for rule Account-PasswordComplexity: Requested registry access is not allowed.
+2026-06-26 10:38:19.516,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:19.520,Warning,Test-HardeningCompliance,Test-HardeningCompliance,121,Attempting to remediate rule: Service-DisableSMB1
+2026-06-26 10:38:19.541,Warning,_RemediateRule,_RemediateRule,320,"Remediation failed for rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:19.548,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:19.556,Warning,Test-HardeningCompliance,Test-HardeningCompliance,121,Attempting to remediate rule: UAC-ElevationPrompt
+2026-06-26 10:38:19.567,Warning,_RemediateRule,_RemediateRule,320,Remediation failed for rule UAC-ElevationPrompt: Requested registry access is not allowed.
+2026-06-26 10:38:19.576,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:19.584,Warning,Test-HardeningCompliance,Test-HardeningCompliance,121,Attempting to remediate rule: RDP-EnableNetworkLevelAuthentication
+2026-06-26 10:38:19.596,Warning,_RemediateRule,_RemediateRule,320,Remediation failed for rule RDP-EnableNetworkLevelAuthentication: Requested registry access is not allowed.
+2026-06-26 10:38:19.642,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:19.647,Warning,Test-HardeningCompliance,Test-HardeningCompliance,121,Attempting to remediate rule: Encryption-DisableObsoleteCiphers
+2026-06-26 10:38:19.679,Warning,_RemediateRule,_RemediateRule,320,Remediation failed for rule Encryption-DisableObsoleteCiphers: Access to the registry key 'HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Client' is denied.
+2026-06-26 10:38:19.687,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:19.694,Warning,Test-HardeningCompliance,Test-HardeningCompliance,121,Attempting to remediate rule: Network-DisableIPv6
+2026-06-26 10:38:19.706,Warning,_RemediateRule,_RemediateRule,320,Remediation failed for rule Network-DisableIPv6: Requested registry access is not allowed.
+2026-06-26 10:38:19.715,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:19.723,Warning,Test-HardeningCompliance,Test-HardeningCompliance,121,Attempting to remediate rule: Updates-EnableAutoSecurityUpdates
+2026-06-26 10:38:19.734,Warning,_RemediateRule,_RemediateRule,320,Remediation failed for rule Updates-EnableAutoSecurityUpdates: Requested registry access is not allowed.
+2026-06-26 10:38:19.752,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:19.756,Warning,Test-HardeningCompliance,Test-HardeningCompliance,121,Attempting to remediate rule: Audit-EnableLogonAuditing
+2026-06-26 10:38:19.778,Warning,_RemediateRule,_RemediateRule,320,Remediation failed for rule Audit-EnableLogonAuditing: Error 0x00000057 occurred:
+2026-06-26 10:38:19.785,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:19.794,Warning,Test-HardeningCompliance,Test-HardeningCompliance,121,Attempting to remediate rule: Registry-DisableLLMNR
+2026-06-26 10:38:19.806,Warning,_RemediateRule,_RemediateRule,320,Remediation failed for rule Registry-DisableLLMNR: Requested registry access is not allowed.
+2026-06-26 10:38:19.813,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:19.822,Warning,Test-HardeningCompliance,Test-HardeningCompliance,121,Attempting to remediate rule: Service-DisablePrintSpooler
+2026-06-26 10:38:19.835,Warning,_RemediateRule,_RemediateRule,320,Remediation failed for rule Service-DisablePrintSpooler: Service 'Print Spooler (spooler)' cannot be configured due to the following error: Access is denied
+2026-06-26 10:38:19.840,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 8.33% compliant (1/12 rules)
+2026-06-26 10:38:19.889,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:38:19.894,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:19.907,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:19.913,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=4848ac75-890a-4919-b215-a10541313211, Rules=12"
+2026-06-26 10:38:19.923,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-26 10:38:19.931,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:19.943,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:19.952,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:19.961,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:19.980,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:19.988,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:19.997,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:20.069,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:20.075,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:20.086,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:20.104,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:20.110,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:20.119,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:20.128,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 8.33% compliant (1/12 rules)
+2026-06-26 10:38:20.158,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:38:20.162,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:20.173,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:20.182,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=a616e4e0-77e3-426f-932d-c2e4b46ff4e7, Rules=12"
+2026-06-26 10:38:20.191,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-26 10:38:20.200,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:20.213,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:20.223,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:20.233,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:20.254,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:20.260,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:20.270,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:20.318,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:20.324,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:20.334,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:20.354,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:20.360,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:20.369,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:20.378,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 8.33% compliant (1/12 rules)
+2026-06-26 10:38:20.443,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Server, OSVersion=2022"
+2026-06-26 10:38:20.449,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Server
+2026-06-26 10:38:20.460,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Server
+2026-06-26 10:38:20.468,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=3312b421-9f84-4077-86c7-066ef8bd0117, Rules=21"
+2026-06-26 10:38:20.477,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Recommended, Mode=Verify"
+2026-06-26 10:38:20.488,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Server
+2026-06-26 10:38:20.498,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Server
+2026-06-26 10:38:20.508,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:20.519,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:20.535,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-AccountLockoutDuration - No value found
+2026-06-26 10:38:21.045,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Firewall-DisableICMPEcho - No value found
+2026-06-26 10:38:21.053,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:21.072,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisableUnnecessaryServices - Expected: Disabled Disabled Disabled, Got: Manual"
+2026-06-26 10:38:21.078,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:21.094,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Registry-EnableDEP - No value found
+2026-06-26 10:38:21.107,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Registry-EnforceSMBSigning - No value found
+2026-06-26 10:38:21.113,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:21.130,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-SetEncryptionLevel - Expected: 3, Got: @{MinEncryptionLevel=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:21.174,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:21.179,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:21.196,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPSourceRouting - No value found
+2026-06-26 10:38:21.203,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:21.221,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:21.241,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnablePrivilegeUseAuditing - No value found
+2026-06-26 10:38:21.249,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:21.259,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:21.279,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Registry-EnforceNTLMv2 - No value found
+2026-06-26 10:38:21.284,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 4.76% compliant (1/21 rules)
+2026-06-26 10:38:21.320,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2025"
+2026-06-26 10:38:21.326,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Server
+2026-06-26 10:38:21.338,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Server
+2026-06-26 10:38:21.345,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=59a5bc75-f7d1-4568-bf38-a96bbf3ba313, Rules=12"
+2026-06-26 10:38:21.355,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-26 10:38:21.365,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Server
+2026-06-26 10:38:21.377,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Server
+2026-06-26 10:38:21.386,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:21.396,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:21.419,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:21.426,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:21.435,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:21.482,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:21.489,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:21.498,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:21.519,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:21.525,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:21.536,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:21.544,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 8.33% compliant (1/12 rules)
+2026-06-26 10:38:21.575,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:38:21.579,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:21.591,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:21.599,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=5757b9df-db25-4a46-92c8-d50acfebcecc, Rules=12"
+2026-06-26 10:38:21.610,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-26 10:38:21.620,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:21.633,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:21.642,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:21.651,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:21.673,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:21.679,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:21.689,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:21.736,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:21.742,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:21.752,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:21.771,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:21.777,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:21.788,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:21.796,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 8.33% compliant (1/12 rules)
+2026-06-26 10:38:21.825,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:38:21.830,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:21.842,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:21.852,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=46843787-ce21-4d8a-8974-037a1cc7de68, Rules=12"
+2026-06-26 10:38:21.863,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-26 10:38:21.873,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:21.884,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:21.894,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:21.905,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:21.930,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:21.936,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:21.947,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:21.994,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:22.000,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:22.011,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:22.029,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:22.036,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:22.048,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:22.055,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 8.33% compliant (1/12 rules)
+2026-06-26 10:38:22.085,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:38:22.090,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:22.101,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:22.110,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=2e16731f-4bed-4745-afc5-911cc348a78c, Rules=12"
+2026-06-26 10:38:22.120,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-26 10:38:22.131,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:22.143,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:22.152,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:22.163,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:22.186,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:22.194,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:22.205,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:22.253,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:22.258,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:22.269,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:22.286,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:22.292,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:22.303,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:22.312,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 8.33% compliant (1/12 rules)
+2026-06-26 10:38:22.337,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:38:22.343,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:22.355,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:22.363,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=c11715f7-aaea-43c7-a2fc-068f39e7b21a, Rules=12"
+2026-06-26 10:38:22.372,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-26 10:38:22.383,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:22.395,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:22.404,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:22.415,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:22.438,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:22.445,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:22.455,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:22.503,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:22.509,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:22.519,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:22.538,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:22.544,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:22.555,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:22.565,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 8.33% compliant (1/12 rules)
+2026-06-26 10:38:22.593,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:38:22.598,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:22.610,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:22.617,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=1304bdb9-e53f-45fd-9200-fb1384a7c777, Rules=12"
+2026-06-26 10:38:22.628,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-26 10:38:22.638,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:22.650,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:22.659,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:22.670,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:22.692,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:22.698,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:22.708,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:22.756,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:22.761,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:22.773,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:22.792,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:22.800,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:22.807,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:22.818,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 8.33% compliant (1/12 rules)
+2026-06-26 10:38:22.839,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:38:22.844,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:22.855,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:22.864,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=d05b928b-6e9b-48d8-9e4c-f75cd2c701e2, Rules=12"
+2026-06-26 10:38:22.874,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-26 10:38:22.884,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:22.896,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:22.906,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:22.916,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:22.942,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:22.948,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:22.959,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:23.007,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:23.014,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:23.024,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:23.043,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:23.048,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:23.060,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:23.069,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 8.33% compliant (1/12 rules)
+2026-06-26 10:38:23.093,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:38:23.098,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:23.109,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:23.117,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=d931b9f6-4b0a-4600-bf72-2e0611831a8e, Rules=12"
+2026-06-26 10:38:23.128,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-26 10:38:23.139,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:23.149,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:23.159,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:23.170,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:23.191,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:23.198,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:23.209,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:23.255,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:23.262,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:23.271,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:23.290,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:23.297,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:23.306,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:23.316,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 8.33% compliant (1/12 rules)
+2026-06-26 10:38:23.350,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:38:23.356,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:23.368,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:23.376,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=1eebee21-deb2-4b34-9387-5cb9b914dc73, Rules=12"
+2026-06-26 10:38:23.387,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-26 10:38:23.397,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:23.408,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:23.418,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:23.429,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:23.450,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:23.457,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:23.468,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:23.517,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:23.523,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:23.532,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:23.552,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:23.559,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:23.569,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:23.578,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 8.33% compliant (1/12 rules)
+2026-06-26 10:38:23.603,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:38:23.607,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:23.619,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:23.628,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=ff128bfe-4e98-46cb-a448-a4681882798c, Rules=12"
+2026-06-26 10:38:23.639,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-26 10:38:23.650,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:23.662,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:23.672,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:23.683,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:23.704,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:23.713,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:23.722,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:23.770,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:23.777,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:23.786,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:23.805,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:23.811,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:23.821,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:23.832,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 8.33% compliant (1/12 rules)
+2026-06-26 10:38:23.857,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:38:23.863,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:23.875,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:23.882,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=1fc87a41-6fad-42c6-baa8-f508d31ac702, Rules=12"
+2026-06-26 10:38:23.893,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-26 10:38:23.903,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:23.915,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:23.924,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:23.934,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:23.960,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:23.968,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:23.978,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:24.026,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:24.031,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:24.043,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:24.062,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:24.068,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:24.078,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:24.087,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 8.33% compliant (1/12 rules)
+2026-06-26 10:38:24.119,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:38:24.125,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:24.137,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:24.145,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=6d430985-c79c-46c3-bb37-564081fc755e, Rules=12"
+2026-06-26 10:38:24.156,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-26 10:38:24.166,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:24.178,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:24.188,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:24.202,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:24.224,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:24.231,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:24.241,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:24.288,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:24.294,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:24.306,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:24.325,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:24.333,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:24.344,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:24.354,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 8.33% compliant (1/12 rules)
+2026-06-26 10:38:24.388,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:38:24.394,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:24.405,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:24.414,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=d68069b2-08e8-4ba3-ac42-fed7a59615d6, Rules=12"
+2026-06-26 10:38:24.426,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-26 10:38:24.436,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:24.449,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:24.458,Info,Test-HardeningCompliance,Test-HardeningCompliance,101,Testing 2 filtered rules
+2026-06-26 10:38:24.468,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:24.484,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:24.491,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 0% compliant (0/2 rules)
+2026-06-26 10:38:24.517,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:38:24.523,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:24.536,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:24.544,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=f02e4b78-f062-490a-b90e-a2f2590b3ac1, Rules=12"
+2026-06-26 10:38:24.554,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-26 10:38:24.565,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:24.576,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:24.586,Info,Test-HardeningCompliance,Test-HardeningCompliance,101,Testing 1 filtered rules
+2026-06-26 10:38:24.597,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:24.606,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 0% compliant (0/1 rules)
+2026-06-26 10:38:24.636,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:38:24.642,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:24.654,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:24.663,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=0b2b86c4-cd8d-4315-ba9b-bda91e5616f7, Rules=12"
+2026-06-26 10:38:24.674,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-26 10:38:24.684,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:24.695,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:24.710,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:24.717,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:24.738,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:24.744,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:24.755,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:24.808,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:24.814,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:24.825,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:24.846,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:24.851,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:24.863,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:24.871,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 8.33% compliant (1/12 rules)
+2026-06-26 10:38:24.900,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:38:24.905,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:24.917,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:24.926,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=9ddf2f8e-ecd8-42d6-b8bb-a025658fd06b, Rules=12"
+2026-06-26 10:38:24.937,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-26 10:38:24.947,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:24.960,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:24.971,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:24.982,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:25.007,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:25.015,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:25.027,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:25.084,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:25.090,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:25.104,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:25.131,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:25.138,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:25.150,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:25.161,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 8.33% compliant (1/12 rules)
+2026-06-26 10:38:25.197,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:38:25.203,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Client
+2026-06-26 10:38:25.216,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Client
+2026-06-26 10:38:25.223,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=403ac263-8d4a-4eb6-a032-34c71bcfdf62, Rules=21"
+2026-06-26 10:38:25.234,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Recommended, Mode=Verify"
+2026-06-26 10:38:25.245,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Client
+2026-06-26 10:38:25.257,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Client
+2026-06-26 10:38:25.266,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:25.277,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:25.288,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-AccountLockoutDuration - No value found
+2026-06-26 10:38:25.551,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Firewall-DisableICMPEcho - No value found
+2026-06-26 10:38:25.557,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:25.571,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisableUnnecessaryServices - Expected: Disabled Disabled Disabled, Got: Manual"
+2026-06-26 10:38:25.581,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:25.592,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Registry-EnableDEP - No value found
+2026-06-26 10:38:25.602,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Registry-EnforceSMBSigning - No value found
+2026-06-26 10:38:25.614,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:25.626,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-SetEncryptionLevel - Expected: 3, Got: @{MinEncryptionLevel=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:25.672,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:25.678,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:25.689,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPSourceRouting - No value found
+2026-06-26 10:38:25.698,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:25.718,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:25.733,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnablePrivilegeUseAuditing - No value found
+2026-06-26 10:38:25.739,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:25.749,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:25.760,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Registry-EnforceNTLMv2 - No value found
+2026-06-26 10:38:25.769,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 4.76% compliant (1/21 rules)
+2026-06-26 10:38:25.792,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:38:25.797,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:25.809,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:25.817,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=ef4f5b72-8fbc-42fb-8af0-8090183cd968, Rules=12"
+2026-06-26 10:38:25.830,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-26 10:38:25.839,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:25.851,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:25.862,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:25.874,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:25.895,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:25.901,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:25.913,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:25.961,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:25.967,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:25.978,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:25.997,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:26.003,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:26.014,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:26.023,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 8.33% compliant (1/12 rules)
+2026-06-26 10:38:26.048,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:38:26.054,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:26.066,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:26.076,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=911a601d-75e6-48db-affb-7ceb977aaefc, Rules=12"
+2026-06-26 10:38:26.087,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-26 10:38:26.098,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:26.109,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:26.120,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:26.133,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:26.154,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:26.159,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:26.174,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:26.219,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:26.226,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:26.236,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:26.256,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:26.263,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:26.273,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:26.283,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 8.33% compliant (1/12 rules)
+2026-06-26 10:38:26.333,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:38:26.337,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:26.349,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:26.358,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=9d9afe64-61f5-4813-a4cf-701e7edc1892, Rules=12"
+2026-06-26 10:38:26.368,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-26 10:38:26.379,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:26.391,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:26.403,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:26.414,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:26.436,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:26.443,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:26.454,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:26.503,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:26.510,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:26.520,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:26.540,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:26.546,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:26.558,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:26.567,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 8.33% compliant (1/12 rules)
+2026-06-26 10:38:26.595,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:38:26.600,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Client
+2026-06-26 10:38:26.612,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Client
+2026-06-26 10:38:26.621,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=3be26c81-e278-4d4a-9081-930aa464f1da, Rules=21"
+2026-06-26 10:38:26.632,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Recommended, Mode=Verify"
+2026-06-26 10:38:26.643,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Client
+2026-06-26 10:38:26.656,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Client
+2026-06-26 10:38:26.666,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:26.677,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:26.688,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-AccountLockoutDuration - No value found
+2026-06-26 10:38:26.964,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Firewall-DisableICMPEcho - No value found
+2026-06-26 10:38:26.970,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:26.985,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisableUnnecessaryServices - Expected: Disabled Disabled Disabled, Got: Manual"
+2026-06-26 10:38:26.995,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:27.007,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Registry-EnableDEP - No value found
+2026-06-26 10:38:27.018,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Registry-EnforceSMBSigning - No value found
+2026-06-26 10:38:27.029,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:27.040,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-SetEncryptionLevel - Expected: 3, Got: @{MinEncryptionLevel=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:27.088,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:27.094,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:27.106,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPSourceRouting - No value found
+2026-06-26 10:38:27.119,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:27.135,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:27.150,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnablePrivilegeUseAuditing - No value found
+2026-06-26 10:38:27.156,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:27.168,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:27.178,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Registry-EnforceNTLMv2 - No value found
+2026-06-26 10:38:27.188,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 4.76% compliant (1/21 rules)
+2026-06-26 10:38:27.217,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Strict, Target=Client, OSVersion=11"
+2026-06-26 10:38:27.221,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Strict for Client
+2026-06-26 10:38:27.234,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 14 rules for Client
+2026-06-26 10:38:27.243,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=0314cd89-6770-48ad-988c-6ede98c29f7b, Rules=14"
+2026-06-26 10:38:27.254,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Strict, Mode=Verify"
+2026-06-26 10:38:27.265,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Strict for Client
+2026-06-26 10:38:27.277,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 14 rules for Client
+2026-06-26 10:38:27.288,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength-Strict - No value found
+2026-06-26 10:38:27.307,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Account-StrictAccountLockout - Expected: System.Collections.Hashtable, Got: @{BadPwdCount=; LockoutDuration=}"
+2026-06-26 10:38:32.530,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-EnableBitLocker - No value found
+2026-06-26 10:38:32.545,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Encryption-DisableTLSBelowOnePointTwo - Expected: SSL 3.0 TLS 1.0 TLS 1.1, Got: TLS 1.2"
+2026-06-26 10:38:32.559,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: RDP-DisableClipboardRedirection - No value found
+2026-06-26 10:38:32.573,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: RDP-DisableDriveRedirection - No value found
+2026-06-26 10:38:32.587,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-RandomizePort - Expected: 3399, Got: @{PortNumber=3389; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:32.604,Warning,_TestRuleCompliance,_TestRuleCompliance,273,Error testing rule SMB-RequireSigning: Cannot bind argument to parameter 'DifferenceObject' because it is null.
+2026-06-26 10:38:32.617,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-MinimalServices - Expected: Disabled Disabled Disabled Disabled, Got: Manual Manual"
+2026-06-26 10:38:32.630,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-AllChecksEnabled - Expected: System.Collections.Hashtable, Got: @{EnableLUA=1; PromptOnSecureDesktop=1; ConsentPromptBehaviorAdmin=2}"
+2026-06-26 10:38:32.654,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Audit-ExtendedLogging - Expected: 5, Got: Microsoft.PowerShell.Commands.TextMeasureInfo"
+2026-06-26 10:38:32.666,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableAutorun - Expected: 255, Got: @{NoDriveTypeAutoRun=255; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=Explorer; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:32.679,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableICMPRedirects - No value found
+2026-06-26 10:38:32.684,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 7.14% compliant (1/14 rules)
+2026-06-26 10:38:32.711,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:38:32.716,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:32.728,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:32.737,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=7aaa0d21-841f-4b46-9e25-b675d61dbb39, Rules=12"
+2026-06-26 10:38:32.747,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-26 10:38:32.758,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:32.770,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:32.781,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:32.792,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:32.813,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:32.821,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:32.832,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:32.882,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:32.889,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:32.900,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:32.920,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:32.926,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:32.936,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:32.945,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 8.33% compliant (1/12 rules)
+2026-06-26 10:38:32.957,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Strict, Target=Client, OSVersion=11"
+2026-06-26 10:38:32.969,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Strict for Client
+2026-06-26 10:38:32.981,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 14 rules for Client
+2026-06-26 10:38:32.990,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=08b41a22-a2aa-4046-8d42-f337c2c119be, Rules=14"
+2026-06-26 10:38:33.001,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Strict, Mode=Verify"
+2026-06-26 10:38:33.012,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Strict for Client
+2026-06-26 10:38:33.024,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 14 rules for Client
+2026-06-26 10:38:33.035,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength-Strict - No value found
+2026-06-26 10:38:33.047,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Account-StrictAccountLockout - Expected: System.Collections.Hashtable, Got: @{BadPwdCount=; LockoutDuration=}"
+2026-06-26 10:38:38.090,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-EnableBitLocker - No value found
+2026-06-26 10:38:38.096,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Encryption-DisableTLSBelowOnePointTwo - Expected: SSL 3.0 TLS 1.0 TLS 1.1, Got: TLS 1.2"
+2026-06-26 10:38:38.110,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: RDP-DisableClipboardRedirection - No value found
+2026-06-26 10:38:38.121,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: RDP-DisableDriveRedirection - No value found
+2026-06-26 10:38:38.134,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-RandomizePort - Expected: 3399, Got: @{PortNumber=3389; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:38.147,Warning,_TestRuleCompliance,_TestRuleCompliance,273,Error testing rule SMB-RequireSigning: Cannot bind argument to parameter 'DifferenceObject' because it is null.
+2026-06-26 10:38:38.157,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-MinimalServices - Expected: Disabled Disabled Disabled Disabled, Got: Manual Manual"
+2026-06-26 10:38:38.169,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-AllChecksEnabled - Expected: System.Collections.Hashtable, Got: @{EnableLUA=1; PromptOnSecureDesktop=1; ConsentPromptBehaviorAdmin=2}"
+2026-06-26 10:38:38.187,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Audit-ExtendedLogging - Expected: 5, Got: Microsoft.PowerShell.Commands.TextMeasureInfo"
+2026-06-26 10:38:38.194,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableAutorun - Expected: 255, Got: @{NoDriveTypeAutoRun=255; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=Explorer; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:38.205,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableICMPRedirects - No value found
+2026-06-26 10:38:38.215,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 7.14% compliant (1/14 rules)
+2026-06-26 10:38:38.254,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2019"
+2026-06-26 10:38:38.258,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Server
+2026-06-26 10:38:38.271,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Server
+2026-06-26 10:38:38.280,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=76c87307-4229-47a8-b61e-cda7997c12d5, Rules=12"
+2026-06-26 10:38:38.291,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-26 10:38:38.301,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Server
+2026-06-26 10:38:38.313,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Server
+2026-06-26 10:38:38.325,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:38.337,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:38.357,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:38.365,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:38.378,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:38.432,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:38.439,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:38.452,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:38.474,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:38.483,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:38.496,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:38.505,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 8.33% compliant (1/12 rules)
+2026-06-26 10:38:38.534,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Server, OSVersion=2022"
+2026-06-26 10:38:38.543,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Server
+2026-06-26 10:38:38.557,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Server
+2026-06-26 10:38:38.568,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=a2dfad1a-0f55-43f1-b046-861859109e46, Rules=21"
+2026-06-26 10:38:38.580,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Recommended, Mode=Verify"
+2026-06-26 10:38:38.591,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Server
+2026-06-26 10:38:38.606,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Server
+2026-06-26 10:38:38.615,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:38.626,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:38.637,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-AccountLockoutDuration - No value found
+2026-06-26 10:38:38.911,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Firewall-DisableICMPEcho - No value found
+2026-06-26 10:38:38.917,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:38.930,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisableUnnecessaryServices - Expected: Disabled Disabled Disabled, Got: Manual"
+2026-06-26 10:38:38.941,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:38.953,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Registry-EnableDEP - No value found
+2026-06-26 10:38:38.963,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Registry-EnforceSMBSigning - No value found
+2026-06-26 10:38:38.974,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:38.985,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-SetEncryptionLevel - Expected: 3, Got: @{MinEncryptionLevel=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:39.033,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:39.040,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:39.051,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPSourceRouting - No value found
+2026-06-26 10:38:39.063,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:39.081,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:39.096,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnablePrivilegeUseAuditing - No value found
+2026-06-26 10:38:39.102,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:39.114,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:39.125,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Registry-EnforceNTLMv2 - No value found
+2026-06-26 10:38:39.134,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 4.76% compliant (1/21 rules)
+2026-06-26 10:38:39.158,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Strict, Target=Server, OSVersion=2025"
+2026-06-26 10:38:39.164,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Strict for Server
+2026-06-26 10:38:39.175,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 15 rules for Server
+2026-06-26 10:38:39.186,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=f4774ef4-8d09-4943-90b4-a158b0dacd82, Rules=15"
+2026-06-26 10:38:39.196,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Strict, Mode=Verify"
+2026-06-26 10:38:39.208,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Strict for Server
+2026-06-26 10:38:39.222,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 15 rules for Server
+2026-06-26 10:38:39.231,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength-Strict - No value found
+2026-06-26 10:38:39.243,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Account-StrictAccountLockout - Expected: System.Collections.Hashtable, Got: @{BadPwdCount=; LockoutDuration=}"
+2026-06-26 10:38:44.277,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-EnableBitLocker - No value found
+2026-06-26 10:38:44.283,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Encryption-DisableTLSBelowOnePointTwo - Expected: SSL 3.0 TLS 1.0 TLS 1.1, Got: TLS 1.2"
+2026-06-26 10:38:44.299,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: RDP-DisableClipboardRedirection - No value found
+2026-06-26 10:38:44.310,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: RDP-DisableDriveRedirection - No value found
+2026-06-26 10:38:44.321,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-RandomizePort - Expected: 3399, Got: @{PortNumber=3389; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:44.334,Warning,_TestRuleCompliance,_TestRuleCompliance,273,Error testing rule SMB-RequireSigning: Cannot bind argument to parameter 'DifferenceObject' because it is null.
+2026-06-26 10:38:44.343,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-MinimalServices - Expected: Disabled Disabled Disabled Disabled, Got: Manual Manual"
+2026-06-26 10:38:44.353,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-AllChecksEnabled - Expected: System.Collections.Hashtable, Got: @{EnableLUA=1; PromptOnSecureDesktop=1; ConsentPromptBehaviorAdmin=2}"
+2026-06-26 10:38:44.374,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Audit-ExtendedLogging - Expected: 5, Got: Microsoft.PowerShell.Commands.TextMeasureInfo"
+2026-06-26 10:38:44.380,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableAutorun - Expected: 255, Got: @{NoDriveTypeAutoRun=255; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=Explorer; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:44.392,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableICMPRedirects - No value found
+2026-06-26 10:38:44.408,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Registry-CredentialGuard-Server - No value found
+2026-06-26 10:38:44.415,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 6.67% compliant (1/15 rules)
+2026-06-26 10:38:44.443,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:38:44.450,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:44.460,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:44.470,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=fc9bdbb1-f8c8-48bd-89bc-ae4e7b101c3d, Rules=12"
+2026-06-26 10:38:44.488,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,89,"Starting security hardening: Profile=Basis, ComputerName=GAMINGPC"
+2026-06-26 10:38:44.493,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:44.505,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:44.520,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,123,Applying Registry rules: 8 rules
+2026-06-26 10:38:44.530,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Account-MinimumPasswordLength: Requested registry access is not allowed.
+2026-06-26 10:38:44.562,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Account-PasswordComplexity: Requested registry access is not allowed.
+2026-06-26 10:38:44.570,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule UAC-ElevationPrompt: Requested registry access is not allowed.
+2026-06-26 10:38:44.582,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule RDP-EnableNetworkLevelAuthentication: Requested registry access is not allowed.
+2026-06-26 10:38:44.612,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Encryption-DisableObsoleteCiphers: Access to the registry key 'HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Client' is denied.
+2026-06-26 10:38:44.621,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Network-DisableIPv6: Requested registry access is not allowed.
+2026-06-26 10:38:44.633,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Updates-EnableAutoSecurityUpdates: Requested registry access is not allowed.
+2026-06-26 10:38:44.644,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Registry-DisableLLMNR: Requested registry access is not allowed.
+2026-06-26 10:38:44.652,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,136,Applying Service rules: 2 rules
+2026-06-26 10:38:44.669,Error,_ApplyHardeningRule,Write-ErrorLog,37,"Failed to apply rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:44.677,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Service-DisablePrintSpooler: Service 'Print Spooler (spooler)' cannot be configured due to the following error: Access is denied
+2026-06-26 10:38:44.687,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,149,Applying Firewall rules: 1 rules (sequential)
+2026-06-26 10:38:44.707,Error,_ApplyHardeningRule,Write-ErrorLog,37,"Failed to apply rule Firewall-EnableWindowsDefender: Cannot process argument transformation on parameter 'Enabled'. Cannot convert value "True" to type "Microsoft.PowerShell.Cmdletization.GeneratedTypes.NetSecurity.GpoBoolean". Error: "Invalid cast from 'System.Boolean' to 'Microsoft.PowerShell.Cmdletization.GeneratedTypes.NetSecurity.GpoBoolean'.""
+2026-06-26 10:38:44.714,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,155,Applying Audit rules: 1 rules (sequential)
+2026-06-26 10:38:44.738,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Audit-EnableLogonAuditing: Error 0x00000057 occurred:
+2026-06-26 10:38:44.744,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,161,Applying other rules: 0 rules
+2026-06-26 10:38:44.757,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,171,Verifying hardening compliance
+2026-06-26 10:38:44.770,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,181,"Hardening complete: Applied=0, Failed=12, Skipped=0, Total=12"
+2026-06-26 10:38:44.777,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-26 10:38:44.787,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:44.800,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:44.810,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:44.821,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:44.844,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:44.850,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:44.862,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:44.908,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:44.916,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:44.926,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:44.946,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:44.952,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:44.963,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:44.973,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 8.33% compliant (1/12 rules)
+2026-06-26 10:38:44.998,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:38:45.003,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Client
+2026-06-26 10:38:45.016,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Client
+2026-06-26 10:38:45.025,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=1f5ac6dc-5b1b-4449-a463-d2c2780adc4e, Rules=21"
+2026-06-26 10:38:45.036,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,89,"Starting security hardening: Profile=Recommended, ComputerName=GAMINGPC"
+2026-06-26 10:38:45.047,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Client
+2026-06-26 10:38:45.060,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Client
+2026-06-26 10:38:45.071,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,123,Applying Registry rules: 14 rules
+2026-06-26 10:38:45.086,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Account-MinimumPasswordLength: Requested registry access is not allowed.
+2026-06-26 10:38:45.095,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Account-PasswordComplexity: Requested registry access is not allowed.
+2026-06-26 10:38:45.107,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Account-AccountLockoutDuration: Requested registry access is not allowed.
+2026-06-26 10:38:45.117,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule UAC-ElevationPrompt: Requested registry access is not allowed.
+2026-06-26 10:38:45.130,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Registry-EnableDEP: Requested registry access is not allowed.
+2026-06-26 10:38:45.142,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Registry-EnforceSMBSigning: Requested registry access is not allowed.
+2026-06-26 10:38:45.152,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule RDP-EnableNetworkLevelAuthentication: Requested registry access is not allowed.
+2026-06-26 10:38:45.162,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule RDP-SetEncryptionLevel: Requested registry access is not allowed.
+2026-06-26 10:38:45.192,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Encryption-DisableObsoleteCiphers: Access to the registry key 'HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Client' is denied.
+2026-06-26 10:38:45.201,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Network-DisableIPv6: Requested registry access is not allowed.
+2026-06-26 10:38:45.212,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Network-DisableIPSourceRouting: Requested registry access is not allowed.
+2026-06-26 10:38:45.224,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Updates-EnableAutoSecurityUpdates: Requested registry access is not allowed.
+2026-06-26 10:38:45.235,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Registry-DisableLLMNR: Requested registry access is not allowed.
+2026-06-26 10:38:45.246,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Registry-EnforceNTLMv2: Requested registry access is not allowed.
+2026-06-26 10:38:45.254,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,136,Applying Service rules: 3 rules
+2026-06-26 10:38:45.272,Error,_ApplyHardeningRule,Write-ErrorLog,37,"Failed to apply rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:45.281,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Service-DisableUnnecessaryServices: Service 'Windows Remote Management (WS-Management) (WinRM)' cannot be configured due to the following error: Access is denied
+2026-06-26 10:38:45.291,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Service-DisablePrintSpooler: Service 'Print Spooler (spooler)' cannot be configured due to the following error: Access is denied
+2026-06-26 10:38:45.301,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,149,Applying Firewall rules: 2 rules (sequential)
+2026-06-26 10:38:45.313,Error,_ApplyHardeningRule,Write-ErrorLog,37,"Failed to apply rule Firewall-EnableWindowsDefender: Cannot process argument transformation on parameter 'Enabled'. Cannot convert value "True" to type "Microsoft.PowerShell.Cmdletization.GeneratedTypes.NetSecurity.GpoBoolean". Error: "Invalid cast from 'System.Boolean' to 'Microsoft.PowerShell.Cmdletization.GeneratedTypes.NetSecurity.GpoBoolean'.""
+2026-06-26 10:38:45.325,Info,_ApplyHardeningRule,_ApplyHardeningRule,256,Applied rule: Firewall-DisableICMPEcho
+2026-06-26 10:38:45.334,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,155,Applying Audit rules: 2 rules (sequential)
+2026-06-26 10:38:45.358,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Audit-EnableLogonAuditing: Error 0x00000057 occurred:
+2026-06-26 10:38:45.376,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Audit-EnablePrivilegeUseAuditing: Error 0x00000057 occurred:
+2026-06-26 10:38:45.382,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,161,Applying other rules: 0 rules
+2026-06-26 10:38:45.393,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,171,Verifying hardening compliance
+2026-06-26 10:38:45.404,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,181,"Hardening complete: Applied=1, Failed=20, Skipped=0, Total=21"
+2026-06-26 10:38:45.415,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Recommended, Mode=Verify"
+2026-06-26 10:38:45.425,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Client
+2026-06-26 10:38:45.438,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Client
+2026-06-26 10:38:45.448,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:45.459,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:45.471,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-AccountLockoutDuration - No value found
+2026-06-26 10:38:45.741,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Firewall-DisableICMPEcho - No value found
+2026-06-26 10:38:45.748,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:45.760,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisableUnnecessaryServices - Expected: Disabled Disabled Disabled, Got: Manual"
+2026-06-26 10:38:45.773,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:45.784,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Registry-EnableDEP - No value found
+2026-06-26 10:38:45.794,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Registry-EnforceSMBSigning - No value found
+2026-06-26 10:38:45.807,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:45.820,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-SetEncryptionLevel - Expected: 3, Got: @{MinEncryptionLevel=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:45.865,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:45.873,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:45.883,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPSourceRouting - No value found
+2026-06-26 10:38:45.895,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:45.915,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:45.929,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnablePrivilegeUseAuditing - No value found
+2026-06-26 10:38:45.935,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:45.947,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:45.958,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Registry-EnforceNTLMv2 - No value found
+2026-06-26 10:38:45.968,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 4.76% compliant (1/21 rules)
+2026-06-26 10:38:45.990,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:38:45.995,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:46.008,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:46.017,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=a1ebbdcd-7f2d-4e30-a89f-e065322f2475, Rules=12"
+2026-06-26 10:38:46.029,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-26 10:38:46.041,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:46.053,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:46.065,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:46.076,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:46.099,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:46.105,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:46.117,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:46.164,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:46.170,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:46.183,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:46.202,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:46.208,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:46.223,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:46.230,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 8.33% compliant (1/12 rules)
+2026-06-26 10:38:46.348,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:38:46.354,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:46.368,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:46.376,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=7f37015a-21d0-43c4-bb15-8d1282ead93c, Rules=12"
+2026-06-26 10:38:46.393,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,89,"Starting security hardening: Profile=Basis, ComputerName=GAMINGPC"
+2026-06-26 10:38:46.401,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:46.415,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:46.425,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,123,Applying Registry rules: 8 rules
+2026-06-26 10:38:46.438,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Account-MinimumPasswordLength: Requested registry access is not allowed.
+2026-06-26 10:38:46.453,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Account-PasswordComplexity: Requested registry access is not allowed.
+2026-06-26 10:38:46.464,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule UAC-ElevationPrompt: Requested registry access is not allowed.
+2026-06-26 10:38:46.477,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule RDP-EnableNetworkLevelAuthentication: Requested registry access is not allowed.
+2026-06-26 10:38:46.505,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Encryption-DisableObsoleteCiphers: Access to the registry key 'HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Client' is denied.
+2026-06-26 10:38:46.513,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Network-DisableIPv6: Requested registry access is not allowed.
+2026-06-26 10:38:46.525,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Updates-EnableAutoSecurityUpdates: Requested registry access is not allowed.
+2026-06-26 10:38:46.535,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Registry-DisableLLMNR: Requested registry access is not allowed.
+2026-06-26 10:38:46.544,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,136,Applying Service rules: 2 rules
+2026-06-26 10:38:46.562,Error,_ApplyHardeningRule,Write-ErrorLog,37,"Failed to apply rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:46.569,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Service-DisablePrintSpooler: Service 'Print Spooler (spooler)' cannot be configured due to the following error: Access is denied
+2026-06-26 10:38:46.578,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,149,Applying Firewall rules: 1 rules (sequential)
+2026-06-26 10:38:46.593,Error,_ApplyHardeningRule,Write-ErrorLog,37,"Failed to apply rule Firewall-EnableWindowsDefender: Cannot process argument transformation on parameter 'Enabled'. Cannot convert value "True" to type "Microsoft.PowerShell.Cmdletization.GeneratedTypes.NetSecurity.GpoBoolean". Error: "Invalid cast from 'System.Boolean' to 'Microsoft.PowerShell.Cmdletization.GeneratedTypes.NetSecurity.GpoBoolean'.""
+2026-06-26 10:38:46.601,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,155,Applying Audit rules: 1 rules (sequential)
+2026-06-26 10:38:46.622,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Audit-EnableLogonAuditing: Error 0x00000057 occurred:
+2026-06-26 10:38:46.628,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,161,Applying other rules: 0 rules
+2026-06-26 10:38:46.638,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,171,Verifying hardening compliance
+2026-06-26 10:38:46.650,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,181,"Hardening complete: Applied=0, Failed=12, Skipped=0, Total=12"
+2026-06-26 10:38:46.660,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-26 10:38:46.672,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:46.686,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:46.696,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:46.708,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:46.734,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:46.740,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:46.752,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:46.800,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:46.810,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:46.823,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:46.843,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:46.850,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:46.862,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:46.872,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 8.33% compliant (1/12 rules)
+2026-06-26 10:38:46.903,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Server, OSVersion=2022"
+2026-06-26 10:38:46.909,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Server
+2026-06-26 10:38:46.922,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Server
+2026-06-26 10:38:46.933,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=b9aed282-e927-498d-9a00-c5f9d30cd5d2, Rules=21"
+2026-06-26 10:38:46.944,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,89,"Starting security hardening: Profile=Recommended, ComputerName=GAMINGPC"
+2026-06-26 10:38:46.955,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Server
+2026-06-26 10:38:46.969,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Server
+2026-06-26 10:38:46.984,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,123,Applying Registry rules: 14 rules
+2026-06-26 10:38:46.992,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Account-MinimumPasswordLength: Requested registry access is not allowed.
+2026-06-26 10:38:47.006,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Account-PasswordComplexity: Requested registry access is not allowed.
+2026-06-26 10:38:47.018,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Account-AccountLockoutDuration: Requested registry access is not allowed.
+2026-06-26 10:38:47.029,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule UAC-ElevationPrompt: Requested registry access is not allowed.
+2026-06-26 10:38:47.041,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Registry-EnableDEP: Requested registry access is not allowed.
+2026-06-26 10:38:47.052,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Registry-EnforceSMBSigning: Requested registry access is not allowed.
+2026-06-26 10:38:47.065,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule RDP-EnableNetworkLevelAuthentication: Requested registry access is not allowed.
+2026-06-26 10:38:47.076,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule RDP-SetEncryptionLevel: Requested registry access is not allowed.
+2026-06-26 10:38:47.106,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Encryption-DisableObsoleteCiphers: Access to the registry key 'HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Client' is denied.
+2026-06-26 10:38:47.114,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Network-DisableIPv6: Requested registry access is not allowed.
+2026-06-26 10:38:47.124,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Network-DisableIPSourceRouting: Requested registry access is not allowed.
+2026-06-26 10:38:47.136,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Updates-EnableAutoSecurityUpdates: Requested registry access is not allowed.
+2026-06-26 10:38:47.148,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Registry-DisableLLMNR: Requested registry access is not allowed.
+2026-06-26 10:38:47.158,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Registry-EnforceNTLMv2: Requested registry access is not allowed.
+2026-06-26 10:38:47.167,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,136,Applying Service rules: 3 rules
+2026-06-26 10:38:47.185,Error,_ApplyHardeningRule,Write-ErrorLog,37,"Failed to apply rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:47.193,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Service-DisableUnnecessaryServices: Service 'Windows Remote Management (WS-Management) (WinRM)' cannot be configured due to the following error: Access is denied
+2026-06-26 10:38:47.204,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Service-DisablePrintSpooler: Service 'Print Spooler (spooler)' cannot be configured due to the following error: Access is denied
+2026-06-26 10:38:47.214,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,149,Applying Firewall rules: 2 rules (sequential)
+2026-06-26 10:38:47.224,Error,_ApplyHardeningRule,Write-ErrorLog,37,"Failed to apply rule Firewall-EnableWindowsDefender: Cannot process argument transformation on parameter 'Enabled'. Cannot convert value "True" to type "Microsoft.PowerShell.Cmdletization.GeneratedTypes.NetSecurity.GpoBoolean". Error: "Invalid cast from 'System.Boolean' to 'Microsoft.PowerShell.Cmdletization.GeneratedTypes.NetSecurity.GpoBoolean'.""
+2026-06-26 10:38:47.237,Info,_ApplyHardeningRule,_ApplyHardeningRule,256,Applied rule: Firewall-DisableICMPEcho
+2026-06-26 10:38:47.246,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,155,Applying Audit rules: 2 rules (sequential)
+2026-06-26 10:38:47.271,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Audit-EnableLogonAuditing: Error 0x00000057 occurred:
+2026-06-26 10:38:47.286,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Audit-EnablePrivilegeUseAuditing: Error 0x00000057 occurred:
+2026-06-26 10:38:47.292,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,161,Applying other rules: 0 rules
+2026-06-26 10:38:47.302,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,171,Verifying hardening compliance
+2026-06-26 10:38:47.314,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,181,"Hardening complete: Applied=1, Failed=20, Skipped=0, Total=21"
+2026-06-26 10:38:47.324,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Recommended, Mode=Verify"
+2026-06-26 10:38:47.336,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Server
+2026-06-26 10:38:47.349,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Server
+2026-06-26 10:38:47.360,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:47.371,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-PasswordComplexity - No value found
+2026-06-26 10:38:47.383,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-AccountLockoutDuration - No value found
+2026-06-26 10:38:47.660,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Firewall-DisableICMPEcho - No value found
+2026-06-26 10:38:47.669,Warning,_TestRuleCompliance,_TestRuleCompliance,273,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:47.685,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisableUnnecessaryServices - Expected: Disabled Disabled Disabled, Got: Manual"
+2026-06-26 10:38:47.701,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: UAC-ElevationPrompt - Expected: 1, Got: @{PromptOnSecureDesktop=1; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies; PSChildName=System; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:47.715,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Registry-EnableDEP - No value found
+2026-06-26 10:38:47.727,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Registry-EnforceSMBSigning - No value found
+2026-06-26 10:38:47.743,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-EnableNetworkLevelAuthentication - Expected: 2, Got: @{SecurityLayer=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:47.756,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: RDP-SetEncryptionLevel - Expected: 3, Got: @{MinEncryptionLevel=2; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations; PSChildName=RDP-Tcp; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:47.813,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Encryption-DisableObsoleteCiphers - No value found
+2026-06-26 10:38:47.818,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPv6 - No value found
+2026-06-26 10:38:47.831,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Network-DisableIPSourceRouting - No value found
+2026-06-26 10:38:47.844,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Updates-EnableAutoSecurityUpdates - Expected: 0, Got: @{NoAutoUpdate=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate; PSChildName=AU; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:47.864,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-26 10:38:47.877,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Audit-EnablePrivilegeUseAuditing - No value found
+2026-06-26 10:38:47.883,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: @{EnableMulticast=0; PSPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient; PSParentPath=Microsoft.PowerShell.Core\Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT; PSChildName=DNSClient; PSDrive=HKLM; PSProvider=Microsoft.PowerShell.Core\Registry}"
+2026-06-26 10:38:47.895,Warning,_TestRuleCompliance,_TestRuleCompliance,265,"Rule not compliant: Service-DisablePrintSpooler - Expected: Disabled, Got: Automatic"
+2026-06-26 10:38:47.912,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Registry-EnforceNTLMv2 - No value found
+2026-06-26 10:38:47.918,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 4.76% compliant (1/21 rules)
+2026-06-26 10:38:47.947,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:38:47.952,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:47.964,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:47.974,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=083af6cc-bee5-4629-b455-2e73ebca9b51, Rules=12"
+2026-06-26 10:38:47.985,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,89,"Starting security hardening: Profile=Basis, ComputerName=GAMINGPC"
+2026-06-26 10:38:47.997,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:48.009,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:48.021,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,123,Applying Registry rules: 8 rules
+2026-06-26 10:38:48.034,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Account-MinimumPasswordLength: Requested registry access is not allowed.
+2026-06-26 10:38:48.047,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Account-PasswordComplexity: Requested registry access is not allowed.
+2026-06-26 10:38:48.058,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule UAC-ElevationPrompt: Requested registry access is not allowed.
+2026-06-26 10:38:48.070,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule RDP-EnableNetworkLevelAuthentication: Requested registry access is not allowed.
+2026-06-26 10:38:48.099,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Encryption-DisableObsoleteCiphers: Access to the registry key 'HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Client' is denied.
+2026-06-26 10:38:48.108,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Network-DisableIPv6: Requested registry access is not allowed.
+2026-06-26 10:38:48.118,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Updates-EnableAutoSecurityUpdates: Requested registry access is not allowed.
+2026-06-26 10:38:48.130,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Registry-DisableLLMNR: Requested registry access is not allowed.
+2026-06-26 10:38:48.139,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,136,Applying Service rules: 2 rules
+2026-06-26 10:38:48.158,Error,_ApplyHardeningRule,Write-ErrorLog,37,"Failed to apply rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:38:48.165,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Service-DisablePrintSpooler: Service 'Print Spooler (spooler)' cannot be configured due to the following error: Access is denied
+2026-06-26 10:38:48.174,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,149,Applying Firewall rules: 1 rules (sequential)
+2026-06-26 10:38:48.186,Error,_ApplyHardeningRule,Write-ErrorLog,37,"Failed to apply rule Firewall-EnableWindowsDefender: Cannot process argument transformation on parameter 'Enabled'. Cannot convert value "True" to type "Microsoft.PowerShell.Cmdletization.GeneratedTypes.NetSecurity.GpoBoolean". Error: "Invalid cast from 'System.Boolean' to 'Microsoft.PowerShell.Cmdletization.GeneratedTypes.NetSecurity.GpoBoolean'.""
+2026-06-26 10:38:48.196,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,155,Applying Audit rules: 1 rules (sequential)
+2026-06-26 10:38:48.217,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Audit-EnableLogonAuditing: Error 0x00000057 occurred:
+2026-06-26 10:38:48.223,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,161,Applying other rules: 0 rules
+2026-06-26 10:38:48.233,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,171,Verifying hardening compliance
+2026-06-26 10:38:48.245,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,181,"Hardening complete: Applied=0, Failed=12, Skipped=0, Total=12"
+2026-06-26 10:38:48.255,Info,Test-HardeningCompliance,Test-HardeningCompliance,87,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-26 10:38:48.269,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:38:48.282,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:38:48.292,Info,Test-HardeningCompliance,Test-HardeningCompliance,101,Testing 2 filtered rules
+2026-06-26 10:38:48.306,Warning,_TestRuleCompliance,_TestRuleCompliance,244,Rule not compliant: Account-MinimumPasswordLength - No value found
+2026-06-26 10:38:48.328,Info,Test-HardeningCompliance,Test-HardeningCompliance,169,Compliance verification complete: 50% compliant (1/2 rules)
