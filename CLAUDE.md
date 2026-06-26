@@ -39,6 +39,29 @@ PowerShell Automation & Operations Toolkit für Windows Server-Administration.
 - Bei Unsicherheit fragen, nicht silent weitermachen
 - Git-Hooks nicht skippen (--no-verify) ohne guten Grund
 
+**Regel 1.4 - Invoke-Expression VERMEIDEN (Security)**
+- **NIEMALS `Invoke-Expression` nutzen** (Security-Risiko, PSAvoidUsingInvokeExpression)
+- Grund: Injection-Anfälligkeit, Debugging-Probleme, Performance-Overhead
+- **Alternativen:**
+  * `&` Call-Operator für Native Commands: `& schtasks /create /tn "task" ...`
+  * `.NET APIs` wenn verfügbar (statt String-Evaluation)
+  * Explizite Parameter (nie String-Konstruktion für Code)
+  * `Invoke-Command` mit `-ScriptBlock` (wenn remote nötig, nicht mit user input)
+- **Konsequenz:** Alle Invoke-Expression Aufrufe führen zu PSScriptAnalyzer-Fehler
+- **Siehe auch:** STRUCTURE.md Regel 9.9 (Sichere Command-Ausführung)
+
+**Regel 1.5 - Dokumentation von Public vs Private Funktionen (STRUCTURE.md Regel 3.1)**
+- **PUBLIC Funktionen** (keine `_` prefix): Vollständige Comment-based Help erforderlich
+  - `.SYNOPSIS`, `.DESCRIPTION`, `.PARAMETER`, `.EXAMPLE`, `.NOTES`
+  - PSScriptAnalyzer Enforcement: `PSProvideCommentHelp` (Fehler, nicht Warnung)
+  - `Get-Help Funktion-Name` muss vollständig dokumentiert sein
+- **PRIVATE Funktionen** (mit `_` prefix): Minimal-Help erforderlich
+  - Mindestens `.SYNOPSIS` (1-2 Zeilen) ODER aussagekräftige Inline-Kommentare
+  - Grund: Private Funktionen sind interne Helpers, nicht public API
+  - PSScriptAnalyzer Enforcement: Nicht erzwungen (ExportedOnly = true in Settings)
+- **Grund:** Public API braucht vollständige Dokumentation; private Helpers können lean sein
+- **Siehe auch:** STRUCTURE.md Regel 3.1 (detaillierte Anforderungen)
+
 ---
 
 ### Token-Effizienz & Context-Management
@@ -75,12 +98,23 @@ PowerShell Automation & Operations Toolkit für Windows Server-Administration.
 - Beispiel [NO] Falsch: `# Loop durch Array`
 - Beispiel [YES] Richtig: `# Skip first N rows due to header offset in legacy format`
 
-**Regel 3.1a - ASCII-only Output Strings (Keine Unicode-Zeichen)**
+**Regel 3.1a - ASCII-only Output Strings (ADR-010)**
 - Alle Output-Strings verwenden **AUSSCHLIESSLICH ASCII-Zeichen**
-- NICHT verwenden: °, ✓, ✗, •, █, ░, →, ←, ⏳, etc.
-- STATTDESSEN: C (statt °C), [OK]/[FAIL], *, -, #, >, <, [WAIT], etc.
-- **Grund:** PowerShell + Windows + UTF-8 Encoding kombinieren schlecht
-- **Gilt für:** Alle Output-Strings, Logs, User-Messages, Test-Skripte
+- NICHT verwenden: Unicode Symbole (°, ✓, ✗, •, █, ░, →, ←, ⏳) und Emoji (✅❌⚠️📋)
+- NICHT verwenden: Box-Drawing Zeichen (╔═╝║╚)
+- STATTDESSEN: C (statt °C), [OK]/[ERROR]/[WARN]/[INFO], *, -, #, >, <, [WAIT], etc.
+- **Grund:** PowerShell 5.1 + Windows UTF-8 Encoding erzeugt Ausgabe-Korruption
+- **Gilt für:** Alle Output-Strings, Logs, User-Messages, Script-Ausgaben, Test-Skripte
+- **Siehe auch:** ADR-010 (Output-Handling), STRUCTURE.md Regel 7.8-7.10
+
+**Regel 3.1b - Richtige Output-Cmdlets nutzen (ADR-010)**
+- `Write-Output` verwenden für normale Ausgaben (kann gepipet, umgeleitet werden)
+- `Write-Verbose` für Debug-Info (gesteuert via `-Verbose` Flag)
+- `Write-Error` nur für echte Fehler (setzt `$?` zu `$false`)
+- **`Write-Host` VERMEIDEN** (funktioniert nicht in Remote-Sessions, Task Scheduler, nicht weiterleitbar)
+- `Write-Log` für persistente Audit-Logs (zentrale Logging-Funktion)
+- **Grund:** Write-Host ist PowerShell-Antipattern (funktioniert nicht überall)
+- **Keine `-ForegroundColor`** in Production Scripts (funktioniert nicht in Automation)
 
 **Regel 3.2 - Keine Über-Abstraktionen**
 - YAGNI-Prinzip: Nicht für hypothetische Zukunft bauen

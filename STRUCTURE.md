@@ -23,7 +23,56 @@ Projekt-spezifische Struktur- und Organisationsregeln für WinHarden.
 
 Performance-optimiert, dokumentiert, robust:
 
-- **Regel 3.1:** Vollständige `.SYNOPSIS` + klare Kommentare in jeder Funktion
+- **Regel 3.1:** Comment-based Help für alle Funktionen (PUBLIC vs PRIVATE unterschiedlich)
+  - **PUBLIC Funktionen (keine `_` prefix):** Vollständige Help erforderlich
+    - `.SYNOPSIS` (Zusammenfassung, 1-2 Zeilen)
+    - `.DESCRIPTION` (Detaillierte Erklärung)
+    - `.PARAMETER` (Für jeden Parameter)
+    - `.EXAMPLE` (Mindestens 1 Anwendungsbeispiel)
+    - `.NOTES` (Dependencies, Requirements, etc.)
+    - **Enforcement:** PSScriptAnalyzer Regel `PSProvideCommentHelp` mit `ExportedOnly = true`
+  
+  - **PRIVATE Funktionen (mit `_` prefix):** Minimal-Help erforderlich
+    - `.SYNOPSIS` (Zusammenfassung, 1-2 Zeilen)
+    - `.NOTES` (Optional, für komplexe Helper)
+    - Alternativ: Aussagekräftige Inline-Kommentare `# ...` wenn Funktion selbsterklärend
+    - **Grund:** Private Funktionen sind interne Helpers (keine public API)
+    - **Enforcement:** PSScriptAnalyzer wird nicht auf private Funktionen angewendet
+  
+  - **Beispiel [OK] PUBLIC:**
+    ```powershell
+    function Test-SystemHealth {
+        <#
+        .SYNOPSIS
+        Verifies system health status.
+        
+        .DESCRIPTION
+        Tests CPU, memory, and disk health...
+        
+        .PARAMETER ComputerName
+        Target computer name.
+        
+        .EXAMPLE
+        Test-SystemHealth -ComputerName SERVER01
+        
+        .NOTES
+        DEPENDENCIES: Get-SystemMetrics
+        #>
+        ...
+    }
+    ```
+  
+  - **Beispiel [OK] PRIVATE:**
+    ```powershell
+    function _CalculateHealthScore {
+        <#
+        .SYNOPSIS
+        Internal helper: Calculates health score from metrics.
+        #>
+        ...
+    }
+    ```
+
 - **Regel 3.2:** `-WhatIf` Option in jeder Funktion
 - **Regel 3.3:** Performance-optimiert (keine unnötigen Loops, effiziente Algorithmen)
 
@@ -64,15 +113,82 @@ Siehe **[ADR-002](DECISIONS.md)** für vollständigen Kontext.
 
 ## 7. CODE STYLE & LINTING
 
-Siehe **[ADR-006](DECISIONS.md)** für vollständigen Kontext.
+Siehe **[ADR-006](DECISIONS.md)** für Formatierung und **[ADR-010](DECISIONS.md)** für Output-Handling.
 
 - **Regel 7.1:** PSScriptAnalyzer mit PSGallery-Standard Ruleset verwenden
 - **Regel 7.2:** Linting-Check vor jedem Commit (via `build.ps1`)
-- **Regel 7.3:** 4-Space Indentation (keine Tabs)
-- **Regel 7.4:** K&R Bracing Style – `{` auf gleicher Zeile
+
+- **Regel 7.3:** Konsistente 4-Space Indentation (PSUseConsistentIndentation)
+  - **Indentation:** Exakt 4 Spaces pro Ebene (keine Tabs)
+  - **Spaces nicht Tabs:** Alle Dateien müssen Spaces verwenden
+  - **Konsistenz:** Alle Zeilen in einem Block müssen gleich eingerückt sein
+  - **Pipeline:** Piped Befehle erhöhen Indentation um 4 Spaces
+  - **Enforcement:** PSScriptAnalyzer Regel `PSUseConsistentIndentation` ENABLED (Fehler, nicht Warnung)
+  - **Auto-Fix:** `Invoke-Formatter` repariert automatisch bei `build.ps1`
+  - **IDE-Unterstützung:** `.editorconfig` und `PSScriptAnalyzerSettings.psd1` konfigurieren automatische Formatierung
+  - **Beispiel [OK]:**
+    ```powershell
+    foreach ($item in $items) {
+        if ($item.Valid) {
+            Write-Output $item
+        }
+    }
+    ```
+  - **Beispiel [FAIL]:**
+    ```powershell
+    foreach ($item in $items) {
+      if ($item.Valid) {  # 2 Spaces statt 4 = FEHLER
+          Write-Output $item
+      }
+    }
+    ```
+
+- **Regel 7.4:** K&R Bracing Style (vollständig)
+  - Öffnende `{` auf gleicher Zeile: `if ($x) {`
+  - Schließende `}` auf eigener Zeile, dedented
+  - Beispiel:
+    ```powershell
+    if ($condition) {
+        Write-Output "Code"
+    }
+    ```
+  - Exception: Einzeilige Konstrukte dürfen `{ }` zusammen haben (z.B. Hashtabellen)
+  - PSScriptAnalyzer Rules: `PSPlaceOpenBrace` + `PSPlaceCloseBrace` beide ENABLED
+
 - **Regel 7.5:** Line Length optimiert auf Lesbarkeit (~100-120 Zeichen anstreben, aber nicht strikte Limit)
 - **Regel 7.6:** Format-Exceptions erlaubt mit `# PSScriptAnalyzer ignore [rule]` Kommentar
-- **Regel 7.7:** `.editorconfig` oder `PSScriptAnalyzerSettings.psd1` für IDE-Integration
+
+- **Regel 7.7:** PSScriptAnalyzer Konfiguration (PSScriptAnalyzerSettings.psd1)
+  - **Datei:** `PSScriptAnalyzerSettings.psd1` im Root-Verzeichnis
+  - **Konfiguriert:** Indentation, Bracing, Security, Naming, Output Regeln
+  - **Enforcement:** PSUseConsistentIndentation, PSPlaceOpenBrace, PSPlaceCloseBrace
+  - **Auto-Format:** VS Code, Visual Studio, PowerShell ISE laden diese Einstellungen automatisch
+  - **Build-Integration:** `build.ps1` nutzt diese Konfiguration für PSScriptAnalyzer Checks
+
+- **Regel 7.8:** EditorConfig für Cross-IDE Formatierung (.editorconfig)
+  - **Datei:** `.editorconfig` im Root-Verzeichnis
+  - **Konfiguriert:** 4-Space Indentation für PowerShell, UTF-8 Encoding, Line Endings (CRLF)
+  - **Auto-Formatierung:** VS Code, Visual Studio, JetBrains IDEs formatieren automatisch beim Speichern
+  - **Portable:** Funktioniert unabhängig von IDE-Einstellungen
+
+**Output & Logging Conventions (ADR-010):**
+- **Regel 7.9:** Output-Cmdlets korrekt nutzen
+  - `Write-Output` für normale Ausgaben (Standard, kann gepipet werden)
+  - `Write-Verbose` für Debug-Info (gesteuert via `-Verbose`)
+  - `Write-Error` nur für echte Fehler (setzt `$?` = `$false`)
+  - `Write-Host` VERMEIDEN (funktioniert nicht in Remote-Sessions, nicht weiterleitbar)
+  - `Write-Log` für persistente Audit-Logs (zentrale Logging-Funktion)
+
+- **Regel 7.10:** ASCII-only Output Strings (KEINE Unicode-Zeichen)
+  - Box-Drawing VERMEIDEN: `╔═╝║╚` → Verwende `=`, `-`, `|` stattdessen
+  - Emoji-Symbole VERMEIDEN: `✅❌⚠️📋` → Verwende ASCII-Tags: `[OK]`, `[ERROR]`, `[WARN]`, `[INFO]`
+  - Grund: PowerShell 5.1 + Windows UTF-8 Encoding erzeugt Ausgabe-Korruption
+  - Auch in Logs konsistent halten
+
+- **Regel 7.11:** Keine `-ForegroundColor` in Production Scripts
+  - Farbausgabe funktioniert nicht in Task Scheduler / CI/CD / Remote-Sessions
+  - Alternative: Strukturierte ASCII-Präfixe `[OK]`, `[ERROR]`, `[WARN]` verwenden
+  - Ausnahme: Nur in interaktiven IDE-Scripts mit Kommentar `# Interactive-only`
 
 ---
 
@@ -103,6 +219,19 @@ Siehe **[ADR-004](DECISIONS.md)** für vollständigen Kontext.
 - **Regel 9.6:** Parameter Validation: Nutze `[ValidateNotNullOrEmpty()]`, `[ValidateSet(...)]`, etc.
 - **Regel 9.7:** WhatIf & Confirm: Fehlerbehandlung läuft gleich wie normalem Run
 - **Regel 9.8:** Script Exit-Codes: 0=OK, 1=General Error, 2=Cmdlet Error, 3+=Custom
+
+**Sichere Command-Ausführung (Security - CLAUDE.md Regel 1.4):**
+- **Regel 9.9:** `Invoke-Expression` VERMEIDEN (PSAvoidUsingInvokeExpression)
+  - **NIEMALS** dynamischen Code ausführen mit `Invoke-Expression`
+  - **Grund:** Injection-Risiko (Command Injection), Debugging-Schwierigkeiten, Performance-Overhead
+  - **Alternativen:**
+    * `&` Call-Operator für Native Commands: `& schtasks /create /tn "task" /tr "script.ps1"`
+    * `.NET APIs` wenn verfügbar (z.B. `System.Diagnostics.Process` statt cmd-Strings)
+    * Explizite Parameter (keine String-Konstruktion für Code)
+    * `Invoke-Command -ScriptBlock` nur mit vertrautem, nicht-benutzer-generiertem Code
+  - **Beispiel [OK]:** `& schtasks /create /tn $taskPath /tr $command /sc $schedule`
+  - **Beispiel [FAIL]:** `Invoke-Expression "schtasks /create /tn $taskPath /tr $command"`
+  - **PSScriptAnalyzer:** Fehler (nicht Warnung) - muss beseitigt sein vor Commit
 
 ---
 

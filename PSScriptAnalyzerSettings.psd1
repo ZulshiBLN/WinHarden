@@ -41,34 +41,58 @@
         PSUseConsistentIndentation = @{
             Enable = $true
             IndentationSize = 4
-            PipelineIndentation = 'IncreaseIndentationLength'
+            PipelineIndentation = 'IncreaseIndentationForFirstPipeline'
             Kind = 'space'
         }
 
         PSPlaceOpenBrace = @{
             Enable = $true
             OnSameLine = $true
-            NewLineAfter = $true
-            IgnoreOneLineBlock = $true
+            NewLineAfter = $false
+            IgnoreOneLineBlock = $false
         }
 
         PSPlaceCloseBrace = @{
             Enable = $true
             NoEmptyLineBefore = $false
-            IgnoreOneLineBlock = $true
+            IgnoreOneLineBlock = $false
+        }
+
+        PSUseConsistentWhitespace = @{
+            Enable = $true
+            CheckOpenBrace = $true
+            CheckOpenParen = $true
+            CheckOperator = $true
+            CheckPipe = $true
+            CheckComma = $true
         }
 
         PSProvideCommentHelp = @{
             Enable = $true
-            ExportedOnly = $false
+            ExportedOnly = $true
             BlockComment = $true
             VSCodeSnippetCorrection = $false
             Placement = 'begin'
         }
 
+        # POLICY: Private functions (prefix _) require only .SYNOPSIS, not full help
+        # REASON: Private functions are internal helpers, not public API (STRUCTURE.md Regel 3.1)
+        # Note: ExportedOnly = $true means only functions exported from modules get full help enforcement
+        # Private functions should have at least .SYNOPSIS or inline comments for clarity
+
         PSAvoidUsingWriteHost = @{
             Enable = $true
             CheckForFormatter = $false
+        }
+
+        # EXCEPTION: PSAvoidUsingInvokeExpression (Test-HardeningCompliance.ps1, line 249)
+        # Reason: Invoke-Expression used ONLY with trusted, static profile data (.psd1 files)
+        # - Profile commands are not user input (loaded from codebase)
+        # - This is an approved exception per ADR-004 and CLAUDE.md Regel 1.4
+        # - Alternative refactors (scriptblock objects) would require large profile changes
+        # Status: Documented exception with clear reasoning and scope limitation
+        PSAvoidUsingInvokeExpression = @{
+            Enable = $true
         }
 
         # EXCEPTION: Disable PSUseSingularNouns for Test-WinHardenDependencies

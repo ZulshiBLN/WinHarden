@@ -2,8 +2,8 @@
 
 Zentrale Dokumentation für Architektur-Entscheidungen, die das Projekt massgeblich beeinflussen.
 
-**Alle ADRs:** ADR-001 bis ADR-009 ([OK] ACCEPTED)  
-**Konkrete Implementierungs-Regeln:** Siehe [STRUCTURE.md](STRUCTURE.md) (Regeln 1.1-12.8)
+**Alle ADRs:** ADR-001 bis ADR-010 ([OK] ACCEPTED)  
+**Konkrete Implementierungs-Regeln:** Siehe [STRUCTURE.md](STRUCTURE.md) (Regeln 1.1-12.8, plus Regel 7.8-7.10)
 
 ---
 
@@ -296,7 +296,24 @@ Konsistente Code-Formatierung ist wichtig für Lesbarkeit und Wartbarkeit. PSScr
 - **Linting vor Commit:** Build-Check mit PSScriptAnalyzer (muss BESTEHEN vor jedem Commit)
 - **Indentation:** 4 Spaces (nicht Tabs)
 - **Line Length:** Optimiert auf Lesbarkeit (keine strikte Limit, aber ca. 120 Zeichen anstreben)
-- **Bracing Style:** K&R Style – `{` auf gleicher Zeile (z.B. `if ($x) {`)
+
+**Bracing Style (K&R - vollständig):**
+- **Öffnende Klammer `{`:** Auf gleicher Zeile wie Anweisung (z.B. `if ($x) {`)
+- **Schließende Klammer `}`:** Auf eigener Zeile, dedented zu gleicher Einrückung wie Anweisung
+- **Beispiel:**
+  ```powershell
+  if ($condition) {
+      Write-Output "Code"
+  }
+  
+  foreach ($item in $items) {
+      if ($item.Valid) {
+          Process-Item $item
+      }
+  }
+  ```
+- **Exception:** Einzeilige Statements dürfen `{ }` auf gleicher Zeile haben (z.B. Hashtabellen `@{ key = $value }`)
+
 - **Format-Exceptions:** Erlaubt wenn für Lesbarkeit notwendig (mit `# PSScriptAnalyzer ignore [rule]` Kommentar)
 
 **Consequences:**
@@ -514,3 +531,88 @@ Mit mehreren Modulen (Core, System, User, Maintenance) müssen Abhängigkeiten z
 
 **Implementation Notes:**
 See **[STRUCTURE.md Regel 12.1-12.8](STRUCTURE.md#12-dependency-management)** for complete dependency management rules and examples.
+
+---
+
+### ADR-010: Output-Handling & Logging-Konventionen
+
+**Status:** [OK] ACCEPTED
+
+**Context:**
+PowerShell Scripts nutzen verschiedene Ausgabe-Mechanismen (Write-Host, Write-Output, Write-Verbose, Logging). Das Problem:
+- `Write-Host` funktioniert nicht in allen Hosts und kann nicht weitergeleitet werden (PSScriptAnalyzer Warning)
+- Farbige Ausgabe (`-ForegroundColor`) funktioniert nicht in Task Scheduler / CI/CD Umgebungen
+- Unicode-Zeichen (Box-Drawing, Emojis) erzeugen Encoding-Probleme auf Windows PowerShell 5.1
+- Keine konsistenten Konventionen für wann welcher Output-Typ genutzt wird
+- Logging und User-Output waren vermischt
+
+**Decision:**
+
+**Output-Cmdlet-Strategie:**
+- **Write-Output:** Für normale interaktive Ausgaben (Standard, kann gepipet & umgeleitet werden)
+- **Write-Verbose:** Für detaillierte Debug-Info (gesteuert via `-Verbose` Flag oder `$VerbosePreference`)
+- **Write-Error:** Nur für echte Fehler (setzt `$?` zu `$false`, gesteuert via ErrorActionPreference)
+- **Write-Host:** VERMEIDEN (funktioniert nicht in Remote-Sesions, nicht weiterleitbar)
+- **Zentrale Logging-Funktion:** `Write-Log` für alle persistenten Audit-Logs (siehe ADR-005)
+
+**Ausgabe-Format-Konventionen:**
+- **Nur ASCII-Zeichen verwenden** (keine Unicode-Symbole):
+  - Box-Drawing Zeichen VERMEIDEN: `╔═╝║╚` → Verwende `=`, `-`, `|` stattdessen
+  - Emoji-Symbole VERMEIDEN: `✅❌⚠️📋🚨ℹ️` → Verwende ASCII-Tags: `[OK]`, `[ERROR]`, `[WARN]`, `[INFO]`, `[ACTION]`
+  - Grund: PowerShell 5.1 + Windows-Encoding erzeugt Ausgabe-Korruption mit Unicode
+  - Teste auf: Git Bash, Task Scheduler, PowerShell ISE, VS Code
+
+**Output-Struktur (Best Practice):**
+```powershell
+# Sektion-Header
+Write-Output ""
+Write-Output "[SECTION NAME]"
+Write-Output "=============================================================="
+
+# Status-Messages mit ASCII-Tags
+Write-Output "[OK] Operation completed successfully"
+Write-Output "[ERROR] Something went wrong: detail"
+Write-Output "[WARN] Warning condition detected"
+Write-Output "[INFO] Informational message"
+
+# Detaillierte Debug-Info (optional, via -Verbose)
+Write-Verbose "Internal state: $value"
+
+# Errors
+Write-Error "Critical error message" -ErrorAction Stop
+
+# Audit-Logging (persistent)
+Write-Log -Message "Action performed" -Level Info -Caller $MyInvocation.MyCommand.Name
+```
+
+**Farbausgabe-Alternativen:**
+- NICHT verwenden: `-ForegroundColor Green/Red/Yellow` (funktioniert nicht in Automation)
+- STATTDESSEN: Strukturierte Präfixe `[OK]`, `[ERROR]`, `[WARN]`
+- Für interaktive Skripte (IDE-nur): Darf `-ForegroundColor` nutzen, aber mit Kommentar `# Interactive-only`
+
+**Logging vs. Output Separation:**
+- **Transient Output** (Write-Output, Write-Verbose): Nur für Bildschirm/Console
+- **Persistent Logs** (Write-Log): Für Audit-Trail, Datei-basiert (siehe ADR-005)
+- **Error-Logs** (Write-Error + Write-Log): Automatisch geloggt (siehe ADR-004, ADR-005)
+- Nicht mischen: Logging-Ausgabe sollte nicht auf Bildschirm landen
+
+**Consequences:**
+- (+) Konsistente Ausgabe-Handling across alle Scripts
+- (+) Funktioniert in Task Scheduler, Remote-Sessions, CI/CD
+- (+) Keine Encoding-Probleme auf PowerShell 5.1
+- (+) ASCII-Tags sind universell verständlich (keine Farb-Abhängigkeit)
+- (+) Klare Trennung von User-Output und Logging
+- (-) Weniger "bunt" (aber verlässlicher)
+- (-) Bestehende Scripts müssen ggf. umgeschrieben werden
+
+**Alternatives:**
+- Weiterhin Write-Host nutzen (funktioniert nicht überall, nicht wartbar)
+- Farbausgabe in Task Scheduler (funktioniert nicht, frustrierend)
+- Unicode-Symbole überall (Encoding-Chaos auf Windows)
+- Keine klaren Conventions (Wildwuchs, inkonsistent)
+
+**Implementation Notes:**
+- See **[STRUCTURE.md Regel 7.8-7.10](STRUCTURE.md#7-code-style--linting)** for concrete output handling rules and examples
+- See **[CLAUDE.md Regel 3.1a](CLAUDE.md)** for ASCII-only output requirement
+- PSScriptAnalyzer warns on Write-Host (should be treated as error in build.ps1)
+- All existing scripts in `scripts/` have been updated to comply (as of 2026-06-26)
