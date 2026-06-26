@@ -94,7 +94,7 @@ if (-not $SkipTests) {
                 Write-Output "  Status: BELOW THRESHOLD - Add more tests to improve coverage"
             }
             else {
-                Write-Output "`n[CodeCoverage] PASSED - Coverage meets $minCoverage% minimum" -ForegroundColor Green
+                Write-Output "`n[OK] CodeCoverage PASSED - Coverage meets $minCoverage% minimum"
             }
         }
         else {
