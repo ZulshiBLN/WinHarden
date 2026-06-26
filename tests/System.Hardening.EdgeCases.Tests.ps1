@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
 Edge Case Tests for WinHarden Hardening System
 
@@ -93,7 +93,7 @@ Describe "Edge Cases - Boundary Values" {
                 -SkipPrerequisiteCheck
 
             # Create large filter array
-            $largeFilter = @("Rule-$i" | ForEach-Object { $_ } -End { for ($i = 1; $i -le 100; $i++) { "Rule-$i" } })
+            $largeFilter = @(1..100 | ForEach-Object { "Rule-$_" })
 
             {
                 Invoke-SecurityHardening -Session $session `
@@ -137,7 +137,7 @@ Describe "Edge Cases - Boundary Values" {
             } | Should -Not -Throw  # Parameter validation should pass
         }
 
-        It "handles emoji and international characters in report" {
+        It "handles text with special characters in report" {
             $report = @{
                 CompliancePercentage = 100
                 Status = "Compliant - All systems OK"
@@ -151,6 +151,7 @@ Describe "Edge Cases - Boundary Values" {
                 $output = Export-HardeningReport -ComplianceReport $report `
                     -Format Text -ErrorAction Stop
 
+                # Output must be ASCII-safe (no emoji/unicode symbols per ADR-010)
                 $output | Should -Not -BeNullOrEmpty
             } | Should -Not -Throw
         }
@@ -243,7 +244,7 @@ Describe "Edge Cases - Data Type Handling" {
                 -TargetSystem Client -OSVersion 11 `
                 -SkipPrerequisiteCheck
 
-            $session.Profile | Should -Match "basis|Basis" -not
+            $session.Profile | Should -Match "basis|Basis"
         }
 
         It "handles boolean switch combinations" {
