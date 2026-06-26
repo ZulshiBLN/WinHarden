@@ -12,6 +12,11 @@ function Get-ModuleVersion {
 
     .EXAMPLE
     Get-ModuleVersion | Select-Object Version, Phase
+
+    .NOTES
+    Returns WinHarden module metadata including version, PowerShell compatibility,
+    and current implementation phase. Used by scripts and build automation for
+    version tracking and compatibility validation.
     #>
 
     [CmdletBinding()]
