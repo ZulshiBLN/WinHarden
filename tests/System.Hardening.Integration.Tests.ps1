@@ -329,8 +329,9 @@ Describe "Integration - Scheduling Automation" {
 Describe "Integration - Trending Analysis" {
     Context "Compliance Trend Tracking" {
         It "retrieves trend data for system" {
+            $testComputerName = "TestSystem"
             # Create test repository
-            $repo = "C:\ProgramData\WinHarden\Compliance-History\TestSystem"
+            $repo = "C:\ProgramData\WinHarden\Compliance-History\$testComputerName"
             if (-not (Test-Path $repo)) {
                 New-Item -ItemType Directory -Path $repo -Force | Out-Null
             }
@@ -338,7 +339,7 @@ Describe "Integration - Trending Analysis" {
             # Note: Actual trending requires historical data
             # This test validates the function structure
             {
-                $trends = Get-HardeningTrendData -ComputerName "TestSystem" `
+                $trends = Get-HardeningTrendData -ComputerName $testComputerName `
                     -Days 30 -ErrorAction Continue
 
                 # Should return array (empty is OK if no history)
