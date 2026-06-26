@@ -57,7 +57,12 @@ $driftFunctions = @(
     'New-SecurityDriftReport'
 )
 
-$publicFunctions = $hardeningFunctions + $driftFunctions
+# Public functions to load (System Status)
+$systemStatusFunctions = @(
+    'Get-PendingRebootStatus'
+)
+
+$publicFunctions = $hardeningFunctions + $driftFunctions + $systemStatusFunctions
 $privateFunctions = @()
 
 # Load all functions

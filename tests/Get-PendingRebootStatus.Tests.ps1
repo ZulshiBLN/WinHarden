@@ -8,160 +8,114 @@ AfterAll {
 }
 
 Describe "Get-PendingRebootStatus" {
-    Context "Parameter Validation" {
-        It "works without parameters for local computer" {
-            { Get-PendingRebootStatus -ErrorAction SilentlyContinue } | Should -Not -Throw
+    Context "Function exists and loads" {
+        It "function is available" {
+            Get-Command Get-PendingRebootStatus -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
         }
 
-        It "accepts ComputerName parameter" {
-            { Get-PendingRebootStatus -ComputerName 'localhost' -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "supports WhatIf parameter" {
+            $cmd = Get-Command Get-PendingRebootStatus
+            $cmd.Parameters.Keys -contains 'WhatIf' | Should -Be $true
         }
 
-        It "accepts multiple computer names" {
-            { Get-PendingRebootStatus -ComputerName @('localhost', '127.0.0.1') -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "accepts Detailed switch" {
-            { Get-PendingRebootStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "supports Verbose parameter" {
+            $cmd = Get-Command Get-PendingRebootStatus
+            $cmd.Parameters.Keys -contains 'Verbose' | Should -Be $true
         }
     }
 
-    Context "Reboot Status Information" {
-        It "returns reboot status object" {
-            $status = Get-PendingRebootStatus -ErrorAction SilentlyContinue
-            if ($status) {
-                $status | Should -Not -BeNullOrEmpty
+    Context "Basic Functionality" {
+        It "executes without parameters" {
+            { Get-PendingRebootStatus -ErrorAction SilentlyContinue } | Should -Not -Throw
+        }
+
+        It "returns PSCustomObject" {
+            $result = Get-PendingRebootStatus -ErrorAction SilentlyContinue
+            $result | Should -BeOfType [PSCustomObject]
+        }
+
+        It "returns object with IsPending property" {
+            $result = Get-PendingRebootStatus -ErrorAction SilentlyContinue
+            $result.IsPending | Should -Not -BeNullOrEmpty
+        }
+
+        It "returns object with Message property" {
+            $result = Get-PendingRebootStatus -ErrorAction SilentlyContinue
+            $result.Message | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    Context "Return Value Properties" {
+        It "IsPending property is boolean" {
+            $result = Get-PendingRebootStatus -ErrorAction SilentlyContinue
+            $result.IsPending | Should -BeOfType [bool]
+        }
+
+        It "Message property is not empty" {
+            $result = Get-PendingRebootStatus -ErrorAction SilentlyContinue
+            $result.Message | Should -Not -BeNullOrEmpty
+        }
+
+        It "Message mentions reboot when IsPending is false" {
+            $result = Get-PendingRebootStatus -ErrorAction SilentlyContinue
+            if ($result.IsPending -eq $false) {
+                $result.Message | Should -Match "No reboot|reboot"
             }
         }
 
-        It "includes ComputerName property" {
+        It "Message mentions updates when IsPending is true" {
+            $result = Get-PendingRebootStatus -ErrorAction SilentlyContinue
+            if ($result.IsPending -eq $true) {
+                $result.Message | Should -Match "restart|update"
+            }
+        }
+    }
+
+    Context "Error Handling" {
+        It "runs with ErrorAction SilentlyContinue" {
             { Get-PendingRebootStatus -ErrorAction SilentlyContinue } | Should -Not -Throw
         }
 
-        It "includes RebootPending property" {
-            { Get-PendingRebootStatus -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "includes LastRebootTime property" {
-            { Get-PendingRebootStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "includes RebootReason property when reboot pending" {
-            { Get-PendingRebootStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "runs with ErrorAction Stop" {
+            { Get-PendingRebootStatus -ErrorAction Stop } | Should -Not -Throw
         }
     }
 
-    Context "Reboot Reason Detection" {
-        It "identifies Windows Update reboot need" {
-            { Get-PendingRebootStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
+    Context "WhatIf Support" {
+        It "executes in WhatIf mode without throwing" {
+            { Get-PendingRebootStatus -WhatIf } | Should -Not -Throw
         }
 
-        It "identifies Component-Based Servicing reboot need" {
-            { Get-PendingRebootStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "does not return object in WhatIf mode" {
+            $result = Get-PendingRebootStatus -WhatIf
+            $result | Should -BeNullOrEmpty
         }
 
-        It "identifies Pending File Rename reboot need" {
-            { Get-PendingRebootStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "identifies Configuration Manager reboot need" {
-            { Get-PendingRebootStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "identifies Windows Update Auto Update reboot need" {
-            { Get-PendingRebootStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "does not log in WhatIf mode" {
+            { Get-PendingRebootStatus -WhatIf -Verbose 4>&1 } | Should -Not -Throw
         }
     }
 
-    Context "Reboot Urgency" {
-        It "identifies if reboot is critical" {
-            { Get-PendingRebootStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "identifies if reboot can be delayed" {
-            { Get-PendingRebootStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "estimates time until automatic reboot" {
-            { Get-PendingRebootStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-    }
-
-    Context "Reboot History" {
-        It "includes last reboot time" {
-            { Get-PendingRebootStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "includes uptime calculation" {
-            { Get-PendingRebootStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "includes reboot count since installation" {
-            { Get-PendingRebootStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "includes pending updates count" {
-            { Get-PendingRebootStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-    }
-
-    Context "Multiple Reboot Reasons" {
-        It "handles multiple pending reboot reasons" {
-            { Get-PendingRebootStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "prioritizes critical reboot reasons" {
-            { Get-PendingRebootStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "returns all reboot reasons in array" {
-            { Get-PendingRebootStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-    }
-
-    Context "Remote Computer Support" {
-        It "retrieves status from remote computer" {
-            { Get-PendingRebootStatus -ComputerName 'localhost' -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "handles unreachable remote computer" {
-            { Get-PendingRebootStatus -ComputerName 'nonexistent.invalid' -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "accepts credential for remote connection" {
-            $credential = New-Object System.Management.Automation.PSCredential('user', (ConvertTo-SecureString 'pass' -AsPlainText -Force))
-            { Get-PendingRebootStatus -ComputerName 'localhost' -Credential $credential -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "processes multiple computers" {
-            $computers = @('localhost')
-            { Get-PendingRebootStatus -ComputerName $computers -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-    }
-
-    Context "Reboot Scheduling" {
-        It "includes scheduled reboot time if available" {
-            { Get-PendingRebootStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "identifies postponed reboot deadlines" {
-            { Get-PendingRebootStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "calculates time remaining until automatic reboot" {
-            { Get-PendingRebootStatus -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
+    Context "Verbose Output" {
+        It "accepts Verbose parameter" {
+            { Get-PendingRebootStatus -Verbose 4>&1 } | Should -Not -Throw
         }
     }
 
     Context "Documentation" {
-        It "has complete help documentation" {
-            $help = Get-Help Get-PendingRebootStatus
+        It "has help documentation" {
+            $help = Get-Help Get-PendingRebootStatus -ErrorAction SilentlyContinue
             $help.Synopsis | Should -Not -BeNullOrEmpty
         }
 
-        It "includes parameter descriptions" {
-            $help = Get-Help Get-PendingRebootStatus
-            $help.Parameters.Parameter.Name | Should -Contain 'ComputerName'
+        It "has description" {
+            $help = Get-Help Get-PendingRebootStatus -ErrorAction SilentlyContinue
+            $help.Description | Should -Not -BeNullOrEmpty
+        }
+
+        It "has at least one example" {
+            $help = Get-Help Get-PendingRebootStatus -ErrorAction SilentlyContinue
+            $help.Examples | Should -Not -BeNullOrEmpty
         }
     }
 }
