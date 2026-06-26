@@ -52,6 +52,7 @@ Funktionen für Windows Security Hardening. **Depends on Core.**
 | Import-HardeningGPO | System | `[OK]` | Group Policy Integration | 2026-06-26 | [OK] 3 tests | 95%+ |
 | Send-HardeningAlert | System | `[OK]` | Email Notifications | 2026-06-27 | [OK] 45 tests | 95%+ |
 | Get-HardeningTrendData | System | `[OK]` | Compliance Trending & Analytics | 2026-06-26 | [OK] 32 tests | 95%+ |
+| Get-AutoUpdateConfiguration | System | `[OK]` | Retrieve Windows Auto-Update Configuration | 2026-06-27 | [OK] 26 tests | 100% |
 
 ---
 
