@@ -73,7 +73,7 @@ if (-not $SkipTests) {
         throw "Pester tests failed"
     }
 
-    # Code Coverage Check (Pester 5.x format)
+    # Code Coverage Check (Pester 5.x format) - ADR-003 Enforcement
     if (-not $Validate -and $testResults.CodeCoverage) {
         Write-Output "`n[CodeCoverage] Analyzing code coverage..."
 
@@ -87,17 +87,38 @@ if (-not $SkipTests) {
             Write-Output "  Total lines analyzed: $totalLines"
             Write-Output "  Lines hit: $hitLines"
             Write-Output "  Lines missed: $missedLines"
-            Write-Output "  Coverage: $coveragePercent%"
+            Write-Output "  Overall Coverage: $coveragePercent%"
 
             # Enforce 95% minimum coverage (ADR-003 requirement)
             $minCoverage = 95
             if ($coveragePercent -lt $minCoverage) {
-                Write-Output "`n[CodeCoverage] WARNING: Coverage ($coveragePercent%) is below minimum ($minCoverage%)"
+                Write-Output "`n[CodeCoverage] ERROR: Coverage ($coveragePercent%) is BELOW minimum ($minCoverage%)"
                 Write-Output "  Required by: ADR-003 (Testing Framework requirement)"
-                Write-Output "  Status: BELOW THRESHOLD - Add more tests to improve coverage"
+                Write-Output "  Status: COVERAGE THRESHOLD NOT MET"
+
+                # Show per-file coverage analysis
+                Write-Output "`n  Per-File Coverage Analysis:"
+                $fileGroups = $coverageData | Group-Object -Property File
+                foreach ($fileGroup in $fileGroups) {
+                    $filePath = $fileGroup.Name
+                    $fileName = Split-Path $filePath -Leaf
+                    $fileTotalLines = $fileGroup.Count
+                    $fileHitLines = @($fileGroup.Group | Where-Object { $_.Hit -eq $true }).Count
+                    $fileCoveragePercent = [math]::Round(($fileHitLines / $fileTotalLines) * 100, 2)
+
+                    $status = if ($fileCoveragePercent -lt $minCoverage) {
+                        "[LOW]"
+                    }
+                    else {
+                        "[OK]"
+                    }
+                    Write-Output "    $status $fileName : $fileCoveragePercent% ($fileHitLines/$fileTotalLines lines)"
+                }
+
+                throw "[ADR-003] Code coverage check failed: $coveragePercent% < $minCoverage% minimum"
             }
             else {
-                Write-Output "`n[OK] CodeCoverage PASSED - Coverage meets $minCoverage% minimum"
+                Write-Output "`n[OK] CodeCoverage PASSED - Coverage $coveragePercent% meets $minCoverage% minimum (ADR-003)"
             }
         }
         else {
