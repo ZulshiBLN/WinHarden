@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-WinOpsKit System Module - Windows Hardening System functions.
+WinHarden System Module - Windows Hardening System functions.
 
 .DESCRIPTION
 System module provides Windows security hardening capabilities.
@@ -69,4 +69,4 @@ foreach ($funcName in $allFunctions) {
 # Export only public functions
 Export-ModuleMember -Function $publicFunctions
 
-Write-Verbose "WinOpsKit System Module v$script:SystemModuleVersion loaded with $($publicFunctions.Count) public function(s)"
+Write-Verbose "WinHarden System Module v$script:SystemModuleVersion loaded with $($publicFunctions.Count) public function(s)"

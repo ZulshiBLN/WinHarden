@@ -1,9 +1,9 @@
 <#
 .SYNOPSIS
-WinOpsKit Core Module - Central logging, error handling, and validation.
+WinHarden Core Module - Central logging, error handling, and validation.
 
 .DESCRIPTION
-Core module provides foundational functions for all other WinOpsKit modules.
+Core module provides foundational functions for all other WinHarden modules.
 Loads functions from functions/Core/ directory:
 - Write-Log: Centralized CSV-based logging with masking
 - ConvertTo-MaskedString: Sensitive data masking
@@ -11,9 +11,9 @@ Loads functions from functions/Core/ directory:
 - Test-NotNullOrEmpty: Parameter validation
 - Test-ValidPath: Path validation
 - Get-ModuleVersion: Version and status info
-- Test-WinOpsKitDependencies: Dependency validation
+- Test-WinHardenDependencies: Dependency validation
 
-This module is ALWAYS loaded first by WinOpsKit scripts.
+This module is ALWAYS loaded first by WinHarden scripts.
 
 .NOTES
 This module implements ADR-005 (Logging), ADR-004 (Error Handling), and ADR-008 (Module Import Strategy).
@@ -32,7 +32,7 @@ $publicFunctions = @(
     'Test-NotNullOrEmpty'
     'Test-ValidPath'
     'Get-ModuleVersion'
-    'Test-WinOpsKitDependencies'
+    'Test-WinHardenDependencies'
 )
 
 # Private helper functions to load
@@ -59,4 +59,4 @@ foreach ($funcName in $allFunctions) {
 # Export only public functions
 Export-ModuleMember -Function $publicFunctions
 
-Write-Verbose "WinOpsKit Core Module v$script:CoreModuleVersion loaded with $($publicFunctions.Count) public functions"
+Write-Verbose "WinHarden Core Module v$script:CoreModuleVersion loaded with $($publicFunctions.Count) public functions"
