@@ -80,7 +80,7 @@ function Send-HardeningAlert {
     CREDENTIALS: Use secure credential handling (Get-Credential)
     #>
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param(
         [Parameter(Mandatory = $true)]
         [string]
@@ -155,9 +155,13 @@ function Send-HardeningAlert {
         }
 
         # Send email
-        Send-MailMessage @smtpParams
-
-        Write-Log -Message "Hardening alert sent to $($ToAddress -join ', ')" -Level Info
+        if ($PSCmdlet.ShouldProcess("$($ToAddress -join ', ')", "Send hardening alert ($AlertType)")) {
+            Send-MailMessage @smtpParams
+            Write-Log -Message "Hardening alert sent to $($ToAddress -join ', ')" -Level Info
+        }
+        else {
+            Write-Log -Message "Hardening alert: WhatIf mode, no email sent" -Level Verbose
+        }
     }
     catch {
         Write-ErrorLog -Message "Failed to send hardening alert: $($_.Exception.Message)" -Caller $MyInvocation.MyCommand.Name
@@ -210,13 +214,18 @@ function _GenerateAlertBody {
         [PSCustomObject]$Report
     )
 
+    $alertTypeLabel = switch ($AlertType) {
+        'Hardening' { 'System Hardening Operation' }
+        'Compliance' { 'Compliance Check' }
+        'Remediation' { 'Remediation Event' }
+        'Schedule' { 'Scheduled Hardening Check' }
+        default { 'WinHarden Alert' }
+    }
+
     $severityColor = switch ($Severity) {
-        'Info' { '#0066cc' 
-        }
-        'Warning' { '#ff9800' 
-        }
-        'Critical' { '#f44336' 
-        }
+        'Info' { '#0066cc' }
+        'Warning' { '#ff9800' }
+        'Critical' { '#f44336' }
     }
 
     $html = @"

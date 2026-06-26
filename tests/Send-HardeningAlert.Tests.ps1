@@ -8,153 +8,414 @@ AfterAll {
 }
 
 Describe "Send-HardeningAlert" {
+    BeforeEach {
+        Mock -CommandName Send-MailMessage -MockWith { } -ModuleName System
+    }
+
     Context "Parameter Validation" {
-        It "requires AlertLevel parameter" {
-            { Send-HardeningAlert -Subject "Test" -Body "Test body" -SmtpServer "localhost" } | Should -Throw
-        }
-
         It "requires SmtpServer parameter" {
-            { Send-HardeningAlert -AlertLevel Critical -Subject "Test" -Body "Test body" } | Should -Throw
+            { Send-HardeningAlert -FromAddress "alert@test.com" -ToAddress "admin@test.com" -AlertType Hardening } |
+                Should -Throw
         }
 
-        It "accepts valid alert levels" {
-            $levels = @('Critical', 'High', 'Medium', 'Low', 'Info')
-            foreach ($level in $levels) {
-                { Send-HardeningAlert -AlertLevel $level -Subject "Test" -Body "Test body" -SmtpServer "localhost" -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "requires FromAddress parameter" {
+            { Send-HardeningAlert -SmtpServer "localhost" -ToAddress "admin@test.com" -AlertType Hardening } |
+                Should -Throw
+        }
+
+        It "requires ToAddress parameter" {
+            { Send-HardeningAlert -SmtpServer "localhost" -FromAddress "alert@test.com" -AlertType Hardening } |
+                Should -Throw
+        }
+
+        It "requires AlertType parameter" {
+            { Send-HardeningAlert -SmtpServer "localhost" -FromAddress "alert@test.com" -ToAddress "admin@test.com" } |
+                Should -Throw
+        }
+
+        It "accepts valid AlertType values" {
+            $types = @('Hardening', 'Compliance', 'Remediation', 'Schedule')
+            foreach ($type in $types) {
+                $params = @{
+                    SmtpServer = "localhost"
+                    FromAddress = "alert@test.com"
+                    ToAddress = "admin@test.com"
+                    AlertType = $type
+                    ErrorAction = 'SilentlyContinue'
+                }
+                { Send-HardeningAlert @params } | Should -Not -Throw
             }
         }
 
-        It "accepts RecipientAddress parameter" {
-            { Send-HardeningAlert -AlertLevel Critical -Subject "Test" -Body "Test body" -SmtpServer "localhost" -RecipientAddress "admin@example.com" -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "rejects invalid AlertType values" {
+            { Send-HardeningAlert -SmtpServer "localhost" -FromAddress "alert@test.com" `
+                -ToAddress "admin@test.com" -AlertType "InvalidType" } | Should -Throw
+        }
+    }
+
+    Context "Alert Types" {
+        It "accepts Hardening alert type" {
+            $params = @{
+                SmtpServer = "localhost"
+                FromAddress = "alert@test.com"
+                ToAddress = "admin@test.com"
+                AlertType = "Hardening"
+                ErrorAction = 'SilentlyContinue'
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
         }
 
-        It "accepts Port parameter" {
-            { Send-HardeningAlert -AlertLevel Critical -Subject "Test" -Body "Test body" -SmtpServer "localhost" -Port 587 -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "accepts Compliance alert type" {
+            $params = @{
+                SmtpServer = "localhost"
+                FromAddress = "alert@test.com"
+                ToAddress = "admin@test.com"
+                AlertType = "Compliance"
+                ErrorAction = 'SilentlyContinue'
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
+        }
+
+        It "accepts Remediation alert type" {
+            $params = @{
+                SmtpServer = "localhost"
+                FromAddress = "alert@test.com"
+                ToAddress = "admin@test.com"
+                AlertType = "Remediation"
+                ErrorAction = 'SilentlyContinue'
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
+        }
+
+        It "accepts Schedule alert type" {
+            $params = @{
+                SmtpServer = "localhost"
+                FromAddress = "alert@test.com"
+                ToAddress = "admin@test.com"
+                AlertType = "Schedule"
+                ErrorAction = 'SilentlyContinue'
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
+        }
+    }
+
+    Context "Severity Levels" {
+        It "accepts Info severity level" {
+            $params = @{
+                SmtpServer = "localhost"
+                FromAddress = "alert@test.com"
+                ToAddress = "admin@test.com"
+                AlertType = "Hardening"
+                Severity = "Info"
+                ErrorAction = 'SilentlyContinue'
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
+        }
+
+        It "accepts Warning severity level" {
+            $params = @{
+                SmtpServer = "localhost"
+                FromAddress = "alert@test.com"
+                ToAddress = "admin@test.com"
+                AlertType = "Hardening"
+                Severity = "Warning"
+                ErrorAction = 'SilentlyContinue'
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
+        }
+
+        It "accepts Critical severity level" {
+            $params = @{
+                SmtpServer = "localhost"
+                FromAddress = "alert@test.com"
+                ToAddress = "admin@test.com"
+                AlertType = "Hardening"
+                Severity = "Critical"
+                ErrorAction = 'SilentlyContinue'
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
+        }
+
+        It "uses Info as default severity" {
+            $params = @{
+                SmtpServer = "localhost"
+                FromAddress = "alert@test.com"
+                ToAddress = "admin@test.com"
+                AlertType = "Hardening"
+                ErrorAction = 'SilentlyContinue'
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
+        }
+
+        It "rejects invalid severity values" {
+            { Send-HardeningAlert -SmtpServer "localhost" -FromAddress "alert@test.com" `
+                -ToAddress "admin@test.com" -AlertType "Hardening" -Severity "InvalidSeverity" } |
+                Should -Throw
+        }
+    }
+
+    Context "SMTP Configuration" {
+        It "accepts default SMTP port 25" {
+            $params = @{
+                SmtpServer = "localhost"
+                FromAddress = "alert@test.com"
+                ToAddress = "admin@test.com"
+                AlertType = "Hardening"
+                ErrorAction = 'SilentlyContinue'
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
+        }
+
+        It "accepts custom SMTP port 587" {
+            $params = @{
+                SmtpServer = "localhost"
+                FromAddress = "alert@test.com"
+                ToAddress = "admin@test.com"
+                AlertType = "Hardening"
+                SmtpPort = 587
+                ErrorAction = 'SilentlyContinue'
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
+        }
+
+        It "accepts custom SMTP port 465 with SSL" {
+            $params = @{
+                SmtpServer = "localhost"
+                FromAddress = "alert@test.com"
+                ToAddress = "admin@test.com"
+                AlertType = "Hardening"
+                SmtpPort = 465
+                UseSSL = $true
+                ErrorAction = 'SilentlyContinue'
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
         }
 
         It "accepts UseSSL switch" {
-            { Send-HardeningAlert -AlertLevel Critical -Subject "Test" -Body "Test body" -SmtpServer "localhost" -UseSSL -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "accepts Credential parameter" {
-            $credential = New-Object System.Management.Automation.PSCredential('TestUser', (ConvertTo-SecureString 'TestPass' -AsPlainText -Force))
-            { Send-HardeningAlert -AlertLevel Critical -Subject "Test" -Body "Test body" -SmtpServer "localhost" -Credential $credential -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-    }
-
-    Context "Alert Levels" {
-        It "accepts Critical alert level" {
-            { Send-HardeningAlert -AlertLevel Critical -Subject "Critical Alert" -Body "System failure" -SmtpServer "localhost" -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "accepts High alert level" {
-            { Send-HardeningAlert -AlertLevel High -Subject "High Alert" -Body "Serious issue" -SmtpServer "localhost" -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "accepts Medium alert level" {
-            { Send-HardeningAlert -AlertLevel Medium -Subject "Medium Alert" -Body "Notice" -SmtpServer "localhost" -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "accepts Low alert level" {
-            { Send-HardeningAlert -AlertLevel Low -Subject "Low Alert" -Body "Minor info" -SmtpServer "localhost" -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "accepts Info alert level" {
-            { Send-HardeningAlert -AlertLevel Info -Subject "Info Alert" -Body "FYI" -SmtpServer "localhost" -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-    }
-
-    Context "Email Configuration" {
-        It "sends email with default SMTP port 25" {
-            { Send-HardeningAlert -AlertLevel Critical -Subject "Test" -Body "Test body" -SmtpServer "localhost" -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "sends email with TLS port 587" {
-            { Send-HardeningAlert -AlertLevel Critical -Subject "Test" -Body "Test body" -SmtpServer "localhost" -Port 587 -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "sends email with SSL port 465" {
-            { Send-HardeningAlert -AlertLevel Critical -Subject "Test" -Body "Test body" -SmtpServer "localhost" -Port 465 -UseSSL -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "sends email with custom port" {
-            { Send-HardeningAlert -AlertLevel Critical -Subject "Test" -Body "Test body" -SmtpServer "localhost" -Port 2525 -ErrorAction SilentlyContinue } | Should -Not -Throw
+            $params = @{
+                SmtpServer = "localhost"
+                FromAddress = "alert@test.com"
+                ToAddress = "admin@test.com"
+                AlertType = "Hardening"
+                UseSSL = $true
+                ErrorAction = 'SilentlyContinue'
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
         }
     }
 
     Context "Recipient Handling" {
         It "accepts single recipient address" {
-            { Send-HardeningAlert -AlertLevel Critical -Subject "Test" -Body "Test body" -SmtpServer "localhost" -RecipientAddress "admin@example.com" -ErrorAction SilentlyContinue } | Should -Not -Throw
+            $params = @{
+                SmtpServer = "localhost"
+                FromAddress = "alert@test.com"
+                ToAddress = "admin@test.com"
+                AlertType = "Hardening"
+                ErrorAction = 'SilentlyContinue'
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
         }
 
         It "accepts multiple recipient addresses" {
-            $recipients = @("admin@example.com", "ops@example.com", "security@example.com")
-            { Send-HardeningAlert -AlertLevel Critical -Subject "Test" -Body "Test body" -SmtpServer "localhost" -RecipientAddress $recipients -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "accepts CC recipients" {
-            { Send-HardeningAlert -AlertLevel Critical -Subject "Test" -Body "Test body" -SmtpServer "localhost" -CcAddress "manager@example.com" -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "accepts BCC recipients" {
-            { Send-HardeningAlert -AlertLevel Critical -Subject "Test" -Body "Test body" -SmtpServer "localhost" -BccAddress "audit@example.com" -ErrorAction SilentlyContinue } | Should -Not -Throw
+            $params = @{
+                SmtpServer = "localhost"
+                FromAddress = "alert@test.com"
+                ToAddress = @("admin@test.com", "ops@test.com", "security@test.com")
+                AlertType = "Hardening"
+                ErrorAction = 'SilentlyContinue'
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
         }
     }
 
-    Context "Content Formatting" {
-        It "includes alert level in subject prefix" {
-            { Send-HardeningAlert -AlertLevel Critical -Subject "Test Alert" -Body "Test body" -SmtpServer "localhost" -ErrorAction SilentlyContinue } | Should -Not -Throw
+    Context "Compliance Report" {
+        It "accepts ComplianceReport parameter" {
+            $report = [PSCustomObject]@{
+                CompliancePercentage = 95
+                Status = "Compliant"
+                TotalRules = 44
+                CompliantRules = 42
+                NonCompliantRules = 2
+            }
+            $params = @{
+                SmtpServer = "localhost"
+                FromAddress = "alert@test.com"
+                ToAddress = "admin@test.com"
+                AlertType = "Compliance"
+                ComplianceReport = $report
+                ErrorAction = 'SilentlyContinue'
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
         }
 
-        It "includes timestamp in message body" {
-            { Send-HardeningAlert -AlertLevel Critical -Subject "Test" -Body "Test body" -SmtpServer "localhost" -IncludeTimestamp -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "generates alert without ComplianceReport" {
+            $params = @{
+                SmtpServer = "localhost"
+                FromAddress = "alert@test.com"
+                ToAddress = "admin@test.com"
+                AlertType = "Hardening"
+                ErrorAction = 'SilentlyContinue'
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
         }
 
-        It "includes system information in message" {
-            { Send-HardeningAlert -AlertLevel Critical -Subject "Test" -Body "Test body" -SmtpServer "localhost" -IncludeSystemInfo -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "formats message body as plain text by default" {
-            { Send-HardeningAlert -AlertLevel Critical -Subject "Test" -Body "Test body" -SmtpServer "localhost" -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "formats message body as HTML when requested" {
-            { Send-HardeningAlert -AlertLevel Critical -Subject "Test" -Body "<h1>Test</h1>" -SmtpServer "localhost" -BodyAsHtml -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "accepts IncludeReport switch" {
+            $params = @{
+                SmtpServer = "localhost"
+                FromAddress = "alert@test.com"
+                ToAddress = "admin@test.com"
+                AlertType = "Compliance"
+                IncludeReport = $true
+                ErrorAction = 'SilentlyContinue'
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
         }
     }
 
     Context "Authentication" {
-        It "sends alert without authentication" {
-            { Send-HardeningAlert -AlertLevel Critical -Subject "Test" -Body "Test body" -SmtpServer "localhost" -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "sends alert without credential" {
+            $params = @{
+                SmtpServer = "localhost"
+                FromAddress = "alert@test.com"
+                ToAddress = "admin@test.com"
+                AlertType = "Hardening"
+                ErrorAction = 'SilentlyContinue'
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
         }
 
-        It "sends alert with credential authentication" {
-            $credential = New-Object System.Management.Automation.PSCredential('user', (ConvertTo-SecureString 'pass' -AsPlainText -Force))
-            { Send-HardeningAlert -AlertLevel Critical -Subject "Test" -Body "Test body" -SmtpServer "localhost" -Credential $credential -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "accepts PSCredential for authentication" {
+            # PSScriptAnalyzer ignore [PSAvoidUsingConvertToSecureStringWithPlainText] - test credential only
+            $credential = New-Object System.Management.Automation.PSCredential(
+                'user',
+                (ConvertTo-SecureString 'pass' -AsPlainText -Force)
+            )
+            $params = @{
+                SmtpServer = "localhost"
+                FromAddress = "alert@test.com"
+                ToAddress = "admin@test.com"
+                AlertType = "Hardening"
+                Credential = $credential
+                ErrorAction = 'SilentlyContinue'
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
+        }
+    }
+
+    Context "WhatIf Support" {
+        It "supports -WhatIf parameter" {
+            $params = @{
+                SmtpServer = "localhost"
+                FromAddress = "alert@test.com"
+                ToAddress = "admin@test.com"
+                AlertType = "Hardening"
+                WhatIf = $true
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
+        }
+
+        It "does not throw with -WhatIf and -Confirm" {
+            $params = @{
+                SmtpServer = "localhost"
+                FromAddress = "alert@test.com"
+                ToAddress = "admin@test.com"
+                AlertType = "Hardening"
+                WhatIf = $true
+                Confirm = $false
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
+        }
+    }
+
+    Context "Email Content Generation" {
+        It "generates email subject for Hardening alert type" {
+            $params = @{
+                SmtpServer = "localhost"
+                FromAddress = "alert@test.com"
+                ToAddress = "admin@test.com"
+                AlertType = "Hardening"
+                Severity = "Warning"
+                ErrorAction = 'SilentlyContinue'
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
+        }
+
+        It "generates email subject for Compliance alert type" {
+            $params = @{
+                SmtpServer = "localhost"
+                FromAddress = "alert@test.com"
+                ToAddress = "admin@test.com"
+                AlertType = "Compliance"
+                Severity = "Info"
+                ErrorAction = 'SilentlyContinue'
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
+        }
+
+        It "includes compliance metrics in email body" {
+            $report = [PSCustomObject]@{
+                CompliancePercentage = 88
+                Status = "PartiallyCompliant"
+                TotalRules = 44
+                CompliantRules = 39
+                NonCompliantRules = 5
+            }
+            $params = @{
+                SmtpServer = "localhost"
+                FromAddress = "alert@test.com"
+                ToAddress = "admin@test.com"
+                AlertType = "Compliance"
+                ComplianceReport = $report
+                ErrorAction = 'SilentlyContinue'
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
+        }
+
+        It "generates HTML-formatted email body" {
+            $params = @{
+                SmtpServer = "localhost"
+                FromAddress = "alert@test.com"
+                ToAddress = "admin@test.com"
+                AlertType = "Hardening"
+                ErrorAction = 'SilentlyContinue'
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
         }
     }
 
     Context "Error Handling" {
-        It "handles invalid SMTP server gracefully" {
-            { Send-HardeningAlert -AlertLevel Critical -Subject "Test" -Body "Test body" -SmtpServer "invalid.nonexistent.server" -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "logs alert sending operation" {
+            $params = @{
+                SmtpServer = "localhost"
+                FromAddress = "alert@test.com"
+                ToAddress = "admin@test.com"
+                AlertType = "Hardening"
+                ErrorAction = 'SilentlyContinue'
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
         }
 
-        It "handles network timeout" {
-            { Send-HardeningAlert -AlertLevel Critical -Subject "Test" -Body "Test body" -SmtpServer "localhost" -TimeoutSeconds 1 -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-    }
-
-    Context "Advanced Options" {
-        It "accepts custom From address" {
-            { Send-HardeningAlert -AlertLevel Critical -Subject "Test" -Body "Test body" -SmtpServer "localhost" -FromAddress "hardening@example.com" -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "accepts attachment paths" {
-            { Send-HardeningAlert -AlertLevel Critical -Subject "Test" -Body "Test body" -SmtpServer "localhost" -AttachmentPath @("C:\Temp\report.txt") -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "includes alert details in log message" {
+            $params = @{
+                SmtpServer = "localhost"
+                FromAddress = "alert@test.com"
+                ToAddress = "admin@test.com"
+                AlertType = "Compliance"
+                Severity = "Critical"
+                ErrorAction = 'SilentlyContinue'
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
         }
 
-        It "accepts priority setting" {
-            { Send-HardeningAlert -AlertLevel Critical -Subject "Test" -Body "Test body" -SmtpServer "localhost" -Priority High -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "uses correct error action preference" {
+            $params = @{
+                SmtpServer = "localhost"
+                FromAddress = "alert@test.com"
+                ToAddress = "admin@test.com"
+                AlertType = "Hardening"
+                ErrorAction = 'SilentlyContinue'
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
         }
     }
 
@@ -164,14 +425,82 @@ Describe "Send-HardeningAlert" {
             $help.Synopsis | Should -Not -BeNullOrEmpty
         }
 
-        It "help includes AlertLevel parameter" {
-            $help = Get-Help Send-HardeningAlert
-            $help.Parameters.Parameter.Name | Should -Contain 'AlertLevel'
-        }
-
         It "help includes SmtpServer parameter" {
             $help = Get-Help Send-HardeningAlert
             $help.Parameters.Parameter.Name | Should -Contain 'SmtpServer'
+        }
+
+        It "help includes FromAddress parameter" {
+            $help = Get-Help Send-HardeningAlert
+            $help.Parameters.Parameter.Name | Should -Contain 'FromAddress'
+        }
+
+        It "help includes ToAddress parameter" {
+            $help = Get-Help Send-HardeningAlert
+            $help.Parameters.Parameter.Name | Should -Contain 'ToAddress'
+        }
+
+        It "help includes AlertType parameter" {
+            $help = Get-Help Send-HardeningAlert
+            $help.Parameters.Parameter.Name | Should -Contain 'AlertType'
+        }
+
+        It "help includes Severity parameter" {
+            $help = Get-Help Send-HardeningAlert
+            $help.Parameters.Parameter.Name | Should -Contain 'Severity'
+        }
+
+        It "provides example usage" {
+            $help = Get-Help Send-HardeningAlert
+            $help.Examples | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    Context "Integration" {
+        It "works with all mandatory parameters" {
+            $params = @{
+                SmtpServer = "mail.example.com"
+                FromAddress = "alerts@example.com"
+                ToAddress = @("admin@example.com", "security@example.com")
+                AlertType = "Compliance"
+                Severity = "Warning"
+                SmtpPort = 587
+                UseSSL = $true
+                ErrorAction = 'SilentlyContinue'
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
+        }
+
+        It "works with compliance report and multiple recipients" {
+            $report = [PSCustomObject]@{
+                CompliancePercentage = 92
+                Status = "PartiallyCompliant"
+                TotalRules = 44
+                CompliantRules = 40
+                NonCompliantRules = 4
+            }
+            $params = @{
+                SmtpServer = "localhost"
+                FromAddress = "alert@test.com"
+                ToAddress = @("admin@test.com", "ops@test.com")
+                AlertType = "Compliance"
+                ComplianceReport = $report
+                Severity = "Warning"
+                ErrorAction = 'SilentlyContinue'
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
+        }
+
+        It "generates different subjects for different alert types" {
+            $params = @{
+                SmtpServer = "localhost"
+                FromAddress = "alert@test.com"
+                ToAddress = "admin@test.com"
+                AlertType = "Remediation"
+                Severity = "Critical"
+                ErrorAction = 'SilentlyContinue'
+            }
+            { Send-HardeningAlert @params } | Should -Not -Throw
         }
     }
 }

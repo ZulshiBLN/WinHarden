@@ -50,7 +50,7 @@ Funktionen für Windows Security Hardening. **Depends on Core.**
 | Invoke-RemoteHardening | System | `[OK]` | Remote Multi-System Deployment | 2026-06-26 | [OK] 4 tests | 95%+ |
 | New-HardeningSchedule | System | `[OK]` | Automate Recurring Compliance Checks | 2026-06-27 | [OK] 24 tests | 95%+ |
 | Import-HardeningGPO | System | `[OK]` | Group Policy Integration | 2026-06-26 | [OK] 3 tests | 95%+ |
-| Send-HardeningAlert | System | `[OK]` | Email Notifications | 2026-06-26 | [OK] 3 tests | 95%+ |
+| Send-HardeningAlert | System | `[OK]` | Email Notifications | 2026-06-27 | [OK] 45 tests | 95%+ |
 | Get-HardeningTrendData | System | `[OK]` | Compliance Trending & Analytics | 2026-06-26 | [OK] 32 tests | 95%+ |
 
 ---
