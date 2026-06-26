@@ -31,7 +31,10 @@ $publicFunctions = @(
     'New-HardeningSession',
     'Get-HardeningProfile',
     'Invoke-SecurityHardening',
-    'Test-HardeningCompliance'
+    'Test-HardeningCompliance',
+    'Export-HardeningReport',
+    'Invoke-RemoteHardening',
+    'New-HardeningSchedule'
 )
 
 # Private helper functions to load
