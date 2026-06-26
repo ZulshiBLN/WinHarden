@@ -1,8 +1,8 @@
 ﻿Timestamp,Level,Caller,Function,LineNumber,Message
-2026-06-26 10:01:09.319,Error,Write-ErrorLog,Write-ErrorLog,37,Critical error occurred
-2026-06-26 10:01:09.396,Error,Test-NotNullOrEmpty<Process>,Test-NotNullOrEmpty<Process>,39,TestParam cannot be null or empty
-2026-06-26 10:01:09.427,Error,Test-NotNullOrEmpty<Process>,Test-NotNullOrEmpty<Process>,39,TestParam cannot be null or empty
-2026-06-26 10:01:09.451,Error,Test-NotNullOrEmpty<Process>,Test-NotNullOrEmpty<Process>,39,TestParam cannot be null or empty
-2026-06-26 10:01:09.476,Error,Test-NotNullOrEmpty<Process>,Test-NotNullOrEmpty<Process>,39,ComputerName cannot be null or empty
-2026-06-26 10:01:09.533,Error,Test-ValidPath,Test-ValidPath,37,TestPath does not exist: C:\NonExistent\Path\That\Does\Not\Exist
-2026-06-26 10:01:09.583,Error,Test-ValidPath,Test-ValidPath,37,TestPath does not exist: C:\InvalidPath
+2026-06-26 10:04:41.464,Error,Write-ErrorLog,Write-ErrorLog,37,Critical error occurred
+2026-06-26 10:04:41.522,Error,Test-NotNullOrEmpty<Process>,Test-NotNullOrEmpty<Process>,39,TestParam cannot be null or empty
+2026-06-26 10:04:41.542,Error,Test-NotNullOrEmpty<Process>,Test-NotNullOrEmpty<Process>,39,TestParam cannot be null or empty
+2026-06-26 10:04:41.556,Error,Test-NotNullOrEmpty<Process>,Test-NotNullOrEmpty<Process>,39,TestParam cannot be null or empty
+2026-06-26 10:04:41.570,Error,Test-NotNullOrEmpty<Process>,Test-NotNullOrEmpty<Process>,39,ComputerName cannot be null or empty
+2026-06-26 10:04:41.607,Error,Test-ValidPath,Test-ValidPath,37,TestPath does not exist: C:\NonExistent\Path\That\Does\Not\Exist
+2026-06-26 10:04:41.653,Error,Test-ValidPath,Test-ValidPath,37,TestPath does not exist: C:\InvalidPath
