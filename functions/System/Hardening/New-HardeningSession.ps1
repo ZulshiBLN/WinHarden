@@ -62,7 +62,7 @@ function New-HardeningSession {
     WHATIF SUPPORT: Full support via $WhatIfPreference
     #>
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param(
         [Parameter(Mandatory = $true, ValueFromPipeline = $false)]
         [ValidateSet('Basis', 'Recommended', 'Strict')]

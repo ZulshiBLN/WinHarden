@@ -19,30 +19,30 @@ Describe "Invoke-SecurityHardening" {
         }
 
         It "accepts RuleFilter parameter" {
-            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf
+            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf -SkipPrerequisiteCheck
             { Invoke-SecurityHardening -Session $session -RuleFilter @('Account-MinimumPasswordLength') } | Should -Not -Throw
         }
 
         It "accepts FailOnError switch" {
-            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf
+            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf -SkipPrerequisiteCheck
             { Invoke-SecurityHardening -Session $session -FailOnError } | Should -Not -Throw
         }
 
         It "accepts SkipVerification switch" {
-            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf
+            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf -SkipPrerequisiteCheck
             { Invoke-SecurityHardening -Session $session -SkipVerification } | Should -Not -Throw
         }
     }
 
     Context "Execution" {
         It "returns a result object" {
-            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf
+            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf -SkipPrerequisiteCheck
             $result = Invoke-SecurityHardening -Session $session
             $result | Should -Not -BeNullOrEmpty
         }
 
         It "result object has required properties" {
-            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf
+            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf -SkipPrerequisiteCheck
             $result = Invoke-SecurityHardening -Session $session
             $result | Should -HaveProperty SessionId
             $result | Should -HaveProperty Profile
@@ -54,38 +54,38 @@ Describe "Invoke-SecurityHardening" {
         }
 
         It "preserves session profile in result" {
-            $session = New-HardeningSession -Profile Recommended -TargetSystem Server -OSVersion 2022 -WhatIf
+            $session = New-HardeningSession -Profile Recommended -TargetSystem Server -OSVersion 2022 -WhatIf -SkipPrerequisiteCheck
             $result = Invoke-SecurityHardening -Session $session
             $result.Profile | Should -Be 'Recommended'
         }
 
         It "preserves target system in result" {
-            $session = New-HardeningSession -Profile Basis -TargetSystem Server -OSVersion 2025 -WhatIf
+            $session = New-HardeningSession -Profile Basis -TargetSystem Server -OSVersion 2025 -WhatIf -SkipPrerequisiteCheck
             $result = Invoke-SecurityHardening -Session $session
             $result.TargetSystem | Should -Be 'Server'
         }
 
         It "captures rule application status" {
-            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf
+            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf -SkipPrerequisiteCheck
             $result = Invoke-SecurityHardening -Session $session
             $result.AppliedRules | Should -Not -BeNullOrEmpty
         }
 
         It "returns success status when no failures" {
-            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf
+            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf -SkipPrerequisiteCheck
             $result = Invoke-SecurityHardening -Session $session
             $result.Success | Should -Be $true
         }
 
         It "records execution duration" {
-            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf
+            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf -SkipPrerequisiteCheck
             $result = Invoke-SecurityHardening -Session $session
             $result.Duration | Should -Not -BeNullOrEmpty
             $result.Duration.TotalMilliseconds | Should -BeGreaterThan 0
         }
 
         It "respects WhatIf mode and reports it" {
-            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf
+            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf -SkipPrerequisiteCheck
             $result = Invoke-SecurityHardening -Session $session
             $result.AppliedRules.Count | Should -Be $session.State.TotalRules
         }
@@ -93,13 +93,13 @@ Describe "Invoke-SecurityHardening" {
 
     Context "Rule Filtering" {
         It "applies only filtered rules when RuleFilter provided" {
-            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf
+            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf -SkipPrerequisiteCheck
             $result = Invoke-SecurityHardening -Session $session -RuleFilter @('Account-MinimumPasswordLength', 'Account-PasswordComplexity')
             $result.AppliedRules.Count | Should -Be 2
         }
 
         It "filters rules correctly from profile" {
-            $session = New-HardeningSession -Profile Recommended -TargetSystem Client -OSVersion 11 -WhatIf
+            $session = New-HardeningSession -Profile Recommended -TargetSystem Client -OSVersion 11 -WhatIf -SkipPrerequisiteCheck
             $filterRules = @('Account-MinimumPasswordLength', 'Firewall-EnableWindowsDefender')
             $result = Invoke-SecurityHardening -Session $session -RuleFilter $filterRules
             foreach ($appliedRule in $result.AppliedRules) {
@@ -108,7 +108,7 @@ Describe "Invoke-SecurityHardening" {
         }
 
         It "handles empty rule filter gracefully" {
-            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf
+            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf -SkipPrerequisiteCheck
             $result = Invoke-SecurityHardening -Session $session -RuleFilter @()
             $result.AppliedRules.Count | Should -Be 0
         }
@@ -116,18 +116,18 @@ Describe "Invoke-SecurityHardening" {
 
     Context "WhatIf Support" {
         It "WhatIf mode does not modify system" {
-            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf
+            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf -SkipPrerequisiteCheck
             $result = Invoke-SecurityHardening -Session $session -WhatIf
             $result | Should -Not -BeNullOrEmpty
         }
 
         It "indicates WhatIf mode in session state" {
-            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf
+            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf -SkipPrerequisiteCheck
             $session.WhatIfMode | Should -Be $true
         }
 
         It "applies rules in WhatIf mode" {
-            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf
+            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf -SkipPrerequisiteCheck
             $result = Invoke-SecurityHardening -Session $session
             @($result.AppliedRules).Count -gt 0 | Should -Be $true
         }
@@ -135,30 +135,30 @@ Describe "Invoke-SecurityHardening" {
 
     Context "Profile Progression" {
         It "Basis profile applies fewer rules than Recommended" {
-            $basisSession = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf
+            $basisSession = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf -SkipPrerequisiteCheck
             $basisResult = Invoke-SecurityHardening -Session $basisSession
 
-            $recommendedSession = New-HardeningSession -Profile Recommended -TargetSystem Client -OSVersion 11 -WhatIf
+            $recommendedSession = New-HardeningSession -Profile Recommended -TargetSystem Client -OSVersion 11 -WhatIf -SkipPrerequisiteCheck
             $recommendedResult = Invoke-SecurityHardening -Session $recommendedSession
 
             $basisResult.AppliedRules.Count | Should -BeLessThan $recommendedResult.AppliedRules.Count
         }
 
         It "Recommended profile applies fewer rules than Strict" {
-            $recommendedSession = New-HardeningSession -Profile Recommended -TargetSystem Client -OSVersion 11 -WhatIf
+            $recommendedSession = New-HardeningSession -Profile Recommended -TargetSystem Client -OSVersion 11 -WhatIf -SkipPrerequisiteCheck
             $recommendedResult = Invoke-SecurityHardening -Session $recommendedSession
 
-            $strictSession = New-HardeningSession -Profile Strict -TargetSystem Client -OSVersion 11 -WhatIf
+            $strictSession = New-HardeningSession -Profile Strict -TargetSystem Client -OSVersion 11 -WhatIf -SkipPrerequisiteCheck
             $strictResult = Invoke-SecurityHardening -Session $strictSession
 
             $recommendedResult.AppliedRules.Count | Should -BeLessThan $strictResult.AppliedRules.Count
         }
 
         It "Strict profile applies all Recommended rules" {
-            $recommendedSession = New-HardeningSession -Profile Recommended -TargetSystem Client -OSVersion 11 -WhatIf
+            $recommendedSession = New-HardeningSession -Profile Recommended -TargetSystem Client -OSVersion 11 -WhatIf -SkipPrerequisiteCheck
             $recommendedResult = Invoke-SecurityHardening -Session $recommendedSession
 
-            $strictSession = New-HardeningSession -Profile Strict -TargetSystem Client -OSVersion 11 -WhatIf
+            $strictSession = New-HardeningSession -Profile Strict -TargetSystem Client -OSVersion 11 -WhatIf -SkipPrerequisiteCheck
             $strictResult = Invoke-SecurityHardening -Session $strictSession
 
             foreach ($recRule in $recommendedResult.AppliedRules) {
@@ -169,13 +169,13 @@ Describe "Invoke-SecurityHardening" {
 
     Context "Compliance Reporting" {
         It "includes compliance report in result" {
-            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf
+            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf -SkipPrerequisiteCheck
             $result = Invoke-SecurityHardening -Session $session
             $result.ComplianceReport | Should -Not -BeNullOrEmpty
         }
 
         It "compliance report contains required fields" {
-            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf
+            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf -SkipPrerequisiteCheck
             $result = Invoke-SecurityHardening -Session $session
             $report = $result.ComplianceReport
 
@@ -187,7 +187,7 @@ Describe "Invoke-SecurityHardening" {
         }
 
         It "calculates compliance percentage correctly" {
-            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf
+            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf -SkipPrerequisiteCheck
             $result = Invoke-SecurityHardening -Session $session
             $report = $result.ComplianceReport
 
@@ -196,14 +196,14 @@ Describe "Invoke-SecurityHardening" {
         }
 
         It "marks system as Compliant when no failures" {
-            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf
+            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf -SkipPrerequisiteCheck
             $result = Invoke-SecurityHardening -Session $session
             $report = $result.ComplianceReport
             $report.Status | Should -Be 'Compliant'
         }
 
         It "skips verification when SkipVerification specified" {
-            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf
+            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf -SkipPrerequisiteCheck
             $result = Invoke-SecurityHardening -Session $session -SkipVerification
             $result.ComplianceReport | Should -BeNullOrEmpty
         }
@@ -211,28 +211,28 @@ Describe "Invoke-SecurityHardening" {
 
     Context "Server Support" {
         It "applies to Windows Server 2019" {
-            $session = New-HardeningSession -Profile Basis -TargetSystem Server -OSVersion 2019 -WhatIf
+            $session = New-HardeningSession -Profile Basis -TargetSystem Server -OSVersion 2019 -WhatIf -SkipPrerequisiteCheck
             $result = Invoke-SecurityHardening -Session $session
             $result.AppliedRules.Count | Should -BeGreaterThan 0
         }
 
         It "applies to Windows Server 2022" {
-            $session = New-HardeningSession -Profile Recommended -TargetSystem Server -OSVersion 2022 -WhatIf
+            $session = New-HardeningSession -Profile Recommended -TargetSystem Server -OSVersion 2022 -WhatIf -SkipPrerequisiteCheck
             $result = Invoke-SecurityHardening -Session $session
             $result.AppliedRules.Count | Should -BeGreaterThan 0
         }
 
         It "applies to Windows Server 2025" {
-            $session = New-HardeningSession -Profile Strict -TargetSystem Server -OSVersion 2025 -WhatIf
+            $session = New-HardeningSession -Profile Strict -TargetSystem Server -OSVersion 2025 -WhatIf -SkipPrerequisiteCheck
             $result = Invoke-SecurityHardening -Session $session
             $result.AppliedRules.Count | Should -BeGreaterThan 0
         }
 
         It "Server and Client apply different rule counts for same profile" {
-            $clientSession = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf
+            $clientSession = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf -SkipPrerequisiteCheck
             $clientResult = Invoke-SecurityHardening -Session $clientSession
 
-            $serverSession = New-HardeningSession -Profile Basis -TargetSystem Server -OSVersion 2022 -WhatIf
+            $serverSession = New-HardeningSession -Profile Basis -TargetSystem Server -OSVersion 2022 -WhatIf -SkipPrerequisiteCheck
             $serverResult = Invoke-SecurityHardening -Session $serverSession
 
             $clientResult.AppliedRules.Count | Should -BeGreaterThan 0
@@ -264,28 +264,28 @@ Describe "Invoke-SecurityHardening" {
 Describe "Invoke-SecurityHardening - Integration" {
     Context "Full Hardening Workflow" {
         It "can create session and invoke hardening for Basis profile" {
-            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf
+            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf -SkipPrerequisiteCheck
             $result = Invoke-SecurityHardening -Session $session
             $result.Profile | Should -Be 'Basis'
             $result.Success | Should -Be $true
         }
 
         It "can create session and invoke hardening for Recommended profile" {
-            $session = New-HardeningSession -Profile Recommended -TargetSystem Client -OSVersion 11 -WhatIf
+            $session = New-HardeningSession -Profile Recommended -TargetSystem Client -OSVersion 11 -WhatIf -SkipPrerequisiteCheck
             $result = Invoke-SecurityHardening -Session $session
             $result.Profile | Should -Be 'Recommended'
             $result.Success | Should -Be $true
         }
 
         It "can create session and invoke hardening for Strict profile" {
-            $session = New-HardeningSession -Profile Strict -TargetSystem Client -OSVersion 11 -WhatIf
+            $session = New-HardeningSession -Profile Strict -TargetSystem Client -OSVersion 11 -WhatIf -SkipPrerequisiteCheck
             $result = Invoke-SecurityHardening -Session $session
             $result.Profile | Should -Be 'Strict'
             $result.Success | Should -Be $true
         }
 
         It "complete workflow returns comprehensive result" {
-            $session = New-HardeningSession -Profile Recommended -TargetSystem Server -OSVersion 2022 -WhatIf
+            $session = New-HardeningSession -Profile Recommended -TargetSystem Server -OSVersion 2022 -WhatIf -SkipPrerequisiteCheck
             $result = Invoke-SecurityHardening -Session $session
 
             $result.SessionId | Should -Not -BeNullOrEmpty

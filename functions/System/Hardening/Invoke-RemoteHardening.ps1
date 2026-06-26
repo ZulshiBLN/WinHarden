@@ -72,7 +72,7 @@ function Invoke-RemoteHardening {
     ADMIN: Requires administrative rights on remote systems
     #>
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param(
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
@@ -106,6 +106,10 @@ function Invoke-RemoteHardening {
     $ErrorActionPreference = 'Stop'
 
     try {
+        if (-not $PSCmdlet.ShouldProcess("$($ComputerName.Count) remote systems", "Apply hardening profile: $Profile")) {
+            return
+        }
+
         Write-Log -Message "Starting remote hardening: Computers=$($ComputerName.Count), Profile=$Profile" -Level Info
 
         $results = @()
@@ -138,10 +142,14 @@ function Invoke-RemoteHardening {
 
         # Execute hardening on remote systems
         $hardening_code = {
-            param($Profile, $SkipVerification)
+            param($Profile, $SkipVerification, $ModulePath)
 
             # Import modules on remote system
-            Import-Module "$PSScriptRoot\..\modules\System.psm1" -Force -ErrorAction SilentlyContinue
+            if (-not (Test-Path $ModulePath)) {
+                throw "Required module not found on remote system: $ModulePath"
+            }
+
+            Import-Module $ModulePath -Force -ErrorAction Stop
 
             # Create and apply hardening
             $session = New-HardeningSession -Profile $Profile -TargetSystem Client -SkipPrerequisiteCheck
@@ -150,11 +158,14 @@ function Invoke-RemoteHardening {
             $result
         }
 
+        # Resolve module path to pass to remote systems
+        $systemModulePath = Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) 'modules\System.psm1'
+
         foreach ($rs in $processingSessions) {
             Write-Verbose "Invoking hardening on $($rs.ComputerName)..."
 
             try {
-                $remoteResult = Invoke-Command -Session $rs -ScriptBlock $hardening_code -ArgumentList $Profile, $SkipVerification
+                $remoteResult = Invoke-Command -Session $rs -ScriptBlock $hardening_code -ArgumentList $Profile, $SkipVerification, $systemModulePath
 
                 $results += [PSCustomObject]@{
                     ComputerName = $rs.ComputerName
