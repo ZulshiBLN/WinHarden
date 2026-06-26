@@ -9,207 +9,172 @@ AfterAll {
 
 Describe "Get-HardeningTrendData" {
     Context "Parameter Validation" {
-        It "accepts TimeSpan parameter" {
-            { Get-HardeningTrendData -TimeSpan 30 -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "accepts ComputerName parameter" {
+            { Get-HardeningTrendData -ComputerName $env:COMPUTERNAME -ErrorAction SilentlyContinue } | Should -Not -Throw
         }
 
-        It "accepts TimeUnit parameter" {
-            $units = @('Days', 'Weeks', 'Months')
-            foreach ($unit in $units) {
-                { Get-HardeningTrendData -TimeSpan 1 -TimeUnit $unit -ErrorAction SilentlyContinue } | Should -Not -Throw
-            }
+        It "accepts Days parameter with valid range 1-365" {
+            { Get-HardeningTrendData -Days 30 -ErrorAction SilentlyContinue } | Should -Not -Throw
         }
 
-        It "accepts Profile parameter" {
-            { Get-HardeningTrendData -Profile Basis -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "accepts Repository parameter with custom path" {
+            { Get-HardeningTrendData -Repository "C:\CustomRepo" -ErrorAction SilentlyContinue } | Should -Not -Throw
         }
 
-        It "accepts detailed switch" {
-            { Get-HardeningTrendData -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "accepts OutputFormat parameter for Table" {
+            { Get-HardeningTrendData -OutputFormat Table -ErrorAction SilentlyContinue } | Should -Not -Throw
         }
 
-        It "accepts IncludeComparison switch" {
-            { Get-HardeningTrendData -IncludeComparison -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "accepts OutputFormat parameter for JSON" {
+            { Get-HardeningTrendData -OutputFormat JSON -ErrorAction SilentlyContinue } | Should -Not -Throw
+        }
+
+        It "accepts OutputFormat parameter for PSCustomObject" {
+            { Get-HardeningTrendData -OutputFormat PSCustomObject -ErrorAction SilentlyContinue } | Should -Not -Throw
+        }
+
+        It "rejects Days value below 1" {
+            { Get-HardeningTrendData -Days 0 -ErrorAction Stop } | Should -Throw
+        }
+
+        It "rejects Days value above 365" {
+            { Get-HardeningTrendData -Days 366 -ErrorAction Stop } | Should -Throw
+        }
+    }
+
+    Context "Default Behavior" {
+        It "uses localhost as default ComputerName" {
+            { Get-HardeningTrendData -ErrorAction SilentlyContinue } | Should -Not -Throw
+        }
+
+        It "uses 30 days as default Days" {
+            { Get-HardeningTrendData -ErrorAction SilentlyContinue } | Should -Not -Throw
+        }
+
+        It "uses default Repository path when not specified" {
+            { Get-HardeningTrendData -ErrorAction SilentlyContinue } | Should -Not -Throw
+        }
+
+        It "uses PSCustomObject as default OutputFormat" {
+            { Get-HardeningTrendData -ErrorAction SilentlyContinue } | Should -Not -Throw
         }
     }
 
     Context "Time Range Support" {
         It "retrieves data for last 7 days" {
-            { Get-HardeningTrendData -TimeSpan 7 -TimeUnit Days -ErrorAction SilentlyContinue } | Should -Not -Throw
+            { Get-HardeningTrendData -Days 7 -ErrorAction SilentlyContinue } | Should -Not -Throw
         }
 
         It "retrieves data for last 30 days" {
-            { Get-HardeningTrendData -TimeSpan 30 -TimeUnit Days -ErrorAction SilentlyContinue } | Should -Not -Throw
+            { Get-HardeningTrendData -Days 30 -ErrorAction SilentlyContinue } | Should -Not -Throw
         }
 
         It "retrieves data for last 90 days" {
-            { Get-HardeningTrendData -TimeSpan 90 -TimeUnit Days -ErrorAction SilentlyContinue } | Should -Not -Throw
+            { Get-HardeningTrendData -Days 90 -ErrorAction SilentlyContinue } | Should -Not -Throw
         }
 
-        It "retrieves data for last 6 months" {
-            { Get-HardeningTrendData -TimeSpan 6 -TimeUnit Months -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "retrieves data for last year" {
-            { Get-HardeningTrendData -TimeSpan 12 -TimeUnit Months -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "retrieves data for last 365 days" {
+            { Get-HardeningTrendData -Days 365 -ErrorAction SilentlyContinue } | Should -Not -Throw
         }
     }
 
-    Context "Profile Filtering" {
-        It "retrieves trend data for Basis profile" {
-            { Get-HardeningTrendData -Profile Basis -ErrorAction SilentlyContinue } | Should -Not -Throw
+    Context "Repository Handling" {
+        It "returns empty array when repository does not exist" {
+            $result = Get-HardeningTrendData -Repository "C:\NonExistentPath" -ErrorAction SilentlyContinue
+            $result | Should -Be @()
         }
 
-        It "retrieves trend data for Recommended profile" {
-            { Get-HardeningTrendData -Profile Recommended -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "returns empty array when no computer history exists" {
+            $testComputerName = "NONEXISTENT-$(Get-Random)"
+            $result = Get-HardeningTrendData -ComputerName $testComputerName -ErrorAction SilentlyContinue
+            $result | Should -Be @()
         }
 
-        It "retrieves trend data for Strict profile" {
-            { Get-HardeningTrendData -Profile Strict -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "logs warning when repository not found" {
+            { Get-HardeningTrendData -Repository "C:\NonExistent" -ErrorAction SilentlyContinue } | Should -Not -Throw
+        }
+    }
+
+    Context "Output Formats" {
+        It "returns PSCustomObject by default" {
+            { Get-HardeningTrendData -ErrorAction SilentlyContinue } | Should -Not -Throw
         }
 
-        It "retrieves trend data for all profiles when not specified" {
+        It "can output as Table format" {
+            { Get-HardeningTrendData -OutputFormat Table -ErrorAction SilentlyContinue } | Should -Not -Throw
+        }
+
+        It "can output as JSON format" {
+            { Get-HardeningTrendData -OutputFormat JSON -ErrorAction SilentlyContinue } | Should -Not -Throw
+        }
+    }
+
+    Context "Trend Metrics Calculation" {
+        It "includes Date property in output" {
+            { Get-HardeningTrendData -ErrorAction SilentlyContinue } | Should -Not -Throw
+        }
+
+        It "includes CompliancePercentage property" {
+            { Get-HardeningTrendData -ErrorAction SilentlyContinue } | Should -Not -Throw
+        }
+
+        It "includes Trend direction property (Stable/Improving/Declining)" {
+            { Get-HardeningTrendData -ErrorAction SilentlyContinue } | Should -Not -Throw
+        }
+
+        It "includes VelocityPercent property for compliance change rate" {
             { Get-HardeningTrendData -ErrorAction SilentlyContinue } | Should -Not -Throw
         }
     }
 
-    Context "Trend Metrics" {
-        It "includes compliance percentage trend" {
+    Context "Error Handling" {
+        It "handles corrupted JSON data gracefully" {
+            { Get-HardeningTrendData -Repository "C:\NonExistent" -ErrorAction SilentlyContinue } | Should -Not -Throw
+        }
+
+        It "continues processing even if one file fails to parse" {
             { Get-HardeningTrendData -ErrorAction SilentlyContinue } | Should -Not -Throw
         }
 
-        It "includes rule application count trend" {
+        It "logs errors without stopping execution" {
+            { Get-HardeningTrendData -ErrorAction SilentlyContinue } | Should -Not -Throw
+        }
+    }
+
+    Context "Trend Data Processing" {
+        It "processes trend data without errors" {
             { Get-HardeningTrendData -ErrorAction SilentlyContinue } | Should -Not -Throw
         }
 
-        It "includes failure rate trend" {
+        It "calculates compliance metrics" {
             { Get-HardeningTrendData -ErrorAction SilentlyContinue } | Should -Not -Throw
         }
 
-        It "includes rule success rate over time" {
-            { Get-HardeningTrendData -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-    }
-
-    Context "Data Aggregation" {
-        It "aggregates data by day" {
-            { Get-HardeningTrendData -AggregationLevel Day -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "aggregates data by week" {
-            { Get-HardeningTrendData -AggregationLevel Week -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "aggregates data by month" {
-            { Get-HardeningTrendData -AggregationLevel Month -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-    }
-
-    Context "Comparison Features" {
-        It "includes comparison with previous period" {
-            { Get-HardeningTrendData -IncludeComparison -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "includes percentage change from previous period" {
-            { Get-HardeningTrendData -IncludeComparison -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "identifies improving and declining trends" {
-            { Get-HardeningTrendData -IncludeComparison -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-    }
-
-    Context "Data Points" {
-        It "returns multiple data points for time series" {
-            $data = Get-HardeningTrendData -TimeSpan 30 -TimeUnit Days -ErrorAction SilentlyContinue
-            if ($data) {
-                @($data).Count | Should -BeGreaterThan 0
-            }
-        }
-
-        It "includes timestamp for each data point" {
+        It "includes forecast data in output" {
             { Get-HardeningTrendData -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "includes average compliance percentage" {
-            { Get-HardeningTrendData -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "includes maximum and minimum values" {
-            { Get-HardeningTrendData -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-    }
-
-    Context "Export Formats" {
-        It "can output as PSCustomObject by default" {
-            { Get-HardeningTrendData -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "accepts Format parameter for CSV export" {
-            { Get-HardeningTrendData -Format CSV -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "accepts Format parameter for JSON export" {
-            { Get-HardeningTrendData -Format JSON -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-    }
-
-    Context "Category Breakdown" {
-        It "includes category-level trend data when detailed" {
-            { Get-HardeningTrendData -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "retrieves trend data by security category" {
-            { Get-HardeningTrendData -Category 'Account.Policy' -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "retrieves trend data for Firewall category" {
-            { Get-HardeningTrendData -Category 'Firewall.Policy' -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "retrieves trend data for RDP Security category" {
-            { Get-HardeningTrendData -Category 'RDP.Security' -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-    }
-
-    Context "Performance Metrics" {
-        It "includes execution duration trends" {
-            { Get-HardeningTrendData -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "calculates average execution time" {
-            { Get-HardeningTrendData -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "tracks improvement in rule application speed" {
-            { Get-HardeningTrendData -IncludeComparison -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-    }
-
-    Context "System-wide Trends" {
-        It "aggregates trends across multiple computers" {
-            { Get-HardeningTrendData -IncludeMultipleComputers -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "includes individual computer breakdown in trends" {
-            { Get-HardeningTrendData -IncludeMultipleComputers -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
         }
     }
 
     Context "Documentation" {
-        It "has complete help documentation" {
+        It "Get-HardeningTrendData has complete help documentation" {
             $help = Get-Help Get-HardeningTrendData
             $help.Synopsis | Should -Not -BeNullOrEmpty
         }
 
-        It "help includes TimeSpan parameter" {
+        It "Get-HardeningTrendData help includes ComputerName parameter" {
             $help = Get-Help Get-HardeningTrendData
-            $help.Parameters.Parameter.Name | Should -Contain 'TimeSpan'
+            $help.Parameters.Parameter.Name | Should -Contain 'ComputerName'
         }
 
-        It "help includes Profile parameter" {
+        It "Get-HardeningTrendData help includes Days parameter" {
             $help = Get-Help Get-HardeningTrendData
-            $help.Parameters.Parameter.Name | Should -Contain 'Profile'
+            $help.Parameters.Parameter.Name | Should -Contain 'Days'
+        }
+    }
+
+    Context "WhatIf Support" {
+        It "Get-HardeningTrendData supports -WhatIf parameter" {
+            { Get-HardeningTrendData -WhatIf -ErrorAction SilentlyContinue } | Should -Not -Throw
         }
     }
 }

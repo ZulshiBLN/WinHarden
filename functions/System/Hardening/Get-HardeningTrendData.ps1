@@ -58,7 +58,7 @@ function Get-HardeningTrendData {
     REPOSITORY: Default location can be configured
     #>
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     [OutputType([PSCustomObject[]])]
     param(
         [Parameter(Mandatory = $false)]
@@ -215,6 +215,10 @@ function _CalculateTrendMetrics {
 }
 
 function _ForecastCompliance {
+    <#
+    .SYNOPSIS
+    Internal helper: Calculates 7-day compliance forecast from historical trend data using linear regression.
+    #>
     param(
         [array]$TrendData
     )
@@ -243,7 +247,7 @@ function Save-ComplianceSnapshot {
     Saves compliance report to history repository for trending.
     #>
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param(
         [Parameter(Mandatory = $true)]
         [PSCustomObject]
