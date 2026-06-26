@@ -1,10 +1,10 @@
 @{
     Profile = @{
         Name = 'Basis'
-        Description = 'Basic security hardening with minimum security requirements'
+        Description = 'Basic security hardening with minimum security requirements. Includes critical controls (SMB1, Firewall, Updates), account policies (password, UAC), network security (RDP, TLS, LLMNR), and audit logging. IPv6 disable and Print Spooler disable are optional and environment-specific.'
         Severity = 'Medium'
         Version = '1.0.0'
-        LastUpdated = '2026-06-26'
+        LastUpdated = '2026-06-27'
     }
 
     Rules = @(
@@ -166,25 +166,14 @@
                 )
             }
             Verification = @{
-                Command = @"
-                `$paths = @(
-                    'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Client',
-                    'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Client',
-                    'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Client'
-                )
-                `$results = @()
-                foreach (`$path in `$paths) {
-                    `$results += Get-ItemProperty -Path `$path -Name Enabled -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Enabled
-                }
-                `$results
-"@
+                Command = '$p = "HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols"; @((Get-ItemProperty -Path "$p\SSL 3.0\Client" -Name Enabled -ErrorAction SilentlyContinue).Enabled, (Get-ItemProperty -Path "$p\TLS 1.0\Client" -Name Enabled -ErrorAction SilentlyContinue).Enabled, (Get-ItemProperty -Path "$p\TLS 1.1\Client" -Name Enabled -ErrorAction SilentlyContinue).Enabled)'
                 Expected = @(0, 0, 0)
             }
         }
 
         @{
             Name = 'Network-DisableIPv6'
-            Description = 'Disable IPv6 if not required'
+            Description = 'Disable IPv6 if not required (IPv4-only networks only). Not applied in dual-stack environments.'
             Category = 'Network.Security'
             Severity = 'Low'
             Type = 'Registry'
@@ -199,7 +188,7 @@
                 ValueType = 'DWord'
             }
             Verification = @{
-                Command = 'Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\TCPIP6\Parameters" -Name DisabledComponents -ErrorAction SilentlyContinue'
+                Command = 'Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\TCPIP6\Parameters" -Name DisabledComponents -ErrorAction SilentlyContinue | Select-Object -ExpandProperty DisabledComponents'
                 Expected = 255
             }
         }
@@ -228,7 +217,7 @@
 
         @{
             Name = 'Audit-EnableLogonAuditing'
-            Description = 'Enable logon/logoff auditing'
+            Description = 'Enable logon/logoff auditing for both success and failure events'
             Category = 'Audit.Policy'
             Severity = 'Medium'
             Type = 'Audit'
@@ -242,7 +231,7 @@
                 Failure = $true
             }
             Verification = @{
-                Command = 'auditpol /get /category:"Logon/Logoff" | Select-String "Success and Failure"'
+                Command = 'auditpol /get /category:"Logon/Logoff" 2>$null | Select-String "Success and Failure"'
                 Expected = 'Success and Failure'
             }
         }
@@ -271,7 +260,7 @@
 
         @{
             Name = 'Service-DisablePrintSpooler'
-            Description = 'Disable Print Spooler service if not required'
+            Description = 'Disable Print Spooler service (applies to servers without printing requirements only)'
             Category = 'Service.Hardening'
             Severity = 'Medium'
             Type = 'Service'
