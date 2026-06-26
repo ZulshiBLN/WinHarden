@@ -150,8 +150,8 @@ function New-ExchangeOnlineConnection {
             }
 
             Write-Verbose "Exchange Online connection established and verified"
-
-        } catch {
+        }
+        catch {
             Write-Error -Message "Failed to establish Exchange Online connection: $($_.Exception.Message)" -Exception $_
             throw
         }

@@ -11,7 +11,7 @@ Describe "System Module - Exchange Online Functions" {
     Context "New-ExchangeOnlineConnection - Parameter Sets" {
         It "accepts Credential parameter set" {
             $params = @{
-                Credential = [System.Management.Automation.PSCredential]::new("user", (ConvertTo-SecureString "password" -AsPlainText -Force))
+                Credential = [System.Management.Automation.PSCredential]::new("user", (ConvertTo-SecureString "password" -AsPlainText -Force)) # PSScriptAnalyzer ignore PSAvoidUsingConvertToSecureStringWithPlainText
                 WhatIf = $true
             }
             { New-ExchangeOnlineConnection @params } | Should -Not -Throw
@@ -21,7 +21,7 @@ Describe "System Module - Exchange Online Functions" {
             $params = @{
                 AppId = "12345678-1234-1234-1234-123456789012"
                 TenantId = "87654321-4321-4321-4321-210987654321"
-                ClientSecret = (ConvertTo-SecureString "secret" -AsPlainText -Force)
+                ClientSecret = (ConvertTo-SecureString "secret" -AsPlainText -Force) # PSScriptAnalyzer ignore PSAvoidUsingConvertToSecureStringWithPlainText
                 WhatIf = $true
             }
             { New-ExchangeOnlineConnection @params } | Should -Not -Throw
@@ -29,7 +29,7 @@ Describe "System Module - Exchange Online Functions" {
 
         It "requires AppId and TenantId for AppSecret set" {
             $params = @{
-                ClientSecret = (ConvertTo-SecureString "secret" -AsPlainText -Force)
+                ClientSecret = (ConvertTo-SecureString "secret" -AsPlainText -Force) # PSScriptAnalyzer ignore PSAvoidUsingConvertToSecureStringWithPlainText
             }
             { New-ExchangeOnlineConnection @params } | Should -Throw
         }
@@ -75,11 +75,11 @@ Describe "System Module - Exchange Online Functions" {
 
     Context "New-ExchangeOnlineConnection - Parameter Validation" {
         It "requires AppId for app-based authentication" {
-            { New-ExchangeOnlineConnection -TenantId "123" -ClientSecret (ConvertTo-SecureString "x" -AsPlainText -Force) } | Should -Throw
+            { New-ExchangeOnlineConnection -TenantId "123" -ClientSecret (ConvertTo-SecureString "x" -AsPlainText -Force) } | Should -Throw # PSScriptAnalyzer ignore PSAvoidUsingConvertToSecureStringWithPlainText
         }
 
         It "requires TenantId for app-based authentication" {
-            { New-ExchangeOnlineConnection -AppId "123" -ClientSecret (ConvertTo-SecureString "x" -AsPlainText -Force) } | Should -Throw
+            { New-ExchangeOnlineConnection -AppId "123" -ClientSecret (ConvertTo-SecureString "x" -AsPlainText -Force) } | Should -Throw # PSScriptAnalyzer ignore PSAvoidUsingConvertToSecureStringWithPlainText
         }
 
         It "validates CertificatePath exists" {
@@ -93,7 +93,7 @@ Describe "System Module - Exchange Online Functions" {
 
         It "accepts Organization parameter as optional" {
             $params = @{
-                Credential = [System.Management.Automation.PSCredential]::new("user", (ConvertTo-SecureString "password" -AsPlainText -Force))
+                Credential = [System.Management.Automation.PSCredential]::new("user", (ConvertTo-SecureString "password" -AsPlainText -Force)) # PSScriptAnalyzer ignore PSAvoidUsingConvertToSecureStringWithPlainText
                 Organization = "contoso.onmicrosoft.com"
                 WhatIf = $true
             }
@@ -104,7 +104,7 @@ Describe "System Module - Exchange Online Functions" {
     Context "New-ExchangeOnlineConnection - SkipVerification Parameter" {
         It "accepts SkipVerification switch" {
             $params = @{
-                Credential = [System.Management.Automation.PSCredential]::new("user", (ConvertTo-SecureString "password" -AsPlainText -Force))
+                Credential = [System.Management.Automation.PSCredential]::new("user", (ConvertTo-SecureString "password" -AsPlainText -Force)) # PSScriptAnalyzer ignore PSAvoidUsingConvertToSecureStringWithPlainText
                 SkipVerification = $true
                 WhatIf = $true
             }

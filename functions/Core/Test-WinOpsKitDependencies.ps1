@@ -47,8 +47,8 @@ function Test-WinOpsKitDependencies {
         $psVersion = $PSVersionTable.PSVersion.Major
         $results['PowerShellVersion'] = @{
             'Required' = '5.1'
-            'Actual'   = "$psVersion.$($PSVersionTable.PSVersion.Minor)"
-            'Status'   = if ($psVersion -ge 5) { 'OK' } else { 'FAIL' }
+            'Actual' = "$psVersion.$($PSVersionTable.PSVersion.Minor)"
+            'Status' = if ($psVersion -ge 5) { 'OK' } else { 'FAIL' }
         }
 
         if ($results['PowerShellVersion'].Status -eq 'FAIL' -and $ExitOnError) {

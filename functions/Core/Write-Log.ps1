@@ -96,12 +96,12 @@ function Write-Log {
         # Prepare CSV entry (6 columns per ADR-005)
         $timestamp = Get-Date -Format 'yyyy-MM-dd HH:mm:ss.fff'
         $csvEntry = [ordered]@{
-            'Timestamp'  = $timestamp
-            'Level'      = $Level
-            'Caller'     = $Caller
-            'Function'   = $callerFunction
+            'Timestamp' = $timestamp
+            'Level' = $Level
+            'Caller' = $Caller
+            'Function' = $callerFunction
             'LineNumber' = $callerLineNumber
-            'Message'    = $maskedMessage
+            'Message' = $maskedMessage
         }
 
         # Handle -WhatIf parameter (gracefully handle in both Interactive and NonInteractive modes)

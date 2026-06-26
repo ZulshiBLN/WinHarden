@@ -1,4 +1,4 @@
-function _MaskSensitiveData {
+﻿function _MaskSensitiveData {
     <#
     .SYNOPSIS
     Masks sensitive information patterns in text for safe logging.
@@ -9,9 +9,9 @@ function _MaskSensitiveData {
     Part of ADR-005 logging strategy for compliance and security.
 
     Detects patterns like:
-    - password=secret123 → password=***
-    - token=abc123 → token=***
-    - apikey=xyz789 → apikey=***
+    - password=secret123 â†’ password=***
+    - token=abc123 â†’ token=***
+    - apikey=xyz789 â†’ apikey=***
 
     .PARAMETER InputString
     The text to mask. Sensitive patterns will be replaced with ***.

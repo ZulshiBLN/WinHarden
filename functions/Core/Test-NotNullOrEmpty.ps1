@@ -32,12 +32,14 @@ function Test-NotNullOrEmpty {
         $Name = 'Value'
     )
 
-    # Validate that value is not null, empty, or whitespace
-    if ([string]::IsNullOrWhiteSpace($Value)) {
-        $errorMessage = "$Name cannot be null or empty"
-        Write-Log -Message $errorMessage -Level Error
-        throw $errorMessage
-    }
+    process {
+        # Validate that value is not null, empty, or whitespace
+        if ([string]::IsNullOrWhiteSpace($Value)) {
+            $errorMessage = "$Name cannot be null or empty"
+            Write-Log -Message $errorMessage -Level Error
+            throw $errorMessage
+        }
 
-    return $true
+        return $true
+    }
 }

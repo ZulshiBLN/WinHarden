@@ -13,8 +13,8 @@ function _VerifyExchangeOnlineConnection {
         $null = @(Get-Mailbox -ResultSize 1 -ErrorAction Stop)
         Write-Verbose "Exchange Online connection verified - mailbox query successful"
         return $true
-
-    } catch {
+    }
+    catch {
         $message = "Exchange Online connection verification failed: $($_.Exception.Message)"
         Write-Error -Message $message
         throw $message

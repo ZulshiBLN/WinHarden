@@ -18,11 +18,11 @@ function Get-ModuleVersion {
     param()
 
     return @{
-        Module              = 'WinOpsKit'
-        Version             = '0.1.0'
-        PowerShellVersion   = $PSVersionTable.PSVersion.ToString()
-        BuildDate           = (Get-Date).ToString('yyyy-MM-dd')
-        Infrastructure      = 'Complete (9 ADRs)'
-        Phase               = 'Implementation'
+        Module = 'WinOpsKit'
+        Version = '0.1.0'
+        PowerShellVersion = $PSVersionTable.PSVersion.ToString()
+        BuildDate = (Get-Date).ToString('yyyy-MM-dd')
+        Infrastructure = 'Complete (9 ADRs)'
+        Phase = 'Implementation'
     }
 }

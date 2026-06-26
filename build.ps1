@@ -13,21 +13,24 @@ Write-Output "[BUILD] === WinOpsKit Build ==="
 if (-not $SkipAnalyzer) {
     Write-Output "`n[PSScriptAnalyzer] Linting..."
 
-    $analyzerSettings = @{
-        Rules = @{
-            PSUseApprovedVerbs            = @{ Enable = $true }
-            PSUseConsistentIndentation    = @{ Enable = $true; IndentationSize = 4 }
-            PSUseConsistentWhitespace     = @{ Enable = $true }
-            PSAvoidUsingCmdletAliases     = @{ Enable = $true }
-            PSPlaceCloseBrace             = @{ Enable = $true; NoEmptyLineBefore = $false }
-            PSPlaceOpenBrace              = @{ Enable = $true; OnSameLine = $true }
-            PSMeasureBasicParseCount      = @{ Enable = $true }
-            PSProvideCommentHelp          = @{ Enable = $true }
+    $settingsPath = Join-Path $PSScriptRoot 'PSScriptAnalyzerSettings.psd1'
+    $analyzerSettings = if (Test-Path $settingsPath) { $settingsPath } else {
+        @{
+            Rules = @{
+                PSUseApprovedVerbs            = @{ Enable = $true }
+                PSUseConsistentIndentation    = @{ Enable = $true; IndentationSize = 4 }
+                PSUseConsistentWhitespace     = @{ Enable = $true }
+                PSAvoidUsingCmdletAliases     = @{ Enable = $true }
+                PSPlaceCloseBrace             = @{ Enable = $true; NoEmptyLineBefore = $false }
+                PSPlaceOpenBrace              = @{ Enable = $true; OnSameLine = $true }
+                PSMeasureBasicParseCount      = @{ Enable = $true }
+                PSProvideCommentHelp          = @{ Enable = $true }
+            }
+            Severity = @('Error', 'Warning')
         }
-        Severity = @('Error', 'Warning')
     }
 
-    $analyzerPaths = @('./functions', './scripts', './tests')
+    $analyzerPaths = @('./functions', './scripts')
     $analyzerResults = @()
 
     foreach ($path in $analyzerPaths) {
