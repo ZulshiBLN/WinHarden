@@ -18,6 +18,11 @@ function Test-ValidPath {
 
     .EXAMPLE
     if (Test-ValidPath -Path $logFile) { Write-Log "Log file exists" -Level Info }
+
+    .NOTES
+    DEPENDENCIES: Write-Log (Core)
+    Throws terminating error if path does not exist.
+    Returns $true if validation succeeds.
     #>
 
     [CmdletBinding()]
