@@ -2,14 +2,18 @@
 
 Arbeitsstand und Modul-Informationen für alle PowerShell-Funktionen.
 
-**Zuletzt aktualisiert:** 2026-06-25  
+**Zuletzt aktualisiert:** 2026-06-26  
 **Infrastruktur-Phase:** ✅ Complete (9 ADRs, build.ps1, .editorconfig, PSScriptAnalyzerSettings.psd1)  
-**Implementation-Phase:** 🚀 In Progress (Core Module ✅, System/User/Maintenance ⏳)
+**Testing-Phase:** 🚀 In Progress (Core ✅, System ⏳, User/Maintenance Skeletons ⏳)  
+**Implementation-Phase:** 📋 Planned (User/Maintenance function implementations)
 
-**Core Module Status:** [OK] COMPLETE – All 7 public + 3 private functions implemented and tested
-- **Total Tests:** 34/34 PASSED (100%)
-- **Build Time:** <2 seconds
-- **Next:** System.psm1, User.psm1, Maintenance.psm1
+**Overall Test Status:** 75/75 PASSED (100%)
+- **Core Module:** 34 tests, [OK] COMPLETE
+- **System Module:** 20 tests, [!!] Coverage <95% (structure tests + basic scenarios)
+- **User Module:** 10 tests, [OK] Skeleton tests (awaiting function implementations)
+- **Maintenance Module:** 11 tests, [OK] Skeleton tests (awaiting function implementations)
+- **Build Time:** <3 seconds
+- **Next:** Improve System coverage to 95%+ → Implement User/Maintenance functions
 
 ---
 

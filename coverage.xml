@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE report PUBLIC "-//JACOCO//DTD Report 1.1//EN" "report.dtd"[]>
-<report name="Pester (06/26/2026 08:03:55)">
-  <sessioninfo id="this" start="1782461031717" dump="1782461035175" />
+<report name="Pester (06/26/2026 08:09:04)">
+  <sessioninfo id="this" start="1782461341793" dump="1782461344381" />
   <package name="functions/Core">
     <class name="functions/Core/ConvertTo-MaskedString" sourcefilename="Core/ConvertTo-MaskedString.ps1">
       <method name="ConvertTo-MaskedString" desc="()" line="35">
