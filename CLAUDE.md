@@ -148,10 +148,12 @@ PowerShell Automation & Operations Toolkit für Windows Server-Administration.
 ### Context-Management für Claude-Sessions
 
 **Regel 5.1 - Build & Compile Check vor jedem Commit**
-```powershell
-.\build.ps1 -Validate  # oder equivalent für PowerShell-Linting
-```
-Bei Erfolg auf passender Branch committen. Bei Fehler fixen → nochmal committen.
+- **Automatisch via Pre-Commit Hook:** PSScriptAnalyzer läuft bei jedem `git commit` automatisch
+  - Hook blockiert Commits mit Linting-Fehlern
+  - Fehler müssen vor Commit behoben werden
+  - Bypass (nur im Notfall): `git commit --no-verify` (nicht empfohlen)
+- **Manuell:** `.\build.ps1 -Validate` (4-Raum Indentation, K&R Bracing, Whitespace, BOM)
+- Bei Erfolg: Commit wird erstellt. Bei Fehler: Hook blockiert, Fehlerliste angezeigt → Fixen → Retry.
 
 **Regel 5.2 - CLAUDE.md aktuell halten**
 Nach Änderungen updaten wenn:
