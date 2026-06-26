@@ -1,0 +1,27 @@
+{
+  "compliant": {
+    "minPasswordLength": 12,
+    "passwordComplexity": 1,
+    "description": "Both settings compliant with defaults"
+  },
+  "driftMinPasswordLength": {
+    "minPasswordLength": 8,
+    "passwordComplexity": 1,
+    "description": "Minimum password length is too low (8 instead of 12)"
+  },
+  "driftPasswordComplexity": {
+    "minPasswordLength": 12,
+    "passwordComplexity": 0,
+    "description": "Password complexity is disabled (0 instead of 1)"
+  },
+  "driftBoth": {
+    "minPasswordLength": 6,
+    "passwordComplexity": 0,
+    "description": "Both settings drifted"
+  },
+  "registryEmpty": {
+    "minPasswordLength": null,
+    "passwordComplexity": null,
+    "description": "Registry values are missing/null"
+  }
+}
