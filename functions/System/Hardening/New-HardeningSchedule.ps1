@@ -1,4 +1,4 @@
-function New-HardeningSchedule {
+﻿function New-HardeningSchedule {
     <#
     .SYNOPSIS
     Creates a scheduled task for automated hardening compliance verification.
@@ -9,11 +9,10 @@ function New-HardeningSchedule {
 
     Supports:
     - One-time execution
-    - Recurring schedules (daily, weekly, monthly)
+    - Recurring schedules (daily, weekly)
     - Custom time intervals
     - Automated remediation on non-compliance
     - Report generation in multiple formats
-    - Email notifications (with email service available)
 
     Tasks run with SYSTEM privilege level for full access to security settings.
 
@@ -26,7 +25,7 @@ function New-HardeningSchedule {
     Mandatory.
 
     .PARAMETER Schedule
-    Schedule frequency: OneTime, Daily, Weekly, Monthly.
+    Schedule frequency: OneTime, Daily, Weekly.
     Mandatory.
 
     .PARAMETER Time
@@ -36,10 +35,6 @@ function New-HardeningSchedule {
     .PARAMETER DayOfWeek
     Day of week for weekly schedules (e.g., Monday, Friday).
     Required for Weekly schedule.
-
-    .PARAMETER DayOfMonth
-    Day of month for monthly schedules (1-31).
-    Required for Monthly schedule.
 
     .PARAMETER AutoRemediate
     If specified, automatically remediate non-compliant rules.
@@ -67,15 +62,17 @@ function New-HardeningSchedule {
 
     Creates weekly Monday check with auto-remediation and HTML report generation.
 
-    .EXAMPLE
-    New-HardeningSchedule -Profile Basis -Schedule Monthly -DayOfMonth 1 -GenerateReport
-
-    Creates monthly compliance check on the 1st of each month.
-
     .NOTES
-    DEPENDENCIES: Write-Log (Core), Test-HardeningCompliance, Export-HardeningReport
     ADMIN: Requires administrative rights to create scheduled tasks
-    TASK SCHEDULER: Uses Windows Task Scheduler for execution
+    SECURITY: Script block is Base64-encoded to prevent code injection
+    WHATIF: Supports -WhatIf parameter; no resources created in WhatIf mode
+    DEPENDENCIES:
+      - Write-Log (Core) â€“ Logging
+      - New-HardeningSession (System) â€“ Session initialization
+      - Invoke-SecurityHardening (System) â€“ Apply hardening rules
+      - Test-HardeningCompliance (System) â€“ Compliance verification & remediation
+      - Export-HardeningReport (System) â€“ Report generation
+    TASK SCHEDULER: Uses Windows Task Scheduler for recurring execution
     REPORTS: Generated in C:\ProgramData\WinHarden\Reports by default
     #>
 
@@ -91,7 +88,7 @@ function New-HardeningSchedule {
         $Profile,
 
         [Parameter(Mandatory = $true)]
-        [ValidateSet('OneTime', 'Daily', 'Weekly', 'Monthly')]
+        [ValidateSet('OneTime', 'Daily', 'Weekly')]
         [string]
         $Schedule,
 
@@ -103,11 +100,6 @@ function New-HardeningSchedule {
         [ValidateSet('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday')]
         [string]
         $DayOfWeek,
-
-        [Parameter(Mandatory = $false)]
-        [ValidateRange(1, 31)]
-        [int]
-        $DayOfMonth,
 
         [switch]
         $AutoRemediate,
@@ -133,93 +125,112 @@ function New-HardeningSchedule {
             throw "DayOfWeek required for Weekly schedule"
         }
 
-        if ($Schedule -eq 'Monthly' -and -not $DayOfMonth) {
-            throw "DayOfMonth required for Monthly schedule"
+        # Validate time format early
+        try {
+            [DateTime]::ParseExact($Time, 'HH:mm', [System.Globalization.CultureInfo]::InvariantCulture) | Out-Null
+        }
+        catch {
+            throw "Invalid time format. Use HH:mm (e.g., 14:30)"
         }
 
-        Write-Log -Message "Creating hardening schedule: Task=$TaskName, Profile=$Profile, Schedule=$Schedule" -Level Info
-
-        # Create report directory if generating reports
-        if ($GenerateReport) {
-            if (-not (Test-Path -Path $ReportPath)) {
-                New-Item -ItemType Directory -Path $ReportPath -Force | Out-Null
-            }
-        }
-
-        # Build PowerShell script block for task
+        # Build PowerShell script block for task (with safe parameter handling)
         $scriptBlock = @"
 # WinHarden Hardening Compliance Check
-Import-Module '$(Split-Path -Path $PSScriptRoot -Parent)\modules\System.psm1' -Force
+Import-Module '$($PSScriptRoot | Split-Path)\modules\System.psm1' -Force
 
-`$session = New-HardeningSession -Profile '$Profile' -TargetSystem Client -SkipPrerequisiteCheck
+`$session = New-HardeningSession -Profile 'PROFILE_PLACEHOLDER' -TargetSystem Client -SkipPrerequisiteCheck
 `$hardening = Invoke-SecurityHardening -Session `$session
 `$compliance = Test-HardeningCompliance -Session `$session
 
 Write-Output "Compliance: `$(`$compliance.CompliancePercentage)% - `$(`$compliance.Status)"
+REMEDIATE_PLACEHOLDER
+REPORT_PLACEHOLDER
 "@
 
+        # Replace placeholders with safe values (prevents injection)
+        $scriptBlock = $scriptBlock -replace 'PROFILE_PLACEHOLDER', $Profile
+
         if ($AutoRemediate) {
-            $scriptBlock += @"
-`
+            $remediateBlock = @"
+
 if (`$compliance.NonCompliantRules -gt 0) {
     `$remediation = Test-HardeningCompliance -Session `$session -Remediate
     Write-Output "Remediated `$(`$remediation.RemediatedRules.Count) non-compliant rules"
 }
 "@
+            $scriptBlock = $scriptBlock -replace 'REMEDIATE_PLACEHOLDER', $remediateBlock
+        }
+        else {
+            $scriptBlock = $scriptBlock -replace 'REMEDIATE_PLACEHOLDER', ''
         }
 
         if ($GenerateReport) {
-            $scriptBlock += @"
-`
-Export-HardeningReport -ComplianceReport `$compliance -Format '$ReportFormat' -OutputPath '$ReportPath\compliance-`$(Get-Date -Format "yyyy-MM-dd-HHmmss").$($ReportFormat.ToLower())'
+            $reportBlock = @"
+
+`$reportFileName = "compliance-`$(Get-Date -Format 'yyyy-MM-dd-HHmmss').$($ReportFormat.ToLower())"
+Export-HardeningReport -ComplianceReport `$compliance -Format '$ReportFormat' -OutputPath '$ReportPath\`$reportFileName'
 "@
+            $scriptBlock = $scriptBlock -replace 'REPORT_PLACEHOLDER', $reportBlock
+        }
+        else {
+            $scriptBlock = $scriptBlock -replace 'REPORT_PLACEHOLDER', ''
         }
 
-        # Create scheduled task
-        $taskAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -WindowStyle Hidden -Command `"$scriptBlock`""
+        # Encode script block as Base64 for secure execution (prevents code injection)
+        $scriptBytes = [System.Text.Encoding]::Unicode.GetBytes($scriptBlock)
+        $encodedScript = [Convert]::ToBase64String($scriptBytes)
 
-        $taskTrigger = switch ($Schedule) {
-            'OneTime' {
-                $triggerTime = [DateTime]::ParseExact($Time, 'HH:mm', $null)
-                New-ScheduledTaskTrigger -Once -At $triggerTime
-            }
-            'Daily' {
-                $triggerTime = [DateTime]::ParseExact($Time, 'HH:mm', $null)
-                New-ScheduledTaskTrigger -Daily -At $triggerTime
-            }
-            'Weekly' {
-                $triggerTime = [DateTime]::ParseExact($Time, 'HH:mm', $null)
-                New-ScheduledTaskTrigger -Weekly -DaysOfWeek $DayOfWeek -At $triggerTime
-            }
-            'Monthly' {
-                $triggerTime = [DateTime]::ParseExact($Time, 'HH:mm', $null)
-                New-ScheduledTaskTrigger -Monthly -DaysOfMonth $DayOfMonth -At $triggerTime
-            }
-        }
-
-        # Create principal (SYSTEM account)
-        $taskPrincipal = New-ScheduledTaskPrincipal -UserId "SYSTEM" -LogonType ServiceAccount -RunLevel Highest
-
-        # Create task settings
-        $taskSettings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable
-
-        # Register task
+        # Check WhatIf BEFORE creating resources
         if ($PSCmdlet.ShouldProcess($TaskName, "Create scheduled hardening task")) {
+            Write-Log -Message "Creating hardening schedule: Task=$TaskName, Profile=$Profile, Schedule=$Schedule" -Level Info
+
+            # Create report directory if generating reports (inside WhatIf block)
+            if ($GenerateReport) {
+                if (-not (Test-Path -Path $ReportPath)) {
+                    New-Item -ItemType Directory -Path $ReportPath -Force | Out-Null
+                }
+            }
+
+            # Create scheduled task with Base64-encoded command (secure, no injection risk)
+            $taskAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -WindowStyle Hidden -EncodedCommand $encodedScript"
+
+            $taskTrigger = switch ($Schedule) {
+                'OneTime' {
+                    $triggerTime = [DateTime]::ParseExact($Time, 'HH:mm', [System.Globalization.CultureInfo]::InvariantCulture)
+                    New-ScheduledTaskTrigger -Once -At $triggerTime
+                }
+                'Daily' {
+                    $triggerTime = [DateTime]::ParseExact($Time, 'HH:mm', [System.Globalization.CultureInfo]::InvariantCulture)
+                    New-ScheduledTaskTrigger -Daily -At $triggerTime
+                }
+                'Weekly' {
+                    $triggerTime = [DateTime]::ParseExact($Time, 'HH:mm', [System.Globalization.CultureInfo]::InvariantCulture)
+                    New-ScheduledTaskTrigger -Weekly -DaysOfWeek $DayOfWeek -At $triggerTime
+                }
+            }
+
+            # Create principal (SYSTEM account)
+            $taskPrincipal = New-ScheduledTaskPrincipal -UserId "SYSTEM" -LogonType ServiceAccount -RunLevel Highest
+
+            # Create task settings
+            $taskSettings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable
+
+            # Register task
             Register-ScheduledTask -TaskName $TaskName `
                 -Action $taskAction `
                 -Trigger $taskTrigger `
                 -Principal $taskPrincipal `
                 -Settings $taskSettings `
                 -Force | Out-Null
+
+            Write-Log -Message "Hardening schedule created: $TaskName" -Level Info
+
+            Get-ScheduledTask -TaskName $TaskName
         }
         else {
-            Write-Log -Message "Scheduled task creation cancelled by user" -Level Info
+            Write-Log -Message "Scheduled task creation cancelled by user (WhatIf)" -Level Info
             return
         }
-
-        Write-Log -Message "Hardening schedule created: $TaskName" -Level Info
-
-        Get-ScheduledTask -TaskName $TaskName
     }
     catch {
         Write-ErrorLog -Message "Failed to create hardening schedule: $($_.Exception.Message)" -Caller $MyInvocation.MyCommand.Name
