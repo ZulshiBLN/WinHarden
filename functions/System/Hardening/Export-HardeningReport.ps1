@@ -102,33 +102,34 @@ function Export-HardeningReport {
 
             # Generate report content based on format
             $reportContent = switch ($Format) {
-            'JSON' {
-                _GenerateJsonReport -Report $ComplianceReport -IncludeRuleDetails:$IncludeRuleDetails
+                'JSON' {
+                    _GenerateJsonReport -Report $ComplianceReport -IncludeRuleDetails:$IncludeRuleDetails
+                }
+                'CSV' {
+                    _GenerateCsvReport -Report $ComplianceReport -IncludeRuleDetails:$IncludeRuleDetails
+                }
+                'HTML' {
+                    _GenerateHtmlReport -Report $ComplianceReport -IncludeRuleDetails:$IncludeRuleDetails -IncludeTrending:$IncludeTrending -HistoricalReports $HistoricalReports
+                }
+                'Text' {
+                    _GenerateTextReport -Report $ComplianceReport -IncludeRuleDetails:$IncludeRuleDetails -IncludeTrending:$IncludeTrending -HistoricalReports $HistoricalReports
+                }
             }
-            'CSV' {
-                _GenerateCsvReport -Report $ComplianceReport -IncludeRuleDetails:$IncludeRuleDetails
-            }
-            'HTML' {
-                _GenerateHtmlReport -Report $ComplianceReport -IncludeRuleDetails:$IncludeRuleDetails -IncludeTrending:$IncludeTrending -HistoricalReports $HistoricalReports
-            }
-            'Text' {
-                _GenerateTextReport -Report $ComplianceReport -IncludeRuleDetails:$IncludeRuleDetails -IncludeTrending:$IncludeTrending -HistoricalReports $HistoricalReports
-            }
-        }
 
-        # Output or save report
-        if ($OutputPath) {
-            $reportContent | Out-File -FilePath $OutputPath -Encoding UTF8 -Force
-            Write-Log -Message "Report exported to: $OutputPath" -Level Info
-            Get-Item -Path $OutputPath
+            # Output or save report
+            if ($OutputPath) {
+                $reportContent | Out-File -FilePath $OutputPath -Encoding UTF8 -Force
+                Write-Log -Message "Report exported to: $OutputPath" -Level Info
+                Get-Item -Path $OutputPath
+            }
+            else {
+                $reportContent
+            }
         }
-        else {
-            $reportContent
+        catch {
+            Write-ErrorLog -Message "Failed to export hardening report: $($_.Exception.Message)" -Caller $MyInvocation.MyCommand.Name
+            throw
         }
-    }
-    catch {
-        Write-ErrorLog -Message "Failed to export hardening report: $($_.Exception.Message)" -Caller $MyInvocation.MyCommand.Name
-        throw
     }
 }
 
