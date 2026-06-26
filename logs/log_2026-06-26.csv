@@ -1,132 +1,299 @@
 ﻿Timestamp,Level,Caller,Function,LineNumber,Message
-2026-06-26 10:27:00.332,Error,Write-ErrorLog,Write-ErrorLog,37,Critical error occurred
-2026-06-26 10:27:00.437,Error,Test-NotNullOrEmpty<Process>,Test-NotNullOrEmpty<Process>,39,TestParam cannot be null or empty
-2026-06-26 10:27:00.459,Error,Test-NotNullOrEmpty<Process>,Test-NotNullOrEmpty<Process>,39,TestParam cannot be null or empty
-2026-06-26 10:27:00.474,Error,Test-NotNullOrEmpty<Process>,Test-NotNullOrEmpty<Process>,39,TestParam cannot be null or empty
-2026-06-26 10:27:00.488,Error,Test-NotNullOrEmpty<Process>,Test-NotNullOrEmpty<Process>,39,ComputerName cannot be null or empty
-2026-06-26 10:27:00.527,Error,Test-ValidPath,Test-ValidPath,37,TestPath does not exist: C:\NonExistent\Path\That\Does\Not\Exist
-2026-06-26 10:27:00.543,Error,Test-ValidPath,Test-ValidPath,37,TestPath does not exist: C:\InvalidPath
-2026-06-26 10:27:01.467,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
-2026-06-26 10:27:01.476,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
-2026-06-26 10:27:01.482,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Strict, Target=Client, OSVersion=11"
-2026-06-26 10:27:01.506,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
-2026-06-26 10:27:01.519,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2022"
-2026-06-26 10:27:01.532,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
-2026-06-26 10:27:01.553,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2019"
-2026-06-26 10:27:01.560,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2022"
-2026-06-26 10:27:01.567,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2025"
-2026-06-26 10:27:01.602,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
-2026-06-26 10:27:01.649,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Strict, Target=Server, OSVersion=2025"
-2026-06-26 10:27:01.676,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
-2026-06-26 10:27:01.695,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
-2026-06-26 10:27:01.716,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
-2026-06-26 10:27:01.721,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
-2026-06-26 10:27:01.743,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2022"
-2026-06-26 10:27:01.770,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
-2026-06-26 10:27:01.800,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
-2026-06-26 10:27:01.835,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
-2026-06-26 10:27:01.854,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Server
-2026-06-26 10:27:01.863,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Server
-2026-06-26 10:27:01.877,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Strict for Client
-2026-06-26 10:27:01.883,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 14 rules for Client
-2026-06-26 10:27:01.923,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
-2026-06-26 10:27:01.929,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
-2026-06-26 10:27:01.945,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
-2026-06-26 10:27:01.952,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
-2026-06-26 10:27:01.967,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
-2026-06-26 10:27:01.973,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
-2026-06-26 10:27:01.989,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
-2026-06-26 10:27:01.995,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
-2026-06-26 10:27:02.000,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Strict for Client
-2026-06-26 10:27:02.009,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 14 rules for Client
-2026-06-26 10:27:02.025,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
-2026-06-26 10:27:02.031,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
-2026-06-26 10:27:02.037,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Client
-2026-06-26 10:27:02.047,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Client
-2026-06-26 10:27:02.060,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
-2026-06-26 10:27:02.068,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
-2026-06-26 10:27:02.105,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Server
-2026-06-26 10:27:02.116,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Server
-2026-06-26 10:27:02.162,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
-2026-06-26 10:27:02.167,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
-2026-06-26 10:27:02.189,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
-2026-06-26 10:27:02.196,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
-2026-06-26 10:27:02.216,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
-2026-06-26 10:27:02.223,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
-2026-06-26 10:27:02.243,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
-2026-06-26 10:27:02.249,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
-2026-06-26 10:27:02.269,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
-2026-06-26 10:27:02.275,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
-2026-06-26 10:27:02.290,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
-2026-06-26 10:27:02.302,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
-2026-06-26 10:27:02.346,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
-2026-06-26 10:27:02.352,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
-2026-06-26 10:27:02.357,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Client
-2026-06-26 10:27:02.367,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Client
-2026-06-26 10:27:02.402,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Client
-2026-06-26 10:27:02.409,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Client
-2026-06-26 10:27:02.416,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Strict for Client
-2026-06-26 10:27:02.426,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 14 rules for Client
-2026-06-26 10:27:02.457,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
-2026-06-26 10:27:21.797,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
-2026-06-26 10:27:21.818,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
-2026-06-26 10:27:21.826,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Strict, Target=Client, OSVersion=11"
-2026-06-26 10:27:21.878,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
-2026-06-26 10:27:21.884,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2022"
-2026-06-26 10:27:21.899,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
-2026-06-26 10:27:21.912,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2019"
-2026-06-26 10:27:21.919,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2022"
-2026-06-26 10:27:21.926,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2025"
-2026-06-26 10:27:21.965,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
-2026-06-26 10:27:22.029,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Strict, Target=Server, OSVersion=2025"
-2026-06-26 10:27:22.076,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
-2026-06-26 10:27:22.125,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
-2026-06-26 10:27:22.146,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
-2026-06-26 10:27:22.150,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
-2026-06-26 10:27:22.174,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2022"
-2026-06-26 10:27:22.196,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
-2026-06-26 10:27:22.229,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
-2026-06-26 10:27:22.264,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
-2026-06-26 10:27:22.285,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Server
-2026-06-26 10:27:22.294,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Server
-2026-06-26 10:27:22.305,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Strict for Client
-2026-06-26 10:27:22.313,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 14 rules for Client
-2026-06-26 10:27:22.333,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
-2026-06-26 10:27:22.339,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
-2026-06-26 10:27:22.355,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
-2026-06-26 10:27:22.363,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
-2026-06-26 10:27:22.379,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
-2026-06-26 10:27:22.384,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
-2026-06-26 10:27:22.401,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
-2026-06-26 10:27:22.409,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
-2026-06-26 10:27:22.454,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Strict for Client
-2026-06-26 10:27:22.460,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 14 rules for Client
-2026-06-26 10:27:22.477,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
-2026-06-26 10:27:22.484,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
-2026-06-26 10:27:22.491,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Client
-2026-06-26 10:27:22.500,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Client
-2026-06-26 10:27:22.510,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
-2026-06-26 10:27:22.516,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
-2026-06-26 10:27:22.559,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Server
-2026-06-26 10:27:22.565,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Server
-2026-06-26 10:27:22.607,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
-2026-06-26 10:27:22.613,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
-2026-06-26 10:27:22.627,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
-2026-06-26 10:27:22.633,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
-2026-06-26 10:27:22.646,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
-2026-06-26 10:27:22.652,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
-2026-06-26 10:27:22.693,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
-2026-06-26 10:27:22.700,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
-2026-06-26 10:27:22.714,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
-2026-06-26 10:27:22.720,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
-2026-06-26 10:27:22.736,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
-2026-06-26 10:27:22.744,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
-2026-06-26 10:27:22.784,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
-2026-06-26 10:27:22.790,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
-2026-06-26 10:27:22.797,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Client
-2026-06-26 10:27:22.807,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Client
-2026-06-26 10:27:22.836,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Client
-2026-06-26 10:27:22.842,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Client
-2026-06-26 10:27:22.847,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Strict for Client
-2026-06-26 10:27:22.857,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 14 rules for Client
-2026-06-26 10:27:22.886,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:31:36.038,Error,Write-ErrorLog,Write-ErrorLog,37,Critical error occurred
+2026-06-26 10:31:36.099,Error,Test-NotNullOrEmpty<Process>,Test-NotNullOrEmpty<Process>,39,TestParam cannot be null or empty
+2026-06-26 10:31:36.119,Error,Test-NotNullOrEmpty<Process>,Test-NotNullOrEmpty<Process>,39,TestParam cannot be null or empty
+2026-06-26 10:31:36.136,Error,Test-NotNullOrEmpty<Process>,Test-NotNullOrEmpty<Process>,39,TestParam cannot be null or empty
+2026-06-26 10:31:36.153,Error,Test-NotNullOrEmpty<Process>,Test-NotNullOrEmpty<Process>,39,ComputerName cannot be null or empty
+2026-06-26 10:31:36.191,Error,Test-ValidPath,Test-ValidPath,37,TestPath does not exist: C:\NonExistent\Path\That\Does\Not\Exist
+2026-06-26 10:31:36.225,Error,Test-ValidPath,Test-ValidPath,37,TestPath does not exist: C:\InvalidPath
+2026-06-26 10:31:37.265,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:37.352,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:37.383,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:37.417,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:37.454,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:37.480,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:37.501,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Server, OSVersion=2022"
+2026-06-26 10:31:37.523,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2025"
+2026-06-26 10:31:37.543,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:37.564,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:37.590,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:37.609,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:37.639,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:37.658,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:31:37.679,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:37.707,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:37.727,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:37.760,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:37.799,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:37.820,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:31:37.842,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:31:37.871,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:37.891,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:37.912,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:37.932,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:37.952,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:37.980,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2019"
+2026-06-26 10:31:38.000,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Server, OSVersion=2022"
+2026-06-26 10:31:38.020,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Strict, Target=Server, OSVersion=2025"
+2026-06-26 10:31:38.043,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:38.217,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:38.239,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:31:38.259,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Strict, Target=Client, OSVersion=11"
+2026-06-26 10:31:38.279,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Server, OSVersion=2022"
+2026-06-26 10:31:38.446,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:38.453,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:31:38.460,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Strict, Target=Client, OSVersion=11"
+2026-06-26 10:31:38.484,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:38.491,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2022"
+2026-06-26 10:31:38.504,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:38.523,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2019"
+2026-06-26 10:31:38.529,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2022"
+2026-06-26 10:31:38.536,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2025"
+2026-06-26 10:31:38.561,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:31:38.579,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Strict, Target=Server, OSVersion=2025"
+2026-06-26 10:31:38.600,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:38.621,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:31:38.639,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:38.643,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:38.672,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2022"
+2026-06-26 10:31:38.695,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:38.727,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:31:38.782,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:31:38.799,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Server
+2026-06-26 10:31:38.847,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Server
+2026-06-26 10:31:38.863,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Strict for Client
+2026-06-26 10:31:38.898,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 14 rules for Client
+2026-06-26 10:31:38.933,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:31:38.939,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:31:38.955,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:31:38.961,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:31:38.977,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:31:38.985,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:31:39.000,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:31:39.007,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:31:39.013,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Strict for Client
+2026-06-26 10:31:39.022,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 14 rules for Client
+2026-06-26 10:31:39.037,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:31:39.044,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:31:39.050,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Client
+2026-06-26 10:31:39.061,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Client
+2026-06-26 10:31:39.074,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:31:39.081,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:31:39.123,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Server
+2026-06-26 10:31:39.130,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Server
+2026-06-26 10:31:39.179,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:31:39.187,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:31:39.205,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:31:39.213,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:31:39.227,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:31:39.234,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:31:39.250,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:31:39.258,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:31:39.277,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:31:39.283,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:31:39.299,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:31:39.305,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:31:39.353,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:31:39.360,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:31:39.367,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Client
+2026-06-26 10:31:39.376,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Client
+2026-06-26 10:31:39.409,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Client
+2026-06-26 10:31:39.416,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Client
+2026-06-26 10:31:39.422,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Strict for Client
+2026-06-26 10:31:39.434,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 14 rules for Client
+2026-06-26 10:31:39.460,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:31:55.648,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:55.787,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:55.805,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:55.849,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:55.889,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:55.907,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:55.920,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Server, OSVersion=2022"
+2026-06-26 10:31:55.934,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2025"
+2026-06-26 10:31:55.949,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:55.965,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:55.979,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:55.994,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:56.016,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:56.032,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:31:56.053,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:56.073,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:56.087,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:56.139,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:56.158,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:56.172,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:31:56.185,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:31:56.237,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:56.254,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:56.268,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:56.282,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:56.295,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:56.315,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2019"
+2026-06-26 10:31:56.330,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Server, OSVersion=2022"
+2026-06-26 10:31:56.345,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Strict, Target=Server, OSVersion=2025"
+2026-06-26 10:31:56.359,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:56.478,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:31:56.494,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:31:56.507,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Strict, Target=Client, OSVersion=11"
+2026-06-26 10:31:56.529,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Server, OSVersion=2022"
+2026-06-26 10:33:33.490,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:33.515,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:33.656,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:33.661,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:33.683,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:33.689,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:33.707,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:33.713,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:33.756,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:33.761,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:33.782,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:33.786,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:33.806,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Server, OSVersion=2022"
+2026-06-26 10:33:33.839,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:33.857,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2025"
+2026-06-26 10:33:33.862,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:33.882,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:33.888,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:33.907,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:33.911,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:33.931,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:33.936,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:33.955,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:33.961,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:33.986,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:33.992,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:34.012,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:33:34.018,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:34.035,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:34.040,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:34.065,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:34.069,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:34.087,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:34.093,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:34.143,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:34.148,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:34.175,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:34.181,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:34.200,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:33:34.206,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:34.224,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:33:34.229,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:34.254,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:34.260,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:34.310,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:34.315,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:34.335,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:34.340,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:34.358,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:34.363,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:34.381,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:34.386,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:34.411,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2019"
+2026-06-26 10:33:34.416,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:34.437,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Server, OSVersion=2022"
+2026-06-26 10:33:34.441,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:34.460,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Strict, Target=Server, OSVersion=2025"
+2026-06-26 10:33:34.464,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:34.485,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:34.490,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:34.620,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:34.625,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:34.647,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:33:34.653,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:34.673,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Strict, Target=Client, OSVersion=11"
+2026-06-26 10:33:34.679,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:34.703,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Server, OSVersion=2022"
+2026-06-26 10:33:34.711,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:53.554,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:53.577,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:33:53.607,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:33:53.616,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=dcab4c01-be62-44f7-9746-d41268e07a98, Rules=12"
+2026-06-26 10:33:53.656,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,89,"Starting security hardening: Profile=Basis, ComputerName=GAMINGPC"
+2026-06-26 10:33:53.663,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:33:53.675,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:33:53.713,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,123,Applying Registry rules: 8 rules
+2026-06-26 10:33:53.735,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Account-MinimumPasswordLength: Requested registry access is not allowed.
+2026-06-26 10:33:53.769,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Account-PasswordComplexity: Requested registry access is not allowed.
+2026-06-26 10:33:53.780,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule UAC-ElevationPrompt: Requested registry access is not allowed.
+2026-06-26 10:33:53.790,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule RDP-EnableNetworkLevelAuthentication: Requested registry access is not allowed.
+2026-06-26 10:33:53.821,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Encryption-DisableObsoleteCiphers: Access to the registry key 'HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Client' is denied.
+2026-06-26 10:33:53.832,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Network-DisableIPv6: Requested registry access is not allowed.
+2026-06-26 10:33:53.843,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Updates-EnableAutoSecurityUpdates: Requested registry access is not allowed.
+2026-06-26 10:33:53.853,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Registry-DisableLLMNR: Requested registry access is not allowed.
+2026-06-26 10:33:53.860,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,136,Applying Service rules: 2 rules
+2026-06-26 10:33:53.966,Error,_ApplyHardeningRule,Write-ErrorLog,37,"Failed to apply rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-26 10:33:54.015,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Service-DisablePrintSpooler: Service 'Print Spooler (spooler)' cannot be configured due to the following error: Access is denied
+2026-06-26 10:33:54.022,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,149,Applying Firewall rules: 1 rules (sequential)
+2026-06-26 10:33:54.527,Error,_ApplyHardeningRule,Write-ErrorLog,37,"Failed to apply rule Firewall-EnableWindowsDefender: Cannot process argument transformation on parameter 'Enabled'. Cannot convert value "True" to type "Microsoft.PowerShell.Cmdletization.GeneratedTypes.NetSecurity.GpoBoolean". Error: "Invalid cast from 'System.Boolean' to 'Microsoft.PowerShell.Cmdletization.GeneratedTypes.NetSecurity.GpoBoolean'.""
+2026-06-26 10:33:54.538,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,155,Applying Audit rules: 1 rules (sequential)
+2026-06-26 10:33:54.561,Error,_ApplyHardeningRule,Write-ErrorLog,37,Failed to apply rule Audit-EnableLogonAuditing: Error 0x00000057 occurred:
+2026-06-26 10:33:54.568,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,161,Applying other rules: 0 rules
+2026-06-26 10:33:54.579,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,171,Verifying hardening compliance
+2026-06-26 10:33:54.594,Info,Invoke-SecurityHardening,Invoke-SecurityHardening,181,"Hardening complete: Applied=0, Failed=12, Skipped=0, Total=12"
+2026-06-26 10:33:54.653,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:54.666,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:54.714,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:54.719,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:54.740,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:54.744,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:54.791,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:54.796,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:54.820,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:54.824,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:54.845,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Server, OSVersion=2022"
+2026-06-26 10:33:54.850,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:54.870,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2025"
+2026-06-26 10:33:54.876,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:54.897,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:54.902,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:54.980,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:54.986,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:55.007,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:55.012,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:55.032,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:55.036,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:55.064,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:55.070,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:55.089,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:33:55.095,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:55.114,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:55.119,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:55.145,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:55.150,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:55.169,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:55.174,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:55.193,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:55.197,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:55.223,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:55.229,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:55.248,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:33:55.253,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:55.297,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:33:55.302,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:55.330,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:55.334,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:55.355,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:55.360,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:55.378,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:55.384,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:55.404,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:55.409,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:55.429,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:55.434,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:55.460,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2019"
+2026-06-26 10:33:55.464,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:55.487,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Server, OSVersion=2022"
+2026-06-26 10:33:55.493,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:55.511,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Strict, Target=Server, OSVersion=2025"
+2026-06-26 10:33:55.516,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:55.534,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:55.540,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:55.667,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:33:55.673,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:55.697,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:33:55.702,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:55.726,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Strict, Target=Client, OSVersion=11"
+2026-06-26 10:33:55.731,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations
+2026-06-26 10:33:55.760,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Server, OSVersion=2022"
+2026-06-26 10:33:55.765,Error,New-HardeningSession,Write-ErrorLog,37,Failed to create hardening session: Administrator privileges required for hardening operations

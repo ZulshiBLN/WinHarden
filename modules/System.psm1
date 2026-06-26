@@ -29,7 +29,8 @@ $functionsPath = Join-Path -Path $PSScriptRoot -ChildPath '..\functions\System'
 $publicFunctions = @(
     'New-ExchangeOnlineConnection',
     'New-HardeningSession',
-    'Get-HardeningProfile'
+    'Get-HardeningProfile',
+    'Invoke-SecurityHardening'
 )
 
 # Private helper functions to load

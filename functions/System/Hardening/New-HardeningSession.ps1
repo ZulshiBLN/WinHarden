@@ -100,14 +100,13 @@ function New-HardeningSession {
     try {
         Write-Log -Message "Initializing hardening session: Profile=$Profile, Target=$TargetSystem, OSVersion=$OSVersion" -Level Info
 
-        if ($PSCmdlet.ShouldProcess("$ComputerName", "Create hardening session with $Profile profile")) {
-            # Validate prerequisites
-            if (-not $SkipPrerequisiteCheck) {
-                _ValidateHardeningPrerequisites -ComputerName $ComputerName
-            }
+        # Validate prerequisites
+        if (-not $SkipPrerequisiteCheck) {
+            _ValidateHardeningPrerequisites -ComputerName $ComputerName
+        }
 
-            # Create session object
-            $session = [ordered]@{
+        # Create session object
+        $session = [ordered]@{
                 SessionId            = [guid]::NewGuid().ToString()
                 CreatedTime          = Get-Date
                 Profile              = $Profile
@@ -133,14 +132,13 @@ function New-HardeningSession {
             _ValidateProfileCompatibility -Session $session
 
             # Load profile rules count
-            $profileRules = Get-HardeningProfile -ProfileName $Profile -TargetSystem $TargetSystem
-            $session.State.TotalRules = @($profileRules.Rules).Count
+        $profileRules = Get-HardeningProfile -ProfileName $Profile -TargetSystem $TargetSystem
+        $session.State.TotalRules = @($profileRules.Rules).Count
 
-            Write-Log -Message "Hardening session created successfully. SessionId=$($session.SessionId), Rules=$($session.State.TotalRules)" -Level Info
+        Write-Log -Message "Hardening session created successfully. SessionId=$($session.SessionId), Rules=$($session.State.TotalRules)" -Level Info
 
-            # Return session as PSCustomObject for compatibility
-            [PSCustomObject]$session
-        }
+        # Return session as PSCustomObject for compatibility
+        [PSCustomObject]$session
     }
     catch {
         Write-ErrorLog -Message "Failed to create hardening session: $($_.Exception.Message)" -Caller $MyInvocation.MyCommand.Name
