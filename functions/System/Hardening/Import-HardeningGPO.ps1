@@ -1,4 +1,4 @@
-function Import-HardeningGPO {
+﻿function Import-HardeningGPO {
     <#
     .SYNOPSIS
     Integrates hardening rules with Group Policy Object (GPO) for domain deployment.
@@ -157,6 +157,10 @@ function Import-HardeningGPO {
 }
 
 function _ApplyRegistryPoliciesToGPO {
+    <#
+    .SYNOPSIS
+    Internal helper: Applies registry hardening policies to a Group Policy Object for domain deployment.
+    #>
     param(
         [object]$GPO,
         [array]$Rules,
@@ -235,7 +239,7 @@ function Get-HardeningGPO {
         }
 
         $gpos = Get-GPO -All -Domain $Domain -ErrorAction SilentlyContinue | `
-            Where-Object { $_.DisplayName -like "WinHarden-Hardening*" }
+                Where-Object { $_.DisplayName -like "WinHarden-Hardening*" }
 
         if ($Profile) {
             $gpos = $gpos | Where-Object { $_.DisplayName -like "*$Profile*" }

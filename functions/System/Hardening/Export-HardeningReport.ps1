@@ -1,4 +1,4 @@
-function Export-HardeningReport {
+﻿function Export-HardeningReport {
     <#
     .SYNOPSIS
     Exports hardening compliance reports in multiple formats.
@@ -138,6 +138,10 @@ function Export-HardeningReport {
 # ================================================================================
 
 function _GenerateJsonReport {
+    <#
+    .SYNOPSIS
+    Internal helper: Generates JSON compliance report from verification results.
+    #>
     param(
         [PSCustomObject]$Report,
         [bool]$IncludeRuleDetails
@@ -162,21 +166,25 @@ function _GenerateJsonReport {
 
     if ($IncludeRuleDetails) {
         $jsonReport['RuleDetails'] = @($Report.RuleResults | ForEach-Object {
-            [ordered]@{
-                RuleName = $_.RuleName
-                Category = $_.Category
-                Severity = $_.Severity
-                Compliant = $_.Compliant
-                ExpectedValue = $_.ExpectedValue
-                ActualValue = $_.ActualValue
-            }
-        })
+                [ordered]@{
+                    RuleName = $_.RuleName
+                    Category = $_.Category
+                    Severity = $_.Severity
+                    Compliant = $_.Compliant
+                    ExpectedValue = $_.ExpectedValue
+                    ActualValue = $_.ActualValue
+                }
+            })
     }
 
     $jsonReport | ConvertTo-Json -Depth 10
 }
 
 function _GenerateCsvReport {
+    <#
+    .SYNOPSIS
+    Internal helper: Generates CSV compliance report for spreadsheet analysis.
+    #>
     param(
         [PSCustomObject]$Report,
         [bool]$IncludeRuleDetails
@@ -184,17 +192,17 @@ function _GenerateCsvReport {
 
     if ($IncludeRuleDetails) {
         $csvData = @($Report.RuleResults | ForEach-Object {
-            [PSCustomObject]@{
-                RuleName = $_.RuleName
-                Category = $_.Category
-                Severity = $_.Severity
-                Compliant = $_.Compliant
-                ExpectedValue = $_.ExpectedValue
-                ActualValue = $_.ActualValue
-                Profile = $Report.Profile
-                TargetSystem = $Report.TargetSystem
-            }
-        })
+                [PSCustomObject]@{
+                    RuleName = $_.RuleName
+                    Category = $_.Category
+                    Severity = $_.Severity
+                    Compliant = $_.Compliant
+                    ExpectedValue = $_.ExpectedValue
+                    ActualValue = $_.ActualValue
+                    Profile = $Report.Profile
+                    TargetSystem = $Report.TargetSystem
+                }
+            })
     }
     else {
         $csvData = [PSCustomObject]@{
@@ -213,6 +221,10 @@ function _GenerateCsvReport {
 }
 
 function _GenerateHtmlReport {
+    <#
+    .SYNOPSIS
+    Internal helper: Generates formatted HTML compliance report for dashboards and documentation.
+    #>
     param(
         [PSCustomObject]$Report,
         [bool]$IncludeRuleDetails,
@@ -221,11 +233,16 @@ function _GenerateHtmlReport {
     )
 
     $statusColor = switch ($Report.Status) {
-        'Fully Compliant' { '#28a745' }
-        'Highly Compliant' { '#17a2b8' }
-        'Mostly Compliant' { '#ffc107' }
-        'Partially Compliant' { '#fd7e14' }
-        default { '#dc3545' }
+        'Fully Compliant' { '#28a745' 
+        }
+        'Highly Compliant' { '#17a2b8' 
+        }
+        'Mostly Compliant' { '#ffc107' 
+        }
+        'Partially Compliant' { '#fd7e14' 
+        }
+        default { '#dc3545' 
+        }
     }
 
     $html = @"
@@ -334,8 +351,14 @@ function _GenerateHtmlReport {
             <tbody>
 "@
         foreach ($rule in $Report.RuleResults) {
-            $statusClass = if ($rule.Compliant) { 'compliant' } else { 'non-compliant' }
-            $statusText = if ($rule.Compliant) { 'Compliant' } else { 'Non-Compliant' }
+            $statusClass = if ($rule.Compliant) { 'compliant' 
+            }
+            else { 'non-compliant' 
+            }
+            $statusText = if ($rule.Compliant) { 'Compliant' 
+            }
+            else { 'Non-Compliant' 
+            }
             $html += @"
                 <tr>
                     <td>$($rule.RuleName)</td>
@@ -369,6 +392,10 @@ function _GenerateHtmlReport {
 }
 
 function _GenerateTextReport {
+    <#
+    .SYNOPSIS
+    Internal helper: Generates human-readable text compliance report for console output.
+    #>
     param(
         [PSCustomObject]$Report,
         [bool]$IncludeRuleDetails,
@@ -421,7 +448,10 @@ RULE DETAILS
 ================================================================================
 "@
         foreach ($rule in $Report.RuleResults) {
-            $status = if ($rule.Compliant) { 'COMPLIANT' } else { 'NON-COMPLIANT' }
+            $status = if ($rule.Compliant) { 'COMPLIANT' 
+            }
+            else { 'NON-COMPLIANT' 
+            }
             $text += @"
 
 Rule:     $($rule.RuleName)
@@ -447,6 +477,10 @@ END OF REPORT
 }
 
 function _GenerateTrendingSection {
+    <#
+    .SYNOPSIS
+    Internal helper: Generates trending data section with compliance velocity and trend direction for HTML reports.
+    #>
     param(
         [PSCustomObject]$CurrentReport,
         [PSCustomObject[]]$HistoricalReports
@@ -459,7 +493,12 @@ function _GenerateTrendingSection {
     $sorted = @($HistoricalReports | Sort-Object -Property VerificationTime)
     $previous = $sorted[-1]
     $percentDiff = $CurrentReport.CompliancePercentage - $previous.CompliancePercentage
-    $trend = if ($percentDiff -gt 0) { "UP" } elseif ($percentDiff -lt 0) { "DOWN" } else { "STABLE" }
+    $trend = if ($percentDiff -gt 0) { "UP" 
+    }
+    elseif ($percentDiff -lt 0) { "DOWN" 
+    }
+    else { "STABLE" 
+    }
 
     $html = @"
         <h2>Compliance Trending</h2>
@@ -508,7 +547,12 @@ function _GenerateTrendingTextSection {
     $sorted = @($HistoricalReports | Sort-Object -Property VerificationTime)
     $previous = $sorted[-1]
     $percentDiff = $CurrentReport.CompliancePercentage - $previous.CompliancePercentage
-    $trend = if ($percentDiff -gt 0) { "IMPROVING" } elseif ($percentDiff -lt 0) { "DECLINING" } else { "STABLE" }
+    $trend = if ($percentDiff -gt 0) { "IMPROVING" 
+    }
+    elseif ($percentDiff -lt 0) { "DECLINING" 
+    }
+    else { "STABLE" 
+    }
 
     $text = @"
 

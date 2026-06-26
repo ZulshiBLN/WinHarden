@@ -1,4 +1,4 @@
-function Send-HardeningAlert {
+﻿function Send-HardeningAlert {
     <#
     .SYNOPSIS
     Sends email notifications for hardening compliance events.
@@ -166,6 +166,10 @@ function Send-HardeningAlert {
 }
 
 function _GenerateAlertSubject {
+    <#
+    .SYNOPSIS
+    Internal helper: Generates alert email subject line with severity and timestamp.
+    #>
     param(
         [string]$AlertType,
         [string]$Severity,
@@ -196,6 +200,10 @@ function _GenerateAlertSubject {
 }
 
 function _GenerateAlertBody {
+    <#
+    .SYNOPSIS
+    Internal helper: Generates HTML-formatted alert email body with compliance metrics and summary.
+    #>
     param(
         [string]$AlertType,
         [string]$Severity,
@@ -203,9 +211,12 @@ function _GenerateAlertBody {
     )
 
     $severityColor = switch ($Severity) {
-        'Info' { '#0066cc' }
-        'Warning' { '#ff9800' }
-        'Critical' { '#f44336' }
+        'Info' { '#0066cc' 
+        }
+        'Warning' { '#ff9800' 
+        }
+        'Critical' { '#f44336' 
+        }
     }
 
     $html = @"

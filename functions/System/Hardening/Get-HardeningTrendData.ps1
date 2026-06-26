@@ -1,4 +1,4 @@
-function Get-HardeningTrendData {
+﻿function Get-HardeningTrendData {
     <#
     .SYNOPSIS
     Retrieves historical compliance data for trending analysis and dashboards.
@@ -100,8 +100,8 @@ function Get-HardeningTrendData {
 
         $cutoffDate = (Get-Date).AddDays(-$Days)
         $complianceFiles = Get-ChildItem -Path $historyPath -Filter "*.json" -ErrorAction SilentlyContinue | `
-            Where-Object { $_.LastWriteTime -gt $cutoffDate } | `
-            Sort-Object -Property LastWriteTime
+                Where-Object { $_.LastWriteTime -gt $cutoffDate } | `
+                Sort-Object -Property LastWriteTime
 
         if ($complianceFiles.Count -eq 0) {
             Write-Log -Message "No compliance data found within $Days days" -Level Info
@@ -138,7 +138,10 @@ function Get-HardeningTrendData {
                     NonCompliantRules = $data.NonCompliantRules
                     Status = $data.Status
                     Trend = $trend
-                    VelocityPercent = if ($null -eq $previousCompliance) { 0 } else { $data.CompliancePercentage - $previousCompliance }
+                    VelocityPercent = if ($null -eq $previousCompliance) { 0 
+                    }
+                    else { $data.CompliancePercentage - $previousCompliance 
+                    }
                 }
 
                 $previousCompliance = $data.CompliancePercentage
@@ -174,6 +177,10 @@ function Get-HardeningTrendData {
 }
 
 function _CalculateTrendMetrics {
+    <#
+    .SYNOPSIS
+    Internal helper: Calculates trend metrics including direction, velocity, and compliance forecast from historical data.
+    #>
     param(
         [array]$TrendData
     )
@@ -182,14 +189,20 @@ function _CalculateTrendMetrics {
     $velocityValues = @($TrendData.VelocityPercent | Where-Object { $_ -ne 0 })
 
     $avgCompliance = ($complianceValues | Measure-Object -Average).Average
-    $avgVelocity = if ($velocityValues.Count -gt 0) { ($velocityValues | Measure-Object -Average).Average } else { 0 }
+    $avgVelocity = if ($velocityValues.Count -gt 0) { ($velocityValues | Measure-Object -Average).Average 
+    }
+    else { 0 
+    }
 
     $improvingCount = @($TrendData | Where-Object Trend -eq 'Improving').Count
     $decliningCount = @($TrendData | Where-Object Trend -eq 'Declining').Count
 
-    $direction = if ($improvingCount -gt $decliningCount) { 'Improving' } `
-                 elseif ($decliningCount -gt $improvingCount) { 'Declining' } `
-                 else { 'Stable' }
+    $direction = if ($improvingCount -gt $decliningCount) { 'Improving' 
+    } `
+        elseif ($decliningCount -gt $improvingCount) { 'Declining' 
+    } `
+        else { 'Stable' 
+    }
 
     [PSCustomObject]@{
         Direction = $direction
