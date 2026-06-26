@@ -83,10 +83,13 @@ function Invoke-SecurityHardening {
         $Parallel
     )
 
-    $ErrorActionPreference = 'Stop'
+    begin {
+        $ErrorActionPreference = 'Stop'
+    }
 
-    try {
-        Write-Log -Message "Starting security hardening: Profile=$($Session.Profile), ComputerName=$($Session.ComputerName)" -Level Info
+    process {
+        try {
+            Write-Log -Message "Starting security hardening: Profile=$($Session.Profile), ComputerName=$($Session.ComputerName)" -Level Info
 
         # Validate session
         if ($null -eq $Session.State) {
@@ -195,11 +198,12 @@ function Invoke-SecurityHardening {
             Success = ($failedCount -eq 0)
         }
 
-        [PSCustomObject]$result
-    }
-    catch {
-        Write-ErrorLog -Message "Failed to invoke security hardening: $($_.Exception.Message)" -Caller $MyInvocation.MyCommand.Name
-        throw
+            [PSCustomObject]$result
+        }
+        catch {
+            Write-ErrorLog -Message "Failed to invoke security hardening: $($_.Exception.Message)" -Caller $MyInvocation.MyCommand.Name
+            throw
+        }
     }
 }
 

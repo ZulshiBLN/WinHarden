@@ -81,10 +81,13 @@ function Test-HardeningCompliance {
         $Remediate
     )
 
-    $ErrorActionPreference = 'Stop'
+    begin {
+        $ErrorActionPreference = 'Stop'
+    }
 
-    try {
-        Write-Log -Message "Starting hardening compliance verification: Profile=$($Session.Profile), Mode=$(if($Remediate){'Remediate'}else{'Verify'})" -Level Info
+    process {
+        try {
+            Write-Log -Message "Starting hardening compliance verification: Profile=$($Session.Profile), Mode=$(if($Remediate){'Remediate'}else{'Verify'})" -Level Info
 
         # Validate session
         if ($null -eq $Session.State) {
@@ -185,11 +188,12 @@ function Test-HardeningCompliance {
             RemediatedRules = @($complianceResults | Where-Object { $_.RemediationSuccess -eq $true })
         }
 
-        [PSCustomObject]$result
-    }
-    catch {
-        Write-ErrorLog -Message "Failed to test hardening compliance: $($_.Exception.Message)" -Caller $MyInvocation.MyCommand.Name
-        throw
+            [PSCustomObject]$result
+        }
+        catch {
+            Write-ErrorLog -Message "Failed to test hardening compliance: $($_.Exception.Message)" -Caller $MyInvocation.MyCommand.Name
+            throw
+        }
     }
 }
 
@@ -285,6 +289,7 @@ function _RemediateRule {
     Attempts to remediate a single non-compliant rule.
     #>
     [CmdletBinding()]
+    [OutputType([bool])]
     param(
         [PSCustomObject]$Rule,
         [PSCustomObject]$Session
