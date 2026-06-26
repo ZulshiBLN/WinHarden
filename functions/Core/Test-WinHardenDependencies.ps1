@@ -48,7 +48,12 @@ function Test-WinHardenDependencies {
         $results['PowerShellVersion'] = @{
             'Required' = '5.1'
             'Actual' = "$psVersion.$($PSVersionTable.PSVersion.Minor)"
-            'Status' = if ($psVersion -ge 5) { 'OK' } else { 'FAIL' }
+            'Status' = if ($psVersion -ge 5) {
+                'OK'
+            }
+            else {
+                'FAIL'
+            }
         }
 
         if ($results['PowerShellVersion'].Status -eq 'FAIL' -and $ExitOnError) {
@@ -60,7 +65,12 @@ function Test-WinHardenDependencies {
             foreach ($moduleName in $Module) {
                 $moduleCheck = Get-Module -Name $moduleName -ListAvailable -ErrorAction SilentlyContinue
                 $results[$moduleName] = @{
-                    'Status' = if ($moduleCheck) { 'Available' } else { 'NotFound' }
+                    'Status' = if ($moduleCheck) {
+                        'Available'
+                    }
+                    else {
+                        'NotFound'
+                    }
                     'Version' = $moduleCheck.Version -join ', '
                 }
 

@@ -41,7 +41,12 @@ function _TestLogLevel {
         $Level
     )
 
-    $logLevel = if ([string]::IsNullOrEmpty($env:LOG_LEVEL)) { 'Info' } else { $env:LOG_LEVEL }
+    $logLevel = if ([string]::IsNullOrEmpty($env:LOG_LEVEL)) {
+        'Info'
+    }
+    else {
+        $env:LOG_LEVEL
+    }
     $hierarchy = @('Error', 'Warning', 'Info', 'Debug', 'Verbose')
 
     $currentIndex = $hierarchy.IndexOf($Level)

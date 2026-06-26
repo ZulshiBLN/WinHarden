@@ -1,13 +1,59 @@
-# WinHarden Windows Update Monitoring Script
-# Checks pending security updates and generates alerts
-# Schedule: Weekly (e.g., Monday @ 08:00 AM)
-# Run As: SYSTEM (Highest Privileges)
+<#
+.SYNOPSIS
+Monitors Windows Update status and generates monitoring reports.
+
+.DESCRIPTION
+Comprehensive Windows Update monitoring script that checks available updates,
+auto-update configuration, installation history, and reboot status.
+Generates CSV reports and logs all findings through central logging system.
+
+.PARAMETER OutputDir
+Output directory for CSV reports (default: logs/).
+
+.PARAMETER WhatIf
+Show what would be done without making changes.
+
+.EXAMPLE
+.\Monitor_Windows_Updates.ps1
+.\Monitor_Windows_Updates.ps1 -OutputDir "C:\Reports"
+.\Monitor_Windows_Updates.ps1 -WhatIf
+
+.NOTES
+SCHEDULE: Weekly (e.g., Monday @ 08:00 AM)
+RUN AS: SYSTEM (Highest Privileges)
+DEPENDENCIES: Core module, System module functions
+#>
 
 param(
-    [string]$OutputDir = "c:\Repos\WinHarden\logs"
+    [string]$OutputDir,
+    [switch]$WhatIf
 )
 
-$ErrorActionPreference = "Continue"
+$ErrorActionPreference = "Stop"
+$ProgressPreference = "SilentlyContinue"
+
+# Determine project root and output directory
+$scriptRoot = Split-Path -Path $PSScriptRoot -Parent
+$projectRoot = Split-Path -Path $scriptRoot -Parent
+
+if (-not $OutputDir) {
+    $OutputDir = Join-Path -Path $projectRoot -ChildPath "logs"
+}
+
+# Import Core module for logging and error handling
+$corePath = Join-Path -Path $projectRoot -ChildPath "modules\Core.psm1"
+if (-not (Test-Path $corePath)) {
+    Write-Error "Core module not found at $corePath" -ErrorAction Stop
+    exit 1
+}
+
+Import-Module $corePath -Force -ErrorAction Stop
+
+# Import System module for Update functions
+$systemPath = Join-Path -Path $projectRoot -ChildPath "modules\System.psm1"
+if (Test-Path $systemPath) {
+    Import-Module $systemPath -Force -ErrorAction SilentlyContinue
+}
 
 Write-Output ""
 Write-Output "=============================================================="
@@ -19,20 +65,21 @@ Write-Output "Start Time: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
 Write-Output ""
 Write-Output "[1] CHECKING WINDOWS UPDATE STATUS"
 Write-Output "=============================================================="
-# Get Windows Update history
+
+$status = "UP-TO-DATE"
+$updateCount = 0
+$securityCount = 0
+$criticalCount = 0
+
 try {
-    $updateSession = New-Object -ComObject Microsoft.Update.Session
-    $updateSearcher = $updateSession.CreateUpdateSearcher()
+    $updateStatus = Get-WindowsUpdateStatus
+    $updateCount = $updateStatus.AvailableUpdates
+    $securityCount = $updateStatus.SecurityUpdates
+    $criticalCount = $updateStatus.CriticalUpdates
 
-    # Search for available updates
     Write-Output ""
-    Write-Output "Searching for available updates..."
-    $searchResult = $updateSearcher.Search("IsInstalled=0")
-
-    $availableUpdates = $searchResult.Updates
-    $updateCount = ($availableUpdates | Measure-Object).Count
-
     Write-Output "[OK] Search completed: Found $updateCount available updates"
+
     if ($updateCount -eq 0) {
         Write-Output "[OK] No updates pending"
         $status = "UP-TO-DATE"
@@ -42,105 +89,106 @@ try {
         Write-Output "[WARN] UPDATES AVAILABLE"
         $status = "UPDATES-PENDING"
 
-        # Categorize updates
-        $securityUpdates = $availableUpdates | Where-Object { $_.Categories.Name -contains "Security Updates" }
-        $criticalUpdates = $availableUpdates | Where-Object { $_.Categories.Name -contains "Critical Updates" }
-        $otherUpdates = $availableUpdates | Where-Object {
-            $_.Categories.Name -notcontains "Security Updates" `
-                -and $_.Categories.Name -notcontains "Critical Updates"
-        }
-
         Write-Output ""
         Write-Output "Update Breakdown:"
-        Write-Output "  Security Updates: $(($securityUpdates | Measure-Object).Count)"
-        Write-Output "  Critical Updates: $(($criticalUpdates | Measure-Object).Count)"
-        Write-Output "  Other Updates: $(($otherUpdates | Measure-Object).Count)"
+        Write-Output "  Security Updates: $securityCount"
+        Write-Output "  Critical Updates: $criticalCount"
+        Write-Output "  Other Updates: $($updateStatus.OtherUpdates)"
 
         # Show important updates
         Write-Output ""
         Write-Output "Top 5 Important Updates:"
-        $importantUpdates = $availableUpdates | Where-Object {
-            $_.Categories.Name -contains "Security Updates" `
-                -or $_.Categories.Name -contains "Critical Updates"
-        } | Select-Object -First 5
+        $importantUpdates = @($updateStatus.SecurityUpdatesList) + @($updateStatus.CriticalUpdatesList) |
+            Select-Object -First 5
 
         foreach ($update in $importantUpdates) {
             Write-Output "  * KB$($update.KBArticleIDs[0]): $($update.Title)"
         }
     }
-
 }
 catch {
-    Write-Output "[WARN] Could not check Windows Update directly: $_"
+    Write-Output "[WARN] Could not check Windows Update directly: $($_.Exception.Message)"
+    Write-Log -Message "Failed to check Windows Update status: $($_.Exception.Message)" `
+        -Level Warning -Caller $MyInvocation.MyCommand.Name
     $status = "CHECK-FAILED"
 }
 
 Write-Output ""
 Write-Output "[2] CHECKING AUTO-UPDATE CONFIGURATION"
 Write-Output "=============================================================="
-# Check automatic update settings
-$auPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU"
-$autoUpdatePolicy = (Get-ItemProperty -Path $auPath -Name AUOptions `
-    -ErrorAction SilentlyContinue).AUOptions
 
-$autoUpdateSettings = @{
-    1 = "Keep my computer current is disabled"
-    2 = "Notify for download and auto install"
-    3 = "Auto download and notify for install"
-    4 = "Auto download and schedule install"
-    5 = "Automatic Updates required, auto install at 3:00 AM"
-}
+$autoUpdateConfig = $null
 
-if ($autoUpdatePolicy) {
-    $settingDesc = $autoUpdateSettings[[int]$autoUpdatePolicy]
-    Write-Output "[OK] Auto-Update Configuration: $settingDesc (Policy: $autoUpdatePolicy)"
+try {
+    $autoUpdateConfig = Get-AutoUpdateConfiguration
+    if ($autoUpdateConfig.PolicyValue) {
+        Write-Output "[OK] Auto-Update Configuration: $($autoUpdateConfig.Description)"
+    }
+    else {
+        Write-Output "[INFO] Auto-Update uses default Windows settings"
+    }
 }
-else {
-    Write-Output "[INFO] Auto-Update uses default Windows settings"
+catch {
+    Write-Output "[WARN] Could not retrieve Auto-Update configuration: $($_.Exception.Message)"
+    Write-Log -Message "Failed to retrieve Auto-Update configuration: $($_.Exception.Message)" `
+        -Level Warning -Caller $MyInvocation.MyCommand.Name
 }
 
 Write-Output ""
 Write-Output "[3] CHECKING LAST UPDATE INSTALLATION"
 Write-Output "=============================================================="
-# Get Windows Update history from Registry
-$updateHistory = Get-HotFix -ErrorAction SilentlyContinue | Sort-Object InstalledOn -Descending | Select-Object -First 5
 
-if ($updateHistory) {
-    Write-Output "[OK] Recent updates installed:"
-    foreach ($hotfix in $updateHistory) {
-        if ($hotfix.InstalledOn) {
-            $installDate = (Get-Date $hotfix.InstalledOn -Format "yyyy-MM-dd")
+try {
+    $updateHistory = Get-UpdateHistory -Count 5
+
+    if ($updateHistory) {
+        Write-Output "[OK] Recent updates installed:"
+        foreach ($hotfix in $updateHistory) {
+            $installDate = if ($hotfix.InstalledOn) {
+                (Get-Date $hotfix.InstalledOn -Format "yyyy-MM-dd")
+            }
+            else {
+                "Unknown"
+            }
+            Write-Output "  * KB$($hotfix.HotFixID): $installDate"
         }
-        else {
-            $installDate = "Unknown"
-        }
-        Write-Output "  * KB$($hotfix.HotFixID): $installDate"
+    }
+    else {
+        Write-Output "[WARN] Could not retrieve update history"
+        Write-Log -Message "No update history found on system" -Level Warning -Caller $MyInvocation.MyCommand.Name
     }
 }
-else {
-    Write-Output "[WARN] Could not retrieve update history"
+catch {
+    Write-Output "[WARN] Error retrieving update history: $($_.Exception.Message)"
+    Write-Log -Message "Error retrieving update history: $($_.Exception.Message)" `
+        -Level Warning -Caller $MyInvocation.MyCommand.Name
 }
 
 Write-Output ""
 Write-Output "[4] SYSTEM REBOOT STATUS"
 Write-Output "=============================================================="
-# Check if reboot is pending
+
 $pendingReboot = $false
 
-# Check registry for pending reboot
-$sessionPath = "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager"
-if (Test-Path $sessionPath -ErrorAction SilentlyContinue) {
-    $sessionManager = Get-Item -Path $sessionPath -ErrorAction SilentlyContinue
-    if ($sessionManager.GetValueNames() -contains "PendingFileRenameOperations") {
-        $pendingReboot = $true
+try {
+    $rebootStatus = Get-PendingRebootStatus
+    $pendingReboot = $rebootStatus.IsPending
+
+    if ($pendingReboot) {
         Write-Output "[WARN] PENDING REBOOT DETECTED"
-        Write-Output "System requires restart for updates to take effect"
-        $status = "REBOOT-REQUIRED"
+        Write-Output $rebootStatus.Message
+        if ($status -ne "CHECK-FAILED") {
+            $status = "REBOOT-REQUIRED"
+        }
+    }
+    else {
+        Write-Output "[OK] No reboot required"
     }
 }
-
-if (-not $pendingReboot) {
-    Write-Output "[OK] No reboot required"
+catch {
+    Write-Output "[WARN] Could not check reboot status: $($_.Exception.Message)"
+    Write-Log -Message "Error checking reboot status: $($_.Exception.Message)" `
+        -Level Warning -Caller $MyInvocation.MyCommand.Name
 }
 
 Write-Output ""
@@ -162,28 +210,78 @@ else {
 Write-Output ""
 Write-Output "[REPORT SUMMARY]"
 Write-Output "=============================================================="
+
 $reportSummary = @{
     'Scan_Date' = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
     'Status' = $status
     'Updates_Available' = $updateCount
-    'Security_Updates' = if ($securityUpdates) { ($securityUpdates | Measure-Object).Count } else { 0 }
-    'Critical_Updates' = if ($criticalUpdates) { ($criticalUpdates | Measure-Object).Count } else { 0 }
+    'Security_Updates' = $securityCount
+    'Critical_Updates' = $criticalCount
     'Reboot_Pending' = $pendingReboot
-    'Auto_Updates_Enabled' = if ($autoUpdatePolicy) { $true } else { "Default" }
+    'Auto_Updates_Enabled' = if ($autoUpdateConfig -and $autoUpdateConfig.IsEnabled) {
+        $true
+    }
+    else {
+        $false
+    }
 }
 
 Write-Output ""
 Write-Output "Scan Results:"
 $reportSummary | Format-Table -AutoSize
 
-# Save detailed report
-$reportDate = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
-$reportFile = Join-Path $OutputDir "Windows_Updates_$reportDate.csv"
+Write-Log -Message "Windows Update monitoring scan completed. Status: $status (Updates: $updateCount, Security: $securityCount, Critical: $criticalCount, Reboot: $pendingReboot)" `
+    -Level Info -Caller $MyInvocation.MyCommand.Name
 
-$reportSummary | Export-Csv -Path $reportFile -NoTypeInformation
-Write-Output ""
-Write-Output "[OK] Detailed report saved: $reportFile"
+# Save detailed report (unless -WhatIf is used)
+if (-not $WhatIf) {
+    try {
+        # Create output directory if needed
+        if (-not (Test-Path $OutputDir -PathType Container)) {
+            $null = New-Item -ItemType Directory -Path $OutputDir -Force -ErrorAction Stop
+        }
+
+        $reportDate = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
+        $reportFile = Join-Path $OutputDir "Windows_Updates_$reportDate.csv"
+
+        $reportSummary | Export-Csv -Path $reportFile -NoTypeInformation -ErrorAction Stop
+        Write-Output ""
+        Write-Output "[OK] Detailed report saved: $reportFile"
+        Write-Log -Message "Report exported to: $reportFile" -Level Info -Caller $MyInvocation.MyCommand.Name
+    }
+    catch {
+        Write-Output ""
+        Write-Output "[WARN] Failed to save report: $($_.Exception.Message)"
+        Write-Log -Message "Failed to export report: $($_.Exception.Message)" -Level Error -Caller $MyInvocation.MyCommand.Name
+    }
+}
+else {
+    Write-Output ""
+    Write-Output "[WhatIf] Report would be saved to: $(Join-Path $OutputDir "Windows_Updates_*.csv")"
+}
+
 Write-Output ""
 Write-Output "End Time: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
 Write-Output "=============================================================="
-exit 0
+
+# Exit with appropriate code based on status
+$exitCode = switch ($status) {
+    'UP-TO-DATE' {
+        0
+    }
+    'UPDATES-PENDING' {
+        1
+    }
+    'REBOOT-REQUIRED' {
+        2
+    }
+    'CHECK-FAILED' {
+        3
+    }
+    default {
+        1
+    }
+}
+
+Write-Log -Message "Script exiting with code: $exitCode" -Level Info -Caller $MyInvocation.MyCommand.Name
+exit $exitCode

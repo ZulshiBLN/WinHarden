@@ -90,8 +90,18 @@ function Write-Log {
 
         # Get Function and LineNumber from call stack for logging context
         $callStack = Get-PSCallStack
-        $callerFunction = if ($callStack.Count -gt 1) { $callStack[1].FunctionName } else { 'Unknown' }
-        $callerLineNumber = if ($callStack.Count -gt 1) { $callStack[1].ScriptLineNumber } else { 0 }
+        $callerFunction = if ($callStack.Count -gt 1) {
+            $callStack[1].FunctionName
+        }
+        else {
+            'Unknown'
+        }
+        $callerLineNumber = if ($callStack.Count -gt 1) {
+            $callStack[1].ScriptLineNumber
+        }
+        else {
+            0
+        }
 
         # Prepare CSV entry (6 columns per ADR-005)
         $timestamp = Get-Date -Format 'yyyy-MM-dd HH:mm:ss.fff'

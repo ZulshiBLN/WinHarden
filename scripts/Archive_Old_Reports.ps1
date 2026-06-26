@@ -148,7 +148,12 @@ $logEntry = @{
     'Reports_Archived' = $archiveCount
     'Reports_Found' = $foundCount
     'Archive_Location' = $ArchiveDir
-    'Status' = if ($archiveCount -eq $foundCount) { 'SUCCESS' } else { 'PARTIAL' }
+    'Status' = if ($archiveCount -eq $foundCount) {
+        'SUCCESS'
+    }
+    else {
+        'PARTIAL'
+    }
 }
 
 $logEntry | Format-Table -AutoSize

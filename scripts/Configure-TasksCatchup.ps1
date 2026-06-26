@@ -92,7 +92,6 @@ $failureCount = 0
 foreach ($task in $tasks) {
     $taskName = $task.TaskName
     $taskPath = $task.TaskPath
-    $fullTaskName = "$taskPath$taskName"
 
     Write-Output ""
     Write-Output "Configuring: $taskName"
@@ -170,7 +169,6 @@ Write-Output "Verifying catchup setting on each task:"
 foreach ($task in $tasks) {
     $taskName = $task.TaskName
     $taskPath = $task.TaskPath
-    $fullTaskName = "$taskPath$taskName"
 
     try {
         $scheduler = New-Object -ComObject Schedule.Service
@@ -180,7 +178,12 @@ foreach ($task in $tasks) {
         $task = $folder.GetTask($taskName)
         $settings = $task.Definition.Settings
 
-        $catchupStatus = if ($settings.StartWhenAvailable) { "ENABLED" } else { "DISABLED" }
+        $catchupStatus = if ($settings.StartWhenAvailable) {
+            "ENABLED"
+        }
+        else {
+            "DISABLED"
+        }
         $timeoutHours = [int]([timespan]::Parse($settings.ExecutionTimeLimit).TotalHours)
 
         Write-Output ("  " + $taskName + ":")
