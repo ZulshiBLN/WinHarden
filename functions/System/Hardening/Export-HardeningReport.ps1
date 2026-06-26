@@ -66,7 +66,7 @@ function Export-HardeningReport {
     FILE OUTPUT: Supports UTF-8 encoding with BOM
     #>
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param(
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
         [PSCustomObject]
@@ -124,9 +124,11 @@ function Export-HardeningReport {
 
             # Output or save report
             if ($OutputPath) {
-                $reportContent | Out-File -FilePath $OutputPath -Encoding UTF8 -Force
-                Write-Log -Message "Report exported to: $OutputPath" -Level Info
-                Get-Item -Path $OutputPath
+                if ($PSCmdlet.ShouldProcess($OutputPath, "Export hardening report")) {
+                    $reportContent | Out-File -FilePath $OutputPath -Encoding UTF8 -Force
+                    Write-Log -Message "Report exported to: $OutputPath" -Level Info
+                    Get-Item -Path $OutputPath
+                }
             }
             else {
                 $reportContent

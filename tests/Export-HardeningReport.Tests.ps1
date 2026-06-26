@@ -347,4 +347,36 @@ Describe "Export-HardeningReport - Edge Cases" {
             $json2.ComplianceSummary.CompliancePercentage | Should -BeGreaterThan $json1.ComplianceSummary.CompliancePercentage
         }
     }
+
+    Context "WhatIf Support" {
+        It "respects -WhatIf flag and does not create file" {
+            $testPath = Join-Path -Path $env:TEMP -ChildPath "test-whatif-$(Get-Random).txt"
+
+            try {
+                Export-HardeningReport -ComplianceReport $script:basisReport -Format Text -OutputPath $testPath -WhatIf
+                Test-Path -Path $testPath | Should -Be $false
+            }
+            finally {
+                Remove-Item -Path $testPath -Force -ErrorAction SilentlyContinue
+            }
+        }
+
+        It "without -WhatIf creates file normally" {
+            $testPath = Join-Path -Path $env:TEMP -ChildPath "test-normal-$(Get-Random).txt"
+
+            try {
+                Export-HardeningReport -ComplianceReport $script:basisReport -Format Text -OutputPath $testPath
+                Test-Path -Path $testPath | Should -Be $true
+            }
+            finally {
+                Remove-Item -Path $testPath -Force -ErrorAction SilentlyContinue
+            }
+        }
+
+        It "allows report generation without -WhatIf when OutputPath omitted" {
+            $report = Export-HardeningReport -ComplianceReport $script:basisReport -Format Text -WhatIf
+            $report | Should -Not -BeNullOrEmpty
+            $report | Should -Match 'COMPLIANCE SUMMARY'
+        }
+    }
 }
