@@ -41,10 +41,10 @@ Performance-optimiert, dokumentiert, robust:
   
   - **Beispiel [OK] PUBLIC:**
     ```powershell
-    function Test-SystemHealth {
+    function Is-SystemHealthy {
         <#
         .SYNOPSIS
-        Verifies system health status.
+        Checks if system health status is good.
         
         .DESCRIPTION
         Tests CPU, memory, and disk health...
@@ -53,7 +53,7 @@ Performance-optimiert, dokumentiert, robust:
         Target computer name.
         
         .EXAMPLE
-        Test-SystemHealth -ComputerName SERVER01
+        Is-SystemHealthy -ComputerName SERVER01
         
         .NOTES
         DEPENDENCIES: Get-SystemMetrics
@@ -197,6 +197,7 @@ Siehe **[ADR-006](DECISIONS.md)** für Formatierung und **[ADR-010](DECISIONS.md
 Siehe **[ADR-007](DECISIONS.md)** für vollständigen Kontext.
 
 - **Regel 8.1:** Funktions-Präfixe: PowerShell Approved Verbs (Get, Set, Test, New, Remove, Add, Clear, etc.)
+  - **Exception:** Boolean-Funktionen verwenden `Is`-Prefix statt Approved Verb (siehe Regel 8.7)
 - **Regel 8.2:** Funktions-Format: `Verb-Noun` (z.B. `Get-SystemInfo`)
 - **Regel 8.3:** Private Funktionen: Prefix `_` (z.B. `_PrivateHelper`)
 - **Regel 8.4:** Parameter-Namen: PascalCase (z.B. `$ComputerName`)
