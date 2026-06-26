@@ -11,9 +11,7 @@ ADMIN: Some tests require admin rights
 COVERAGE: Error paths, exception handling, logging
 #>
 
-param(
-    [switch]$SkipAdminCheck
-)
+param()
 
 BeforeAll {
     Import-Module Pester
@@ -90,14 +88,6 @@ Describe "Error Scenarios - Invalid Inputs" {
 Describe "Error Scenarios - File I/O" {
     Context "Missing Profile Files" {
         It "throws when profile file doesn't exist" {
-            $session = @{
-                Profile = "NonExistentProfile"
-                TargetSystem = "Client"
-                OSVersion = 11
-                ComputerName = $env:COMPUTERNAME
-                State = @{}
-            }
-
             {
                 Get-HardeningProfile -ProfileName "NonExistentProfile" `
                     -TargetSystem Client -ErrorAction Stop
@@ -131,15 +121,17 @@ Describe "Error Scenarios - File I/O" {
 Describe "Error Scenarios - Network/Remote Failures" {
     Context "Remote System Unreachable" {
         It "handles connection to non-existent system" {
+            $nonExistentSystem = "NonExistent.local"
             {
-                Invoke-RemoteHardening -ComputerName "NonExistent.local" `
+                Invoke-RemoteHardening -ComputerName $nonExistentSystem `
                     -Profile Basis -ErrorAction Stop
             } | Should -Throw
         }
 
         It "handles invalid computer name format" {
+            $invalidComputerName = ""
             {
-                Invoke-RemoteHardening -ComputerName "" `
+                Invoke-RemoteHardening -ComputerName $invalidComputerName `
                     -Profile Basis -ErrorAction Stop
             } | Should -Throw
         }
@@ -220,7 +212,7 @@ Describe "Error Scenarios - GPO Failures" {
     Context "Group Policy Integration Errors" {
         It "throws when GroupPolicy module not available" -Skip {
             # Skip if GPMC not installed
-            if ((Get-Module GroupPolicy -ErrorAction SilentlyContinue) -eq $null) {
+            if ($null -eq (Get-Module GroupPolicy -ErrorAction SilentlyContinue)) {
                 # Expected to throw when GPMC not available
                 {
                     Import-HardeningGPO -Profile Basis `
@@ -243,14 +235,6 @@ Describe "Error Scenarios - GPO Failures" {
 Describe "Error Scenarios - Exception Handling" {
     Context "Logging and Error Messages" {
         It "logs errors with descriptive messages" {
-            $session = @{
-                Profile = "BadProfile"
-                TargetSystem = "Client"
-                OSVersion = 11
-                ComputerName = $env:COMPUTERNAME
-                State = @{ AppliedRules = @() }
-            }
-
             # Capture error output
             $error.Clear()
             try {
@@ -303,7 +287,7 @@ Describe "Error Scenarios - Parameter Validation" {
                     -AlertType Compliance `
                     -SmtpPort 99999 `
                     -ErrorAction Stop
-            } | Should -Throw -Not  # Port might be accepted, actual SMTP will fail
+            } | Should -Throw  # SMTP connection fails with invalid port
         }
     }
 }
