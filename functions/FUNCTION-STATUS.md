@@ -43,7 +43,7 @@ Funktionen für Windows Security Hardening. **Depends on Core.**
 | Funktion | Modul | Status | Beschreibung | Last Updated | Tests | Coverage |
 |----------|-------|--------|-------------|--------------|-------|----------|
 | New-HardeningSession | System | `[OK]` | Hardening Session Initialization | 2026-06-26 | [OK] 9 tests | 95%+ |
-| Get-HardeningProfile | System | `[OK]` | Load Security Rule Profiles | 2026-06-26 | [OK] 6 tests | 95%+ |
+| Get-HardeningProfile | System | `[OK]` | Load Security Rule Profiles | 2026-06-26 | [OK] 28 tests | 95%+ |
 | Invoke-SecurityHardening | System | `[OK]` | Apply Hardening Rules | 2026-06-26 | [OK] 8 tests | 95%+ |
 | Test-HardeningCompliance | System | `[OK]` | Verify Hardening Compliance | 2026-06-26 | [OK] 12 tests | 95%+ |
 | Export-HardeningReport | System | `[OK]` | Generate Compliance Reports | 2026-06-26 | [OK] 6 tests | 95%+ |
