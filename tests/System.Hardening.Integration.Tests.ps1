@@ -134,20 +134,18 @@ Describe "Integration - Local Hardening Workflow" {
 Describe "Integration - Report Generation Across Formats" {
     Context "Export Compliance Reports - All Formats" {
         BeforeEach {
-            # Create a compliance report for testing
+            # Load compliance report fixture
+            $fixtureJson = Get-Content "$PSScriptRoot\fixtures\test-compliance-report.json" | ConvertFrom-Json
             $script:testReport = @{
-                CompliancePercentage = 85
-                Status = "Mostly Compliant"
-                TotalRules = 12
-                CompliantRules = 10
-                NonCompliantRules = 2
-                TargetSystem = "TestClient"
-                Profile = "Recommended"
+                CompliancePercentage = $fixtureJson.CompliancePercentage
+                Status = $fixtureJson.Status
+                TotalRules = $fixtureJson.TotalRules
+                CompliantRules = $fixtureJson.CompliantRules
+                NonCompliantRules = $fixtureJson.NonCompliantRules
+                TargetSystem = $fixtureJson.TargetSystem
+                Profile = $fixtureJson.Profile
                 Timestamp = (Get-Date)
-                RuleDetails = @(
-                    @{ Name = "Rule1"; Status = "Compliant" }
-                    @{ Name = "Rule2"; Status = "NonCompliant" }
-                )
+                RuleDetails = $fixtureJson.RuleDetails
             }
         }
 
@@ -217,7 +215,7 @@ Describe "Integration - Report Generation Across Formats" {
                 -Format JSON -ErrorAction Stop
 
             # Verify output contains expected data
-            $jsonOutput | Should -Match "Complian"
+            $jsonOutput | Should -Match '"CompliancePercentage"'
         }
     }
 }
@@ -344,7 +342,7 @@ Describe "Integration - Trending Analysis" {
                     -Days 30 -ErrorAction Continue
 
                 # Should return array (empty is OK if no history)
-                $trends -is [array] -or $trends -eq $null | Should -Be $true
+                ($trends -is [array] -or $trends -eq $null) | Should -Be $true
             } | Should -Not -Throw
         }
     }
