@@ -7,8 +7,8 @@ AfterAll {
     Remove-Module System -Force -ErrorAction SilentlyContinue
 }
 
-Describe "System Module - Export-HardeningReport" {
-    Context "Export-HardeningReport - Parameter Validation" {
+Describe "Export-HardeningReport" {
+    Context "Parameter Validation" {
         It "accepts a valid compliance report object" {
             $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck
             $compliance = Test-HardeningCompliance -Session $session
@@ -44,7 +44,7 @@ Describe "System Module - Export-HardeningReport" {
         }
     }
 
-    Context "Export-HardeningReport - Report Generation" {
+    Context "Report Generation" {
         It "generates Text report by default" {
             $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck
             $compliance = Test-HardeningCompliance -Session $session
@@ -91,7 +91,7 @@ Describe "System Module - Export-HardeningReport" {
         }
     }
 
-    Context "Export-HardeningReport - File Output" {
+    Context "File Output" {
         It "saves report to file" {
             $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck
             $compliance = Test-HardeningCompliance -Session $session
@@ -122,7 +122,7 @@ Describe "System Module - Export-HardeningReport" {
         }
     }
 
-    Context "Export-HardeningReport - Detailed Mode" {
+    Context "Detailed Mode" {
         It "includes rule details when specified" {
             $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck
             $compliance = Test-HardeningCompliance -Session $session
@@ -132,86 +132,64 @@ Describe "System Module - Export-HardeningReport" {
             $json.RuleDetails | Should -Not -BeNullOrEmpty
         }
     }
-}
 
-Describe "System Module - Invoke-RemoteHardening" {
-    Context "Invoke-RemoteHardening - Parameter Validation" {
-        It "accepts ComputerName parameter" {
-            { Invoke-RemoteHardening -ComputerName 'localhost' -Profile Basis -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "accepts multiple computer names" {
-            { Invoke-RemoteHardening -ComputerName @('localhost', '127.0.0.1') -Profile Basis -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "accepts Parallel switch" {
-            { Invoke-RemoteHardening -ComputerName 'localhost' -Profile Basis -Parallel -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "accepts UseSSL switch" {
-            { Invoke-RemoteHardening -ComputerName 'localhost' -Profile Basis -UseSSL -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "accepts Port parameter" {
-            { Invoke-RemoteHardening -ComputerName 'localhost' -Profile Basis -Port 5986 -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-    }
-}
-
-Describe "System Module - New-HardeningSchedule" {
-    Context "New-HardeningSchedule - Parameter Validation" {
-        It "accepts Profile parameter" {
-            { New-HardeningSchedule -Profile Basis -Schedule OneTime -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "accepts Schedule parameter" {
-            { New-HardeningSchedule -Profile Basis -Schedule Daily -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "accepts Time parameter" {
-            { New-HardeningSchedule -Profile Basis -Schedule Daily -Time "02:00" -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "accepts DayOfWeek for Weekly schedule" {
-            { New-HardeningSchedule -Profile Basis -Schedule Weekly -DayOfWeek Monday -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "accepts DayOfMonth for Monthly schedule" {
-            { New-HardeningSchedule -Profile Basis -Schedule Monthly -DayOfMonth 1 -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "accepts AutoRemediate switch" {
-            { New-HardeningSchedule -Profile Basis -Schedule OneTime -AutoRemediate -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "accepts GenerateReport switch" {
-            { New-HardeningSchedule -Profile Basis -Schedule OneTime -GenerateReport -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-    }
-
-    Context "New-HardeningSchedule - Validation Rules" {
-        It "requires DayOfWeek for Weekly schedule" {
-            { New-HardeningSchedule -Profile Basis -Schedule Weekly -ErrorAction Stop } | Should -Throw
-        }
-
-        It "requires DayOfMonth for Monthly schedule" {
-            { New-HardeningSchedule -Profile Basis -Schedule Monthly -ErrorAction Stop } | Should -Throw
-        }
-    }
-}
-
-Describe "System Module - Phase 4 Integration" {
-    Context "Complete Advanced Workflow" {
-        It "can generate report after compliance check" {
+    Context "Format Support" {
+        It "Text format includes summary section" {
             $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck
-            Invoke-SecurityHardening -Session $session | Out-Null
             $compliance = Test-HardeningCompliance -Session $session
-
             $report = Export-HardeningReport -ComplianceReport $compliance -Format Text
+            $report | Should -Match 'COMPLIANCE SUMMARY'
+        }
+
+        It "JSON format is valid JSON" {
+            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck
+            $compliance = Test-HardeningCompliance -Session $session
+            $report = Export-HardeningReport -ComplianceReport $compliance -Format JSON
+            $json = $report | ConvertFrom-Json
+            $json | Should -Not -BeNullOrEmpty
+        }
+
+        It "CSV format includes headers" {
+            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck
+            $compliance = Test-HardeningCompliance -Session $session
+            $report = Export-HardeningReport -ComplianceReport $compliance -Format CSV
+            $lines = @($report)
+            $lines[0] | Should -Match 'Profile'
+        }
+
+        It "HTML format includes DOCTYPE" {
+            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck
+            $compliance = Test-HardeningCompliance -Session $session
+            $report = Export-HardeningReport -ComplianceReport $compliance -Format HTML
+            $report | Should -Match '<!DOCTYPE'
+        }
+    }
+
+    Context "Integration with Compliance Reports" {
+        It "exports Basis profile report successfully" {
+            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck
+            $compliance = Test-HardeningCompliance -Session $session
+            $report = Export-HardeningReport -ComplianceReport $compliance
             $report | Should -Not -BeNullOrEmpty
         }
 
-        It "exports to multiple formats from same compliance data" {
+        It "exports Recommended profile report successfully" {
+            $session = New-HardeningSession -Profile Recommended -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck
+            $compliance = Test-HardeningCompliance -Session $session
+            $report = Export-HardeningReport -ComplianceReport $compliance
+            $report | Should -Not -BeNullOrEmpty
+        }
+
+        It "exports Strict profile report successfully" {
+            $session = New-HardeningSession -Profile Strict -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck
+            $compliance = Test-HardeningCompliance -Session $session
+            $report = Export-HardeningReport -ComplianceReport $compliance
+            $report | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    Context "Multiple Format Export" {
+        It "can export to multiple formats from same compliance data" {
             $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck
             $compliance = Test-HardeningCompliance -Session $session
 
@@ -226,23 +204,30 @@ Describe "System Module - Phase 4 Integration" {
             $htmlReport | Should -Not -BeNullOrEmpty
         }
     }
-}
 
-Describe "System Module - Documentation" {
-    Context "Phase 4 Functions Help" {
-        It "Export-HardeningReport has help" {
+    Context "Documentation" {
+        It "has complete help documentation" {
             $help = Get-Help Export-HardeningReport
             $help.Synopsis | Should -Not -BeNullOrEmpty
         }
 
-        It "Invoke-RemoteHardening has help" {
-            $help = Get-Help Invoke-RemoteHardening
-            $help.Synopsis | Should -Not -BeNullOrEmpty
+        It "help includes parameter descriptions" {
+            $help = Get-Help Export-HardeningReport
+            $help.Parameters.Parameter.Name | Should -Contain 'ComplianceReport'
+            $help.Parameters.Parameter.Name | Should -Contain 'Format'
         }
+    }
+}
 
-        It "New-HardeningSchedule has help" {
-            $help = Get-Help New-HardeningSchedule
-            $help.Synopsis | Should -Not -BeNullOrEmpty
+Describe "Export-HardeningReport - Integration" {
+    Context "Complete Advanced Workflow" {
+        It "can generate report after compliance check" {
+            $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck
+            Invoke-SecurityHardening -Session $session | Out-Null
+            $compliance = Test-HardeningCompliance -Session $session
+
+            $report = Export-HardeningReport -ComplianceReport $compliance -Format Text
+            $report | Should -Not -BeNullOrEmpty
         }
     }
 }

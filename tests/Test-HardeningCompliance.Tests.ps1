@@ -7,8 +7,8 @@ AfterAll {
     Remove-Module System -Force -ErrorAction SilentlyContinue
 }
 
-Describe "System Module - Test-HardeningCompliance" {
-    Context "Test-HardeningCompliance - Parameter Validation" {
+Describe "Test-HardeningCompliance" {
+    Context "Parameter Validation" {
         It "accepts a valid hardening session object" {
             $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck
             { Test-HardeningCompliance -Session $session } | Should -Not -Throw
@@ -34,7 +34,7 @@ Describe "System Module - Test-HardeningCompliance" {
         }
     }
 
-    Context "Test-HardeningCompliance - Execution" {
+    Context "Execution" {
         It "returns a compliance report object" {
             $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck
             $report = Test-HardeningCompliance -Session $session
@@ -65,7 +65,7 @@ Describe "System Module - Test-HardeningCompliance" {
         }
     }
 
-    Context "Test-HardeningCompliance - Compliance Metrics" {
+    Context "Compliance Metrics" {
         It "calculates compliance percentage" {
             $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck
             $report = Test-HardeningCompliance -Session $session
@@ -93,7 +93,7 @@ Describe "System Module - Test-HardeningCompliance" {
         }
     }
 
-    Context "Test-HardeningCompliance - Compliance Status" {
+    Context "Compliance Status" {
         It "assigns Fully Compliant status at 100 percent" {
             $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck
             $report = Test-HardeningCompliance -Session $session
@@ -117,7 +117,7 @@ Describe "System Module - Test-HardeningCompliance" {
         }
     }
 
-    Context "Test-HardeningCompliance - Rule Results" {
+    Context "Rule Results" {
         It "returns individual rule test results" {
             $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck
             $report = Test-HardeningCompliance -Session $session
@@ -149,7 +149,7 @@ Describe "System Module - Test-HardeningCompliance" {
         }
     }
 
-    Context "Test-HardeningCompliance - Rule Filtering" {
+    Context "Rule Filtering" {
         It "tests only filtered rules when RuleFilter provided" {
             $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck
             $filterRules = @('Account-MinimumPasswordLength', 'Account-PasswordComplexity')
@@ -166,7 +166,7 @@ Describe "System Module - Test-HardeningCompliance" {
         }
     }
 
-    Context "Test-HardeningCompliance - Detailed Mode" {
+    Context "Detailed Mode" {
         It "includes expected values in detailed mode" {
             $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck
             $report = Test-HardeningCompliance -Session $session -Detailed
@@ -180,7 +180,7 @@ Describe "System Module - Test-HardeningCompliance" {
         }
     }
 
-    Context "Test-HardeningCompliance - Category Statistics" {
+    Context "Category Statistics" {
         It "includes statistics for all rule categories" {
             $session = New-HardeningSession -Profile Recommended -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck
             $report = Test-HardeningCompliance -Session $session
@@ -207,7 +207,7 @@ Describe "System Module - Test-HardeningCompliance" {
         }
     }
 
-    Context "Test-HardeningCompliance - Profile Variations" {
+    Context "Profile Variations" {
         It "tests Basis profile compliance" {
             $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck
             $report = Test-HardeningCompliance -Session $session
@@ -240,7 +240,7 @@ Describe "System Module - Test-HardeningCompliance" {
         }
     }
 
-    Context "Test-HardeningCompliance - Server Support" {
+    Context "Server Support" {
         It "tests Windows Server 2019 compliance" {
             $session = New-HardeningSession -Profile Basis -TargetSystem Server -OSVersion 2019 -SkipPrerequisiteCheck
             $report = Test-HardeningCompliance -Session $session
@@ -260,7 +260,7 @@ Describe "System Module - Test-HardeningCompliance" {
         }
     }
 
-    Context "Test-HardeningCompliance - Integration with Hardening" {
+    Context "Integration with Hardening" {
         It "works with sessions created by New-HardeningSession" {
             $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck
             $result = Invoke-SecurityHardening -Session $session
@@ -283,7 +283,7 @@ Describe "System Module - Test-HardeningCompliance" {
         }
     }
 
-    Context "Test-HardeningCompliance - Documentation" {
+    Context "Documentation" {
         It "has complete help documentation" {
             $help = Get-Help Test-HardeningCompliance
             $help.Synopsis | Should -Not -BeNullOrEmpty
@@ -305,7 +305,7 @@ Describe "System Module - Test-HardeningCompliance" {
     }
 }
 
-Describe "System Module - Hardening Complete Workflow" {
+Describe "Test-HardeningCompliance - Integration" {
     Context "End-to-End Hardening and Compliance" {
         It "complete workflow: create session, harden, test compliance" {
             $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck

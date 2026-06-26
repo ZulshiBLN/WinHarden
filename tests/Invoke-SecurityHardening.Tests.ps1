@@ -7,8 +7,8 @@ AfterAll {
     Remove-Module System -Force -ErrorAction SilentlyContinue
 }
 
-Describe "System Module - Invoke-SecurityHardening" {
-    Context "Invoke-SecurityHardening - Parameter Validation" {
+Describe "Invoke-SecurityHardening" {
+    Context "Parameter Validation" {
         It "accepts a valid hardening session object" {
             $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck
             { Invoke-SecurityHardening -Session $session } | Should -Not -Throw
@@ -34,7 +34,7 @@ Describe "System Module - Invoke-SecurityHardening" {
         }
     }
 
-    Context "Invoke-SecurityHardening - Execution" {
+    Context "Execution" {
         It "returns a result object" {
             $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf
             $result = Invoke-SecurityHardening -Session $session
@@ -91,7 +91,7 @@ Describe "System Module - Invoke-SecurityHardening" {
         }
     }
 
-    Context "Invoke-SecurityHardening - Rule Filtering" {
+    Context "Rule Filtering" {
         It "applies only filtered rules when RuleFilter provided" {
             $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf
             $result = Invoke-SecurityHardening -Session $session -RuleFilter @('Account-MinimumPasswordLength', 'Account-PasswordComplexity')
@@ -114,7 +114,7 @@ Describe "System Module - Invoke-SecurityHardening" {
         }
     }
 
-    Context "Invoke-SecurityHardening - WhatIf Support" {
+    Context "WhatIf Support" {
         It "WhatIf mode does not modify system" {
             $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf
             $result = Invoke-SecurityHardening -Session $session -WhatIf
@@ -133,7 +133,7 @@ Describe "System Module - Invoke-SecurityHardening" {
         }
     }
 
-    Context "Invoke-SecurityHardening - Profile Progression" {
+    Context "Profile Progression" {
         It "Basis profile applies fewer rules than Recommended" {
             $basisSession = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf
             $basisResult = Invoke-SecurityHardening -Session $basisSession
@@ -167,7 +167,7 @@ Describe "System Module - Invoke-SecurityHardening" {
         }
     }
 
-    Context "Invoke-SecurityHardening - Compliance Reporting" {
+    Context "Compliance Reporting" {
         It "includes compliance report in result" {
             $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf
             $result = Invoke-SecurityHardening -Session $session
@@ -209,7 +209,7 @@ Describe "System Module - Invoke-SecurityHardening" {
         }
     }
 
-    Context "Invoke-SecurityHardening - Server Support" {
+    Context "Server Support" {
         It "applies to Windows Server 2019" {
             $session = New-HardeningSession -Profile Basis -TargetSystem Server -OSVersion 2019 -WhatIf
             $result = Invoke-SecurityHardening -Session $session
@@ -235,13 +235,12 @@ Describe "System Module - Invoke-SecurityHardening" {
             $serverSession = New-HardeningSession -Profile Basis -TargetSystem Server -OSVersion 2022 -WhatIf
             $serverResult = Invoke-SecurityHardening -Session $serverSession
 
-            # Both should apply rules, but counts may differ due to OS-specific rules
             $clientResult.AppliedRules.Count | Should -BeGreaterThan 0
             $serverResult.AppliedRules.Count | Should -BeGreaterThan 0
         }
     }
 
-    Context "Invoke-SecurityHardening - Documentation" {
+    Context "Documentation" {
         It "has complete help documentation" {
             $help = Get-Help Invoke-SecurityHardening
             $help.Synopsis | Should -Not -BeNullOrEmpty
@@ -262,7 +261,7 @@ Describe "System Module - Invoke-SecurityHardening" {
     }
 }
 
-Describe "System Module - Hardening Integration Tests" {
+Describe "Invoke-SecurityHardening - Integration" {
     Context "Full Hardening Workflow" {
         It "can create session and invoke hardening for Basis profile" {
             $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -WhatIf
