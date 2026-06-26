@@ -25,7 +25,7 @@ function Test-WinOpsKitDependencies {
     Test-WinOpsKitDependencies
 
     .EXAMPLE
-    Test-WinOpsKitDependencies -Module ExchangeOnlineManagement -ExitOnError
+    Test-WinOpsKitDependencies -Module GroupPolicy -ExitOnError
     #>
 
     [CmdletBinding()]

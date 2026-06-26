@@ -1,11 +1,16 @@
 <#
 .SYNOPSIS
-WinOpsKit System Module - Exchange Online and system administration functions.
+WinOpsKit System Module - Windows Hardening System functions.
 
 .DESCRIPTION
-System module provides Exchange Online connectivity and system administration functions.
-Loads functions from functions/System/ directory:
-- New-ExchangeOnlineConnection: Establishes Exchange Online connections
+System module provides Windows security hardening capabilities.
+Loads hardening functions from functions/System/Hardening/ directory:
+- Session management
+- Hardening rule application
+- Compliance verification
+- Reporting and analytics
+- Remote deployment
+- Automation and scheduling
 
 This module requires Core module to be loaded first.
 
@@ -27,7 +32,6 @@ $functionsPath = Join-Path -Path $PSScriptRoot -ChildPath '..\functions\System'
 
 # Public functions to load
 $publicFunctions = @(
-    'New-ExchangeOnlineConnection',
     'New-HardeningSession',
     'Get-HardeningProfile',
     'Invoke-SecurityHardening',
@@ -41,10 +45,7 @@ $publicFunctions = @(
 )
 
 # Private helper functions to load
-$privateFunctions = @(
-    '_ValidateExchangeModuleAvailable',
-    '_VerifyExchangeOnlineConnection'
-)
+$privateFunctions = @()
 
 # Load all functions
 $allFunctions = $publicFunctions + $privateFunctions

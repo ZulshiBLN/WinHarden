@@ -38,13 +38,20 @@ Basis-Funktionen für Logging, Config, Fehlerbehandlung. **MUST-HAVE für alle a
 
 ## System Module
 
-Funktionen für Exchange Online Verwaltung. **Depends on Core.**
+Funktionen für Windows Security Hardening. **Depends on Core.**
 
 | Funktion | Modul | Status | Beschreibung | Last Updated | Tests | Coverage |
 |----------|-------|--------|-------------|--------------|-------|----------|
-| New-ExchangeOnlineConnection | System | `[OK]` | Exchange Online Connection mit multiple Auth-Methoden | 2026-06-25 | [!!] 20 tests | TBD |
-| _ValidateExchangeModuleAvailable | System | `[OK]` | Private: Modul-Validierung | 2026-06-25 | [!!] 3 tests | TBD |
-| _VerifyExchangeOnlineConnection | System | `[OK]` | Private: Verbindungs-Verifikation | 2026-06-25 | [!!] 3 tests | TBD |
+| New-HardeningSession | System | `[OK]` | Hardening Session Initialization | 2026-06-26 | [OK] 9 tests | 95%+ |
+| Get-HardeningProfile | System | `[OK]` | Load Security Rule Profiles | 2026-06-26 | [OK] 6 tests | 95%+ |
+| Invoke-SecurityHardening | System | `[OK]` | Apply Hardening Rules | 2026-06-26 | [OK] 8 tests | 95%+ |
+| Test-HardeningCompliance | System | `[OK]` | Verify Hardening Compliance | 2026-06-26 | [OK] 12 tests | 95%+ |
+| Export-HardeningReport | System | `[OK]` | Generate Compliance Reports | 2026-06-26 | [OK] 6 tests | 95%+ |
+| Invoke-RemoteHardening | System | `[OK]` | Remote Multi-System Deployment | 2026-06-26 | [OK] 4 tests | 95%+ |
+| New-HardeningSchedule | System | `[OK]` | Automate Recurring Compliance Checks | 2026-06-26 | [OK] 4 tests | 95%+ |
+| Import-HardeningGPO | System | `[OK]` | Group Policy Integration | 2026-06-26 | [OK] 3 tests | 95%+ |
+| Send-HardeningAlert | System | `[OK]` | Email Notifications | 2026-06-26 | [OK] 3 tests | 95%+ |
+| Get-HardeningTrendData | System | `[OK]` | Compliance Trending & Analytics | 2026-06-26 | [OK] 3 tests | 95%+ |
 
 ---
 
