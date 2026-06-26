@@ -14,9 +14,13 @@ function Write-ErrorLog {
 
     .EXAMPLE
     Write-ErrorLog -Message "Critical operation failed"
+
+    .NOTES
+    DEPENDENCIES: Requires Write-Log function (Core module)
+    CREATED: 2026-06-25
     #>
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'High')]
     param(
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]

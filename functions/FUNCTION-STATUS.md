@@ -25,7 +25,7 @@ Basis-Funktionen für Logging, Config, Fehlerbehandlung. **MUST-HAVE für alle a
 |----------|-------|--------|-------------|--------------|-------|----------|
 | Write-Log | Core | `[OK]` | CSV-basierte zentrale Logging-Funktion (ADR-005) | 2026-06-25 | [OK] 9 tests | 95%+ |
 | _CleanupOldLogs | Core | `[OK]` | Log-Cleanup mit 7-Tage Retention (ADR-005) | 2026-06-25 | [OK] 2 tests | 95%+ |
-| Write-ErrorLog | Core | `[OK]` | Error-Handling Wrapper (ADR-004) | 2026-06-25 | [OK] 1 test | 95%+ |
+| Write-ErrorLog | Core | `[OK]` | Error-Handling Wrapper (ADR-004) | 2026-06-26 | [OK] 7 tests | 95%+ |
 | Test-NotNullOrEmpty | Core | `[OK]` | Parameter-Validation Helper (ADR-004) | 2026-06-25 | [OK] 5 tests | 95%+ |
 | Test-ValidPath | Core | `[OK]` | Path-Validation Helper (ADR-004) | 2026-06-25 | [OK] 3 tests | 95%+ |
 | ConvertTo-MaskedString | Core | `[OK]` | Sensitive Data Masking (ADR-005) | 2026-06-25 | [OK] 3 tests | 95%+ |

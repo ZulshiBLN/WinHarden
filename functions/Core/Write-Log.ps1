@@ -21,6 +21,12 @@ function Write-Log {
 
     .EXAMPLE
     Write-Log -Message "Failed to connect to server" -Level Error
+
+    .NOTES
+    Requires helper functions: _CleanupOldLogs, _MaskSensitiveData, _TestLogLevel
+    CSV daily rotation with 7-day retention policy
+    Encoding: UTF8 with proper CSV escaping for special characters
+    Supports -WhatIf for dry-run logging verification
     #>
 
     [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'High')]
@@ -135,7 +141,7 @@ function Write-Log {
         $values = $csvEntry.Values | ForEach-Object {
             # Escape CSV values
             if ($_ -match '[",\r\n]') {
-                "`"$($_ -replace '"', '""')`""
+                '"' + ($_ -replace '"', '""') + '"'
             }
             else {
                 $_
