@@ -92,12 +92,12 @@ function Test-HardeningCompliance {
         }
 
         # Load profile rules
-        $profile = Get-HardeningProfile -ProfileName $Session.Profile -TargetSystem $Session.TargetSystem
+        $hardeningProfile = Get-HardeningProfile -ProfileName $Session.Profile -TargetSystem $Session.TargetSystem
 
         # Filter rules if specified
-        $rulesToTest = $profile.Rules
+        $rulesToTest = $hardeningProfile.Rules
         if ($PSBoundParameters.ContainsKey('RuleFilter')) {
-            $rulesToTest = @($profile.Rules | Where-Object { $_.Name -in $RuleFilter })
+            $rulesToTest = @($hardeningProfile.Rules | Where-Object { $_.Name -in $RuleFilter })
             Write-Log -Message "Testing $($rulesToTest.Count) filtered rules" -Level Info
         }
 
@@ -231,6 +231,8 @@ function _TestRuleCompliance {
         $verification = $Rule.Verification
 
         # Execute verification command
+        # NOTE: Invoke-Expression is SAFE here because commands come from hardening profiles (.psd1 files),
+        # not from user input. Profile data is static and loaded from trusted files only.
         if ($verification.ContainsKey('Command')) {
             $actualValue = Invoke-Expression -Command $verification.Command -ErrorAction SilentlyContinue
             $expectedValue = $verification.Expected

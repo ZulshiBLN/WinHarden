@@ -59,6 +59,7 @@ function Get-HardeningTrendData {
     #>
 
     [CmdletBinding()]
+    [OutputType([PSCustomObject[]])]
     param(
         [Parameter(Mandatory = $false)]
         [string]

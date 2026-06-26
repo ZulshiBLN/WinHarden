@@ -101,12 +101,12 @@ function Invoke-SecurityHardening {
         }
 
         # Get profile rules
-        $profile = Get-HardeningProfile -ProfileName $Session.Profile -TargetSystem $Session.TargetSystem
+        $hardeningProfile = Get-HardeningProfile -ProfileName $Session.Profile -TargetSystem $Session.TargetSystem
 
         # Filter rules if specified
-        $rulesToApply = $profile.Rules
+        $rulesToApply = $hardeningProfile.Rules
         if ($PSBoundParameters.ContainsKey('RuleFilter')) {
-            $rulesToApply = @($profile.Rules | Where-Object { $_.Name -in $RuleFilter })
+            $rulesToApply = @($hardeningProfile.Rules | Where-Object { $_.Name -in $RuleFilter })
             Write-Log -Message "Filtering to $($rulesToApply.Count) specific rules" -Level Info
         }
 
