@@ -1,8 +1,132 @@
 ﻿Timestamp,Level,Caller,Function,LineNumber,Message
-2026-06-26 10:10:08.924,Error,Write-ErrorLog,Write-ErrorLog,37,Critical error occurred
-2026-06-26 10:10:08.982,Error,Test-NotNullOrEmpty<Process>,Test-NotNullOrEmpty<Process>,39,TestParam cannot be null or empty
-2026-06-26 10:10:09.003,Error,Test-NotNullOrEmpty<Process>,Test-NotNullOrEmpty<Process>,39,TestParam cannot be null or empty
-2026-06-26 10:10:09.016,Error,Test-NotNullOrEmpty<Process>,Test-NotNullOrEmpty<Process>,39,TestParam cannot be null or empty
-2026-06-26 10:10:09.029,Error,Test-NotNullOrEmpty<Process>,Test-NotNullOrEmpty<Process>,39,ComputerName cannot be null or empty
-2026-06-26 10:10:09.081,Error,Test-ValidPath,Test-ValidPath,37,TestPath does not exist: C:\NonExistent\Path\That\Does\Not\Exist
-2026-06-26 10:10:09.097,Error,Test-ValidPath,Test-ValidPath,37,TestPath does not exist: C:\InvalidPath
+2026-06-26 10:27:00.332,Error,Write-ErrorLog,Write-ErrorLog,37,Critical error occurred
+2026-06-26 10:27:00.437,Error,Test-NotNullOrEmpty<Process>,Test-NotNullOrEmpty<Process>,39,TestParam cannot be null or empty
+2026-06-26 10:27:00.459,Error,Test-NotNullOrEmpty<Process>,Test-NotNullOrEmpty<Process>,39,TestParam cannot be null or empty
+2026-06-26 10:27:00.474,Error,Test-NotNullOrEmpty<Process>,Test-NotNullOrEmpty<Process>,39,TestParam cannot be null or empty
+2026-06-26 10:27:00.488,Error,Test-NotNullOrEmpty<Process>,Test-NotNullOrEmpty<Process>,39,ComputerName cannot be null or empty
+2026-06-26 10:27:00.527,Error,Test-ValidPath,Test-ValidPath,37,TestPath does not exist: C:\NonExistent\Path\That\Does\Not\Exist
+2026-06-26 10:27:00.543,Error,Test-ValidPath,Test-ValidPath,37,TestPath does not exist: C:\InvalidPath
+2026-06-26 10:27:01.467,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:27:01.476,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:27:01.482,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Strict, Target=Client, OSVersion=11"
+2026-06-26 10:27:01.506,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:27:01.519,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2022"
+2026-06-26 10:27:01.532,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:27:01.553,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2019"
+2026-06-26 10:27:01.560,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2022"
+2026-06-26 10:27:01.567,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2025"
+2026-06-26 10:27:01.602,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:27:01.649,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Strict, Target=Server, OSVersion=2025"
+2026-06-26 10:27:01.676,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:27:01.695,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:27:01.716,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:27:01.721,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:27:01.743,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2022"
+2026-06-26 10:27:01.770,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:27:01.800,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:27:01.835,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:27:01.854,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Server
+2026-06-26 10:27:01.863,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Server
+2026-06-26 10:27:01.877,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Strict for Client
+2026-06-26 10:27:01.883,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 14 rules for Client
+2026-06-26 10:27:01.923,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:27:01.929,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:27:01.945,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:27:01.952,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:27:01.967,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:27:01.973,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:27:01.989,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:27:01.995,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:27:02.000,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Strict for Client
+2026-06-26 10:27:02.009,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 14 rules for Client
+2026-06-26 10:27:02.025,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:27:02.031,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:27:02.037,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Client
+2026-06-26 10:27:02.047,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Client
+2026-06-26 10:27:02.060,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:27:02.068,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:27:02.105,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Server
+2026-06-26 10:27:02.116,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Server
+2026-06-26 10:27:02.162,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:27:02.167,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:27:02.189,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:27:02.196,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:27:02.216,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:27:02.223,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:27:02.243,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:27:02.249,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:27:02.269,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:27:02.275,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:27:02.290,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:27:02.302,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:27:02.346,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:27:02.352,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:27:02.357,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Client
+2026-06-26 10:27:02.367,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Client
+2026-06-26 10:27:02.402,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Client
+2026-06-26 10:27:02.409,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Client
+2026-06-26 10:27:02.416,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Strict for Client
+2026-06-26 10:27:02.426,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 14 rules for Client
+2026-06-26 10:27:02.457,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:27:21.797,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:27:21.818,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:27:21.826,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Strict, Target=Client, OSVersion=11"
+2026-06-26 10:27:21.878,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:27:21.884,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2022"
+2026-06-26 10:27:21.899,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:27:21.912,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2019"
+2026-06-26 10:27:21.919,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2022"
+2026-06-26 10:27:21.926,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2025"
+2026-06-26 10:27:21.965,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:27:22.029,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Strict, Target=Server, OSVersion=2025"
+2026-06-26 10:27:22.076,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:27:22.125,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-26 10:27:22.146,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:27:22.150,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:27:22.174,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2022"
+2026-06-26 10:27:22.196,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-26 10:27:22.229,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:27:22.264,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:27:22.285,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Server
+2026-06-26 10:27:22.294,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Server
+2026-06-26 10:27:22.305,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Strict for Client
+2026-06-26 10:27:22.313,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 14 rules for Client
+2026-06-26 10:27:22.333,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:27:22.339,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:27:22.355,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:27:22.363,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:27:22.379,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:27:22.384,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:27:22.401,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:27:22.409,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:27:22.454,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Strict for Client
+2026-06-26 10:27:22.460,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 14 rules for Client
+2026-06-26 10:27:22.477,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:27:22.484,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:27:22.491,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Client
+2026-06-26 10:27:22.500,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Client
+2026-06-26 10:27:22.510,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:27:22.516,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:27:22.559,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Server
+2026-06-26 10:27:22.565,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Server
+2026-06-26 10:27:22.607,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:27:22.613,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:27:22.627,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:27:22.633,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:27:22.646,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:27:22.652,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:27:22.693,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:27:22.700,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:27:22.714,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:27:22.720,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:27:22.736,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:27:22.744,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:27:22.784,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Basis for Client
+2026-06-26 10:27:22.790,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 12 rules for Client
+2026-06-26 10:27:22.797,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Client
+2026-06-26 10:27:22.807,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Client
+2026-06-26 10:27:22.836,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Recommended for Client
+2026-06-26 10:27:22.842,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 21 rules for Client
+2026-06-26 10:27:22.847,Info,Get-HardeningProfile,Get-HardeningProfile,68,Loading hardening profile: Strict for Client
+2026-06-26 10:27:22.857,Info,Get-HardeningProfile,Get-HardeningProfile,130,Profile loaded successfully: 14 rules for Client
+2026-06-26 10:27:22.886,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"

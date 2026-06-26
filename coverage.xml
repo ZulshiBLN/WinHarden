@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE report PUBLIC "-//JACOCO//DTD Report 1.1//EN" "report.dtd"[]>
-<report name="Pester (06/26/2026 08:09:04)">
-  <sessioninfo id="this" start="1782461341793" dump="1782461344381" />
+<report name="Pester (06/26/2026 08:27:03)">
+  <sessioninfo id="this" start="1782462419559" dump="1782462423584" />
   <package name="functions/Core">
     <class name="functions/Core/ConvertTo-MaskedString" sourcefilename="Core/ConvertTo-MaskedString.ps1">
       <method name="ConvertTo-MaskedString" desc="()" line="35">
@@ -71,12 +71,12 @@
     </class>
     <class name="functions/Core/Write-Log" sourcefilename="Core/Write-Log.ps1">
       <method name="Write-Log" desc="()" line="43">
-        <counter type="INSTRUCTION" missed="15" covered="50" />
-        <counter type="LINE" missed="10" covered="42" />
+        <counter type="INSTRUCTION" missed="13" covered="52" />
+        <counter type="LINE" missed="9" covered="43" />
         <counter type="METHOD" missed="0" covered="1" />
       </method>
-      <counter type="INSTRUCTION" missed="15" covered="50" />
-      <counter type="LINE" missed="10" covered="42" />
+      <counter type="INSTRUCTION" missed="13" covered="52" />
+      <counter type="LINE" missed="9" covered="43" />
       <counter type="METHOD" missed="0" covered="1" />
       <counter type="CLASS" missed="0" covered="1" />
     </class>
@@ -238,7 +238,7 @@
       <line nr="120" mi="1" ci="0" mb="0" cb="0" />
       <line nr="125" mi="0" ci="2" mb="0" cb="0" />
       <line nr="127" mi="0" ci="1" mb="0" cb="0" />
-      <line nr="128" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="128" mi="0" ci="2" mb="0" cb="0" />
       <line nr="131" mi="0" ci="1" mb="0" cb="0" />
       <line nr="134" mi="0" ci="1" mb="0" cb="0" />
       <line nr="137" mi="0" ci="1" mb="0" cb="0" />
@@ -251,8 +251,8 @@
       <line nr="156" mi="1" ci="0" mb="0" cb="0" />
       <line nr="159" mi="0" ci="1" mb="0" cb="0" />
       <line nr="167" mi="2" ci="0" mb="0" cb="0" />
-      <counter type="INSTRUCTION" missed="15" covered="50" />
-      <counter type="LINE" missed="10" covered="42" />
+      <counter type="INSTRUCTION" missed="13" covered="52" />
+      <counter type="LINE" missed="9" covered="43" />
       <counter type="METHOD" missed="0" covered="1" />
       <counter type="CLASS" missed="0" covered="1" />
     </sourcefile>
@@ -295,8 +295,8 @@
       <counter type="METHOD" missed="0" covered="1" />
       <counter type="CLASS" missed="0" covered="1" />
     </sourcefile>
-    <counter type="INSTRUCTION" missed="29" covered="124" />
-    <counter type="LINE" missed="20" covered="102" />
+    <counter type="INSTRUCTION" missed="27" covered="126" />
+    <counter type="LINE" missed="19" covered="103" />
     <counter type="METHOD" missed="0" covered="10" />
     <counter type="CLASS" missed="0" covered="10" />
   </package>
@@ -396,8 +396,147 @@
     <counter type="METHOD" missed="2" covered="1" />
     <counter type="CLASS" missed="2" covered="1" />
   </package>
-  <counter type="INSTRUCTION" missed="69" covered="127" />
-  <counter type="LINE" missed="56" covered="105" />
-  <counter type="METHOD" missed="2" covered="11" />
-  <counter type="CLASS" missed="2" covered="11" />
+  <package name="functions/System/Hardening">
+    <class name="functions/System/Hardening/Get-HardeningProfile" sourcefilename="System/Hardening/Get-HardeningProfile.ps1">
+      <method name="Get-HardeningProfile" desc="()" line="63">
+        <counter type="INSTRUCTION" missed="6" covered="34" />
+        <counter type="LINE" missed="5" covered="30" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <counter type="INSTRUCTION" missed="6" covered="34" />
+      <counter type="LINE" missed="5" covered="30" />
+      <counter type="METHOD" missed="0" covered="1" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <class name="functions/System/Hardening/New-HardeningSession" sourcefilename="System/Hardening/New-HardeningSession.ps1">
+      <method name="New-HardeningSession" desc="()" line="79">
+        <counter type="INSTRUCTION" missed="31" covered="10" />
+        <counter type="LINE" missed="27" covered="8" />
+        <counter type="METHOD" missed="0" covered="1" />
+      </method>
+      <method name="_ValidateHardeningPrerequisites" desc="()" line="166">
+        <counter type="INSTRUCTION" missed="9" covered="0" />
+        <counter type="LINE" missed="7" covered="0" />
+        <counter type="METHOD" missed="1" covered="0" />
+      </method>
+      <method name="_ValidateProfileCompatibility" desc="()" line="191">
+        <counter type="INSTRUCTION" missed="21" covered="0" />
+        <counter type="LINE" missed="12" covered="0" />
+        <counter type="METHOD" missed="1" covered="0" />
+      </method>
+      <counter type="INSTRUCTION" missed="61" covered="10" />
+      <counter type="LINE" missed="46" covered="8" />
+      <counter type="METHOD" missed="2" covered="1" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </class>
+    <sourcefile name="System/Hardening/Get-HardeningProfile.ps1">
+      <line nr="63" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="66" mi="0" ci="2" mb="0" cb="0" />
+      <line nr="68" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="71" mi="0" ci="2" mb="0" cb="0" />
+      <line nr="72" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="76" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="78" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="79" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="83" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="84" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="88" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="89" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="90" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="93" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="94" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="95" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="96" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="97" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="99" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="100" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="105" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="111" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="114" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="115" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="120" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="121" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="122" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="123" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="124" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="125" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="126" mi="0" ci="2" mb="0" cb="0" />
+      <line nr="127" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="130" mi="0" ci="2" mb="0" cb="0" />
+      <line nr="132" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="135" mi="2" ci="0" mb="0" cb="0" />
+      <counter type="INSTRUCTION" missed="6" covered="34" />
+      <counter type="LINE" missed="5" covered="30" />
+      <counter type="METHOD" missed="0" covered="1" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </sourcefile>
+    <sourcefile name="System/Hardening/New-HardeningSession.ps1">
+      <line nr="79" mi="0" ci="2" mb="0" cb="0" />
+      <line nr="80" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="82" mi="0" ci="2" mb="0" cb="0" />
+      <line nr="83" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="85" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="98" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="101" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="103" mi="0" ci="1" mb="0" cb="0" />
+      <line nr="105" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="106" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="110" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="111" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="112" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="113" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="114" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="115" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="116" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="117" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="118" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="119" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="120" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="121" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="122" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="123" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="124" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="125" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="126" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="128" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="129" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="133" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="136" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="137" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="139" mi="3" ci="0" mb="0" cb="0" />
+      <line nr="142" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="146" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="166" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="167" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="168" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="172" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="173" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="174" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="178" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="191" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="192" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="193" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="195" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="196" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="197" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="198" mi="2" ci="0" mb="0" cb="0" />
+      <line nr="202" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="204" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="205" mi="3" ci="0" mb="0" cb="0" />
+      <line nr="208" mi="1" ci="0" mb="0" cb="0" />
+      <line nr="209" mi="4" ci="0" mb="0" cb="0" />
+      <counter type="INSTRUCTION" missed="61" covered="10" />
+      <counter type="LINE" missed="46" covered="8" />
+      <counter type="METHOD" missed="2" covered="1" />
+      <counter type="CLASS" missed="0" covered="1" />
+    </sourcefile>
+    <counter type="INSTRUCTION" missed="67" covered="44" />
+    <counter type="LINE" missed="51" covered="38" />
+    <counter type="METHOD" missed="2" covered="2" />
+    <counter type="CLASS" missed="0" covered="2" />
+  </package>
+  <counter type="INSTRUCTION" missed="134" covered="173" />
+  <counter type="LINE" missed="106" covered="144" />
+  <counter type="METHOD" missed="4" covered="13" />
+  <counter type="CLASS" missed="2" covered="13" />
 </report>
