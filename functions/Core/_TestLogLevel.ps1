@@ -37,6 +37,7 @@ function _TestLogLevel {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
+        [ValidateSet('Error', 'Warning', 'Info', 'Debug', 'Verbose')]
         [string]
         $Level
     )
