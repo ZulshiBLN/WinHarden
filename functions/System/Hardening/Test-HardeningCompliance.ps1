@@ -35,6 +35,7 @@ function Test-HardeningCompliance {
     .PARAMETER Remediate
     If specified, automatically attempts to remediate non-compliant rules.
     Requires admin rights. Returns remediation results.
+    Supports -WhatIf to preview remediation without making changes.
 
     .EXAMPLE
     $session = New-HardeningSession -Profile Recommended -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck
@@ -64,7 +65,7 @@ function Test-HardeningCompliance {
     PERFORMANCE: Completes in <10 seconds for typical profiles
     #>
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param(
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
         [PSCustomObject]
@@ -111,7 +112,7 @@ function Test-HardeningCompliance {
 
             # Test each rule
             foreach ($rule in $rulesToTest) {
-                $ruleResult = _TestRuleCompliance -Rule $rule -Session $Session -Detailed:$Detailed
+                $ruleResult = _TestRuleCompliance -Rule $rule
 
                 if ($ruleResult.Compliant) {
                     $compliantCount++
@@ -121,10 +122,12 @@ function Test-HardeningCompliance {
 
                     # Attempt remediation if requested
                     if ($Remediate) {
-                        Write-Log -Message "Attempting to remediate rule: $($rule.Name)" -Level Warning
-                        $remediationResult = _RemediateRule -Rule $rule -Session $Session
-                        $ruleResult.RemediationAttempted = $true
-                        $ruleResult.RemediationSuccess = $remediationResult
+                        if ($PSCmdlet.ShouldProcess("Rule: $($rule.Name)", "Remediate non-compliant rule")) {
+                            Write-Log -Message "Attempting to remediate rule: $($rule.Name)" -Level Warning
+                            $remediationResult = _RemediateRule -Rule $rule
+                            $ruleResult.RemediationAttempted = $true
+                            $ruleResult.RemediationSuccess = $remediationResult
+                        }
                     }
                 }
 
@@ -162,15 +165,18 @@ function Test-HardeningCompliance {
 
             # Determine overall status
             $status = switch ($compliancePercentage) {
-                100 { 'Fully Compliant' 
+                100 { 'Fully Compliant' }
+                { $_ -ge 95 } {
+                    'Highly Compliant'
                 }
-                { $_ -ge 95 } { 'Highly Compliant' 
+                { $_ -ge 80 } {
+                    'Mostly Compliant'
                 }
-                { $_ -ge 80 } { 'Mostly Compliant' 
+                { $_ -ge 50 } {
+                    'Partially Compliant'
                 }
-                { $_ -ge 50 } { 'Partially Compliant' 
-                }
-                default { 'Non-Compliant' 
+                default {
+                    'Non-Compliant'
                 }
             }
 
@@ -213,9 +219,7 @@ function _TestRuleCompliance {
     #>
     [CmdletBinding()]
     param(
-        [PSCustomObject]$Rule,
-        [PSCustomObject]$Session,
-        [switch]$Detailed
+        [PSCustomObject]$Rule
     )
 
     $result = [ordered]@{
@@ -316,8 +320,7 @@ function _RemediateRule {
     [CmdletBinding()]
     [OutputType([bool])]
     param(
-        [PSCustomObject]$Rule,
-        [PSCustomObject]$Session
+        [PSCustomObject]$Rule
     )
 
     try {
@@ -431,7 +434,7 @@ function _ApplyFirewallRule {
     $fwDef = $Rule.RuleDefinition
 
     if ($fwDef.ContainsKey('Profiles')) {
-        foreach ($profile in $fwDef.Profiles) {
+        foreach ($profileName in $fwDef.Profiles) {
             # Skip GpoBoolean type casting - firewall remains at default (enabled)
         }
     }
@@ -452,26 +455,34 @@ function _ApplyAuditRule {
 
     if ($auditDef.ContainsKey('SubCategory')) {
         $subcategory = $auditDef.SubCategory
-        $success = if ($auditDef.Success) { 'enable' 
+        $success = if ($auditDef.Success) {
+            'enable'
         }
-        else { 'disable' 
+        else {
+            'disable'
         }
-        $failure = if ($auditDef.Failure) { 'enable' 
+        $failure = if ($auditDef.Failure) {
+            'enable'
         }
-        else { 'disable' 
+        else {
+            'disable'
         }
 
         auditpol /set /subcategory:"$subcategory" /success:$success /failure:$failure 2>&1 | Out-Null
     }
     elseif ($auditDef.ContainsKey('Category')) {
         $category = $auditDef.Category
-        $success = if ($auditDef.Success) { 'enable' 
+        $success = if ($auditDef.Success) {
+            'enable'
         }
-        else { 'disable' 
+        else {
+            'disable'
         }
-        $failure = if ($auditDef.Failure) { 'enable' 
+        $failure = if ($auditDef.Failure) {
+            'enable'
         }
-        else { 'disable' 
+        else {
+            'disable'
         }
 
         auditpol /set /category:"$category" /success:$success /failure:$failure 2>&1 | Out-Null
