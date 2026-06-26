@@ -233,7 +233,7 @@ function _GenerateHtmlReport {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WinOpsKit Hardening Compliance Report</title>
+    <title>WinHarden Hardening Compliance Report</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background: #f5f5f5; }
         .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
@@ -256,7 +256,7 @@ function _GenerateHtmlReport {
 </head>
 <body>
     <div class="container">
-        <h1>WinOpsKit Hardening Compliance Report</h1>
+        <h1>WinHarden Hardening Compliance Report</h1>
 
         <div style="margin: 15px 0;">
             <strong>Report Generated:</strong> $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')
@@ -356,7 +356,7 @@ function _GenerateHtmlReport {
 
     $html += @"
         <div class="footer">
-            <p>WinOpsKit Windows Hardening System</p>
+            <p>WinHarden Windows Hardening System</p>
             <p>Profile: $($Report.Profile) | Target: $($Report.TargetSystem)</p>
         </div>
     </div>
@@ -377,7 +377,7 @@ function _GenerateTextReport {
 
     $text = @"
 ================================================================================
-                 WinOpsKit HARDENING COMPLIANCE REPORT
+                 WinHarden HARDENING COMPLIANCE REPORT
 ================================================================================
 
 Report Generated:      $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')

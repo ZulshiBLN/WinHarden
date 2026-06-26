@@ -1,10 +1,10 @@
 function Get-ModuleVersion {
     <#
     .SYNOPSIS
-    Returns WinOpsKit module version and status information.
+    Returns WinHarden module version and status information.
 
     .DESCRIPTION
-    Provides current WinOpsKit version, PowerShell version compatibility,
+    Provides current WinHarden version, PowerShell version compatibility,
     build date, and implementation status.
 
     .EXAMPLE
@@ -18,7 +18,7 @@ function Get-ModuleVersion {
     param()
 
     return @{
-        Module = 'WinOpsKit'
+        Module = 'WinHarden'
         Version = '0.1.0'
         PowerShellVersion = $PSVersionTable.PSVersion.ToString()
         BuildDate = (Get-Date).ToString('yyyy-MM-dd')

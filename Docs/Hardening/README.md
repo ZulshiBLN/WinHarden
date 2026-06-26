@@ -1,4 +1,4 @@
-# WinOpsKit Windows Hardening System - Documentation
+# WinHarden Windows Hardening System - Documentation
 
 **Version:** 1.0  
 **Status:** Production Ready (Grade A)  
@@ -8,7 +8,7 @@
 
 ## 📚 Documentation Overview
 
-Complete documentation for the WinOpsKit Windows Hardening System covering installation, deployment, architecture, integration, and FAQs.
+Complete documentation for the WinHarden Windows Hardening System covering installation, deployment, architecture, integration, and FAQs.
 
 ---
 

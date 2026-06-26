@@ -1,4 +1,4 @@
-# WinOpsKit Hardening System - Architecture Guide
+# WinHarden Hardening System - Architecture Guide
 
 **Version:** 1.0  
 **Last Updated:** 2026-06-26  
@@ -12,7 +12,7 @@
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│         WinOpsKit Hardening System                       │
+│         WinHarden Hardening System                       │
 ├─────────────────────────────────────────────────────────┤
 │                                                           │
 │  ┌─────────────────┐        ┌──────────────────┐        │

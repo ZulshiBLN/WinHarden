@@ -1,4 +1,4 @@
-# WinOpsKit Hardening System - Frequently Asked Questions
+# WinHarden Hardening System - Frequently Asked Questions
 
 **Version:** 1.0  
 **Last Updated:** 2026-06-26
@@ -7,8 +7,8 @@
 
 ## General Questions
 
-### Q: What is the WinOpsKit Hardening System?
-**A:** The WinOpsKit Hardening System is an automated security hardening solution for Windows Client (11) and Server (2019/2022/2025) systems. It provides profile-based security rule application, compliance verification, and remediation capabilities.
+### Q: What is the WinHarden Hardening System?
+**A:** The WinHarden Hardening System is an automated security hardening solution for Windows Client (11) and Server (2019/2022/2025) systems. It provides profile-based security rule application, compliance verification, and remediation capabilities.
 
 ### Q: Why do I need it?
 **A:** Manual hardening is time-consuming and error-prone. This system automates the application of security baselines, ensures consistency across systems, and tracks compliance.
@@ -17,17 +17,17 @@
 **A:** No, it's Windows-only. The hardening rules target Windows-specific components (Registry, Services, Firewall, Audit policies).
 
 ### Q: What license/cost is involved?
-**A:** WinOpsKit is part of your Windows/Server installation and PowerShell environment. No additional licensing required beyond standard Windows licenses.
+**A:** WinHarden is part of your Windows/Server installation and PowerShell environment. No additional licensing required beyond standard Windows licenses.
 
 ---
 
 ## Installation & Setup
 
-### Q: How do I install WinOpsKit?
-**A:** WinOpsKit is provided as PowerShell modules. Import them using:
+### Q: How do I install WinHarden?
+**A:** WinHarden is provided as PowerShell modules. Import them using:
 ```powershell
-Import-Module "C:\Path\To\WinOpsKit\modules\Core.psm1"
-Import-Module "C:\Path\To\WinOpsKit\modules\System.psm1"
+Import-Module "C:\Path\To\WinHarden\modules\Core.psm1"
+Import-Module "C:\Path\To\WinHarden\modules\System.psm1"
 ```
 
 ### Q: Do I need Administrator rights?
@@ -175,7 +175,7 @@ New-HardeningSchedule -Profile Recommended -Schedule Daily -AutoRemediate
 ```
 
 ### Q: Where are scheduled reports saved?
-**A:** Default: `C:\ProgramData\WinOpsKit\Reports\`
+**A:** Default: `C:\ProgramData\WinHarden\Reports\`
 
 ---
 
@@ -292,7 +292,7 @@ Get-HardeningTrendData -ComputerName "Server1" -Days 30
 - Function help: `Get-Help New-HardeningSession -Full`
 
 ### Q: How do I report bugs?
-**A:** Use your internal support channels or the WinOpsKit GitHub issues (if applicable).
+**A:** Use your internal support channels or the WinHarden GitHub issues (if applicable).
 
 ### Q: Is there a roadmap?
 **A:** Check the project documentation for planned features.

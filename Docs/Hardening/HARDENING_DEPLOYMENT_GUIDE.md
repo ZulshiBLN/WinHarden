@@ -1,4 +1,4 @@
-# WinOpsKit Hardening System - Deployment Guide
+# WinHarden Hardening System - Deployment Guide
 
 **Version:** 1.0  
 **Last Updated:** 2026-06-26  
@@ -23,7 +23,7 @@
 
 ### Deployment Methods
 
-The WinOpsKit Hardening System supports three primary deployment methods:
+The WinHarden Hardening System supports three primary deployment methods:
 
 | Method | Scope | Audience | Complexity |
 |--------|-------|----------|-----------|
@@ -56,7 +56,7 @@ Start: Need to harden systems?
 
 - Administrator rights on target system
 - PowerShell 5.1 or higher
-- WinOpsKit modules imported
+- WinHarden modules imported
 
 ### Step-by-Step
 
@@ -73,8 +73,8 @@ Start: Need to harden systems?
 #### Step 2: Import Modules
 
 ```powershell
-# Set path to WinOpsKit
-$winOpsKitPath = "C:\Path\To\WinOpsKit"
+# Set path to WinHarden
+$winOpsKitPath = "C:\Path\To\WinHarden"
 
 # Import Core module
 Import-Module "$winOpsKitPath\modules\Core.psm1" -Force
@@ -145,12 +145,12 @@ param(
     [ValidateSet('Basis', 'Recommended', 'Strict')]
     [string]$Profile = 'Recommended',
     
-    [string]$WinOpsKitPath = 'C:\WinOpsKit'
+    [string]$WinHardenPath = 'C:\WinHarden'
 )
 
 # Import modules
-Import-Module "$WinOpsKitPath\modules\Core.psm1" -Force
-Import-Module "$WinOpsKitPath\modules\System.psm1" -Force
+Import-Module "$WinHardenPath\modules\Core.psm1" -Force
+Import-Module "$WinHardenPath\modules\System.psm1" -Force
 
 # Detect OS
 if ($PSVersionTable.OS -match 'Windows Server') {
@@ -286,7 +286,7 @@ Write-Host "Remote deployment complete!"
 ```powershell
 # Create GPO for Recommended profile
 Import-HardeningGPO -Profile Recommended `
-    -GPOName "WinOpsKit-Hardening-Recommended" `
+    -GPOName "WinHarden-Hardening-Recommended" `
     -Domain "contoso.com"
 ```
 
@@ -509,7 +509,7 @@ $compliance.NonCompliantRules | ForEach-Object {
 ## Deployment Checklist
 
 - [ ] Prerequisites met (admin rights, PowerShell version)
-- [ ] WinOpsKit modules imported
+- [ ] WinHarden modules imported
 - [ ] Backup system state or create restore point
 - [ ] Run with -WhatIf to preview changes
 - [ ] Apply hardening to pilot group first

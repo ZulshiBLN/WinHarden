@@ -1,4 +1,4 @@
-# WinOpsKit Hardening - SIEM & Dashboard Integration
+# WinHarden Hardening - SIEM & Dashboard Integration
 
 **Version:** 1.0  
 **Last Updated:** 2026-06-26  
@@ -8,7 +8,7 @@
 
 ## Overview
 
-The WinOpsKit Hardening System generates compliance data in formats compatible with SIEM platforms and compliance dashboards.
+The WinHarden Hardening System generates compliance data in formats compatible with SIEM platforms and compliance dashboards.
 
 ---
 
@@ -147,7 +147,7 @@ Create dashboard using JSON source:
 ```json
 {
   "dashboard": {
-    "title": "WinOpsKit Hardening Compliance",
+    "title": "WinHarden Hardening Compliance",
     "panels": [
       {
         "title": "Overall Compliance",
@@ -252,7 +252,7 @@ Send-HardeningAlert `
 # Send to Slack via Webhook
 $compliance = Test-HardeningCompliance -Session $session
 $slackMessage = @{
-    text = "WinOpsKit Hardening Alert"
+    text = "WinHarden Hardening Alert"
     attachments = @(
         @{
             color = if($compliance.CompliancePercentage -ge 90) { "good" } else { "warning" }
@@ -325,7 +325,7 @@ $nonCompliant = @($reports | Where-Object CompliancePercentage -lt 90).Count
 
 # Send email
 $body = @"
-Daily WinOpsKit Hardening Report
+Daily WinHarden Hardening Report
 =================================
 Date: $(Get-Date)
 Total Systems: $($reports.Count)

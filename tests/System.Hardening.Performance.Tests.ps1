@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-Performance and Scalability Tests for WinOpsKit Hardening System
+Performance and Scalability Tests for WinHarden Hardening System
 
 Measures execution time, resource usage, and scalability limits
 for hardening operations across different scales.

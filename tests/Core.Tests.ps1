@@ -203,7 +203,7 @@ Describe "Core Module – Module Info Functions" {
         It "returns version information" {
             $version = Get-ModuleVersion
             $version | Should -Not -BeNullOrEmpty
-            $version.Module | Should -Be 'WinOpsKit'
+            $version.Module | Should -Be 'WinHarden'
             $version.Version | Should -Not -BeNullOrEmpty
             $version.PowerShellVersion | Should -Not -BeNullOrEmpty
         }
@@ -220,27 +220,27 @@ Describe "Core Module – Module Info Functions" {
 }
 
 Describe "Core Module – Dependency Functions" {
-    Context "Test-WinOpsKitDependencies function" {
+    Context "Test-WinHardenDependencies function" {
         It "returns hashtable with PowerShell version" {
-            $result = Test-WinOpsKitDependencies
+            $result = Test-WinHardenDependencies
             $result | Should -BeOfType [hashtable]
             $result.Keys | Should -Contain 'PowerShellVersion'
         }
 
         It "checks PowerShell version requirement" {
-            $result = Test-WinOpsKitDependencies
+            $result = Test-WinHardenDependencies
             $result.PowerShellVersion.Status | Should -Match 'OK|FAIL'
             $result.PowerShellVersion.Required | Should -Be '5.1'
         }
 
         It "checks optional modules when specified" {
-            $result = Test-WinOpsKitDependencies -Module @('Pester')
+            $result = Test-WinHardenDependencies -Module @('Pester')
             $result['Pester'] | Should -Not -BeNullOrEmpty
             $result['Pester'].Status | Should -Match 'Available|NotFound'
         }
 
         It "handles empty module array" {
-            $result = Test-WinOpsKitDependencies -Module @()
+            $result = Test-WinHardenDependencies -Module @()
             $result | Should -BeOfType [hashtable]
             $result.Keys | Should -Contain 'PowerShellVersion'
         }

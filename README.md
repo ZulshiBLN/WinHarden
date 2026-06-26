@@ -1,4 +1,4 @@
-# WinOpsKit - Windows Hardening System
+# WinHarden - Windows Hardening System
 
 **Version:** 1.0  
 **Status:** Production Ready (Grade A+)  
@@ -8,7 +8,7 @@
 
 ## Overview
 
-**WinOpsKit** is a comprehensive PowerShell-based Windows security hardening automation system for Windows 11 Clients and Windows Server 2019-2025.
+**WinHarden** is a comprehensive PowerShell-based Windows security hardening automation system for Windows 11 Clients and Windows Server 2019-2025.
 
 ### Key Features
 
@@ -31,8 +31,8 @@
 
 ```powershell
 # Import modules
-Import-Module "C:\Path\To\WinOpsKit\modules\Core.psm1" -Force
-Import-Module "C:\Path\To\WinOpsKit\modules\System.psm1" -Force
+Import-Module "C:\Path\To\WinHarden\modules\Core.psm1" -Force
+Import-Module "C:\Path\To\WinHarden\modules\System.psm1" -Force
 ```
 
 ### 5-Minute Hardening
@@ -109,7 +109,7 @@ Maximum security for high-security environments.
 ## Project Structure
 
 ```
-WinOpsKit/
+WinHarden/
 ├── Docs/                          # Documentation
 │   ├── README.md
 │   └── Hardening/                 # Hardening guides
@@ -242,7 +242,7 @@ Track and forecast hardening progress over time.
 
 ## License & Attribution
 
-WinOpsKit Windows Hardening System  
+WinHarden Windows Hardening System  
 Version 1.0  
 Production Ready (Grade A+)
 

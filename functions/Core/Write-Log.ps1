@@ -51,7 +51,7 @@ function Write-Log {
             $projectRoot = Split-Path -Path $PSScriptRoot -Parent | Split-Path -Parent
             $logDir = Join-Path -Path $projectRoot -ChildPath 'logs'
 
-            # Verify we got a reasonable path (should contain 'WinOpsKit' or 'logs')
+            # Verify we got a reasonable path (should contain 'WinHarden' or 'logs')
             if (-not ($logDir -like '*logs')) {
                 $logDir = $null
             }

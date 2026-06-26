@@ -1,4 +1,4 @@
-# WinOpsKit Hardening System - Performance & Scalability Guide
+# WinHarden Hardening System - Performance & Scalability Guide
 
 **Version:** 1.0  
 **Last Updated:** 2026-06-26  
@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-The WinOpsKit Hardening System is optimized for:
+The WinHarden Hardening System is optimized for:
 - **Performance:** Sub-second operations for most tasks
 - **Scalability:** Tested up to 100+ systems
 - **Efficiency:** Low memory footprint, minimal overhead
@@ -443,7 +443,7 @@ $sessions = @()  # Reset
 
 ## Conclusion
 
-The WinOpsKit Hardening System is:
+The WinHarden Hardening System is:
 - ✅ Highly performant for single systems
 - ✅ Efficient for small to medium deployments
 - ✅ Scalable for enterprise environments

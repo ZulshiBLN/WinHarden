@@ -176,21 +176,21 @@ function _GenerateAlertSubject {
 
     switch ($AlertType) {
         'Hardening' {
-            "[WinOpsKit] $Severity - Hardening Operation - $timestamp"
+            "[WinHarden] $Severity - Hardening Operation - $timestamp"
         }
         'Compliance' {
             if ($Report) {
-                "[WinOpsKit] $Severity - Compliance Alert ($($Report.CompliancePercentage)%) - $timestamp"
+                "[WinHarden] $Severity - Compliance Alert ($($Report.CompliancePercentage)%) - $timestamp"
             }
             else {
-                "[WinOpsKit] $Severity - Compliance Alert - $timestamp"
+                "[WinHarden] $Severity - Compliance Alert - $timestamp"
             }
         }
         'Remediation' {
-            "[WinOpsKit] $Severity - Remediation Event - $timestamp"
+            "[WinHarden] $Severity - Remediation Event - $timestamp"
         }
         'Schedule' {
-            "[WinOpsKit] $Severity - Scheduled Hardening Check - $timestamp"
+            "[WinHarden] $Severity - Scheduled Hardening Check - $timestamp"
         }
     }
 }
@@ -231,7 +231,7 @@ function _GenerateAlertBody {
 <body>
     <div class="container">
         <div class="alert-header">
-            <div class="alert-title">WinOpsKit Hardening Alert</div>
+            <div class="alert-title">WinHarden Hardening Alert</div>
             <div class="alert-time">$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')</div>
         </div>
 "@
@@ -279,7 +279,7 @@ function _GenerateAlertBody {
 
     $html += @"
         <div class="footer">
-            <p>WinOpsKit Windows Hardening System</p>
+            <p>WinHarden Windows Hardening System</p>
             <p>Do not reply to this automated message</p>
         </div>
     </div>

@@ -31,7 +31,7 @@ function Get-HardeningTrendData {
 
     .PARAMETER Repository
     Data repository location.
-    Default: C:\ProgramData\WinOpsKit\Compliance-History
+    Default: C:\ProgramData\WinHarden\Compliance-History
 
     .PARAMETER OutputFormat
     Output format: Table, JSON, PSCustomObject.
@@ -72,7 +72,7 @@ function Get-HardeningTrendData {
 
         [Parameter(Mandatory = $false)]
         [string]
-        $Repository = 'C:\ProgramData\WinOpsKit\Compliance-History',
+        $Repository = 'C:\ProgramData\WinHarden\Compliance-History',
 
         [Parameter(Mandatory = $false)]
         [ValidateSet('Table', 'JSON', 'PSCustomObject')]
@@ -238,7 +238,7 @@ function Save-ComplianceSnapshot {
 
         [Parameter(Mandatory = $false)]
         [string]
-        $Repository = 'C:\ProgramData\WinOpsKit\Compliance-History'
+        $Repository = 'C:\ProgramData\WinHarden\Compliance-History'
     )
 
     $ErrorActionPreference = 'Stop'

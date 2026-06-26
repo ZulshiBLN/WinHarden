@@ -7,7 +7,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
-Write-Output "[BUILD] === WinOpsKit Build ==="
+Write-Output "[BUILD] === WinHarden Build ==="
 
 # PSScriptAnalyzer – Inline Settings (Option B)
 if (-not $SkipAnalyzer) {

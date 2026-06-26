@@ -1,4 +1,4 @@
-# WinOpsKit – Architectural Decision Records (ADRs)
+# WinHarden – Architectural Decision Records (ADRs)
 
 Zentrale Dokumentation für Architektur-Entscheidungen, die das Projekt massgeblich beeinflussen.
 
@@ -14,7 +14,7 @@ Zentrale Dokumentation für Architektur-Entscheidungen, die das Projekt massgebl
 **Status:** [OK] ACCEPTED
 
 **Context:**
-WinOpsKit benötigt eine klare Struktur für Wiederverwendbarkeit, Testbarkeit und Wartbarkeit. PowerShell-Code sollte nicht monolithisch sein.
+WinHarden benötigt eine klare Struktur für Wiederverwendbarkeit, Testbarkeit und Wartbarkeit. PowerShell-Code sollte nicht monolithisch sein.
 
 **Decision:**
 Modulare PowerShell-Architektur mit klarer Trennung von Funktionen, Scripts und Tests. 
@@ -41,7 +41,7 @@ Siehe **[STRUCTURE.md](STRUCTURE.md)** für konkrete Implementierungs-Regeln (Re
 Windows Server-Umgebungen haben gemischte PowerShell-Versionen:
 - Ältere Server (2016, frühe 2019) haben nur PowerShell 5.1
 - Neuere Server (2022+) haben PowerShell 7.x optional verfügbar
-- WinOpsKit soll in beiden Umgebungen funktionieren
+- WinHarden soll in beiden Umgebungen funktionieren
 
 **Decision:**
 - **Minimum-Version:** PowerShell 5.1 (funktioniert überall)
@@ -369,7 +369,7 @@ See **[STRUCTURE.md Regel 8.1-8.8](STRUCTURE.md#8-naming-conventions)** for comp
 **Status:** [OK] ACCEPTED
 
 **Context:**
-WinOpsKit hat mehrere Funktions-Module (System, User, Maintenance, etc.). Die Import-Strategie muss klären:
+WinHarden hat mehrere Funktions-Module (System, User, Maintenance, etc.). Die Import-Strategie muss klären:
 1. Wie werden Module organisiert (1x .psm1 oder separate)?
 2. Wie werden Dependencies gelöst (alle funktionieren)?
 3. Wie wird Script-Initialisierung sauber (nur nötige Funktionen)?
@@ -483,8 +483,8 @@ Mit mehreren Modulen (Core, System, User, Maintenance) müssen Abhängigkeiten z
   # REQUIRES (optional): Az.Storage Module 4.0+
   ```
 - **Graceful Degradation:** Wenn externe Module fehlen, loggen + Error + return gracefully
-- **Nicht hard-require:** WinOpsKit funktioniert ohne externe Modules (nur mit Einschränkungen)
-- Nutzen von `Test-WinOpsKitDependencies` Helper (optional)
+- **Nicht hard-require:** WinHarden funktioniert ohne externe Modules (nur mit Einschränkungen)
+- Nutzen von `Test-WinHardenDependencies` Helper (optional)
 
 **Version Constraints:**
 - **Minimum PowerShell:** 5.1 (alle Funktionen, siehe ADR-002)

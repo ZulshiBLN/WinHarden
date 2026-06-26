@@ -1,4 +1,4 @@
-# WinOpsKit Documentation
+# WinHarden Documentation
 
 **Version:** 1.0  
 **Status:** Production Ready  
@@ -8,7 +8,7 @@
 
 ## 📚 Documentation Directory
 
-Welcome to the WinOpsKit documentation hub. All project documentation is organized here for easy navigation.
+Welcome to the WinHarden documentation hub. All project documentation is organized here for easy navigation.
 
 ---
 

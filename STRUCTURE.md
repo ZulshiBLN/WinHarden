@@ -1,6 +1,6 @@
-# WinOpsKit – STRUCTURE.md
+# WinHarden – STRUCTURE.md
 
-Projekt-spezifische Struktur- und Organisationsregeln für WinOpsKit.
+Projekt-spezifische Struktur- und Organisationsregeln für WinHarden.
 
 ---
 
@@ -147,14 +147,14 @@ Siehe **[ADR-009](DECISIONS.md)** für vollständigen Kontext.
 - **Regel 12.5:** External Dependencies optional deklarieren (Kommentar: `# REQUIRES (optional): ...`)
 - **Regel 12.6:** Graceful Degradation: External Module fehlt → Loggen + Error + Continue (nicht throw)
 - **Regel 12.7:** PowerShell-Version Constraint: Minimum 5.1, Runtime-Checks für 7.x Features (ADR-002)
-- **Regel 12.8:** Optional: `Test-WinOpsKitDependencies` Helper-Funktion in Core (nicht blocking)
+- **Regel 12.8:** Optional: `Test-WinHardenDependencies` Helper-Funktion in Core (nicht blocking)
 
 ---
 
 ## Verzeichnis-Übersicht
 
 ```
-WinOpsKit/
+WinHarden/
 ├── functions/              # Wiederverwendbare PowerShell-Funktionen (Source)
 │   ├── FUNCTION-STATUS.md  # Arbeitsstand und Modul-Info (von Hand gepflegt)
 │   ├── Core/

@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-Error Scenario Tests for WinOpsKit Hardening System
+Error Scenario Tests for WinHarden Hardening System
 
 Tests error handling, edge cases, and failure scenarios
 across all hardening functions.

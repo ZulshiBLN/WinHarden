@@ -19,7 +19,7 @@ function New-HardeningSchedule {
 
     .PARAMETER TaskName
     Name for the scheduled task.
-    Default: "WinOpsKit-HardeningCompliance"
+    Default: "WinHarden-HardeningCompliance"
 
     .PARAMETER Profile
     Hardening profile for scheduled verification: Basis, Recommended, Strict.
@@ -55,7 +55,7 @@ function New-HardeningSchedule {
 
     .PARAMETER ReportPath
     Directory path for saving compliance reports.
-    Default: C:\ProgramData\WinOpsKit\Reports
+    Default: C:\ProgramData\WinHarden\Reports
 
     .EXAMPLE
     New-HardeningSchedule -Profile Recommended -Schedule Daily -Time 03:00
@@ -76,14 +76,14 @@ function New-HardeningSchedule {
     DEPENDENCIES: Write-Log (Core), Test-HardeningCompliance, Export-HardeningReport
     ADMIN: Requires administrative rights to create scheduled tasks
     TASK SCHEDULER: Uses Windows Task Scheduler for execution
-    REPORTS: Generated in C:\ProgramData\WinOpsKit\Reports by default
+    REPORTS: Generated in C:\ProgramData\WinHarden\Reports by default
     #>
 
     [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'High')]
     param(
         [Parameter(Mandatory = $false)]
         [string]
-        $TaskName = "WinOpsKit-HardeningCompliance",
+        $TaskName = "WinHarden-HardeningCompliance",
 
         [Parameter(Mandatory = $true)]
         [ValidateSet('Basis', 'Recommended', 'Strict')]
@@ -122,7 +122,7 @@ function New-HardeningSchedule {
 
         [Parameter(Mandatory = $false)]
         [string]
-        $ReportPath = 'C:\ProgramData\WinOpsKit\Reports'
+        $ReportPath = 'C:\ProgramData\WinHarden\Reports'
     )
 
     $ErrorActionPreference = 'Stop'
@@ -148,7 +148,7 @@ function New-HardeningSchedule {
 
         # Build PowerShell script block for task
         $scriptBlock = @"
-# WinOpsKit Hardening Compliance Check
+# WinHarden Hardening Compliance Check
 Import-Module '$(Split-Path -Path $PSScriptRoot -Parent)\modules\System.psm1' -Force
 
 `$session = New-HardeningSession -Profile '$Profile' -TargetSystem Client -SkipPrerequisiteCheck

@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-Integration Tests for WinOpsKit Hardening System
+Integration Tests for WinHarden Hardening System
 
 Tests complete end-to-end workflows and integration scenarios
 across multiple components and functions.
@@ -234,7 +234,7 @@ Describe "Integration - Email Alert Workflow" {
             }
 
             # Verify alert subject generation
-            $subject = "[WinOpsKit] Info - Compliance Alert (75%) -"
+            $subject = "[WinHarden] Info - Compliance Alert (75%) -"
 
             # Note: Actual SMTP send will fail without valid server
             # This tests the alert format generation
@@ -332,7 +332,7 @@ Describe "Integration - Trending Analysis" {
     Context "Compliance Trend Tracking" {
         It "retrieves trend data for system" {
             # Create test repository
-            $repo = "C:\ProgramData\WinOpsKit\Compliance-History\TestSystem"
+            $repo = "C:\ProgramData\WinHarden\Compliance-History\TestSystem"
             if (-not (Test-Path $repo)) {
                 New-Item -ItemType Directory -Path $repo -Force | Out-Null
             }

@@ -1,4 +1,4 @@
-# WinOpsKit – CLAUDE.md
+# WinHarden – CLAUDE.md
 
 PowerShell Automation & Operations Toolkit für Windows Server-Administration.
 
@@ -109,7 +109,7 @@ PowerShell Automation & Operations Toolkit für Windows Server-Administration.
 
 ---
 
-## Arbeitsregeln für WinOpsKit
+## Arbeitsregeln für WinHarden
 
 ### Context-Management für Claude-Sessions
 

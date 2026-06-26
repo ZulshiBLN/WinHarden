@@ -1,4 +1,4 @@
-# WinOpsKit – FUNCTION-STATUS.md
+# WinHarden – FUNCTION-STATUS.md
 
 Arbeitsstand und Modul-Informationen für alle PowerShell-Funktionen.
 
@@ -29,7 +29,7 @@ Basis-Funktionen für Logging, Config, Fehlerbehandlung. **MUST-HAVE für alle a
 | Test-ValidPath | Core | `[OK]` | Path-Validation Helper (ADR-004) | 2026-06-25 | [OK] 3 tests | 95%+ |
 | ConvertTo-MaskedString | Core | `[OK]` | Sensitive Data Masking (ADR-005) | 2026-06-25 | [OK] 3 tests | 95%+ |
 | Get-ModuleVersion | Core | `[OK]` | Version & Module Info (ADR-008) | 2026-06-25 | [OK] 2 tests | 95%+ |
-| Test-WinOpsKitDependencies | Core | `[OK]` | External Module Dependency Check (ADR-009) | 2026-06-25 | [OK] 4 tests | 95%+ |
+| Test-WinHardenDependencies | Core | `[OK]` | External Module Dependency Check (ADR-009) | 2026-06-25 | [OK] 4 tests | 95%+ |
 | _MaskSensitiveData | Core | `[OK]` | Private: Sensitive data regex masking | 2026-06-25 | [OK] 3 tests | 95%+ |
 | _TestLogLevel | Core | `[OK]` | Private: Log-level hierarchy check | 2026-06-25 | [OK] 4 tests | 95%+ |
 

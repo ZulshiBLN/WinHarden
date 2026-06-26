@@ -1,6 +1,6 @@
 # Windows Hardening Script - Implementation Plan
 
-**Projekt:** WinOpsKit System Module Enhancement  
+**Projekt:** WinHarden System Module Enhancement  
 **Feature:** Comprehensive Windows Hardening (Clients + Server)  
 **Status:** Planning Phase  
 **Version:** 1.0.0

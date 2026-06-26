@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-Edge Case Tests for WinOpsKit Hardening System
+Edge Case Tests for WinHarden Hardening System
 
 Tests boundary conditions, unusual inputs, and edge cases
 to ensure robustness across all hardening functions.

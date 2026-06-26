@@ -1,4 +1,4 @@
-# WinOpsKit Windows Hardening System - User Guide
+# WinHarden Windows Hardening System - User Guide
 
 **Version:** 1.0  
 **Last Updated:** 2026-06-26  
@@ -22,7 +22,7 @@
 
 ## Overview
 
-The WinOpsKit Windows Hardening System provides automated, profile-based security hardening for Windows Client and Server systems. It supports three hardening levels (Basis, Recommended, Strict) and includes compliance verification, remediation, reporting, and automation capabilities.
+The WinHarden Windows Hardening System provides automated, profile-based security hardening for Windows Client and Server systems. It supports three hardening levels (Basis, Recommended, Strict) and includes compliance verification, remediation, reporting, and automation capabilities.
 
 ### Key Features
 
@@ -51,8 +51,8 @@ The WinOpsKit Windows Hardening System provides automated, profile-based securit
 
 - **Administrator Rights:** Required to modify system settings
 - **PowerShell 5.1+:** Windows PowerShell (built-in) or PowerShell 7.x
-- **Core Module:** WinOpsKit Core module imported
-- **System Module:** WinOpsKit System module with Hardening functions
+- **Core Module:** WinHarden Core module imported
+- **System Module:** WinHarden System module with Hardening functions
 
 ### Optional Requirements
 
@@ -72,11 +72,11 @@ The WinOpsKit Windows Hardening System provides automated, profile-based securit
 
 ## Installation
 
-### Step 1: Locate WinOpsKit
+### Step 1: Locate WinHarden
 
 ```powershell
-# Find WinOpsKit installation
-$winOpsKitPath = "C:\Path\To\WinOpsKit"
+# Find WinHarden installation
+$winOpsKitPath = "C:\Path\To\WinHarden"
 ```
 
 ### Step 2: Import Modules

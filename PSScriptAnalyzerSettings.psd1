@@ -71,7 +71,7 @@
             CheckForFormatter = $false
         }
 
-        # EXCEPTION: Disable PSUseSingularNouns for Test-WinOpsKitDependencies
+        # EXCEPTION: Disable PSUseSingularNouns for Test-WinHardenDependencies
         # Reason: Plural "Dependencies" is semantically correct because:
         # - Function validates MULTIPLE dependencies (PowerShell version + modules)
         # - Returns MULTIPLE result entries (hash with multiple keys)

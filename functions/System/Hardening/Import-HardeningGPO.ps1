@@ -29,7 +29,7 @@ function Import-HardeningGPO {
 
     .PARAMETER GPOName
     Name for created Group Policy Object.
-    Default: "WinOpsKit-Hardening-{Profile}"
+    Default: "WinHarden-Hardening-{Profile}"
 
     .PARAMETER Domain
     Active Directory domain name (e.g., contoso.com).
@@ -45,7 +45,7 @@ function Import-HardeningGPO {
 
     .PARAMETER Comment
     Description for GPO.
-    Default: "WinOpsKit automated hardening policy"
+    Default: "WinHarden automated hardening policy"
 
     .EXAMPLE
     Import-HardeningGPO -Profile Recommended -TargetOU "OU=Servers,DC=contoso,DC=com"
@@ -78,7 +78,7 @@ function Import-HardeningGPO {
 
         [Parameter(Mandatory = $false)]
         [string]
-        $GPOName = "WinOpsKit-Hardening-$Profile",
+        $GPOName = "WinHarden-Hardening-$Profile",
 
         [Parameter(Mandatory = $false)]
         [string]
@@ -93,7 +93,7 @@ function Import-HardeningGPO {
 
         [Parameter(Mandatory = $false)]
         [string]
-        $Comment = "WinOpsKit automated hardening policy"
+        $Comment = "WinHarden automated hardening policy"
     )
 
     $ErrorActionPreference = 'Stop'
@@ -212,7 +212,7 @@ function _ApplyAuditPoliciesToGPO {
 function Get-HardeningGPO {
     <#
     .SYNOPSIS
-    Lists all WinOpsKit hardening GPOs in the domain.
+    Lists all WinHarden hardening GPOs in the domain.
     #>
 
     [CmdletBinding()]
@@ -235,7 +235,7 @@ function Get-HardeningGPO {
         }
 
         $gpos = Get-GPO -All -Domain $Domain -ErrorAction SilentlyContinue | `
-            Where-Object { $_.DisplayName -like "WinOpsKit-Hardening*" }
+            Where-Object { $_.DisplayName -like "WinHarden-Hardening*" }
 
         if ($Profile) {
             $gpos = $gpos | Where-Object { $_.DisplayName -like "*$Profile*" }

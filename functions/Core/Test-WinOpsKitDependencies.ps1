@@ -1,7 +1,7 @@
-function Test-WinOpsKitDependencies {
+function Test-WinHardenDependencies {
     <#
     .SYNOPSIS
-    Validates that WinOpsKit dependencies are available and compatible.
+    Validates that WinHarden dependencies are available and compatible.
 
     .DESCRIPTION
     Checks for required PowerShell version, optional modules, and system prerequisites.
@@ -22,10 +22,10 @@ function Test-WinOpsKitDependencies {
     Plural usage aligns with PowerShell standards (Get-ChildItem, Get-Module).
 
     .EXAMPLE
-    Test-WinOpsKitDependencies
+    Test-WinHardenDependencies
 
     .EXAMPLE
-    Test-WinOpsKitDependencies -Module GroupPolicy -ExitOnError
+    Test-WinHardenDependencies -Module GroupPolicy -ExitOnError
     #>
 
     [CmdletBinding()]
