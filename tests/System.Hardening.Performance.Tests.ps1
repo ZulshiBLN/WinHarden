@@ -11,11 +11,6 @@ PERFORMANCE: May take several minutes to complete
 MEASUREMENT: Times operations and reports metrics
 #>
 
-param(
-    [switch]$Detailed,
-    [switch]$SkipLongRunningTests
-)
-
 BeforeAll {
     Import-Module Pester
     $PSDefaultParameterValues['*:ErrorAction'] = 'Stop'
@@ -30,28 +25,28 @@ Describe "Performance - Profile Loading" {
     Context "Profile Load Times" {
         It "loads Basis profile in < 1 second" {
             $sw = [System.Diagnostics.Stopwatch]::StartNew()
-            $profile = Get-HardeningProfile -ProfileName Basis -TargetSystem Client
+            Get-HardeningProfile -ProfileName Basis -TargetSystem Client | Out-Null
             $sw.Stop()
 
-            Write-Host "Basis profile load time: $($sw.ElapsedMilliseconds)ms"
+            Write-Verbose "Basis profile load time: $($sw.ElapsedMilliseconds)ms"
             $sw.ElapsedMilliseconds | Should -BeLessThan 1000
         }
 
         It "loads Recommended profile in < 1 second" {
             $sw = [System.Diagnostics.Stopwatch]::StartNew()
-            $profile = Get-HardeningProfile -ProfileName Recommended -TargetSystem Server
+            Get-HardeningProfile -ProfileName Recommended -TargetSystem Server | Out-Null
             $sw.Stop()
 
-            Write-Host "Recommended profile load time: $($sw.ElapsedMilliseconds)ms"
+            Write-Verbose "Recommended profile load time: $($sw.ElapsedMilliseconds)ms"
             $sw.ElapsedMilliseconds | Should -BeLessThan 1000
         }
 
         It "loads Strict profile in < 1 second" {
             $sw = [System.Diagnostics.Stopwatch]::StartNew()
-            $profile = Get-HardeningProfile -ProfileName Strict -TargetSystem Server
+            Get-HardeningProfile -ProfileName Strict -TargetSystem Server | Out-Null
             $sw.Stop()
 
-            Write-Host "Strict profile load time: $($sw.ElapsedMilliseconds)ms"
+            Write-Verbose "Strict profile load time: $($sw.ElapsedMilliseconds)ms"
             $sw.ElapsedMilliseconds | Should -BeLessThan 1000
         }
     }
@@ -61,23 +56,23 @@ Describe "Performance - Session Creation" {
     Context "Session Creation Times" {
         It "creates session in < 100ms" {
             $sw = [System.Diagnostics.Stopwatch]::StartNew()
-            $session = New-HardeningSession -Profile Basis `
-                -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck
+            New-HardeningSession -Profile Basis `
+                -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck | Out-Null
             $sw.Stop()
 
-            Write-Host "Session creation time: $($sw.ElapsedMilliseconds)ms"
+            Write-Verbose "Session creation time: $($sw.ElapsedMilliseconds)ms"
             $sw.ElapsedMilliseconds | Should -BeLessThan 100
         }
 
         It "creates 10 sessions in < 1 second" {
             $sw = [System.Diagnostics.Stopwatch]::StartNew()
             for ($i = 1; $i -le 10; $i++) {
-                $session = New-HardeningSession -Profile Basis `
-                    -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck
+                New-HardeningSession -Profile Basis `
+                    -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck | Out-Null
             }
             $sw.Stop()
 
-            Write-Host "10 sessions creation time: $($sw.ElapsedMilliseconds)ms"
+            Write-Verbose "10 sessions creation time: $($sw.ElapsedMilliseconds)ms"
             $sw.ElapsedMilliseconds | Should -BeLessThan 1000
         }
     }
@@ -93,8 +88,8 @@ Describe "Performance - Hardening Application" {
             $result = Invoke-SecurityHardening -Session $session -ErrorAction Continue
             $sw.Stop()
 
-            Write-Host "Basis hardening time: $($sw.ElapsedMilliseconds)ms"
-            Write-Host "  Rules applied: $($result.SuccessfulRules.Count)"
+            Write-Verbose "Basis hardening time: $($sw.ElapsedMilliseconds)ms"
+            Write-Verbose "  Rules applied: $($result.SuccessfulRules.Count)"
             $sw.ElapsedMilliseconds | Should -BeLessThan 10000
         }
 
@@ -106,8 +101,8 @@ Describe "Performance - Hardening Application" {
             $result = Invoke-SecurityHardening -Session $session -ErrorAction Continue
             $sw.Stop()
 
-            Write-Host "Recommended hardening time: $($sw.ElapsedMilliseconds)ms"
-            Write-Host "  Rules applied: $($result.SuccessfulRules.Count)"
+            Write-Verbose "Recommended hardening time: $($sw.ElapsedMilliseconds)ms"
+            Write-Verbose "  Rules applied: $($result.SuccessfulRules.Count)"
             $sw.ElapsedMilliseconds | Should -BeLessThan 15000
         }
 
@@ -119,8 +114,8 @@ Describe "Performance - Hardening Application" {
             $result = Invoke-SecurityHardening -Session $session -ErrorAction Continue
             $sw.Stop()
 
-            Write-Host "Strict hardening time: $($sw.ElapsedMilliseconds)ms"
-            Write-Host "  Rules applied: $($result.SuccessfulRules.Count)"
+            Write-Verbose "Strict hardening time: $($sw.ElapsedMilliseconds)ms"
+            Write-Verbose "  Rules applied: $($result.SuccessfulRules.Count)"
             $sw.ElapsedMilliseconds | Should -BeLessThan 20000
         }
     }
@@ -145,9 +140,9 @@ Describe "Performance - Hardening Application" {
                 -ErrorAction Continue | Out-Null
             $swPar.Stop()
 
-            Write-Host "Sequential time: $($swSeq.ElapsedMilliseconds)ms"
-            Write-Host "Parallel time: $($swPar.ElapsedMilliseconds)ms"
-            Write-Host "Improvement: $([math]::Round(($swSeq.ElapsedMilliseconds - $swPar.ElapsedMilliseconds) / $swSeq.ElapsedMilliseconds * 100))%"
+            Write-Verbose "Sequential time: $($swSeq.ElapsedMilliseconds)ms"
+            Write-Verbose "Parallel time: $($swPar.ElapsedMilliseconds)ms"
+            Write-Verbose "Improvement: $([math]::Round(($swSeq.ElapsedMilliseconds - $swPar.ElapsedMilliseconds) / $swSeq.ElapsedMilliseconds * 100))%"
 
             # Parallel should be same or faster
             $swPar.ElapsedMilliseconds | Should -BeLessOrEqual ($swSeq.ElapsedMilliseconds + 500)
@@ -162,11 +157,11 @@ Describe "Performance - Compliance Verification" {
                 -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck
 
             $sw = [System.Diagnostics.Stopwatch]::StartNew()
-            $compliance = Test-HardeningCompliance -Session $session `
-                -ErrorAction Continue
+            Test-HardeningCompliance -Session $session `
+                -ErrorAction Continue | Out-Null
             $sw.Stop()
 
-            Write-Host "Basis compliance check time: $($sw.ElapsedMilliseconds)ms"
+            Write-Verbose "Basis compliance check time: $($sw.ElapsedMilliseconds)ms"
             $sw.ElapsedMilliseconds | Should -BeLessThan 10000
         }
 
@@ -175,11 +170,11 @@ Describe "Performance - Compliance Verification" {
                 -TargetSystem Server -OSVersion 2022 -SkipPrerequisiteCheck
 
             $sw = [System.Diagnostics.Stopwatch]::StartNew()
-            $compliance = Test-HardeningCompliance -Session $session `
-                -ErrorAction Continue
+            Test-HardeningCompliance -Session $session `
+                -ErrorAction Continue | Out-Null
             $sw.Stop()
 
-            Write-Host "Recommended compliance check time: $($sw.ElapsedMilliseconds)ms"
+            Write-Verbose "Recommended compliance check time: $($sw.ElapsedMilliseconds)ms"
             $sw.ElapsedMilliseconds | Should -BeLessThan 20000
         }
 
@@ -188,11 +183,11 @@ Describe "Performance - Compliance Verification" {
                 -TargetSystem Server -OSVersion 2025 -SkipPrerequisiteCheck
 
             $sw = [System.Diagnostics.Stopwatch]::StartNew()
-            $compliance = Test-HardeningCompliance -Session $session `
-                -ErrorAction Continue
+            Test-HardeningCompliance -Session $session `
+                -ErrorAction Continue | Out-Null
             $sw.Stop()
 
-            Write-Host "Strict compliance check time: $($sw.ElapsedMilliseconds)ms"
+            Write-Verbose "Strict compliance check time: $($sw.ElapsedMilliseconds)ms"
             $sw.ElapsedMilliseconds | Should -BeLessThan 30000
         }
     }
@@ -214,41 +209,41 @@ Describe "Performance - Report Generation" {
 
         It "exports JSON report in < 500ms" {
             $sw = [System.Diagnostics.Stopwatch]::StartNew()
-            $output = Export-HardeningReport -ComplianceReport $testReport `
-                -Format JSON -ErrorAction Stop
+            Export-HardeningReport -ComplianceReport $testReport `
+                -Format JSON -ErrorAction Stop | Out-Null
             $sw.Stop()
 
-            Write-Host "JSON export time: $($sw.ElapsedMilliseconds)ms"
+            Write-Verbose "JSON export time: $($sw.ElapsedMilliseconds)ms"
             $sw.ElapsedMilliseconds | Should -BeLessThan 500
         }
 
         It "exports CSV report in < 500ms" {
             $sw = [System.Diagnostics.Stopwatch]::StartNew()
-            $output = Export-HardeningReport -ComplianceReport $testReport `
-                -Format CSV -ErrorAction Stop
+            Export-HardeningReport -ComplianceReport $testReport `
+                -Format CSV -ErrorAction Stop | Out-Null
             $sw.Stop()
 
-            Write-Host "CSV export time: $($sw.ElapsedMilliseconds)ms"
+            Write-Verbose "CSV export time: $($sw.ElapsedMilliseconds)ms"
             $sw.ElapsedMilliseconds | Should -BeLessThan 500
         }
 
         It "exports HTML report in < 500ms" {
             $sw = [System.Diagnostics.Stopwatch]::StartNew()
-            $output = Export-HardeningReport -ComplianceReport $testReport `
-                -Format HTML -ErrorAction Stop
+            Export-HardeningReport -ComplianceReport $testReport `
+                -Format HTML -ErrorAction Stop | Out-Null
             $sw.Stop()
 
-            Write-Host "HTML export time: $($sw.ElapsedMilliseconds)ms"
+            Write-Verbose "HTML export time: $($sw.ElapsedMilliseconds)ms"
             $sw.ElapsedMilliseconds | Should -BeLessThan 500
         }
 
         It "exports Text report in < 500ms" {
             $sw = [System.Diagnostics.Stopwatch]::StartNew()
-            $output = Export-HardeningReport -ComplianceReport $testReport `
-                -Format Text -ErrorAction Stop
+            Export-HardeningReport -ComplianceReport $testReport `
+                -Format Text -ErrorAction Stop | Out-Null
             $sw.Stop()
 
-            Write-Host "Text export time: $($sw.ElapsedMilliseconds)ms"
+            Write-Verbose "Text export time: $($sw.ElapsedMilliseconds)ms"
             $sw.ElapsedMilliseconds | Should -BeLessThan 500
         }
     }
@@ -267,7 +262,7 @@ Describe "Scalability - Multi-Session Operations" {
             }
             $sw.Stop()
 
-            Write-Host "50 sessions creation time: $($sw.ElapsedMilliseconds)ms"
+            Write-Verbose "50 sessions creation time: $($sw.ElapsedMilliseconds)ms"
             $sessions.Count | Should -Be 50
             $sw.ElapsedMilliseconds | Should -BeLessThan 5000
         }
@@ -283,7 +278,7 @@ Describe "Scalability - Multi-Session Operations" {
             }
             $sw.Stop()
 
-            Write-Host "100 sessions creation time: $($sw.ElapsedMilliseconds)ms"
+            Write-Verbose "100 sessions creation time: $($sw.ElapsedMilliseconds)ms"
             $sessions.Count | Should -Be 100
             $sw.ElapsedMilliseconds | Should -BeLessThan 10000
         }
@@ -297,17 +292,17 @@ Describe "Memory - Resource Usage" {
                 -TargetSystem Server -OSVersion 2022 -SkipPrerequisiteCheck
 
             $size = [System.Runtime.InteropServices.Marshal]::SizeOf($session)
-            Write-Host "Session object size: $size bytes"
+            Write-Verbose "Session object size: $size bytes"
 
             # Should be reasonably small
             $size | Should -BeLessThan 100000  # 100 KB
         }
 
         It "profile data is < 500 KB" {
-            $profile = Get-HardeningProfile -ProfileName Strict -TargetSystem Server
+            $hardeningProfile = Get-HardeningProfile -ProfileName Strict -TargetSystem Server
 
-            $size = $profile | ConvertTo-Json | Measure-Object -Character
-            Write-Host "Profile JSON size: $($size.Characters) bytes"
+            $size = $hardeningProfile | ConvertTo-Json | Measure-Object -Character
+            Write-Verbose "Profile JSON size: $($size.Characters) bytes"
 
             # Profiles should be reasonably sized
             $size.Characters | Should -BeLessThan 500000  # 500 KB
@@ -317,7 +312,7 @@ Describe "Memory - Resource Usage" {
 
 Describe "Performance - Batch Operations" {
     Context "Batch Processing" {
-        It "processes 10 sequential hardening operations in reasonable time" -Skip:$SkipLongRunningTests {
+        It "processes 10 sequential hardening operations in reasonable time" {
             $sw = [System.Diagnostics.Stopwatch]::StartNew()
 
             for ($i = 1; $i -le 10; $i++) {
@@ -332,8 +327,8 @@ Describe "Performance - Batch Operations" {
             $sw.Stop()
 
             $avgTime = $sw.ElapsedMilliseconds / 10
-            Write-Host "Average time per hardening operation: $avgTime ms"
-            Write-Host "Total time for 10 operations: $($sw.ElapsedMilliseconds)ms"
+            Write-Verbose "Average time per hardening operation: $avgTime ms"
+            Write-Verbose "Total time for 10 operations: $($sw.ElapsedMilliseconds)ms"
 
             # Average should be < 15 seconds per operation
             $sw.ElapsedMilliseconds | Should -BeLessThan 150000
@@ -355,9 +350,9 @@ Describe "Performance - Optimization Baseline" {
                 BatchCapacity = "10 systems in < 150s"
             }
 
-            Write-Host "`nPERFORMANCE BASELINES:"
+            Write-Verbose "PERFORMANCE BASELINES:"
             $metrics.GetEnumerator() | ForEach-Object {
-                Write-Host "  $($_.Key): $($_.Value)"
+                Write-Verbose "  $($_.Key): $($_.Value)"
             }
 
             # Just document - always pass
