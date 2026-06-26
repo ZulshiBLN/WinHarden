@@ -1,0 +1,65 @@
+{
+  "CompliancePercentage": 85,
+  "Status": "Mostly Compliant",
+  "TotalRules": 20,
+  "CompliantRules": 17,
+  "NonCompliantRules": 3,
+  "TargetSystem": "TestClient",
+  "Profile": "Basis",
+  "SessionId": "SESSION-001",
+  "VerificationTime": "2026-06-26T14:30:00Z",
+  "CategoryBreakdown": {
+    "Account": {
+      "Total": 5,
+      "Compliant": 5,
+      "NonCompliant": 0,
+      "Percentage": 100
+    },
+    "Services": {
+      "Total": 8,
+      "Compliant": 7,
+      "NonCompliant": 1,
+      "Percentage": 87
+    },
+    "Firewall": {
+      "Total": 7,
+      "Compliant": 5,
+      "NonCompliant": 2,
+      "Percentage": 71
+    }
+  },
+  "RuleResults": [
+    {
+      "RuleName": "Account-Lockout",
+      "Category": "Account",
+      "Severity": "High",
+      "Compliant": true,
+      "ExpectedValue": "5 attempts",
+      "ActualValue": "5 attempts"
+    },
+    {
+      "RuleName": "Password-Length",
+      "Category": "Account",
+      "Severity": "Critical",
+      "Compliant": true,
+      "ExpectedValue": "14 chars",
+      "ActualValue": "14 chars"
+    },
+    {
+      "RuleName": "Firewall-Outbound",
+      "Category": "Firewall",
+      "Severity": "High",
+      "Compliant": false,
+      "ExpectedValue": "Blocked",
+      "ActualValue": "Allowed"
+    },
+    {
+      "RuleName": "RemoteDesktop",
+      "Category": "Services",
+      "Severity": "Critical",
+      "Compliant": false,
+      "ExpectedValue": "Disabled",
+      "ActualValue": "Enabled"
+    }
+  ]
+}

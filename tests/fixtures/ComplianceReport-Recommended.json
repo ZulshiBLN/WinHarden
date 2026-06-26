@@ -1,0 +1,49 @@
+{
+  "CompliancePercentage": 95,
+  "Status": "Highly Compliant",
+  "TotalRules": 30,
+  "CompliantRules": 28,
+  "NonCompliantRules": 2,
+  "TargetSystem": "TestServer",
+  "Profile": "Recommended",
+  "SessionId": "SESSION-002",
+  "VerificationTime": "2026-06-26T15:00:00Z",
+  "CategoryBreakdown": {
+    "Account": {
+      "Total": 8,
+      "Compliant": 8,
+      "NonCompliant": 0,
+      "Percentage": 100
+    },
+    "Services": {
+      "Total": 12,
+      "Compliant": 11,
+      "NonCompliant": 1,
+      "Percentage": 92
+    },
+    "Firewall": {
+      "Total": 10,
+      "Compliant": 9,
+      "NonCompliant": 1,
+      "Percentage": 90
+    }
+  },
+  "RuleResults": [
+    {
+      "RuleName": "Account-Lockout",
+      "Category": "Account",
+      "Severity": "High",
+      "Compliant": true,
+      "ExpectedValue": "5 attempts",
+      "ActualValue": "5 attempts"
+    },
+    {
+      "RuleName": "Password-Length",
+      "Category": "Account",
+      "Severity": "Critical",
+      "Compliant": true,
+      "ExpectedValue": "14 chars",
+      "ActualValue": "14 chars"
+    }
+  ]
+}
