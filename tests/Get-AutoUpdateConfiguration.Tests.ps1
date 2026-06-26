@@ -8,153 +8,209 @@ AfterAll {
 }
 
 Describe "Get-AutoUpdateConfiguration" {
-    Context "Parameter Validation" {
-        It "works without parameters for local computer" {
-            { Get-AutoUpdateConfiguration -ErrorAction SilentlyContinue } | Should -Not -Throw
+    Context "Successful Registry Read" {
+        It "returns a PSCustomObject with required properties" {
+            InModuleScope System {
+                Mock Get-ItemProperty -ParameterFilter { $Path -eq "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" } `
+                    -MockWith { return @{ AUOptions = 4 } }
+                Mock Write-Log -MockWith { }
+
+                $config = Get-AutoUpdateConfiguration
+                $config | Should -Not -BeNullOrEmpty
+                $config -is [PSCustomObject] | Should -Be $true
+            }
         }
 
-        It "accepts ComputerName parameter" {
-            { Get-AutoUpdateConfiguration -ComputerName 'localhost' -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "includes PolicyValue, Description, and IsEnabled properties" {
+            InModuleScope System {
+                Mock Get-ItemProperty -MockWith { return @{ AUOptions = 4 } }
+                Mock Write-Log -MockWith { }
+
+                $config = Get-AutoUpdateConfiguration
+                $config.PSObject.Properties.Name | Should -Contain 'PolicyValue'
+                $config.PSObject.Properties.Name | Should -Contain 'Description'
+                $config.PSObject.Properties.Name | Should -Contain 'IsEnabled'
+            }
         }
 
-        It "accepts multiple computer names" {
-            { Get-AutoUpdateConfiguration -ComputerName @('localhost', '127.0.0.1') -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "sets PolicyValue to registry AUOptions value" {
+            InModuleScope System {
+                Mock Get-ItemProperty -MockWith { return @{ AUOptions = 4 } }
+                Mock Write-Log -MockWith { }
+
+                $config = Get-AutoUpdateConfiguration
+                $config.PolicyValue | Should -Be 4
+            }
+        }
+
+        It "calls Write-Log with Info level on successful read" {
+            InModuleScope System {
+                Mock Get-ItemProperty -MockWith { return @{ AUOptions = 4 } }
+                Mock Write-Log -MockWith { }
+
+                Get-AutoUpdateConfiguration
+                Should -Invoke Write-Log -ParameterFilter { $Level -eq 'Info' } -Times 1
+            }
         }
     }
 
-    Context "Auto Update Configuration Settings" {
-        It "returns configuration object" {
-            $config = Get-AutoUpdateConfiguration -ErrorAction SilentlyContinue
-            if ($config) {
+    Context "Update Type Mapping" {
+        It "maps policy value 1 to Disabled description" {
+            InModuleScope System {
+                Mock Get-ItemProperty -MockWith { return @{ AUOptions = 1 } }
+                Mock Write-Log -MockWith { }
+
+                $config = Get-AutoUpdateConfiguration
+                $config.Description | Should -Be "Keep my computer current is disabled"
+            }
+        }
+
+        It "maps policy value 2 to Notify for download and auto install" {
+            InModuleScope System {
+                Mock Get-ItemProperty -MockWith { return @{ AUOptions = 2 } }
+                Mock Write-Log -MockWith { }
+
+                $config = Get-AutoUpdateConfiguration
+                $config.Description | Should -Be "Notify for download and auto install"
+            }
+        }
+
+        It "maps policy value 3 to Auto download and notify for install" {
+            InModuleScope System {
+                Mock Get-ItemProperty -MockWith { return @{ AUOptions = 3 } }
+                Mock Write-Log -MockWith { }
+
+                $config = Get-AutoUpdateConfiguration
+                $config.Description | Should -Be "Auto download and notify for install"
+            }
+        }
+
+        It "maps policy value 4 to Auto download and schedule install" {
+            InModuleScope System {
+                Mock Get-ItemProperty -MockWith { return @{ AUOptions = 4 } }
+                Mock Write-Log -MockWith { }
+
+                $config = Get-AutoUpdateConfiguration
+                $config.Description | Should -Be "Auto download and schedule install"
+            }
+        }
+
+        It "maps policy value 5 to Automatic Updates required, auto install at 3:00 AM" {
+            InModuleScope System {
+                Mock Get-ItemProperty -MockWith { return @{ AUOptions = 5 } }
+                Mock Write-Log -MockWith { }
+
+                $config = Get-AutoUpdateConfiguration
+                $config.Description | Should -Be "Automatic Updates required, auto install at 3:00 AM"
+            }
+        }
+    }
+
+    Context "IsEnabled Flag Logic" {
+        It "sets IsEnabled to false when AUOptions is 1 (Disabled)" {
+            InModuleScope System {
+                Mock Get-ItemProperty -MockWith { return @{ AUOptions = 1 } }
+                Mock Write-Log -MockWith { }
+
+                $config = Get-AutoUpdateConfiguration
+                $config.IsEnabled | Should -Be $false
+            }
+        }
+
+        It "sets IsEnabled to true when AUOptions is not 1" {
+            InModuleScope System {
+                Mock Get-ItemProperty -MockWith { return @{ AUOptions = 2 } }
+                Mock Write-Log -MockWith { }
+
+                $config = Get-AutoUpdateConfiguration
+                $config.IsEnabled | Should -Be $true
+            }
+        }
+    }
+
+    Context "Default Windows Settings (No Group Policy)" {
+        It "returns object when registry key is not configured" {
+            InModuleScope System {
+                Mock Get-ItemProperty -ParameterFilter { $Path -eq "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" } `
+                    -MockWith { return $null }
+                Mock Write-Log -MockWith { }
+
+                $config = Get-AutoUpdateConfiguration
                 $config | Should -Not -BeNullOrEmpty
             }
         }
 
-        It "includes AutoUpdateEnabled property" {
-            { Get-AutoUpdateConfiguration -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "sets PolicyValue to null when no Group Policy override exists" {
+            InModuleScope System {
+                Mock Get-ItemProperty -MockWith { return $null }
+                Mock Write-Log -MockWith { }
+
+                $config = Get-AutoUpdateConfiguration
+                $config.PolicyValue | Should -Be $null
+            }
         }
 
-        It "includes UpdateType property" {
-            { Get-AutoUpdateConfiguration -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "returns Default Windows settings description" {
+            InModuleScope System {
+                Mock Get-ItemProperty -MockWith { return $null }
+                Mock Write-Log -MockWith { }
+
+                $config = Get-AutoUpdateConfiguration
+                $config.Description | Should -Be "Default Windows settings (no Group Policy override)"
+            }
         }
 
-        It "includes ScheduledInstallationDay property" {
-            { Get-AutoUpdateConfiguration -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
+        It "sets IsEnabled to true for default settings" {
+            InModuleScope System {
+                Mock Get-ItemProperty -MockWith { return $null }
+                Mock Write-Log -MockWith { }
 
-        It "includes ScheduledInstallationTime property" {
-            { Get-AutoUpdateConfiguration -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-    }
-
-    Context "Update Type Values" {
-        It "identifies NotConfigured update type" {
-            { Get-AutoUpdateConfiguration -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "identifies Disabled update type" {
-            { Get-AutoUpdateConfiguration -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "identifies NotifyForDownload update type" {
-            { Get-AutoUpdateConfiguration -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "identifies AutoDownloadAndNotifyForInstall update type" {
-            { Get-AutoUpdateConfiguration -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "identifies AutoDownloadAndInstall update type" {
-            { Get-AutoUpdateConfiguration -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "identifies ScheduledInstallation update type" {
-            { Get-AutoUpdateConfiguration -ErrorAction SilentlyContinue } | Should -Not -Throw
+                $config = Get-AutoUpdateConfiguration
+                $config.IsEnabled | Should -Be $true
+            }
         }
     }
 
-    Context "Scheduled Installation Details" {
-        It "includes installation day when scheduled" {
-            { Get-AutoUpdateConfiguration -ErrorAction SilentlyContinue } | Should -Not -Throw
+    Context "Error Handling" {
+        It "throws exception when registry access fails" {
+            InModuleScope System {
+                Mock Get-ItemProperty -MockWith { throw "Access denied" }
+                Mock Write-Log -MockWith { }
+
+                { Get-AutoUpdateConfiguration } | Should -Throw
+            }
         }
 
-        It "includes installation time when scheduled" {
-            { Get-AutoUpdateConfiguration -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
+        It "calls Write-Log with Error level when registry read fails" {
+            InModuleScope System {
+                Mock Get-ItemProperty -MockWith { throw "Access denied" }
+                Mock Write-Log -MockWith { }
 
-        It "identifies daily installation" {
-            { Get-AutoUpdateConfiguration -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "identifies weekly installation" {
-            { Get-AutoUpdateConfiguration -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "identifies specific day installation" {
-            { Get-AutoUpdateConfiguration -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-    }
-
-    Context "Additional Configuration Options" {
-        It "includes RebootBehavior property" {
-            { Get-AutoUpdateConfiguration -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "includes AllowUserToPostponeRestart property" {
-            { Get-AutoUpdateConfiguration -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "includes RequireUserInput property" {
-            { Get-AutoUpdateConfiguration -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "includes NoAutoRestartForScheduledInstalls property" {
-            { Get-AutoUpdateConfiguration -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-    }
-
-    Context "Update Policies" {
-        It "includes optional updates status" {
-            { Get-AutoUpdateConfiguration -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "includes driver updates status" {
-            { Get-AutoUpdateConfiguration -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "includes Windows Update for other products status" {
-            { Get-AutoUpdateConfiguration -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "includes Preview updates status" {
-            { Get-AutoUpdateConfiguration -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-    }
-
-    Context "Remote Computer Support" {
-        It "retrieves configuration from remote computer" {
-            { Get-AutoUpdateConfiguration -ComputerName 'localhost' -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "handles unreachable remote computer" {
-            { Get-AutoUpdateConfiguration -ComputerName 'nonexistent.invalid' -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "accepts credential for remote connection" {
-            $credential = New-Object System.Management.Automation.PSCredential('user', (ConvertTo-SecureString 'pass' -AsPlainText -Force))
-            { Get-AutoUpdateConfiguration -ComputerName 'localhost' -Credential $credential -ErrorAction SilentlyContinue } | Should -Not -Throw
+                { Get-AutoUpdateConfiguration -ErrorAction SilentlyContinue } | Should -Throw
+                Should -Invoke Write-Log -ParameterFilter { $Level -eq 'Error' } -Scope It
+            }
         }
     }
 
     Context "Documentation" {
-        It "has complete help documentation" {
+        It "has complete help documentation with synopsis" {
             $help = Get-Help Get-AutoUpdateConfiguration
             $help.Synopsis | Should -Not -BeNullOrEmpty
         }
 
-        It "includes parameter descriptions" {
+        It "includes description in help" {
             $help = Get-Help Get-AutoUpdateConfiguration
-            $help.Parameters.Parameter.Name | Should -Contain 'ComputerName'
+            $help.Description.Text | Should -Not -BeNullOrEmpty
+        }
+
+        It "includes examples in help" {
+            $help = Get-Help Get-AutoUpdateConfiguration
+            $help.Examples | Should -Not -BeNullOrEmpty
+        }
+
+        It "includes notes section" {
+            $help = Get-Help Get-AutoUpdateConfiguration
+            $help.AlertSet | Should -Not -BeNullOrEmpty
         }
     }
 }

@@ -53,6 +53,7 @@ $driftFunctions = @(
     'Get-AuditPoliciesDrift',
     'Get-UpdateStatusDrift',
     'Get-ServiceSecurityDrift',
+    'Get-AutoUpdateConfiguration',
     'New-SecurityDriftReport'
 )
 
@@ -75,7 +76,12 @@ foreach ($funcName in $allFunctions) {
     }
 
     if (Test-Path -Path $funcFile -PathType Leaf) {
-        . $funcFile
+        try {
+            . $funcFile
+        }
+        catch {
+            Write-Warning "Failed to load System function $($funcName): $($_.Exception.Message)"
+        }
     }
     else {
         Write-Warning "System function file not found: $funcName.ps1"
