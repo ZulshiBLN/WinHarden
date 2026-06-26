@@ -30,8 +30,8 @@ if (Test-Path -Path $coreModulePath) {
 # Determine functions directory relative to this module
 $functionsPath = Join-Path -Path $PSScriptRoot -ChildPath '..\functions\System'
 
-# Public functions to load
-$publicFunctions = @(
+# Public functions to load (Hardening)
+$hardeningFunctions = @(
     'New-HardeningSession',
     'Get-HardeningProfile',
     'Invoke-SecurityHardening',
@@ -44,18 +44,34 @@ $publicFunctions = @(
     'Get-HardeningTrendData'
 )
 
-# Private helper functions to load
+# Public functions to load (Drift Detection)
+$driftFunctions = @(
+    'Get-AccountPoliciesDrift',
+    'Get-NetworkSecurityDrift',
+    'Get-RDPSecurityDrift',
+    'Get-FirewallStatusDrift',
+    'Get-AuditPoliciesDrift',
+    'Get-UpdateStatusDrift',
+    'Get-ServiceSecurityDrift',
+    'New-SecurityDriftReport'
+)
+
+$publicFunctions = $hardeningFunctions + $driftFunctions
 $privateFunctions = @()
 
 # Load all functions
 $allFunctions = $publicFunctions + $privateFunctions
 
 foreach ($funcName in $allFunctions) {
-    # Check in root directory and Hardening subdirectory
+    # Check in root directory, Hardening subdirectory, and Drift subdirectory
     $funcFile = Join-Path -Path $functionsPath -ChildPath "$funcName.ps1"
 
     if (-not (Test-Path -Path $funcFile -PathType Leaf)) {
         $funcFile = Join-Path -Path $functionsPath -ChildPath "Hardening\$funcName.ps1"
+    }
+
+    if (-not (Test-Path -Path $funcFile -PathType Leaf)) {
+        $funcFile = Join-Path -Path $functionsPath -ChildPath "Drift\$funcName.ps1"
     }
 
     if (Test-Path -Path $funcFile -PathType Leaf) {
