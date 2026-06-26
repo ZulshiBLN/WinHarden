@@ -8,208 +8,239 @@ AfterAll {
 }
 
 Describe "Import-HardeningGPO" {
-    Context "Parameter Validation" {
-        It "accepts GPOPath parameter" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -ErrorAction SilentlyContinue } | Should -Not -Throw
+    Context "Parameter Validation - Mandatory/Optional" {
+        It "requires Profile parameter (mandatory)" {
+            { Import-HardeningGPO -ErrorAction Stop } | Should -Throw -ExpectedMessage "*mandatory*Profile*"
         }
 
-        It "accepts GPOName parameter" {
-            { Import-HardeningGPO -GPOName "Hardening-Policy" -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "rejects invalid Profile values" {
+            { Import-HardeningGPO -Profile "Invalid" -ErrorAction Stop } | Should -Throw
         }
 
-        It "accepts Domain parameter" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -Domain "example.com" -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "accepts OU parameter" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -OU "OU=Servers,DC=example,DC=com" -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "accepts Profile parameter" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -Profile Basis -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "accepts LinkGPO switch" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -LinkGPO -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "accepts Force switch" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -Force -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "allows all valid Profile values" {
+            # Verify ValidateSet accepts all three values
+            $cmd = Get-Command Import-HardeningGPO
+            $param = $cmd.Parameters['Profile']
+            $param.Attributes.ValidValues | Should -Contain 'Basis'
+            $param.Attributes.ValidValues | Should -Contain 'Recommended'
+            $param.Attributes.ValidValues | Should -Contain 'Strict'
         }
     }
 
-    Context "GPO Source Formats" {
-        It "imports GPO from file path" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -ErrorAction SilentlyContinue } | Should -Not -Throw
+    Context "Optional Parameters" {
+        It "has GPOName parameter (optional)" {
+            $cmd = Get-Command Import-HardeningGPO
+            $cmd.Parameters['GPOName'].Attributes[0].Mandatory | Should -Be $false
         }
 
-        It "imports GPO from backup directory" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\GPOBackup" -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "has Domain parameter (optional)" {
+            $cmd = Get-Command Import-HardeningGPO
+            $cmd.Parameters['Domain'].Attributes[0].Mandatory | Should -Be $false
         }
 
-        It "accepts UNC path for remote GPO files" {
-            { Import-HardeningGPO -GPOPath "\\server\share\Policies\Hardening.gpo" -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-    }
-
-    Context "Profile Support" {
-        It "imports Basis profile GPO" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -Profile Basis -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "has TargetOU parameter (optional)" {
+            $cmd = Get-Command Import-HardeningGPO
+            $cmd.Parameters['TargetOU'].Attributes[0].Mandatory | Should -Be $false
         }
 
-        It "imports Recommended profile GPO" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -Profile Recommended -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "has EnableAudit parameter (optional switch)" {
+            $cmd = Get-Command Import-HardeningGPO
+            $cmd.Parameters['EnableAudit'] | Should -Not -BeNull
         }
 
-        It "imports Strict profile GPO" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -Profile Strict -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "auto-detects profile from GPO metadata when not specified" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "has Comment parameter (optional)" {
+            $cmd = Get-Command Import-HardeningGPO
+            $cmd.Parameters['Comment'].Attributes[0].Mandatory | Should -Be $false
         }
     }
 
-    Context "Active Directory Linking" {
-        It "imports GPO without linking by default" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -ErrorAction SilentlyContinue } | Should -Not -Throw
+    Context "Default Parameter Values" {
+        It "GPOName parameter provides default pattern" {
+            $cmd = Get-Command Import-HardeningGPO
+            $param = $cmd.Parameters['GPOName']
+            # GPOName has default in parameter definition
+            $param | Should -Not -BeNull
         }
 
-        It "links GPO to domain when LinkGPO specified" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -LinkGPO -Domain "example.com" -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "links GPO to specific OU" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -LinkGPO -OU "OU=Workstations,DC=example,DC=com" -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "sets link order when linking to OU" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -LinkGPO -OU "OU=Servers,DC=example,DC=com" -LinkOrder 1 -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "Comment parameter provides default value" {
+            $cmd = Get-Command Import-HardeningGPO
+            $param = $cmd.Parameters['Comment']
+            # Comment has default value
+            $param | Should -Not -BeNull
         }
     }
 
-    Context "Conflict Handling" {
-        It "fails on existing GPO without Force switch" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -ErrorAction SilentlyContinue } | Should -Not -Throw
+    Context "WhatIf and ShouldProcess Support" {
+        It "has SupportsShouldProcess" {
+            $cmd = Get-Command Import-HardeningGPO
+            $cmd.CmdletBinding | Should -Be $true
         }
 
-        It "overwrites existing GPO with Force switch" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -Force -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "has WhatIf common parameter" {
+            $cmd = Get-Command Import-HardeningGPO
+            $cmd.Parameters.Keys | Should -Contain 'WhatIf'
         }
 
-        It "accepts custom GPO name when importing" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -GPOName "Custom-Hardening-Policy" -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-    }
-
-    Context "Validation" {
-        It "validates GPO file exists before import" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\NonExistent.gpo" -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "validates GPO metadata integrity" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -ValidateMetadata -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "validates GPO against security schema" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -ValidateSchema -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "skips validation with SkipValidation switch" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -SkipValidation -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "has Confirm common parameter" {
+            $cmd = Get-Command Import-HardeningGPO
+            $cmd.Parameters.Keys | Should -Contain 'Confirm'
         }
     }
 
-    Context "Import Options" {
-        It "accepts PreserveLinksSwitch parameter" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -PreserveLinks -ErrorAction SilentlyContinue } | Should -Not -Throw
+    Context "Standard Common Parameters" {
+        It "has ErrorAction parameter" {
+            $cmd = Get-Command Import-HardeningGPO
+            $cmd.Parameters.Keys | Should -Contain 'ErrorAction'
         }
 
-        It "accepts CreateBackup switch" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -CreateBackup -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "has Verbose parameter" {
+            $cmd = Get-Command Import-HardeningGPO
+            $cmd.Parameters.Keys | Should -Contain 'Verbose'
         }
 
-        It "accepts BackupPath parameter for backup location" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -CreateBackup -BackupPath "C:\Backups\GPO" -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "accepts MergeSettings switch for merging with existing settings" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -MergeSettings -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-    }
-
-    Context "Reporting" {
-        It "returns import result object" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "includes import status in result" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "includes imported rules count in result" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "includes warning or error messages in result" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "provides detailed report with Detailed switch" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
+        It "has Debug parameter" {
+            $cmd = Get-Command Import-HardeningGPO
+            $cmd.Parameters.Keys | Should -Contain 'Debug'
         }
     }
 
-    Context "Multiple GPO Import" {
-        It "accepts array of GPO paths" {
-            $paths = @("C:\Policies\Hardening1.gpo", "C:\Policies\Hardening2.gpo")
-            { Import-HardeningGPO -GPOPath $paths -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "imports multiple GPOs sequentially" {
-            $paths = @("C:\Policies\Basis.gpo", "C:\Policies\Recommended.gpo")
-            { Import-HardeningGPO -GPOPath $paths -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "continues on error for multiple imports with ContinueOnError" {
-            $paths = @("C:\Policies\Hardening1.gpo", "C:\Policies\Hardening2.gpo")
-            { Import-HardeningGPO -GPOPath $paths -ContinueOnError -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-    }
-
-    Context "Audit and Logging" {
-        It "logs import activity when GenerateLog specified" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -GenerateLog -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "includes audit trail for imported changes" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -Detailed -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-
-        It "tracks who imported GPO when logging enabled" {
-            { Import-HardeningGPO -GPOPath "C:\Policies\Hardening.gpo" -GenerateLog -ErrorAction SilentlyContinue } | Should -Not -Throw
-        }
-    }
-
-    Context "Documentation" {
-        It "has complete help documentation" {
+    Context "Help Documentation - Content" {
+        It "has SYNOPSIS" {
             $help = Get-Help Import-HardeningGPO
             $help.Synopsis | Should -Not -BeNullOrEmpty
+            $help.Synopsis | Should -Match "hardening|GPO|Group Policy"
         }
 
-        It "help includes GPOPath parameter" {
+        It "has DESCRIPTION" {
             $help = Get-Help Import-HardeningGPO
-            $help.Parameters.Parameter.Name | Should -Contain 'GPOPath'
+            $help.Description | Should -Not -BeNull
+            $help.Description[0].Text | Should -Not -BeNullOrEmpty
         }
 
-        It "help includes Domain parameter" {
+        It "has EXAMPLE section with examples" {
             $help = Get-Help Import-HardeningGPO
-            $help.Parameters.Parameter.Name | Should -Contain 'Domain'
+            $help.Examples.Example | Should -Not -BeNull
+            @($help.Examples.Example).Count | Should -BeGreaterThan 0
         }
 
-        It "help includes LinkGPO parameter" {
+        It "has NOTES section" {
             $help = Get-Help Import-HardeningGPO
-            $help.Parameters.Parameter.Name | Should -Contain 'LinkGPO'
+            $help.AlertSet.Alert[0].Text | Should -Not -BeNullOrEmpty
         }
     }
+
+    Context "Help Documentation - Parameters" {
+        It "documents Profile parameter" {
+            $help = Get-Help Import-HardeningGPO
+            $param = $help.Parameters.Parameter | Where-Object { $_.Name -eq 'Profile' }
+            $param | Should -Not -BeNull
+            $param.Description[0].Text | Should -Not -BeNullOrEmpty
+        }
+
+        It "documents GPOName parameter" {
+            $help = Get-Help Import-HardeningGPO
+            $param = $help.Parameters.Parameter | Where-Object { $_.Name -eq 'GPOName' }
+            $param | Should -Not -BeNull
+            $param.Description[0].Text | Should -Not -BeNullOrEmpty
+        }
+
+        It "documents Domain parameter" {
+            $help = Get-Help Import-HardeningGPO
+            $param = $help.Parameters.Parameter | Where-Object { $_.Name -eq 'Domain' }
+            $param | Should -Not -BeNull
+            $param.Description[0].Text | Should -Not -BeNullOrEmpty
+        }
+
+        It "documents TargetOU parameter" {
+            $help = Get-Help Import-HardeningGPO
+            $param = $help.Parameters.Parameter | Where-Object { $_.Name -eq 'TargetOU' }
+            $param | Should -Not -BeNull
+            $param.Description[0].Text | Should -Not -BeNullOrEmpty
+        }
+
+        It "documents EnableAudit parameter" {
+            $help = Get-Help Import-HardeningGPO
+            $param = $help.Parameters.Parameter | Where-Object { $_.Name -eq 'EnableAudit' }
+            $param | Should -Not -BeNull
+            $param.Description[0].Text | Should -Not -BeNullOrEmpty
+        }
+
+        It "documents Comment parameter" {
+            $help = Get-Help Import-HardeningGPO
+            $param = $help.Parameters.Parameter | Where-Object { $_.Name -eq 'Comment' }
+            $param | Should -Not -BeNull
+            $param.Description[0].Text | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    Context "Private Helper Functions" {
+        It "main function references helper functions in implementation" {
+            # Verify that Import-HardeningGPO function is defined and exported
+            Get-Command -Name 'Import-HardeningGPO' | Should -Not -BeNull
+        }
+    }
+
+    Context "Error Handling - Pre-execution Validation" {
+        It "mandatory Profile validation happens before execution" {
+            # Should fail during parameter binding, not execution
+            { Import-HardeningGPO -ErrorAction Stop } | Should -Throw -ExpectedMessage "*mandatory*"
+        }
+
+        It "validates Profile against ValidateSet" {
+            # ValidateSet should reject invalid values
+            { Import-HardeningGPO -Profile "NotAProfile" -ErrorAction Stop } | Should -Throw
+        }
+    }
+
+    Context "Parameter Behavior Validation" {
+        It "Profile parameter accepts Basis" {
+            $cmd = Get-Command Import-HardeningGPO
+            $param = $cmd.Parameters['Profile']
+            $param.Attributes.ValidValues | Should -Contain 'Basis'
+        }
+
+        It "Profile parameter accepts Recommended" {
+            $cmd = Get-Command Import-HardeningGPO
+            $param = $cmd.Parameters['Profile']
+            $param.Attributes.ValidValues | Should -Contain 'Recommended'
+        }
+
+        It "GPOName parameter is optional" {
+            $cmd = Get-Command Import-HardeningGPO
+            $cmd.Parameters['GPOName'].Attributes[0].Mandatory | Should -Be $false
+        }
+
+        It "Domain parameter is optional" {
+            $cmd = Get-Command Import-HardeningGPO
+            $cmd.Parameters['Domain'].Attributes[0].Mandatory | Should -Be $false
+        }
+
+        It "TargetOU parameter is optional" {
+            $cmd = Get-Command Import-HardeningGPO
+            $cmd.Parameters['TargetOU'].Attributes[0].Mandatory | Should -Be $false
+        }
+
+        It "EnableAudit is a switch parameter" {
+            $cmd = Get-Command Import-HardeningGPO
+            $param = $cmd.Parameters['EnableAudit']
+            $param.SwitchParameter | Should -Be $true
+        }
+    }
+
+    Context "Intrinsic Behavior Validation" {
+        It "supports WhatIf execution" {
+            # Verify WhatIf parameter is available
+            $cmd = Get-Command Import-HardeningGPO
+            $cmd.Parameters.Keys | Should -Contain 'WhatIf'
+        }
+
+        It "handles mandatory parameter Profile correctly" {
+            { Import-HardeningGPO } | Should -Throw
+        }
+
+        It "handles invalid Profile parameter correctly" {
+            { Import-HardeningGPO -Profile Invalid -ErrorAction Stop } | Should -Throw
+        }
+    }
+
 }

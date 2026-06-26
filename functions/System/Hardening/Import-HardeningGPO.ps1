@@ -69,7 +69,7 @@ function Import-HardeningGPO {
     REPLICATION: GPO replicates to all DCs (may take time)
     #>
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
     param(
         [Parameter(Mandatory = $true)]
         [ValidateSet('Basis', 'Recommended', 'Strict')]
@@ -101,54 +101,56 @@ function Import-HardeningGPO {
     try {
         Write-Log -Message "Importing hardening profile to GPO: Profile=$Profile, GPO=$GPOName" -Level Info
 
-        # Validate prerequisites
-        if (-not (Get-Module GroupPolicy -ErrorAction SilentlyContinue)) {
-            if (-not (Import-Module GroupPolicy -PassThru -ErrorAction SilentlyContinue)) {
-                throw "Group Policy module not available. Install GPMC on domain-joined system."
+        if ($PSCmdlet.ShouldProcess($GPOName, "Create and configure hardening GPO")) {
+            # Validate prerequisites
+            if (-not (Get-Module GroupPolicy -ErrorAction SilentlyContinue)) {
+                if (-not (Import-Module GroupPolicy -PassThru -ErrorAction SilentlyContinue)) {
+                    throw "Group Policy module not available. Install GPMC on domain-joined system."
+                }
             }
-        }
 
-        # Determine domain
-        if (-not $Domain) {
-            $Domain = (Get-ADDomain -ErrorAction SilentlyContinue).DNSRoot
+            # Determine domain
             if (-not $Domain) {
-                throw "Not domain-joined. Specify -Domain parameter."
+                $Domain = (Get-ADDomain -ErrorAction SilentlyContinue).DNSRoot
+                if (-not $Domain) {
+                    throw "Not domain-joined. Specify -Domain parameter."
+                }
             }
+
+            # Get hardening profile data
+            $profilePath = Join-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -ChildPath "Hardening.Profiles\$Profile.psd1"
+            $profileData = Import-PowerShellDataFile -Path $profilePath
+
+            if (-not $profileData) {
+                throw "Failed to load hardening profile: $profilePath"
+            }
+
+            # Create GPO
+            Write-Verbose "Creating Group Policy Object: $GPOName"
+            $gpo = New-GPO -Name $GPOName -Comment $Comment -Domain $Domain
+
+            if (-not $gpo) {
+                throw "Failed to create GPO"
+            }
+
+            # Configure Registry policies
+            _ApplyRegistryPoliciesToGPO -GPO $gpo -Rules $profileData.Rules -Domain $Domain
+
+            # Configure Audit policies
+            if ($EnableAudit) {
+                _ApplyAuditPoliciesToGPO -GPO $gpo -Rules $profileData.Rules -Domain $Domain
+            }
+
+            # Link GPO to OU if specified
+            if ($TargetOU) {
+                Write-Verbose "Linking GPO to OU: $TargetOU"
+                New-GPLink -Name $GPOName -Target $TargetOU -Domain $Domain -LinkEnabled Yes | Out-Null
+            }
+
+            Write-Log -Message "Hardening GPO created and configured: $GPOName" -Level Info
+
+            $gpo
         }
-
-        # Get hardening profile data
-        $profilePath = Join-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -ChildPath "Hardening.Profiles\$Profile.psd1"
-        $profileData = Import-PowerShellDataFile -Path $profilePath
-
-        if (-not $profileData) {
-            throw "Failed to load hardening profile: $profilePath"
-        }
-
-        # Create GPO
-        Write-Verbose "Creating Group Policy Object: $GPOName"
-        $gpo = New-GPO -Name $GPOName -Comment $Comment -Domain $Domain
-
-        if (-not $gpo) {
-            throw "Failed to create GPO"
-        }
-
-        # Configure Registry policies
-        _ApplyRegistryPoliciesToGPO -GPO $gpo -Rules $profileData.Rules -Domain $Domain
-
-        # Configure Audit policies
-        if ($EnableAudit) {
-            _ApplyAuditPoliciesToGPO -GPO $gpo -Rules $profileData.Rules -Domain $Domain
-        }
-
-        # Link GPO to OU if specified
-        if ($TargetOU) {
-            Write-Verbose "Linking GPO to OU: $TargetOU"
-            New-GPLink -Name $GPOName -Target $TargetOU -Domain $Domain -LinkEnabled Yes | Out-Null
-        }
-
-        Write-Log -Message "Hardening GPO created and configured: $GPOName" -Level Info
-
-        $gpo
     }
     catch {
         Write-ErrorLog -Message "Failed to import hardening to GPO: $($_.Exception.Message)" -Caller $MyInvocation.MyCommand.Name
@@ -160,6 +162,10 @@ function _ApplyRegistryPoliciesToGPO {
     <#
     .SYNOPSIS
     Internal helper: Applies registry hardening policies to a Group Policy Object for domain deployment.
+
+    .NOTES
+    INTERNAL USE ONLY: Filters rules by Type='Registry' and applies via Set-GPRegistryValue.
+    Requires Group Policy module and Domain Admin rights.
     #>
     param(
         [object]$GPO,
@@ -191,6 +197,14 @@ function _ApplyRegistryPoliciesToGPO {
 }
 
 function _ApplyAuditPoliciesToGPO {
+    <#
+    .SYNOPSIS
+    Internal helper: Applies audit policy rules to a Group Policy Object.
+
+    .NOTES
+    INTERNAL USE ONLY: Filters rules by Type='Audit' and logs audit policy application.
+    Logs each audit policy for GPO application (simplified implementation).
+    #>
     param(
         [object]$GPO,
         [array]$Rules,
