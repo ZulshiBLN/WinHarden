@@ -18,6 +18,10 @@ function Test-NotNullOrEmpty {
 
     .EXAMPLE
     $result = Test-NotNullOrEmpty -Value "server01" -Name "ServerName"
+
+    .NOTES
+    DEPENDENCIES: Write-Log (Core module function)
+    ERROR BEHAVIOR: Throws terminating error if validation fails
     #>
 
     [CmdletBinding()]

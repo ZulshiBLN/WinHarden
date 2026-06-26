@@ -1,4 +1,4 @@
-function ConvertTo-MaskedString {
+﻿function ConvertTo-MaskedString {
     <#
     .SYNOPSIS
     Masks sensitive patterns in text for safe logging and output.
@@ -6,18 +6,24 @@ function ConvertTo-MaskedString {
     .DESCRIPTION
     Replaces sensitive information (passwords, tokens, API keys, etc.) with asterisks.
     Automatically detects patterns like "password=secret" and masks the value.
+    Uses case-insensitive regex matching to handle variations in delimiter styles (=, :, space).
 
-    .PARAMETER Text
-    Text to mask.
+    .PARAMETER InputString
+    The text to mask.
 
     .PARAMETER Pattern
-    Optional custom regex pattern to match additional sensitive data.
+    Optional array of custom regex patterns to match additional sensitive data.
+    Patterns are combined with default patterns (password, token, secret, apikey, credential, etc.).
 
     .EXAMPLE
-    ConvertTo-MaskedString -Text "api_key=sk-1234567890"
+    ConvertTo-MaskedString -InputString "api_key=sk-1234567890"
 
     .EXAMPLE
-    ConvertTo-MaskedString -Text "User entered password: MySecret123"
+    ConvertTo-MaskedString -InputString "User entered password: MySecret123" -Pattern "username"
+
+    .NOTES
+    Default sensitive patterns: password, token, secret, apikey, api_key, credential, credentials, authorization, bearer
+    Regex replacement: (pattern delimiter value) â†’ (pattern delimiter ***)
     #>
 
     [CmdletBinding()]
