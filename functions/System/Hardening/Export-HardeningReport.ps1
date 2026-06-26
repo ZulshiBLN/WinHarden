@@ -1,4 +1,4 @@
-﻿function Export-HardeningReport {
+function Export-HardeningReport {
     <#
     .SYNOPSIS
     Exports hardening compliance reports in multiple formats.
@@ -109,10 +109,16 @@
                     _GenerateCsvReport -Report $ComplianceReport -IncludeRuleDetails:$IncludeRuleDetails
                 }
                 'HTML' {
-                    _GenerateHtmlReport -Report $ComplianceReport -IncludeRuleDetails:$IncludeRuleDetails -IncludeTrending:$IncludeTrending -HistoricalReports $HistoricalReports
+                    _GenerateHtmlReport -Report $ComplianceReport `
+                        -IncludeRuleDetails:$IncludeRuleDetails `
+                        -IncludeTrending:$IncludeTrending `
+                        -HistoricalReports $HistoricalReports
                 }
                 'Text' {
-                    _GenerateTextReport -Report $ComplianceReport -IncludeRuleDetails:$IncludeRuleDetails -IncludeTrending:$IncludeTrending -HistoricalReports $HistoricalReports
+                    _GenerateTextReport -Report $ComplianceReport `
+                        -IncludeRuleDetails:$IncludeRuleDetails `
+                        -IncludeTrending:$IncludeTrending `
+                        -HistoricalReports $HistoricalReports
                 }
             }
 
@@ -127,7 +133,8 @@
             }
         }
         catch {
-            Write-ErrorLog -Message "Failed to export hardening report: $($_.Exception.Message)" -Caller $MyInvocation.MyCommand.Name
+            $errMsg = "Failed to export hardening report: $($_.Exception.Message)"
+            Write-ErrorLog -Message $errMsg -Caller $MyInvocation.MyCommand.Name
             throw
         }
     }

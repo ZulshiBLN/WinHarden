@@ -76,14 +76,14 @@ function New-HardeningSession {
 
         [Parameter(Mandatory = $true)]
         [ValidateScript({
-            if ($TargetSystem -eq 'Client' -and $_ -notin @(11)) {
-                throw "Client systems only support Windows 11. Provided: $_"
-            }
-            if ($TargetSystem -eq 'Server' -and $_ -notin @(2019, 2022, 2025)) {
-                throw "Server systems only support 2019, 2022, or 2025. Provided: $_"
-            }
-            $true
-        })]
+                if ($TargetSystem -eq 'Client' -and $_ -notin @(11)) {
+                    throw "Client systems only support Windows 11. Provided: $_"
+                }
+                if ($TargetSystem -eq 'Server' -and $_ -notin @(2019, 2022, 2025)) {
+                    throw "Server systems only support 2019, 2022, or 2025. Provided: $_"
+                }
+                $true
+            })]
         [int]
         $OSVersion,
 
@@ -107,31 +107,31 @@ function New-HardeningSession {
 
         # Create session object
         $session = [ordered]@{
-                SessionId            = [guid]::NewGuid().ToString()
-                CreatedTime          = Get-Date
-                Profile              = $Profile
-                TargetSystem         = $TargetSystem
-                OSVersion            = $OSVersion
-                ComputerName         = $ComputerName
-                WhatIfMode           = $WhatIfPreference
-                State                = @{
-                    TotalRules       = 0
-                    AppliedRules     = @()
-                    FailedRules      = @()
-                    SkippedRules     = @()
-                    ComplianceStatus = 'Pending'
-                    StartTime        = $null
-                    EndTime          = $null
-                    Duration         = $null
-                }
-                Logs                 = @()
-                ComplianceReport     = $null
+            SessionId = [guid]::NewGuid().ToString()
+            CreatedTime = Get-Date
+            Profile = $Profile
+            TargetSystem = $TargetSystem
+            OSVersion = $OSVersion
+            ComputerName = $ComputerName
+            WhatIfMode = $WhatIfPreference
+            State = @{
+                TotalRules = 0
+                AppliedRules = @()
+                FailedRules = @()
+                SkippedRules = @()
+                ComplianceStatus = 'Pending'
+                StartTime = $null
+                EndTime = $null
+                Duration = $null
             }
+            Logs = @()
+            ComplianceReport = $null
+        }
 
-            # Validate profile compatibility with OS
-            _ValidateProfileCompatibility -Session $session
+        # Validate profile compatibility with OS
+        _ValidateProfileCompatibility -Session $session
 
-            # Load profile rules count
+        # Load profile rules count
         $profileRules = Get-HardeningProfile -ProfileName $Profile -TargetSystem $TargetSystem
         $session.State.TotalRules = @($profileRules.Rules).Count
 

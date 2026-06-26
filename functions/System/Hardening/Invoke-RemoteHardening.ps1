@@ -131,7 +131,10 @@ function Invoke-RemoteHardening {
             throw "Failed to establish remote sessions. Check connectivity and WinRM status."
         }
 
-        $processingSessions = if ($Parallel) { $remoteSessions } else { @($remoteSessions) }
+        $processingSessions = if ($Parallel) { $remoteSessions 
+        }
+        else { @($remoteSessions) 
+        }
 
         # Execute hardening on remote systems
         $hardening_code = {

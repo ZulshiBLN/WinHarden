@@ -17,7 +17,7 @@ function Test-ValidPath {
     Test-ValidPath -Path "C:\Config" -Name "ConfigPath"
 
     .EXAMPLE
-    if (Test-ValidPath -Path $logFile) { Write-Host "Log file exists" }
+    if (Test-ValidPath -Path $logFile) { Write-Log "Log file exists" -Level Info }
     #>
 
     [CmdletBinding()]

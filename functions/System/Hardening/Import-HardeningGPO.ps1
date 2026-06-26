@@ -1,4 +1,4 @@
-﻿function Import-HardeningGPO {
+function Import-HardeningGPO {
     <#
     .SYNOPSIS
     Integrates hardening rules with Group Policy Object (GPO) for domain deployment.

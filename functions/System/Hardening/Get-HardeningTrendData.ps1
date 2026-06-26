@@ -1,4 +1,4 @@
-﻿function Get-HardeningTrendData {
+function Get-HardeningTrendData {
     <#
     .SYNOPSIS
     Retrieves historical compliance data for trending analysis and dashboards.

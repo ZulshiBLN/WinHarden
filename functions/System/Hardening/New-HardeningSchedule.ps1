@@ -155,7 +155,7 @@ Import-Module '$(Split-Path -Path $PSScriptRoot -Parent)\modules\System.psm1' -F
 `$hardening = Invoke-SecurityHardening -Session `$session
 `$compliance = Test-HardeningCompliance -Session `$session
 
-Write-Host "Compliance: `$(`$compliance.CompliancePercentage)% - `$(`$compliance.Status)"
+Write-Output "Compliance: `$(`$compliance.CompliancePercentage)% - `$(`$compliance.Status)"
 "@
 
         if ($AutoRemediate) {
@@ -163,7 +163,7 @@ Write-Host "Compliance: `$(`$compliance.CompliancePercentage)% - `$(`$compliance
 `
 if (`$compliance.NonCompliantRules -gt 0) {
     `$remediation = Test-HardeningCompliance -Session `$session -Remediate
-    Write-Host "Remediated `$(`$remediation.RemediatedRules.Count) non-compliant rules"
+    Write-Output "Remediated `$(`$remediation.RemediatedRules.Count) non-compliant rules"
 }
 "@
         }

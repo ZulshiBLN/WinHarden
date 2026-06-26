@@ -1,4 +1,4 @@
-﻿function Test-HardeningCompliance {
+function Test-HardeningCompliance {
     <#
     .SYNOPSIS
     Verifies that hardening rules have been successfully applied to the system.

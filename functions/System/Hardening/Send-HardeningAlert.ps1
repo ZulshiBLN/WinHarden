@@ -1,4 +1,4 @@
-﻿function Send-HardeningAlert {
+function Send-HardeningAlert {
     <#
     .SYNOPSIS
     Sends email notifications for hardening compliance events.
