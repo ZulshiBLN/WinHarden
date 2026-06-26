@@ -1,4 +1,5 @@
 BeforeAll {
+    # Import Core module with private functions for testing
     $modulePath = (Resolve-Path "$PSScriptRoot\..\modules\Core.psm1").Path
     Import-Module $modulePath -Force
 }
@@ -31,6 +32,13 @@ Describe "_TestLogLevel" {
             }
         }
 
+        It "returns true for Warning level when LOG_LEVEL is Info" {
+            InModuleScope Core {
+                $result = _TestLogLevel -Level 'Warning'
+                $result | Should -Be $true
+            }
+        }
+
         It "returns false for Debug level when LOG_LEVEL is Info" {
             InModuleScope Core {
                 $result = _TestLogLevel -Level 'Debug'
@@ -57,6 +65,44 @@ Describe "_TestLogLevel" {
             $env:LOG_LEVEL = 'Verbose'
             InModuleScope Core {
                 $result = _TestLogLevel -Level 'Verbose'
+                $result | Should -Be $true
+            }
+        }
+    }
+
+    Context "Extended log level scenarios" {
+        AfterEach {
+            Remove-Item -Path 'env:LOG_LEVEL' -ErrorAction SilentlyContinue
+        }
+
+        It "filters Verbose when LOG_LEVEL is Debug" {
+            $env:LOG_LEVEL = 'Debug'
+            InModuleScope Core {
+                $result = _TestLogLevel -Level 'Verbose'
+                $result | Should -Be $false
+            }
+        }
+
+        It "blocks Warning when LOG_LEVEL is Error" {
+            $env:LOG_LEVEL = 'Error'
+            InModuleScope Core {
+                $result = _TestLogLevel -Level 'Warning'
+                $result | Should -Be $false
+            }
+        }
+
+        It "allows Warning when LOG_LEVEL is Warning" {
+            $env:LOG_LEVEL = 'Warning'
+            InModuleScope Core {
+                $result = _TestLogLevel -Level 'Warning'
+                $result | Should -Be $true
+            }
+        }
+
+        It "allows Error when LOG_LEVEL is Error (minimum level)" {
+            $env:LOG_LEVEL = 'Error'
+            InModuleScope Core {
+                $result = _TestLogLevel -Level 'Error'
                 $result | Should -Be $true
             }
         }
