@@ -166,8 +166,14 @@
                 )
             }
             Verification = @{
-                Command = '$p = "HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols"; @((Get-ItemProperty -Path "$p\SSL 3.0\Client" -Name Enabled -ErrorAction SilentlyContinue).Enabled, (Get-ItemProperty -Path "$p\TLS 1.0\Client" -Name Enabled -ErrorAction SilentlyContinue).Enabled, (Get-ItemProperty -Path "$p\TLS 1.1\Client" -Name Enabled -ErrorAction SilentlyContinue).Enabled)'
-                Expected = @(0, 0, 0)
+                Type = 'RegistryMultiple'
+                Paths = @(
+                    'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Client',
+                    'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Client',
+                    'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Client'
+                )
+                PropertyName = 'Enabled'
+                ExpectedValues = @(0, 0, 0)
             }
         }
 

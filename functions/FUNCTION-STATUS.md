@@ -72,6 +72,28 @@ Funktionen für Configuration Drift Detection. **Depends on Core.**
 
 ---
 
+## Hardening Profiles
+
+Security profiles for different deployment scenarios. Each profile builds on previous with additional rules.
+
+| Profile | Rules | Categories | Severity Mix | Target Use Case | Status |
+|---------|-------|------------|--------------|-----------------|--------|
+| **Basis** | 12 | 7 | 2x Critical, 9x High, 1x Low | Minimum hardening for all systems | `[OK]` |
+| **Recommended** | 21 | 10 | 3x Critical, 15x High, 3x Medium, 1x Low | Standard enterprise deployments (default) | `[OK]` |
+| **Strict** | 28+ | 11+ | Higher concentration of Critical/High | High-security environments (gov, finance) | `[OK]` |
+
+**Profile Inheritance:** Strict ⊃ Recommended ⊃ Basis
+
+**Testing:**
+- ✅ 28 unit tests for Get-HardeningProfile (all profiles load correctly)
+- ✅ Profile filtering by OS type (Client vs. Server) and version
+- ✅ OS support validation (Windows 11 Client, Server 2019/2022/2025)
+- ✅ Rule structure and property validation
+
+**Note:** Profiles use safe, structured Verification format (no string-based code evaluation) — see ADR-004 for security details.
+
+---
+
 ## Project Summary
 
 **Current Status:** ✅ PRODUCTION READY

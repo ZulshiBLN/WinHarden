@@ -299,19 +299,14 @@
                 )
             }
             Verification = @{
-                Command = @"
-                `$paths = @(
+                Type = 'RegistryMultiple'
+                Paths = @(
                     'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Client',
                     'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.0\Client',
                     'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Client'
                 )
-                `$results = @()
-                foreach (`$path in `$paths) {
-                    `$results += Get-ItemProperty -Path `$path -Name Enabled -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Enabled
-                }
-                `$results
-"@
-                Expected = @(0, 0, 0)
+                PropertyName = 'Enabled'
+                ExpectedValues = @(0, 0, 0)
             }
         }
 

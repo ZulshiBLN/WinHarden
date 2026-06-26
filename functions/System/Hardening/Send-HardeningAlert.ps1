@@ -215,17 +215,33 @@ function _GenerateAlertBody {
     )
 
     $alertTypeLabel = switch ($AlertType) {
-        'Hardening' { 'System Hardening Operation' }
-        'Compliance' { 'Compliance Check' }
-        'Remediation' { 'Remediation Event' }
-        'Schedule' { 'Scheduled Hardening Check' }
-        default { 'WinHarden Alert' }
+        'Hardening' {
+            'System Hardening Operation'
+        }
+        'Compliance' {
+            'Compliance Check'
+        }
+        'Remediation' {
+            'Remediation Event'
+        }
+        'Schedule' {
+            'Scheduled Hardening Check'
+        }
+        default {
+            'WinHarden Alert'
+        }
     }
 
     $severityColor = switch ($Severity) {
-        'Info' { '#0066cc' }
-        'Warning' { '#ff9800' }
-        'Critical' { '#f44336' }
+        'Info' {
+            '#0066cc'
+        }
+        'Warning' {
+            '#ff9800'
+        }
+        'Critical' {
+            '#f44336'
+        }
     }
 
     $html = @"

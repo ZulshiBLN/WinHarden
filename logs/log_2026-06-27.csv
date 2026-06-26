@@ -1,0 +1,900 @@
+﻿Timestamp,Level,Caller,Function,LineNumber,Message
+2026-06-27 01:03:17.139,Warning,Get-AccountPoliciesDrift.ps1,<ScriptBlock>,45,Account Policy drift: Min password length is  (expected 12)
+2026-06-27 01:03:17.229,Error,Get-NetworkSecurityDrift.ps1,<ScriptBlock>,62,"Error checking network security: The requested operation requires elevation.
+"
+2026-06-27 01:03:17.768,Info,New-SecurityDriftReport.ps1,<ScriptBlock>,77,"Drift report exported: C:\Repos\WinHarden\logs\Drift_Detection_2026-06-27_01-03-17.csv (Status: COMPLIANT, Drifts: 0)"
+2026-06-27 01:03:17.815,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:17.843,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:17.994,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Recommended for Server
+2026-06-27 01:03:18.003,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 21 rules for Server
+2026-06-27 01:03:18.018,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Strict for Client
+2026-06-27 01:03:18.024,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 14 rules for Client
+2026-06-27 01:03:18.083,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:18.089,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:18.113,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:18.119,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:18.136,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:18.142,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:18.177,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:18.183,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:18.192,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Strict for Client
+2026-06-27 01:03:18.203,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 14 rules for Client
+2026-06-27 01:03:18.220,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:18.227,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:18.235,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Recommended for Client
+2026-06-27 01:03:18.246,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 21 rules for Client
+2026-06-27 01:03:18.287,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:18.296,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:18.336,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Server
+2026-06-27 01:03:18.343,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Server
+2026-06-27 01:03:18.392,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:18.397,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:18.417,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:18.423,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:18.438,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:18.445,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:18.468,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:18.474,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:18.495,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:18.503,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:18.673,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:18.679,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:18.716,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:18.722,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:18.750,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:18.756,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:18.799,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:18.805,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:18.823,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Recommended for Server
+2026-06-27 01:03:18.830,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 21 rules for Server
+2026-06-27 01:03:18.848,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Strict for Client
+2026-06-27 01:03:18.855,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 14 rules for Client
+2026-06-27 01:03:18.879,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:18.886,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:18.903,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Server
+2026-06-27 01:03:18.909,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Server
+2026-06-27 01:03:18.924,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:18.931,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:18.940,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Server
+2026-06-27 01:03:18.952,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Server
+2026-06-27 01:03:18.974,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Recommended for Client
+2026-06-27 01:03:18.980,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 21 rules for Client
+2026-06-27 01:03:18.994,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:19.001,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:19.013,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Strict for Client
+2026-06-27 01:03:19.020,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 14 rules for Client
+2026-06-27 01:03:29.471,Warning,Get-AccountPoliciesDrift.ps1,<ScriptBlock>,45,Account Policy drift: Min password length is  (expected 12)
+2026-06-27 01:03:29.559,Error,Get-NetworkSecurityDrift.ps1,<ScriptBlock>,62,"Error checking network security: The requested operation requires elevation.
+"
+2026-06-27 01:03:30.119,Info,New-SecurityDriftReport.ps1,<ScriptBlock>,77,"Drift report exported: C:\Repos\WinHarden\logs\Drift_Detection_2026-06-27_01-03-30.csv (Status: COMPLIANT, Drifts: 0)"
+2026-06-27 01:03:30.172,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-27 01:03:30.189,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:30.218,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:30.226,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=3d6bdc42-bc76-457d-926f-f4152924af68, Rules=12"
+2026-06-27 01:03:30.267,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-27 01:03:30.273,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:30.287,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:30.343,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:30.385,Warning,_TestRuleCompliance,_TestRuleCompliance,336,Error testing rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:30.392,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:30.422,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 75% compliant (9/12 rules)
+2026-06-27 01:03:30.481,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-27 01:03:30.489,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:30.498,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:30.510,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=a38ab2a8-a48e-449b-98b8-79d202f1aa5a, Rules=12"
+2026-06-27 01:03:30.526,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-27 01:03:30.530,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:30.544,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:30.555,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,105,Testing 1 filtered rules
+2026-06-27 01:03:30.568,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 100% compliant (1/1 rules)
+2026-06-27 01:03:30.580,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-27 01:03:30.587,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:30.598,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:30.608,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=b61a3cde-9df5-42df-8b2f-d81fe242abc5, Rules=12"
+2026-06-27 01:03:30.621,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-27 01:03:30.632,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:30.644,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:30.677,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:30.711,Warning,_TestRuleCompliance,_TestRuleCompliance,336,Error testing rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:30.718,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:30.770,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 75% compliant (9/12 rules)
+2026-06-27 01:03:30.783,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-27 01:03:30.790,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:30.801,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:30.811,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=56f43330-e008-481c-94c2-6eee147c14e8, Rules=12"
+2026-06-27 01:03:30.825,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Remediate"
+2026-06-27 01:03:30.834,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:30.846,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:30.871,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:30.878,Warning,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,126,Attempting to remediate rule: Service-DisableSMB1
+2026-06-27 01:03:30.903,Warning,_RemediateRule,_RemediateRule,383,"Remediation failed for rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:30.934,Warning,_TestRuleCompliance,_TestRuleCompliance,336,Error testing rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:30.939,Warning,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,126,Attempting to remediate rule: Audit-EnableLogonAuditing
+2026-06-27 01:03:30.975,Warning,_RemediateRule,_RemediateRule,383,Remediation failed for rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:30.983,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:30.995,Warning,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,126,Attempting to remediate rule: Registry-DisableLLMNR
+2026-06-27 01:03:31.016,Warning,_RemediateRule,_RemediateRule,383,Remediation failed for rule Registry-DisableLLMNR: Requested registry access is not allowed.
+2026-06-27 01:03:31.023,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 75% compliant (9/12 rules)
+2026-06-27 01:03:31.064,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-27 01:03:31.070,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:31.083,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:31.094,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=766eb8a2-80a1-4531-9245-e82d917bb281, Rules=12"
+2026-06-27 01:03:31.105,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-27 01:03:31.117,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:31.131,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:31.159,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:31.190,Warning,_TestRuleCompliance,_TestRuleCompliance,336,Error testing rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:31.199,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:31.211,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 75% compliant (9/12 rules)
+2026-06-27 01:03:31.235,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-27 01:03:31.239,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:31.253,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:31.262,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=dee151b8-8aa8-43b6-95b8-60c86880c9cd, Rules=12"
+2026-06-27 01:03:31.273,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-27 01:03:31.285,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:31.298,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:31.323,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:31.351,Warning,_TestRuleCompliance,_TestRuleCompliance,336,Error testing rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:31.358,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:31.369,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 75% compliant (9/12 rules)
+2026-06-27 01:03:31.426,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Server, OSVersion=2022"
+2026-06-27 01:03:31.431,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Recommended for Server
+2026-06-27 01:03:31.445,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 21 rules for Server
+2026-06-27 01:03:31.454,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=b3d152b2-539c-42da-a4e4-fb19b24802eb, Rules=21"
+2026-06-27 01:03:31.466,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Recommended, Mode=Verify"
+2026-06-27 01:03:31.477,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Recommended for Server
+2026-06-27 01:03:31.490,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 21 rules for Server
+2026-06-27 01:03:31.782,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: Firewall-DisableICMPEcho - No value found
+2026-06-27 01:03:31.789,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:31.868,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-27 01:03:31.884,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: Audit-EnablePrivilegeUseAuditing - No value found
+2026-06-27 01:03:31.895,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:31.909,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 76.19% compliant (16/21 rules)
+2026-06-27 01:03:31.946,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2025"
+2026-06-27 01:03:31.951,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Server
+2026-06-27 01:03:31.963,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Server
+2026-06-27 01:03:31.972,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=449f47a9-b34e-46cc-9e0d-999eb9e17f88, Rules=12"
+2026-06-27 01:03:31.984,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-27 01:03:31.995,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Server
+2026-06-27 01:03:32.007,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Server
+2026-06-27 01:03:32.034,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:32.065,Warning,_TestRuleCompliance,_TestRuleCompliance,336,Error testing rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:32.071,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:32.082,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 75% compliant (9/12 rules)
+2026-06-27 01:03:32.112,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-27 01:03:32.119,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:32.129,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:32.138,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=b71f5cbe-77ed-47c3-9c4e-5a5333ab5847, Rules=12"
+2026-06-27 01:03:32.151,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-27 01:03:32.161,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:32.174,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:32.200,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:32.229,Warning,_TestRuleCompliance,_TestRuleCompliance,336,Error testing rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:32.236,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:32.247,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 75% compliant (9/12 rules)
+2026-06-27 01:03:32.274,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-27 01:03:32.279,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:32.292,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:32.302,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=f72560e1-1f1c-452e-adb0-3bcd802d0f9d, Rules=12"
+2026-06-27 01:03:32.313,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-27 01:03:32.325,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:32.338,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:32.363,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:32.392,Warning,_TestRuleCompliance,_TestRuleCompliance,336,Error testing rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:32.399,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:32.410,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 75% compliant (9/12 rules)
+2026-06-27 01:03:32.429,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-27 01:03:32.433,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:32.447,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:32.455,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=f2454737-2c60-4830-884f-daaaf2d10d1d, Rules=12"
+2026-06-27 01:03:32.468,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-27 01:03:32.480,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:32.493,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:32.518,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:32.547,Warning,_TestRuleCompliance,_TestRuleCompliance,336,Error testing rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:32.553,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:32.565,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 75% compliant (9/12 rules)
+2026-06-27 01:03:32.592,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-27 01:03:32.598,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:32.611,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:32.620,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=ba428c4a-94b8-44f3-bc24-406bac03e025, Rules=12"
+2026-06-27 01:03:32.630,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-27 01:03:32.643,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:32.656,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:32.682,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:32.711,Warning,_TestRuleCompliance,_TestRuleCompliance,336,Error testing rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:32.717,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:32.730,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 75% compliant (9/12 rules)
+2026-06-27 01:03:32.753,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-27 01:03:32.759,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:32.770,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:32.780,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=b7e40069-23fc-4607-95c8-698367d9bbcc, Rules=12"
+2026-06-27 01:03:32.792,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-27 01:03:32.802,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:32.815,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:32.841,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:32.871,Warning,_TestRuleCompliance,_TestRuleCompliance,336,Error testing rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:32.877,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:32.888,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 75% compliant (9/12 rules)
+2026-06-27 01:03:32.912,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-27 01:03:32.918,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:32.930,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:32.939,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=c6571ea4-b036-44db-9cfd-259e049cbc05, Rules=12"
+2026-06-27 01:03:32.952,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-27 01:03:32.964,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:32.976,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:33.002,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:33.030,Warning,_TestRuleCompliance,_TestRuleCompliance,336,Error testing rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:33.038,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:33.048,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 75% compliant (9/12 rules)
+2026-06-27 01:03:33.071,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-27 01:03:33.078,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:33.090,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:33.101,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=3c46230c-dfd7-4d00-ad50-96aaa4e937f4, Rules=12"
+2026-06-27 01:03:33.112,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-27 01:03:33.124,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:33.136,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:33.163,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:33.192,Warning,_TestRuleCompliance,_TestRuleCompliance,336,Error testing rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:33.199,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:33.211,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 75% compliant (9/12 rules)
+2026-06-27 01:03:33.239,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-27 01:03:33.245,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:33.257,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:33.266,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=ee3ccbbc-681e-479f-bdfd-9b3d1289f1c9, Rules=12"
+2026-06-27 01:03:33.279,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-27 01:03:33.290,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:33.303,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:33.329,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:33.359,Warning,_TestRuleCompliance,_TestRuleCompliance,336,Error testing rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:33.366,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:33.378,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 75% compliant (9/12 rules)
+2026-06-27 01:03:33.397,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-27 01:03:33.402,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:33.418,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:33.425,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=df0240da-742a-4644-8421-e34f842ec273, Rules=12"
+2026-06-27 01:03:33.437,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-27 01:03:33.450,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:33.463,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:33.491,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:33.522,Warning,_TestRuleCompliance,_TestRuleCompliance,336,Error testing rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:33.528,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:33.539,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 75% compliant (9/12 rules)
+2026-06-27 01:03:33.567,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-27 01:03:33.571,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:33.586,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:33.595,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=ac9b24e7-4e51-4a6d-bca7-912bd9b44ae9, Rules=12"
+2026-06-27 01:03:33.608,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-27 01:03:33.619,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:33.632,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:33.659,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:33.688,Warning,_TestRuleCompliance,_TestRuleCompliance,336,Error testing rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:33.696,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:33.706,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 75% compliant (9/12 rules)
+2026-06-27 01:03:33.735,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-27 01:03:33.740,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:33.753,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:33.762,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=2987b449-d3ba-4e2d-87c7-cca693149de6, Rules=12"
+2026-06-27 01:03:33.775,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-27 01:03:33.787,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:33.800,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:33.827,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:33.857,Warning,_TestRuleCompliance,_TestRuleCompliance,336,Error testing rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:33.863,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:33.874,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 75% compliant (9/12 rules)
+2026-06-27 01:03:33.905,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-27 01:03:33.910,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:33.924,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:33.934,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=e0b0afb1-eaea-4cd4-8d7a-48d5391845f0, Rules=12"
+2026-06-27 01:03:33.946,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-27 01:03:33.958,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:33.971,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:33.981,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,105,Testing 2 filtered rules
+2026-06-27 01:03:33.998,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 100% compliant (2/2 rules)
+2026-06-27 01:03:34.020,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-27 01:03:34.026,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:34.038,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:34.048,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=d42424b1-507d-47ae-becc-b63aa35276c3, Rules=12"
+2026-06-27 01:03:34.061,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-27 01:03:34.073,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:34.086,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:34.096,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,105,Testing 1 filtered rules
+2026-06-27 01:03:34.110,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 100% compliant (1/1 rules)
+2026-06-27 01:03:34.135,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-27 01:03:34.140,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:34.154,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:34.164,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=18374534-937b-4d10-a65a-8c1bd2a8cd52, Rules=12"
+2026-06-27 01:03:34.176,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-27 01:03:34.189,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:34.202,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:34.229,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:34.257,Warning,_TestRuleCompliance,_TestRuleCompliance,336,Error testing rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:34.264,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:34.276,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 75% compliant (9/12 rules)
+2026-06-27 01:03:34.301,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-27 01:03:34.305,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:34.319,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:34.329,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=527f6f0d-f42e-4a39-ae02-fd4fc565f6d3, Rules=12"
+2026-06-27 01:03:34.344,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-27 01:03:34.352,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:34.366,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:34.392,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:34.422,Warning,_TestRuleCompliance,_TestRuleCompliance,336,Error testing rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:34.429,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:34.441,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 75% compliant (9/12 rules)
+2026-06-27 01:03:34.468,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-27 01:03:34.473,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Recommended for Client
+2026-06-27 01:03:34.486,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 21 rules for Client
+2026-06-27 01:03:34.496,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=5ccdec9c-cc04-46ac-9c81-fb121b34bddb, Rules=21"
+2026-06-27 01:03:34.507,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Recommended, Mode=Verify"
+2026-06-27 01:03:34.520,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Recommended for Client
+2026-06-27 01:03:34.532,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 21 rules for Client
+2026-06-27 01:03:34.799,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: Firewall-DisableICMPEcho - No value found
+2026-06-27 01:03:34.805,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:34.852,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-27 01:03:34.866,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: Audit-EnablePrivilegeUseAuditing - No value found
+2026-06-27 01:03:34.873,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:34.887,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 76.19% compliant (16/21 rules)
+2026-06-27 01:03:34.910,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-27 01:03:34.916,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:34.927,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:34.940,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=fa1a5049-5682-4b9b-8ed4-e6551d791c98, Rules=12"
+2026-06-27 01:03:34.951,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-27 01:03:34.963,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:34.976,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:35.002,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:35.032,Warning,_TestRuleCompliance,_TestRuleCompliance,336,Error testing rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:35.037,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:35.049,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 75% compliant (9/12 rules)
+2026-06-27 01:03:35.075,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-27 01:03:35.080,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:35.093,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:35.104,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=836ff0ad-20d2-44c5-baf0-0556dc965726, Rules=12"
+2026-06-27 01:03:35.115,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-27 01:03:35.127,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:35.140,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:35.167,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:35.195,Warning,_TestRuleCompliance,_TestRuleCompliance,336,Error testing rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:35.204,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:35.215,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 75% compliant (9/12 rules)
+2026-06-27 01:03:35.264,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-27 01:03:35.269,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:35.282,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:35.292,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=d8832e8c-f578-4746-8d5d-a7abfff996d7, Rules=12"
+2026-06-27 01:03:35.304,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-27 01:03:35.316,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:35.329,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:35.357,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:35.385,Warning,_TestRuleCompliance,_TestRuleCompliance,336,Error testing rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:35.391,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:35.403,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 75% compliant (9/12 rules)
+2026-06-27 01:03:35.432,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-27 01:03:35.437,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Recommended for Client
+2026-06-27 01:03:35.450,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 21 rules for Client
+2026-06-27 01:03:35.462,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=7d8aa41b-21fd-4007-9431-cde9db466327, Rules=21"
+2026-06-27 01:03:35.476,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Recommended, Mode=Verify"
+2026-06-27 01:03:35.485,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Recommended for Client
+2026-06-27 01:03:35.498,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 21 rules for Client
+2026-06-27 01:03:35.766,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: Firewall-DisableICMPEcho - No value found
+2026-06-27 01:03:35.773,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:35.819,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-27 01:03:35.833,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: Audit-EnablePrivilegeUseAuditing - No value found
+2026-06-27 01:03:35.839,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:35.853,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 76.19% compliant (16/21 rules)
+2026-06-27 01:03:35.875,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Strict, Target=Client, OSVersion=11"
+2026-06-27 01:03:35.881,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Strict for Client
+2026-06-27 01:03:35.896,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 14 rules for Client
+2026-06-27 01:03:35.905,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=6639df9e-5848-48a9-aa42-93aec4c20b98, Rules=14"
+2026-06-27 01:03:35.917,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Strict, Mode=Verify"
+2026-06-27 01:03:35.929,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Strict for Client
+2026-06-27 01:03:35.943,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 14 rules for Client
+2026-06-27 01:03:35.955,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Account-MinimumPasswordLength-Strict - Expected: 14, Got: 12"
+2026-06-27 01:03:35.975,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Account-StrictAccountLockout - Expected: System.Collections.Hashtable, Got: @{BadPwdCount=; LockoutDuration=15}"
+2026-06-27 01:03:41.128,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: Encryption-EnableBitLocker - No value found
+2026-06-27 01:03:41.137,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Encryption-DisableTLSBelowOnePointTwo - Expected: SSL 3.0 TLS 1.0 TLS 1.1, Got: SSL 3.0 TLS 1.0 TLS 1.1 TLS 1.2"
+2026-06-27 01:03:41.157,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: RDP-DisableClipboardRedirection - No value found
+2026-06-27 01:03:41.170,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: RDP-DisableDriveRedirection - No value found
+2026-06-27 01:03:41.177,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: RDP-RandomizePort - Expected: 3399, Got: 3389"
+2026-06-27 01:03:41.193,Warning,_TestRuleCompliance,_TestRuleCompliance,336,Error testing rule SMB-RequireSigning: Cannot bind argument to parameter 'DifferenceObject' because it is null.
+2026-06-27 01:03:41.207,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Service-MinimalServices - Expected: Disabled Disabled Disabled Disabled, Got: Manual Manual"
+2026-06-27 01:03:41.215,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: UAC-AllChecksEnabled - Expected: System.Collections.Hashtable, Got: @{EnableLUA=1; PromptOnSecureDesktop=1; ConsentPromptBehaviorAdmin=2}"
+2026-06-27 01:03:41.238,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Audit-ExtendedLogging - Expected: 5, Got: Microsoft.PowerShell.Commands.TextMeasureInfo"
+2026-06-27 01:03:41.253,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: Network-DisableICMPRedirects - No value found
+2026-06-27 01:03:41.258,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 14.29% compliant (2/14 rules)
+2026-06-27 01:03:41.288,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-27 01:03:41.293,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:41.306,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:41.317,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=08bd84e9-0c1c-409d-ac50-02cd33d0a4bb, Rules=12"
+2026-06-27 01:03:41.329,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-27 01:03:41.342,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:41.358,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:41.395,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:41.424,Warning,_TestRuleCompliance,_TestRuleCompliance,336,Error testing rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:41.430,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:41.442,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 75% compliant (9/12 rules)
+2026-06-27 01:03:41.453,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Strict, Target=Client, OSVersion=11"
+2026-06-27 01:03:41.465,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Strict for Client
+2026-06-27 01:03:41.480,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 14 rules for Client
+2026-06-27 01:03:41.490,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=770b8c3e-fdef-47d3-b237-40a2101ee2ee, Rules=14"
+2026-06-27 01:03:41.502,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Strict, Mode=Verify"
+2026-06-27 01:03:41.515,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Strict for Client
+2026-06-27 01:03:41.530,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 14 rules for Client
+2026-06-27 01:03:41.542,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Account-MinimumPasswordLength-Strict - Expected: 14, Got: 12"
+2026-06-27 01:03:41.555,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Account-StrictAccountLockout - Expected: System.Collections.Hashtable, Got: @{BadPwdCount=; LockoutDuration=15}"
+2026-06-27 01:03:46.593,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: Encryption-EnableBitLocker - No value found
+2026-06-27 01:03:46.599,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Encryption-DisableTLSBelowOnePointTwo - Expected: SSL 3.0 TLS 1.0 TLS 1.1, Got: SSL 3.0 TLS 1.0 TLS 1.1 TLS 1.2"
+2026-06-27 01:03:46.615,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: RDP-DisableClipboardRedirection - No value found
+2026-06-27 01:03:46.628,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: RDP-DisableDriveRedirection - No value found
+2026-06-27 01:03:46.642,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: RDP-RandomizePort - Expected: 3399, Got: 3389"
+2026-06-27 01:03:46.655,Warning,_TestRuleCompliance,_TestRuleCompliance,336,Error testing rule SMB-RequireSigning: Cannot bind argument to parameter 'DifferenceObject' because it is null.
+2026-06-27 01:03:46.668,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Service-MinimalServices - Expected: Disabled Disabled Disabled Disabled, Got: Manual Manual"
+2026-06-27 01:03:46.680,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: UAC-AllChecksEnabled - Expected: System.Collections.Hashtable, Got: @{EnableLUA=1; PromptOnSecureDesktop=1; ConsentPromptBehaviorAdmin=2}"
+2026-06-27 01:03:46.700,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Audit-ExtendedLogging - Expected: 5, Got: Microsoft.PowerShell.Commands.TextMeasureInfo"
+2026-06-27 01:03:46.708,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: Network-DisableICMPRedirects - No value found
+2026-06-27 01:03:46.717,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 14.29% compliant (2/14 rules)
+2026-06-27 01:03:46.750,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Server, OSVersion=2019"
+2026-06-27 01:03:46.756,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Server
+2026-06-27 01:03:46.770,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Server
+2026-06-27 01:03:46.780,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=e5aa8083-3b3c-4102-9da3-68e7b9e81e71, Rules=12"
+2026-06-27 01:03:46.793,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-27 01:03:46.807,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Server
+2026-06-27 01:03:46.821,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Server
+2026-06-27 01:03:46.848,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:46.877,Warning,_TestRuleCompliance,_TestRuleCompliance,336,Error testing rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:46.883,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:46.896,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 75% compliant (9/12 rules)
+2026-06-27 01:03:46.913,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Server, OSVersion=2022"
+2026-06-27 01:03:46.920,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Recommended for Server
+2026-06-27 01:03:46.938,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 21 rules for Server
+2026-06-27 01:03:46.992,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=a3b3cc30-bce3-46f3-8ab6-e83bc6e1d653, Rules=21"
+2026-06-27 01:03:47.006,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Recommended, Mode=Verify"
+2026-06-27 01:03:47.019,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Recommended for Server
+2026-06-27 01:03:47.034,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 21 rules for Server
+2026-06-27 01:03:47.307,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: Firewall-DisableICMPEcho - No value found
+2026-06-27 01:03:47.314,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:47.360,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-27 01:03:47.374,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: Audit-EnablePrivilegeUseAuditing - No value found
+2026-06-27 01:03:47.380,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:47.398,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 76.19% compliant (16/21 rules)
+2026-06-27 01:03:47.411,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Strict, Target=Server, OSVersion=2025"
+2026-06-27 01:03:47.422,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Strict for Server
+2026-06-27 01:03:47.432,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 15 rules for Server
+2026-06-27 01:03:47.442,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=50e5ca02-502b-4f0f-a37e-1f3bd2c17f3f, Rules=15"
+2026-06-27 01:03:47.456,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Strict, Mode=Verify"
+2026-06-27 01:03:47.468,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Strict for Server
+2026-06-27 01:03:47.481,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 15 rules for Server
+2026-06-27 01:03:47.494,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Account-MinimumPasswordLength-Strict - Expected: 14, Got: 12"
+2026-06-27 01:03:47.507,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Account-StrictAccountLockout - Expected: System.Collections.Hashtable, Got: @{BadPwdCount=; LockoutDuration=15}"
+2026-06-27 01:03:52.552,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: Encryption-EnableBitLocker - No value found
+2026-06-27 01:03:52.559,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Encryption-DisableTLSBelowOnePointTwo - Expected: SSL 3.0 TLS 1.0 TLS 1.1, Got: SSL 3.0 TLS 1.0 TLS 1.1 TLS 1.2"
+2026-06-27 01:03:52.575,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: RDP-DisableClipboardRedirection - No value found
+2026-06-27 01:03:52.587,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: RDP-DisableDriveRedirection - No value found
+2026-06-27 01:03:52.600,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: RDP-RandomizePort - Expected: 3399, Got: 3389"
+2026-06-27 01:03:52.618,Warning,_TestRuleCompliance,_TestRuleCompliance,336,Error testing rule SMB-RequireSigning: Cannot bind argument to parameter 'DifferenceObject' because it is null.
+2026-06-27 01:03:52.627,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Service-MinimalServices - Expected: Disabled Disabled Disabled Disabled, Got: Manual Manual"
+2026-06-27 01:03:52.640,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: UAC-AllChecksEnabled - Expected: System.Collections.Hashtable, Got: @{EnableLUA=1; PromptOnSecureDesktop=1; ConsentPromptBehaviorAdmin=2}"
+2026-06-27 01:03:52.658,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Audit-ExtendedLogging - Expected: 5, Got: Microsoft.PowerShell.Commands.TextMeasureInfo"
+2026-06-27 01:03:52.667,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: Network-DisableICMPRedirects - No value found
+2026-06-27 01:03:52.679,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: Registry-CredentialGuard-Server - No value found
+2026-06-27 01:03:52.689,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 13.33% compliant (2/15 rules)
+2026-06-27 01:03:52.719,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-27 01:03:52.724,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:52.738,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:52.749,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=23efbe06-6999-4b9d-bd0e-864040c99b09, Rules=12"
+2026-06-27 01:03:52.769,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,92,"Starting security hardening: Profile=Basis, ComputerName=GAMINGPC"
+2026-06-27 01:03:52.775,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:52.787,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:52.805,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,126,Applying Registry rules: 8 rules
+2026-06-27 01:03:52.819,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Account-MinimumPasswordLength: Requested registry access is not allowed.
+2026-06-27 01:03:52.835,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Account-PasswordComplexity: Requested registry access is not allowed.
+2026-06-27 01:03:52.844,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule UAC-ElevationPrompt: Requested registry access is not allowed.
+2026-06-27 01:03:52.859,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule RDP-EnableNetworkLevelAuthentication: Requested registry access is not allowed.
+2026-06-27 01:03:52.874,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Encryption-DisableObsoleteCiphers: Requested registry access is not allowed.
+2026-06-27 01:03:52.884,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Network-DisableIPv6: Requested registry access is not allowed.
+2026-06-27 01:03:52.898,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Updates-EnableAutoSecurityUpdates: Requested registry access is not allowed.
+2026-06-27 01:03:52.915,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Registry-DisableLLMNR: Requested registry access is not allowed.
+2026-06-27 01:03:52.920,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,139,Applying Service rules: 2 rules
+2026-06-27 01:03:52.942,Error,_ApplyHardeningRule,Write-ErrorLog,41,"Failed to apply rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:52.954,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Service-DisablePrintSpooler: Service 'Print Spooler (spooler)' cannot be configured due to the following error: Access is denied
+2026-06-27 01:03:52.963,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,152,Applying Firewall rules: 1 rules (sequential)
+2026-06-27 01:03:52.976,Info,_ApplyHardeningRule,_ApplyHardeningRule,260,Applied rule: Firewall-EnableWindowsDefender
+2026-06-27 01:03:52.988,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,158,Applying Audit rules: 1 rules (sequential)
+2026-06-27 01:03:53.011,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:53.018,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,164,Applying other rules: 0 rules
+2026-06-27 01:03:53.033,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,174,Verifying hardening compliance
+2026-06-27 01:03:53.048,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,184,"Hardening complete: Applied=1, Failed=11, Skipped=0, Total=12"
+2026-06-27 01:03:53.058,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-27 01:03:53.069,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:53.085,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:53.112,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:53.141,Warning,_TestRuleCompliance,_TestRuleCompliance,336,Error testing rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:53.148,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:53.163,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 75% compliant (9/12 rules)
+2026-06-27 01:03:53.185,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Client, OSVersion=11"
+2026-06-27 01:03:53.190,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Recommended for Client
+2026-06-27 01:03:53.205,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 21 rules for Client
+2026-06-27 01:03:53.216,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=87bde720-a54c-44aa-a6b3-b1a57b038790, Rules=21"
+2026-06-27 01:03:53.230,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,92,"Starting security hardening: Profile=Recommended, ComputerName=GAMINGPC"
+2026-06-27 01:03:53.244,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Recommended for Client
+2026-06-27 01:03:53.258,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 21 rules for Client
+2026-06-27 01:03:53.275,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,126,Applying Registry rules: 14 rules
+2026-06-27 01:03:53.287,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Account-MinimumPasswordLength: Requested registry access is not allowed.
+2026-06-27 01:03:53.302,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Account-PasswordComplexity: Requested registry access is not allowed.
+2026-06-27 01:03:53.315,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Account-AccountLockoutDuration: Requested registry access is not allowed.
+2026-06-27 01:03:53.328,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule UAC-ElevationPrompt: Requested registry access is not allowed.
+2026-06-27 01:03:53.341,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Registry-EnableDEP: Requested registry access is not allowed.
+2026-06-27 01:03:53.355,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Registry-EnforceSMBSigning: Requested registry access is not allowed.
+2026-06-27 01:03:53.370,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule RDP-EnableNetworkLevelAuthentication: Requested registry access is not allowed.
+2026-06-27 01:03:53.383,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule RDP-SetEncryptionLevel: Requested registry access is not allowed.
+2026-06-27 01:03:53.396,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Encryption-DisableObsoleteCiphers: Requested registry access is not allowed.
+2026-06-27 01:03:53.409,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Network-DisableIPv6: Requested registry access is not allowed.
+2026-06-27 01:03:53.422,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Network-DisableIPSourceRouting: Requested registry access is not allowed.
+2026-06-27 01:03:53.436,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Updates-EnableAutoSecurityUpdates: Requested registry access is not allowed.
+2026-06-27 01:03:53.449,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Registry-DisableLLMNR: Requested registry access is not allowed.
+2026-06-27 01:03:53.462,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Registry-EnforceNTLMv2: Requested registry access is not allowed.
+2026-06-27 01:03:53.473,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,139,Applying Service rules: 3 rules
+2026-06-27 01:03:53.495,Error,_ApplyHardeningRule,Write-ErrorLog,41,"Failed to apply rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:53.506,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Service-DisableUnnecessaryServices: Service 'Windows Remote Management (WS-Management) (WinRM)' cannot be configured due to the following error: Access is denied
+2026-06-27 01:03:53.516,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Service-DisablePrintSpooler: Service 'Print Spooler (spooler)' cannot be configured due to the following error: Access is denied
+2026-06-27 01:03:53.528,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,152,Applying Firewall rules: 2 rules (sequential)
+2026-06-27 01:03:53.540,Info,_ApplyHardeningRule,_ApplyHardeningRule,260,Applied rule: Firewall-EnableWindowsDefender
+2026-06-27 01:03:53.554,Info,_ApplyHardeningRule,_ApplyHardeningRule,260,Applied rule: Firewall-DisableICMPEcho
+2026-06-27 01:03:53.567,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,158,Applying Audit rules: 2 rules (sequential)
+2026-06-27 01:03:53.593,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:53.610,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Audit-EnablePrivilegeUseAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:53.616,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,164,Applying other rules: 0 rules
+2026-06-27 01:03:53.628,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,174,Verifying hardening compliance
+2026-06-27 01:03:53.642,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,184,"Hardening complete: Applied=2, Failed=19, Skipped=0, Total=21"
+2026-06-27 01:03:53.658,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Recommended, Mode=Verify"
+2026-06-27 01:03:53.670,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Recommended for Client
+2026-06-27 01:03:53.685,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 21 rules for Client
+2026-06-27 01:03:53.958,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: Firewall-DisableICMPEcho - No value found
+2026-06-27 01:03:53.964,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:54.013,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-27 01:03:54.026,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: Audit-EnablePrivilegeUseAuditing - No value found
+2026-06-27 01:03:54.033,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:54.049,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 76.19% compliant (16/21 rules)
+2026-06-27 01:03:54.067,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-27 01:03:54.073,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:54.087,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:54.099,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=3b3f092b-b741-4def-b98f-13831dc2f39e, Rules=12"
+2026-06-27 01:03:54.112,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-27 01:03:54.127,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:54.141,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:54.169,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:54.199,Warning,_TestRuleCompliance,_TestRuleCompliance,336,Error testing rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:54.205,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:54.218,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 75% compliant (9/12 rules)
+2026-06-27 01:03:54.327,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-27 01:03:54.331,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:54.347,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:54.359,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=1f714dd8-f642-4401-802f-5043e7bd5cd6, Rules=12"
+2026-06-27 01:03:54.374,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,92,"Starting security hardening: Profile=Basis, ComputerName=GAMINGPC"
+2026-06-27 01:03:54.387,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:54.401,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:54.414,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,126,Applying Registry rules: 8 rules
+2026-06-27 01:03:54.429,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Account-MinimumPasswordLength: Requested registry access is not allowed.
+2026-06-27 01:03:54.444,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Account-PasswordComplexity: Requested registry access is not allowed.
+2026-06-27 01:03:54.457,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule UAC-ElevationPrompt: Requested registry access is not allowed.
+2026-06-27 01:03:54.472,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule RDP-EnableNetworkLevelAuthentication: Requested registry access is not allowed.
+2026-06-27 01:03:54.487,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Encryption-DisableObsoleteCiphers: Requested registry access is not allowed.
+2026-06-27 01:03:54.499,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Network-DisableIPv6: Requested registry access is not allowed.
+2026-06-27 01:03:54.513,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Updates-EnableAutoSecurityUpdates: Requested registry access is not allowed.
+2026-06-27 01:03:54.526,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Registry-DisableLLMNR: Requested registry access is not allowed.
+2026-06-27 01:03:54.536,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,139,Applying Service rules: 2 rules
+2026-06-27 01:03:54.557,Error,_ApplyHardeningRule,Write-ErrorLog,41,"Failed to apply rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:54.567,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Service-DisablePrintSpooler: Service 'Print Spooler (spooler)' cannot be configured due to the following error: Access is denied
+2026-06-27 01:03:54.580,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,152,Applying Firewall rules: 1 rules (sequential)
+2026-06-27 01:03:54.592,Info,_ApplyHardeningRule,_ApplyHardeningRule,260,Applied rule: Firewall-EnableWindowsDefender
+2026-06-27 01:03:54.605,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,158,Applying Audit rules: 1 rules (sequential)
+2026-06-27 01:03:54.629,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:54.635,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,164,Applying other rules: 0 rules
+2026-06-27 01:03:54.648,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,174,Verifying hardening compliance
+2026-06-27 01:03:54.661,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,184,"Hardening complete: Applied=1, Failed=11, Skipped=0, Total=12"
+2026-06-27 01:03:54.676,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-27 01:03:54.690,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:54.705,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:54.733,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:54.761,Warning,_TestRuleCompliance,_TestRuleCompliance,336,Error testing rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:54.767,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:54.781,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 75% compliant (9/12 rules)
+2026-06-27 01:03:54.812,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Recommended, Target=Server, OSVersion=2022"
+2026-06-27 01:03:54.818,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Recommended for Server
+2026-06-27 01:03:54.832,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 21 rules for Server
+2026-06-27 01:03:54.845,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=3f4bb14b-0996-46de-8442-607b763cc373, Rules=21"
+2026-06-27 01:03:54.859,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,92,"Starting security hardening: Profile=Recommended, ComputerName=GAMINGPC"
+2026-06-27 01:03:54.873,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Recommended for Server
+2026-06-27 01:03:54.890,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 21 rules for Server
+2026-06-27 01:03:54.902,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,126,Applying Registry rules: 14 rules
+2026-06-27 01:03:54.917,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Account-MinimumPasswordLength: Requested registry access is not allowed.
+2026-06-27 01:03:54.933,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Account-PasswordComplexity: Requested registry access is not allowed.
+2026-06-27 01:03:54.948,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Account-AccountLockoutDuration: Requested registry access is not allowed.
+2026-06-27 01:03:54.963,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule UAC-ElevationPrompt: Requested registry access is not allowed.
+2026-06-27 01:03:54.976,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Registry-EnableDEP: Requested registry access is not allowed.
+2026-06-27 01:03:54.989,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Registry-EnforceSMBSigning: Requested registry access is not allowed.
+2026-06-27 01:03:55.003,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule RDP-EnableNetworkLevelAuthentication: Requested registry access is not allowed.
+2026-06-27 01:03:55.018,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule RDP-SetEncryptionLevel: Requested registry access is not allowed.
+2026-06-27 01:03:55.033,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Encryption-DisableObsoleteCiphers: Requested registry access is not allowed.
+2026-06-27 01:03:55.045,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Network-DisableIPv6: Requested registry access is not allowed.
+2026-06-27 01:03:55.061,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Network-DisableIPSourceRouting: Requested registry access is not allowed.
+2026-06-27 01:03:55.074,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Updates-EnableAutoSecurityUpdates: Requested registry access is not allowed.
+2026-06-27 01:03:55.090,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Registry-DisableLLMNR: Requested registry access is not allowed.
+2026-06-27 01:03:55.100,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Registry-EnforceNTLMv2: Requested registry access is not allowed.
+2026-06-27 01:03:55.112,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,139,Applying Service rules: 3 rules
+2026-06-27 01:03:55.134,Error,_ApplyHardeningRule,Write-ErrorLog,41,"Failed to apply rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:55.143,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Service-DisableUnnecessaryServices: Service 'Windows Remote Management (WS-Management) (WinRM)' cannot be configured due to the following error: Access is denied
+2026-06-27 01:03:55.156,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Service-DisablePrintSpooler: Service 'Print Spooler (spooler)' cannot be configured due to the following error: Access is denied
+2026-06-27 01:03:55.169,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,152,Applying Firewall rules: 2 rules (sequential)
+2026-06-27 01:03:55.181,Info,_ApplyHardeningRule,_ApplyHardeningRule,260,Applied rule: Firewall-EnableWindowsDefender
+2026-06-27 01:03:55.195,Info,_ApplyHardeningRule,_ApplyHardeningRule,260,Applied rule: Firewall-DisableICMPEcho
+2026-06-27 01:03:55.209,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,158,Applying Audit rules: 2 rules (sequential)
+2026-06-27 01:03:55.233,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:55.248,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Audit-EnablePrivilegeUseAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:55.254,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,164,Applying other rules: 0 rules
+2026-06-27 01:03:55.267,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,174,Verifying hardening compliance
+2026-06-27 01:03:55.280,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,184,"Hardening complete: Applied=2, Failed=19, Skipped=0, Total=21"
+2026-06-27 01:03:55.294,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Recommended, Mode=Verify"
+2026-06-27 01:03:55.307,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Recommended for Server
+2026-06-27 01:03:55.324,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 21 rules for Server
+2026-06-27 01:03:55.597,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: Firewall-DisableICMPEcho - No value found
+2026-06-27 01:03:55.603,Warning,_TestRuleCompliance,_TestRuleCompliance,336,"Error testing rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:55.652,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: Audit-EnableLogonAuditing - No value found
+2026-06-27 01:03:55.667,Warning,_TestRuleCompliance,_TestRuleCompliance,263,Rule not compliant: Audit-EnablePrivilegeUseAuditing - No value found
+2026-06-27 01:03:55.673,Warning,_TestRuleCompliance,_TestRuleCompliance,300,"Rule not compliant: Registry-DisableLLMNR - Expected: 0, Got: 1"
+2026-06-27 01:03:55.691,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 76.19% compliant (16/21 rules)
+2026-06-27 01:03:55.714,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-27 01:03:55.719,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:55.733,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:55.746,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=1ae1274e-d9e6-4b60-8609-cf726fcb6700, Rules=12"
+2026-06-27 01:03:55.760,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,92,"Starting security hardening: Profile=Basis, ComputerName=GAMINGPC"
+2026-06-27 01:03:55.774,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:55.790,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:55.804,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,126,Applying Registry rules: 8 rules
+2026-06-27 01:03:55.819,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Account-MinimumPasswordLength: Requested registry access is not allowed.
+2026-06-27 01:03:55.835,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Account-PasswordComplexity: Requested registry access is not allowed.
+2026-06-27 01:03:55.849,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule UAC-ElevationPrompt: Requested registry access is not allowed.
+2026-06-27 01:03:55.862,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule RDP-EnableNetworkLevelAuthentication: Requested registry access is not allowed.
+2026-06-27 01:03:55.878,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Encryption-DisableObsoleteCiphers: Requested registry access is not allowed.
+2026-06-27 01:03:55.891,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Network-DisableIPv6: Requested registry access is not allowed.
+2026-06-27 01:03:55.906,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Updates-EnableAutoSecurityUpdates: Requested registry access is not allowed.
+2026-06-27 01:03:55.919,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Registry-DisableLLMNR: Requested registry access is not allowed.
+2026-06-27 01:03:55.932,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,139,Applying Service rules: 2 rules
+2026-06-27 01:03:55.953,Error,_ApplyHardeningRule,Write-ErrorLog,41,"Failed to apply rule Service-DisableSMB1: The requested operation requires elevation.
+"
+2026-06-27 01:03:55.961,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Service-DisablePrintSpooler: Service 'Print Spooler (spooler)' cannot be configured due to the following error: Access is denied
+2026-06-27 01:03:55.975,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,152,Applying Firewall rules: 1 rules (sequential)
+2026-06-27 01:03:55.987,Info,_ApplyHardeningRule,_ApplyHardeningRule,260,Applied rule: Firewall-EnableWindowsDefender
+2026-06-27 01:03:56.000,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,158,Applying Audit rules: 1 rules (sequential)
+2026-06-27 01:03:56.025,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Audit-EnableLogonAuditing: Error 0x00000522 occurred:
+2026-06-27 01:03:56.035,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,164,Applying other rules: 0 rules
+2026-06-27 01:03:56.044,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,174,Verifying hardening compliance
+2026-06-27 01:03:56.059,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,184,"Hardening complete: Applied=1, Failed=11, Skipped=0, Total=12"
+2026-06-27 01:03:56.072,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,91,"Starting hardening compliance verification: Profile=Basis, Mode=Verify"
+2026-06-27 01:03:56.087,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:03:56.102,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:03:56.115,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,105,Testing 2 filtered rules
+2026-06-27 01:03:56.142,Info,Test-HardeningCompliance<Process>,Test-HardeningCompliance<Process>,183,Compliance verification complete: 100% compliant (2/2 rules)
+2026-06-27 01:05:01.295,Warning,Get-AccountPoliciesDrift.ps1,<ScriptBlock>,45,Account Policy drift: Min password length is  (expected 12)
+2026-06-27 01:05:15.904,Warning,Get-AccountPoliciesDrift.ps1,<ScriptBlock>,45,Account Policy drift: Min password length is  (expected 12)
+2026-06-27 01:05:15.990,Error,Get-NetworkSecurityDrift.ps1,<ScriptBlock>,62,"Error checking network security: The requested operation requires elevation.
+"
+2026-06-27 01:05:16.460,Info,New-SecurityDriftReport.ps1,<ScriptBlock>,77,"Drift report exported: C:\Repos\WinHarden\logs\Drift_Detection_2026-06-27_01-05-16.csv (Status: COMPLIANT, Drifts: 0)"
+2026-06-27 01:05:17.568,Warning,Get-AccountPoliciesDrift.ps1,<ScriptBlock>,45,Account Policy drift: Min password length is  (expected 12)
+2026-06-27 01:05:17.580,Error,Get-NetworkSecurityDrift.ps1,<ScriptBlock>,62,"Error checking network security: The requested operation requires elevation.
+"
+2026-06-27 01:05:17.715,Info,New-SecurityDriftReport.ps1,<ScriptBlock>,77,"Drift report exported: C:\Repos\WinHarden\logs\Drift_Detection_2026-06-27_01-05-17.csv (Status: COMPLIANT, Drifts: 0)"
+2026-06-27 01:05:28.952,Warning,Get-AccountPoliciesDrift.ps1,<ScriptBlock>,45,Account Policy drift: Min password length is  (expected 12)
+2026-06-27 01:05:28.963,Error,Get-NetworkSecurityDrift.ps1,<ScriptBlock>,62,"Error checking network security: The requested operation requires elevation.
+"
+2026-06-27 01:05:29.086,Info,New-SecurityDriftReport.ps1,<ScriptBlock>,77,"Drift report exported: C:\Repos\WinHarden\logs\Drift_Detection_2026-06-27_01-05-29.csv (Status: COMPLIANT, Drifts: 0)"
+2026-06-27 01:05:29.104,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:05:29.129,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:05:29.144,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Recommended for Server
+2026-06-27 01:05:29.152,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 21 rules for Server
+2026-06-27 01:05:29.171,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Strict for Client
+2026-06-27 01:05:29.179,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 14 rules for Client
+2026-06-27 01:05:29.218,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:05:29.223,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:05:29.249,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:05:29.256,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:05:29.278,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:05:29.296,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:05:29.317,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:05:29.323,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:05:29.337,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Strict for Client
+2026-06-27 01:05:29.351,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 14 rules for Client
+2026-06-27 01:05:29.370,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:05:29.378,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:05:29.390,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Recommended for Client
+2026-06-27 01:05:29.404,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 21 rules for Client
+2026-06-27 01:05:29.430,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:05:29.442,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:05:29.476,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Server
+2026-06-27 01:05:29.493,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Server
+2026-06-27 01:05:29.535,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:05:29.541,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:05:29.564,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:05:29.570,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:05:29.590,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:05:29.596,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:05:29.616,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:05:29.622,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:05:29.650,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:05:29.656,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:05:29.848,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:05:29.854,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:05:29.895,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:05:29.901,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:05:29.931,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:05:29.937,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:05:29.984,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:05:29.991,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:05:30.013,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Recommended for Server
+2026-06-27 01:05:30.020,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 21 rules for Server
+2026-06-27 01:05:30.042,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Strict for Client
+2026-06-27 01:05:30.058,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 14 rules for Client
+2026-06-27 01:05:30.086,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:05:30.093,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:05:30.113,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Server
+2026-06-27 01:05:30.120,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Server
+2026-06-27 01:05:30.139,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:05:30.146,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:05:30.158,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Server
+2026-06-27 01:05:30.173,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Server
+2026-06-27 01:05:30.199,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Recommended for Client
+2026-06-27 01:05:30.205,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 21 rules for Client
+2026-06-27 01:05:30.225,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:05:30.231,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:05:30.249,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Strict for Client
+2026-06-27 01:05:30.257,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 14 rules for Client
+2026-06-27 01:05:30.426,Warning,Get-AccountPoliciesDrift.ps1,<ScriptBlock>,45,Account Policy drift: Min password length is  (expected 12)
+2026-06-27 01:05:30.439,Error,Get-NetworkSecurityDrift.ps1,<ScriptBlock>,62,"Error checking network security: The requested operation requires elevation.
+"
+2026-06-27 01:05:30.547,Info,New-SecurityDriftReport.ps1,<ScriptBlock>,77,"Drift report exported: C:\Repos\WinHarden\logs\Drift_Detection_2026-06-27_01-05-30.csv (Status: COMPLIANT, Drifts: 0)"
+2026-06-27 01:05:30.566,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=GAMINGPC, Days=30"
+2026-06-27 01:05:30.570,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\ProgramData\WinHarden\Compliance-History
+2026-06-27 01:05:30.601,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=GAMINGPC, Days=30"
+2026-06-27 01:05:30.606,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\ProgramData\WinHarden\Compliance-History
+2026-06-27 01:05:30.628,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=GAMINGPC, Days=30"
+2026-06-27 01:05:30.634,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\CustomRepo
+2026-06-27 01:05:30.664,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=GAMINGPC, Days=30"
+2026-06-27 01:05:30.669,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\ProgramData\WinHarden\Compliance-History
+2026-06-27 01:05:30.698,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=GAMINGPC, Days=30"
+2026-06-27 01:05:30.702,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\ProgramData\WinHarden\Compliance-History
+2026-06-27 01:05:30.738,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=GAMINGPC, Days=30"
+2026-06-27 01:05:30.743,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\ProgramData\WinHarden\Compliance-History
+2026-06-27 01:05:30.809,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=GAMINGPC, Days=30"
+2026-06-27 01:05:30.813,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\ProgramData\WinHarden\Compliance-History
+2026-06-27 01:05:30.834,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=GAMINGPC, Days=30"
+2026-06-27 01:05:30.840,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\ProgramData\WinHarden\Compliance-History
+2026-06-27 01:05:30.860,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=GAMINGPC, Days=30"
+2026-06-27 01:05:30.867,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\ProgramData\WinHarden\Compliance-History
+2026-06-27 01:05:30.887,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=GAMINGPC, Days=30"
+2026-06-27 01:05:30.893,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\ProgramData\WinHarden\Compliance-History
+2026-06-27 01:05:30.926,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=GAMINGPC, Days=7"
+2026-06-27 01:05:30.930,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\ProgramData\WinHarden\Compliance-History
+2026-06-27 01:05:30.952,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=GAMINGPC, Days=30"
+2026-06-27 01:05:30.957,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\ProgramData\WinHarden\Compliance-History
+2026-06-27 01:05:30.979,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=GAMINGPC, Days=90"
+2026-06-27 01:05:30.983,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\ProgramData\WinHarden\Compliance-History
+2026-06-27 01:05:31.011,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=GAMINGPC, Days=365"
+2026-06-27 01:05:31.015,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\ProgramData\WinHarden\Compliance-History
+2026-06-27 01:05:31.047,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=GAMINGPC, Days=30"
+2026-06-27 01:05:31.052,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\NonExistentPath
+2026-06-27 01:05:31.076,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=NONEXISTENT-1480277515, Days=30"
+2026-06-27 01:05:31.081,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\ProgramData\WinHarden\Compliance-History
+2026-06-27 01:05:31.108,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=GAMINGPC, Days=30"
+2026-06-27 01:05:31.113,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\NonExistent
+2026-06-27 01:05:31.140,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=GAMINGPC, Days=30"
+2026-06-27 01:05:31.145,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\ProgramData\WinHarden\Compliance-History
+2026-06-27 01:05:31.165,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=GAMINGPC, Days=30"
+2026-06-27 01:05:31.172,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\ProgramData\WinHarden\Compliance-History
+2026-06-27 01:05:31.192,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=GAMINGPC, Days=30"
+2026-06-27 01:05:31.198,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\ProgramData\WinHarden\Compliance-History
+2026-06-27 01:05:31.225,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=GAMINGPC, Days=30"
+2026-06-27 01:05:31.230,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\ProgramData\WinHarden\Compliance-History
+2026-06-27 01:05:31.251,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=GAMINGPC, Days=30"
+2026-06-27 01:05:31.256,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\ProgramData\WinHarden\Compliance-History
+2026-06-27 01:05:31.277,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=GAMINGPC, Days=30"
+2026-06-27 01:05:31.283,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\ProgramData\WinHarden\Compliance-History
+2026-06-27 01:05:31.304,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=GAMINGPC, Days=30"
+2026-06-27 01:05:31.309,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\ProgramData\WinHarden\Compliance-History
+2026-06-27 01:05:31.338,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=GAMINGPC, Days=30"
+2026-06-27 01:05:31.342,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\NonExistent
+2026-06-27 01:05:31.371,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=GAMINGPC, Days=30"
+2026-06-27 01:05:31.377,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\ProgramData\WinHarden\Compliance-History
+2026-06-27 01:05:31.397,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=GAMINGPC, Days=30"
+2026-06-27 01:05:31.403,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\ProgramData\WinHarden\Compliance-History
+2026-06-27 01:05:31.431,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=GAMINGPC, Days=30"
+2026-06-27 01:05:31.436,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\ProgramData\WinHarden\Compliance-History
+2026-06-27 01:05:31.456,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=GAMINGPC, Days=30"
+2026-06-27 01:05:31.463,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\ProgramData\WinHarden\Compliance-History
+2026-06-27 01:05:31.483,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=GAMINGPC, Days=30"
+2026-06-27 01:05:31.489,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\ProgramData\WinHarden\Compliance-History
+2026-06-27 01:05:31.596,Info,Get-HardeningTrendData,Get-HardeningTrendData,86,"Retrieving hardening trend data: Computer=GAMINGPC, Days=30"
+2026-06-27 01:05:31.600,Warning,Get-HardeningTrendData,Get-HardeningTrendData,90,Trend data repository not found: C:\ProgramData\WinHarden\Compliance-History
+2026-06-27 01:05:32.100,Warning,Get-AccountPoliciesDrift.ps1,<ScriptBlock>,45,Account Policy drift: Min password length is  (expected 12)
+2026-06-27 01:05:32.111,Error,Get-NetworkSecurityDrift.ps1,<ScriptBlock>,62,"Error checking network security: The requested operation requires elevation.
+"
+2026-06-27 01:05:32.236,Info,New-SecurityDriftReport.ps1,<ScriptBlock>,77,"Drift report exported: C:\Repos\WinHarden\logs\Drift_Detection_2026-06-27_01-05-32.csv (Status: COMPLIANT, Drifts: 0)"
+2026-06-27 01:05:42.927,Warning,Get-AccountPoliciesDrift.ps1,<ScriptBlock>,45,Account Policy drift: Min password length is  (expected 12)
+2026-06-27 01:05:42.938,Error,Get-NetworkSecurityDrift.ps1,<ScriptBlock>,62,"Error checking network security: The requested operation requires elevation.
+"
+2026-06-27 01:05:43.055,Info,New-SecurityDriftReport.ps1,<ScriptBlock>,77,"Drift report exported: C:\Repos\WinHarden\logs\Drift_Detection_2026-06-27_01-05-43.csv (Status: COMPLIANT, Drifts: 0)"
+2026-06-27 01:05:54.288,Warning,Get-AccountPoliciesDrift.ps1,<ScriptBlock>,45,Account Policy drift: Min password length is  (expected 12)
+2026-06-27 01:05:54.316,Error,Get-NetworkSecurityDrift.ps1,<ScriptBlock>,62,"Error checking network security: The requested operation requires elevation.
+"
+2026-06-27 01:05:54.430,Info,New-SecurityDriftReport.ps1,<ScriptBlock>,77,"Drift report exported: C:\Repos\WinHarden\logs\Drift_Detection_2026-06-27_01-05-54.csv (Status: COMPLIANT, Drifts: 0)"
+2026-06-27 01:06:05.481,Warning,Get-AccountPoliciesDrift.ps1,<ScriptBlock>,45,Account Policy drift: Min password length is  (expected 12)
+2026-06-27 01:06:05.492,Error,Get-NetworkSecurityDrift.ps1,<ScriptBlock>,62,"Error checking network security: The requested operation requires elevation.
+"
+2026-06-27 01:06:05.617,Info,New-SecurityDriftReport.ps1,<ScriptBlock>,77,"Drift report exported: C:\Repos\WinHarden\logs\Drift_Detection_2026-06-27_01-06-05.csv (Status: COMPLIANT, Drifts: 0)"
+2026-06-27 01:06:16.873,Warning,Get-AccountPoliciesDrift.ps1,<ScriptBlock>,45,Account Policy drift: Min password length is  (expected 12)
+2026-06-27 01:06:16.886,Error,Get-NetworkSecurityDrift.ps1,<ScriptBlock>,62,"Error checking network security: The requested operation requires elevation.
+"
+2026-06-27 01:06:17.017,Info,New-SecurityDriftReport.ps1,<ScriptBlock>,77,"Drift report exported: C:\Repos\WinHarden\logs\Drift_Detection_2026-06-27_01-06-17.csv (Status: COMPLIANT, Drifts: 0)"
+2026-06-27 01:06:33.176,Warning,Get-AccountPoliciesDrift.ps1,<ScriptBlock>,45,Account Policy drift: Min password length is  (expected 12)
+2026-06-27 01:06:33.188,Error,Get-NetworkSecurityDrift.ps1,<ScriptBlock>,62,"Error checking network security: The requested operation requires elevation.
+"
+2026-06-27 01:06:33.310,Info,New-SecurityDriftReport.ps1,<ScriptBlock>,77,"Drift report exported: C:\Repos\WinHarden\logs\Drift_Detection_2026-06-27_01-06-33.csv (Status: COMPLIANT, Drifts: 0)"
+2026-06-27 01:06:44.284,Warning,Get-AccountPoliciesDrift.ps1,<ScriptBlock>,45,Account Policy drift: Min password length is  (expected 12)
+2026-06-27 01:06:44.297,Error,Get-NetworkSecurityDrift.ps1,<ScriptBlock>,62,"Error checking network security: The requested operation requires elevation.
+"
+2026-06-27 01:06:44.459,Info,New-SecurityDriftReport.ps1,<ScriptBlock>,77,"Drift report exported: C:\Repos\WinHarden\logs\Drift_Detection_2026-06-27_01-06-44.csv (Status: COMPLIANT, Drifts: 0)"
+2026-06-27 01:06:55.498,Warning,Get-AccountPoliciesDrift.ps1,<ScriptBlock>,45,Account Policy drift: Min password length is  (expected 12)
+2026-06-27 01:06:55.510,Error,Get-NetworkSecurityDrift.ps1,<ScriptBlock>,62,"Error checking network security: The requested operation requires elevation.
+"
+2026-06-27 01:06:55.634,Info,New-SecurityDriftReport.ps1,<ScriptBlock>,77,"Drift report exported: C:\Repos\WinHarden\logs\Drift_Detection_2026-06-27_01-06-55.csv (Status: COMPLIANT, Drifts: 0)"
+2026-06-27 01:06:56.484,Warning,Get-AccountPoliciesDrift.ps1,<ScriptBlock>,45,Account Policy drift: Min password length is  (expected 12)
+2026-06-27 01:06:56.497,Error,Get-NetworkSecurityDrift.ps1,<ScriptBlock>,62,"Error checking network security: The requested operation requires elevation.
+"
+2026-06-27 01:06:56.623,Info,New-SecurityDriftReport.ps1,<ScriptBlock>,77,"Drift report exported: C:\Repos\WinHarden\logs\Drift_Detection_2026-06-27_01-06-56.csv (Status: COMPLIANT, Drifts: 0)"
+2026-06-27 01:06:56.643,Info,New-HardeningSession,New-HardeningSession,101,"Initializing hardening session: Profile=Basis, Target=Client, OSVersion=11"
+2026-06-27 01:06:56.655,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:06:56.664,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:06:56.679,Info,New-HardeningSession,New-HardeningSession,138,"Hardening session created successfully. SessionId=c9c50cb2-3640-4aa1-a5b1-ece0fbc93c21, Rules=12"
+2026-06-27 01:06:56.705,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,92,"Starting security hardening: Profile=Basis, ComputerName=GAMINGPC"
+2026-06-27 01:06:56.712,Info,Get-HardeningProfile,Get-HardeningProfile,69,Loading hardening profile: Basis for Client
+2026-06-27 01:06:56.726,Info,Get-HardeningProfile,Get-HardeningProfile,131,Profile loaded successfully: 12 rules for Client
+2026-06-27 01:06:56.744,Info,Invoke-SecurityHardening<Process>,Invoke-SecurityHardening<Process>,126,Applying Registry rules: 8 rules
+2026-06-27 01:06:56.768,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Account-MinimumPasswordLength: Requested registry access is not allowed.
+2026-06-27 01:06:56.783,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule Account-PasswordComplexity: Requested registry access is not allowed.
+2026-06-27 01:06:56.794,Error,_ApplyHardeningRule,Write-ErrorLog,41,Failed to apply rule UAC-ElevationPrompt: Requested registry access is not allowed.

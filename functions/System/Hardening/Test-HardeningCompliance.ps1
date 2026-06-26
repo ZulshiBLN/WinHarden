@@ -165,7 +165,9 @@ function Test-HardeningCompliance {
 
             # Determine overall status
             $status = switch ($compliancePercentage) {
-                100 { 'Fully Compliant' }
+                100 {
+                    'Fully Compliant'
+                }
                 { $_ -ge 95 } {
                     'Highly Compliant'
                 }
@@ -299,6 +301,34 @@ function _TestRuleCompliance {
                 if (-not $result.Compliant) {
                     Write-Log -Message "Rule not compliant: $($Rule.Name) - Expected: $expectedValue, Got: $compareActualValue" -Level Warning
                 }
+            }
+        }
+        elseif ($verification.ContainsKey('Type') -and $verification.Type -eq 'RegistryMultiple') {
+            # Structured verification for multiple registry paths (no string-based code eval)
+            $actualValues = @()
+            foreach ($path in $verification.Paths) {
+                try {
+                    $value = Get-ItemProperty -Path $path -Name $verification.PropertyName -ErrorAction SilentlyContinue | Select-Object -ExpandProperty $verification.PropertyName
+                    $actualValues += $value
+                }
+                catch {
+                    $actualValues += $null
+                }
+            }
+
+            $expectedValues = $verification.ExpectedValues
+            $result.ActualValue = $actualValues
+            $result.ExpectedValue = $expectedValues
+
+            if ($null -eq $actualValues -or $actualValues.Count -ne $expectedValues.Count) {
+                $result.Compliant = $false
+            }
+            else {
+                $result.Compliant = @(Compare-Object -ReferenceObject $expectedValues -DifferenceObject $actualValues).Count -eq 0
+            }
+
+            if (-not $result.Compliant) {
+                Write-Log -Message "Rule not compliant: $($Rule.Name) - Expected: @($($expectedValues -join ', ')), Got: @($($actualValues -join ', '))" -Level Warning
             }
         }
 
