@@ -28,7 +28,7 @@ function Test-WinHardenDependencies {
     Test-WinHardenDependencies -Module GroupPolicy -ExitOnError
     #>
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param(
         [Parameter(Mandatory = $false)]
         [ValidateScript( { $null -eq $_ -or $_.Count -gt 0 })]
