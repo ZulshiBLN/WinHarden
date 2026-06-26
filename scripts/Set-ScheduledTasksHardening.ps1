@@ -1,14 +1,39 @@
-# WinHarden - Centralized Scheduled Tasks Setup Script
-# Creates all automation ScheduledTasks under a central "Hardening" folder
-# Usage: powershell.exe -NoProfile -ExecutionPolicy Bypass -File "Set-ScheduledTasksHardening.ps1"
-# Must be run as ADMIN
+<#
+.SYNOPSIS
+Deploys centralized scheduled tasks for WinHarden automation in Task Scheduler.
 
+.DESCRIPTION
+Creates automated tasks in a "Hardening" folder for monthly compliance audits, daily security
+monitoring, and weekly drift detection. Supports cleanup of legacy task naming schemes.
+
+.PARAMETER Force
+Force cleanup and recreation of existing tasks.
+
+.PARAMETER Cleanup
+Remove old-format tasks (WinHarden-* naming) before creating new tasks.
+
+.EXAMPLE
+Set-ScheduledTasksHardening -Force
+
+.NOTES
+Requires: Administrator rights, PowerShell 5.1+
+DEPENDS ON: Core.psm1 (Write-Log function)
+#>
+
+[CmdletBinding(SupportsShouldProcess)]
 param(
-    [switch]$Force = $false,
-    [switch]$Cleanup = $false
+    [switch]$Force,
+    [switch]$Cleanup
 )
 
-$ErrorActionPreference = "Continue"
+$ErrorActionPreference = "Stop"
+
+# [INIT] Import Core Module (must be first)
+$corePath = Join-Path (Split-Path $PSScriptRoot -Parent) "modules\Core.psm1"
+if (-not (Test-Path $corePath)) {
+    Write-Error "Core.psm1 not found at: $corePath" -ErrorAction Stop
+}
+Import-Module $corePath -Force -ErrorAction Stop
 
 Write-Output "`n==========================================================="
 Write-Output "      WINHARDEN - CENTRALIZED SCHEDULED TASKS SETUP"
@@ -24,17 +49,19 @@ $principal = New-Object Security.Principal.WindowsPrincipal $windowsIdentity
 $isAdmin = $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
 if (-not $isAdmin) {
+    Write-Log -Message "This script must run as ADMINISTRATOR" -Level Error -Caller "Admin Rights Check"
     Write-Output "`n[ERROR] This script must run as ADMINISTRATOR"
     Write-Output "Please restart PowerShell with Admin rights:"
     Write-Output "  Win + X - Terminal (Admin) or PowerShell (Admin)"
     exit 1
 }
 
+Write-Log -Message "Admin rights confirmed" -Level Info -Caller "Admin Rights Check"
 Write-Output "[OK] Admin rights confirmed"
 # [STEP 2] Verify Script Paths
 Write-Output "`n[STEP 2] VERIFYING AUTOMATION SCRIPTS EXIST"
 Write-Output "==========================================================="
-$scriptsPath = "c:\Repos\WinHarden\scripts"
+$scriptsPath = $PSScriptRoot
 $requiredScripts = @(
     "Monthly_Compliance_Audit.ps1",
     "Monitor_Audit_Logs.ps1",
@@ -50,12 +77,14 @@ foreach ($script in $requiredScripts) {
         Write-Output "[OK] Found: $script"
     }
     else {
+        Write-Log -Message "Missing required script: $script at $scriptPath" -Level Error -Caller "Script Verification"
         Write-Output "[ERROR] Missing: $script"
         $allScriptsFound = $false
     }
 }
 
 if (-not $allScriptsFound) {
+    Write-Log -Message "Some required scripts are missing. Cannot proceed." -Level Error -Caller "Script Verification"
     Write-Output "`n[ERROR] Some scripts are missing. Cannot proceed."
     exit 1
 }
@@ -131,8 +160,11 @@ if ($Cleanup -or $Force) {
     foreach ($taskName in $oldTaskNames) {
         $existingTask = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
         if ($existingTask) {
-            Write-Output "Removing old task: $taskName"
-            schtasks /delete /tn $taskName /f 2>&1 | Out-Null
+            if ($PSCmdlet.ShouldProcess($taskName, "Remove old scheduled task")) {
+                Write-Output "Removing old task: $taskName"
+                & schtasks /delete /tn $taskName /f 2>&1 | Out-Null
+                Write-Log -Message "Removed old task: $taskName" -Level Info -Caller "Task Cleanup"
+            }
         }
     }
 
@@ -152,6 +184,12 @@ foreach ($task in $tasks) {
     Write-Output "`nCreating: $($task.DisplayName)"
     Write-Output "  Path: $taskPath"
     Write-Output "  Schedule: $($task.Schedule)"
+
+    if (-not $PSCmdlet.ShouldProcess($taskPath, "Create scheduled task")) {
+        Write-Output "  [WHATIF] Task creation skipped"
+        continue
+    }
+
     try {
         # Build schtasks command parameters
         $schtasksParams = @(
@@ -184,15 +222,18 @@ foreach ($task in $tasks) {
         $taskExists = Get-ScheduledTask -TaskName $task.Name -ErrorAction SilentlyContinue
         if ($taskExists) {
             Write-Output "  [OK] Created successfully"
+            Write-Log -Message "Created scheduled task: $taskPath ($($task.Schedule))" -Level Info -Caller "Task Creation"
             $createdTasks += $task
         }
         else {
             Write-Output "  [ERROR] Creation failed: $result"
+            Write-Log -Message "Failed to create scheduled task $taskPath : $result" -Level Error -Caller "Task Creation"
             $failedTasks += $task
         }
     }
     catch {
         Write-Output "  [ERROR] Error: $_"
+        Write-Log -Message "Error creating scheduled task $taskPath : $_" -Level Error -Caller "Task Creation"
         $failedTasks += $task
     }
 }
@@ -204,7 +245,7 @@ Write-Output "`nScheduled Tasks in 'Hardening' Folder:"
 $allHardeningTasks = Get-ScheduledTask -ErrorAction SilentlyContinue | Where-Object { $_.TaskPath -like "*Hardening*" }
 
 if ($allHardeningTasks) {
-    $allHardeningTasks | Select-Object TaskName, @{Name="State"; Expression={$_.State}}, @{Name="Enabled"; Expression={$_.Enabled}} | Format-Table -AutoSize
+    $allHardeningTasks | Select-Object TaskName, @{ Name = "State"; Expression = { $_.State } }, @{ Name = "Enabled"; Expression = { $_.Enabled } } | Format-Table -AutoSize
 
     Write-Output "`n[OK] Task Scheduler Status:"
     Write-Output "  Total Tasks Created: $($allHardeningTasks.Count)"
@@ -293,10 +334,12 @@ Write-Output "`n==========================================================="
 if ($createdTasks.Count -eq $tasks.Count) {
     Write-Output "[OK] DEPLOYMENT SUCCESSFUL"
     Write-Output "All $($tasks.Count) WinHarden automation tasks have been created!"
+    Write-Log -Message "Deployment successful: All $($tasks.Count) tasks created" -Level Info -Caller "Deployment Summary"
     exit 0
 }
 else {
     Write-Output "[WARN] DEPLOYMENT COMPLETED WITH WARNINGS"
     Write-Output "Some tasks may need manual verification."
+    Write-Log -Message "Deployment completed with warnings: $($createdTasks.Count)/$($tasks.Count) tasks created, $($failedTasks.Count) failed" -Level Warning -Caller "Deployment Summary"
     exit 1
 }
