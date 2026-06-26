@@ -43,7 +43,7 @@ function Get-HardeningProfile {
     LOGGING: Profile loading events logged via Write-Log
     #>
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
     param(
         [Parameter(Mandatory = $true)]
         [ValidateSet('Basis', 'Recommended', 'Strict')]
@@ -62,77 +62,79 @@ function Get-HardeningProfile {
 
     $ErrorActionPreference = 'Stop'
 
-    try {
-        $profilePath = Join-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -ChildPath "Hardening.Profiles\$ProfileName.psd1"
+    if ($PSCmdlet.ShouldProcess("hardening profile '$ProfileName'", "Load")) {
+        try {
+            $profilePath = Join-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -ChildPath "Hardening.Profiles\$ProfileName.psd1"
 
-        Write-Log -Message "Loading hardening profile: $ProfileName for $TargetSystem" -Level Info
+            Write-Log -Message "Loading hardening profile: $ProfileName for $TargetSystem" -Level Info
 
-        # Validate profile file exists
-        if (-not (Test-Path -Path $profilePath -PathType Leaf)) {
-            throw "Profile file not found: $profilePath"
-        }
+            # Validate profile file exists
+            if (-not (Test-Path -Path $profilePath -PathType Leaf)) {
+                throw "Profile file not found: $profilePath"
+            }
 
-        # Load profile data
-        $profileData = Import-PowerShellDataFile -Path $profilePath
+            # Load profile data
+            $profileData = Import-PowerShellDataFile -Path $profilePath
 
-        if ($null -eq $profileData) {
-            throw "Failed to load profile data from: $profilePath"
-        }
+            if ($null -eq $profileData) {
+                throw "Failed to load profile data from: $profilePath"
+            }
 
-        # Validate profile structure
-        if (-not $profileData.ContainsKey('Profile') -or -not $profileData.ContainsKey('Rules')) {
-            throw "Invalid profile structure in: $profilePath. Missing 'Profile' or 'Rules' keys."
-        }
+            # Validate profile structure
+            if (-not $profileData.ContainsKey('Profile') -or -not $profileData.ContainsKey('Rules')) {
+                throw "Invalid profile structure in: $profilePath. Missing 'Profile' or 'Rules' keys."
+            }
 
-        # Filter rules by target system if rules are OS-specific
-        $filteredRules = @()
-        foreach ($rule in $profileData.Rules) {
-            $include = $false
+            # Filter rules by target system if rules are OS-specific
+            $filteredRules = @()
+            foreach ($rule in $profileData.Rules) {
+                $include = $false
 
-            # Check if rule supports target system
-            if ($rule.ContainsKey('OSSupport')) {
-                $osSupport = $rule.OSSupport
-                if ($osSupport.ContainsKey($TargetSystem)) {
-                    $versions = $osSupport[$TargetSystem]
-                    if ($PSBoundParameters.ContainsKey('OSVersion')) {
-                        # Filter by specific OS version
-                        if ($OSVersion -in $versions) {
+                # Check if rule supports target system
+                if ($rule.ContainsKey('OSSupport')) {
+                    $osSupport = $rule.OSSupport
+                    if ($osSupport.ContainsKey($TargetSystem)) {
+                        $versions = $osSupport[$TargetSystem]
+                        if ($PSBoundParameters.ContainsKey('OSVersion')) {
+                            # Filter by specific OS version
+                            if ($OSVersion -in $versions) {
+                                $include = $true
+                            }
+                        }
+                        else {
+                            # Include if any version is supported
                             $include = $true
                         }
                     }
-                    else {
-                        # Include if any version is supported
-                        $include = $true
-                    }
+                }
+                else {
+                    # Rule applies to all systems
+                    $include = $true
+                }
+
+                if ($include) {
+                    $filteredRules += $rule
                 }
             }
-            else {
-                # Rule applies to all systems
-                $include = $true
+
+            # Create result object
+            $result = [ordered]@{
+                ProfileName = $ProfileName
+                TargetSystem = $TargetSystem
+                OSVersion = $OSVersion
+                ProfileMetadata = $profileData.Profile
+                Rules = $filteredRules
+                RuleCount = @($filteredRules).Count
+                LoadedTime = Get-Date
             }
 
-            if ($include) {
-                $filteredRules += $rule
-            }
+            Write-Log -Message "Profile loaded successfully: $($result.RuleCount) rules for $TargetSystem" -Level Info
+
+            [PSCustomObject]$result
         }
-
-        # Create result object
-        $result = [ordered]@{
-            ProfileName = $ProfileName
-            TargetSystem = $TargetSystem
-            OSVersion = $OSVersion
-            ProfileMetadata = $profileData.Profile
-            Rules = $filteredRules
-            RuleCount = @($filteredRules).Count
-            LoadedTime = Get-Date
+        catch {
+            Write-ErrorLog -Message "Failed to load hardening profile: $($_.Exception.Message)" -Caller $MyInvocation.MyCommand.Name
+            throw
         }
-
-        Write-Log -Message "Profile loaded successfully: $($result.RuleCount) rules for $TargetSystem" -Level Info
-
-        [PSCustomObject]$result
-    }
-    catch {
-        Write-ErrorLog -Message "Failed to load hardening profile: $($_.Exception.Message)" -Caller $MyInvocation.MyCommand.Name
-        throw
     }
 }
