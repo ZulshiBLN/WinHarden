@@ -1,8 +1,9 @@
 # WinHarden - Windows Hardening System
 
-**Version:** 1.0  
+**Version:** 1.1  
 **Status:** Production Ready (Grade A+)  
-**Last Updated:** 2026-06-27
+**Last Updated:** 2026-06-27  
+**Release:** v1.1 - Stable Production Release
 
 ---
 
@@ -226,8 +227,9 @@ Track and forecast hardening progress over time.
 ## License & Attribution
 
 WinHarden Windows Hardening System  
-Version 1.0  
-Production Ready (Grade A+)
+Version 1.1  
+Production Ready (Grade A+)  
+Release Status: Stable - v1.1
 
 ---
 
