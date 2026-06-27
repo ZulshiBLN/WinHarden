@@ -6,7 +6,7 @@ PowerShell Automation & Operations Toolkit für Windows Server-Administration.
 
 ## Projekt-Kontext
 
-**Status:** [OK] Infrastruktur-Phase COMPLETE (9 ADRs accepted) – Implementation in Progress  
+**Status:** [OK] Infrastruktur-Phase COMPLETE (10 ADRs accepted) – Implementation in Progress  
 **Sprache:** PowerShell 5.1 (Windows)  
 **Ziel:** Sichere, performante, tokensparende Zusammenarbeit mit Claude
 
@@ -47,7 +47,12 @@ PowerShell Automation & Operations Toolkit für Windows Server-Administration.
   * `.NET APIs` wenn verfügbar (statt String-Evaluation)
   * Explizite Parameter (nie String-Konstruktion für Code)
   * `Invoke-Command` mit `-ScriptBlock` (wenn remote nötig, nicht mit user input)
-- **Konsequenz:** Alle Invoke-Expression Aufrufe führen zu PSScriptAnalyzer-Fehler
+- **Dokumentierte Exceptions:** Invoke-Expression kann in Spezialfällen verwendet werden (siehe PSScriptAnalyzerSettings.psd1)
+  * Exception nur wenn Code aus **trusted, statischen Quellen** kommt (.psd1 Profile-Dateien)
+  * NICHT bei User-Input oder dynamisch generiertem Code
+  * Alle Exceptions müssen in PSScriptAnalyzerSettings.psd1 dokumentiert werden mit Grund
+  * Beispiel: Test-HardeningCompliance.ps1 lädt Verify-Commands aus .psd1 Profilen (trusted static data)
+- **Konsequenz:** Alle Invoke-Expression Aufrufe ohne Exception führen zu PSScriptAnalyzer-Fehler
 - **Siehe auch:** STRUCTURE.md Regel 9.9 (Sichere Command-Ausführung)
 
 **Regel 1.5 - Dokumentation von Public vs Private Funktionen (STRUCTURE.md Regel 3.1)**
@@ -290,7 +295,7 @@ git push origin <dev/branch>
 ## Dokumentation & Referenzen
 
 **Architektur-Entscheidungen (WHY):**
-- Siehe [DECISIONS.md](DECISIONS.md) für alle 9 ADRs (Kontext, Gründe, Alternativen)
+- Siehe [DECISIONS.md](DECISIONS.md) für alle 10 ADRs (Kontext, Gründe, Alternativen)
 
 **Implementierungs-Regeln (HOW):**
 - Siehe [STRUCTURE.md](STRUCTURE.md) für alle 12 Regel-Blöcke (Regeln 1.1-12.8)

@@ -3,7 +3,7 @@
 Zentrale Dokumentation für Architektur-Entscheidungen, die das Projekt massgeblich beeinflussen.
 
 **Alle ADRs:** ADR-001 bis ADR-010 ([OK] ACCEPTED)  
-**Konkrete Implementierungs-Regeln:** Siehe [STRUCTURE.md](STRUCTURE.md) (Regeln 1.1-12.8, plus Regel 7.8-7.10)
+**Konkrete Implementierungs-Regeln:** Siehe [STRUCTURE.md](STRUCTURE.md) (Regeln 1.1-12.8, plus Regel 7.8-7.11)
 
 ---
 
@@ -395,10 +395,12 @@ WinHarden hat mehrere Funktions-Module (System, User, Maintenance, etc.). Die Im
 
 **Modul-Struktur:**
 - **Getrennte Module** (nicht alles in 1 .psm1):
-  - `Core.psm1` – Zentrale Basis-Funktionen (IMMER laden)
-  - `System.psm1` – System-Admin Funktionen (optional)
-  - `User.psm1` – User/Group Management (optional)
-  - `Maintenance.psm1` – Updates, Cleanup, Monitoring (optional)
+  - **Implementiert:**
+    - `Core.psm1` – Zentrale Basis-Funktionen (IMMER laden)
+    - `System.psm1` – System-Admin Funktionen (optional)
+  - **Geplant (Phase 2+):**
+    - `User.psm1` – User/Group Management (optional)
+    - `Maintenance.psm1` – Updates, Cleanup, Monitoring (optional)
 
 **Core-Modul Inhalte (IMMER verfügbar):**
 - `Write-Log` – Zentrale Logging-Funktion
@@ -499,7 +501,11 @@ Mit mehreren Modulen (Core, System, User, Maintenance) müssen Abhängigkeiten z
   # REQUIRES (optional): ActiveDirectory Module 2.0+
   # REQUIRES (optional): Az.Storage Module 4.0+
   ```
-- **Graceful Degradation:** Wenn externe Module fehlen, loggen + Error + return gracefully
+- **Graceful Degradation:** Wenn externe Module fehlen, loggen + `Write-Error` (non-terminating) + `return` gracefully
+  - Use `Write-Error` (non-terminating): setzt $? zu $false, aber Ausführung läuft weiter
+  - NICHT `throw` (terminating): würde Script sofort stoppen
+  - Loggen mit `Write-Log` für Audit-Trail
+  - Return gracefully, Script läuft mit Einschränkungen weiter
 - **Nicht hard-require:** WinHarden funktioniert ohne externe Modules (nur mit Einschränkungen)
 - Nutzen von `Test-WinHardenDependencies` Helper (optional)
 

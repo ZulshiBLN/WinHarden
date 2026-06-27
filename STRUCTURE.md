@@ -85,6 +85,9 @@ Siehe **[ADR-003](DECISIONS.md)** für vollständigen Kontext.
 - **Regel 4.1:** Pro Funktion muss eine Test-Datei unter `tests/` existieren: `<FunctionName>.Tests.ps1`
 - **Regel 4.2:** Pester 5.x (mindestens 5.0+)
 - **Regel 4.3:** Code Coverage Minimum: **95%** (via `Invoke-Pester -CodeCoverage`)
+  - Exceptions nur mit explizitem Kommentar: `# Code Coverage Exception: [Reason]`
+  - Beispiel: `# Code Coverage Exception: Cannot mock Windows Registry access`
+  - Alle Exceptions müssen in Test-Datei dokumentiert sein (Comment oberhalb des Skips)
 - **Regel 4.4:** Nutze **Pester `Mock`** für externe Dependencies (APIs, Dateisystem, Registry)
 - **Regel 4.5:** Assertion Style: Standard Pester Assertions (`Should -Be`, `Should -Throw`, `Should -Match`, etc.)
 - **Regel 4.6:** Test-Data: Nutze **Fixtures** in `tests/fixtures/` (JSON, CSV, oder PowerShell-Objekte)
@@ -197,7 +200,10 @@ Siehe **[ADR-006](DECISIONS.md)** für Formatierung und **[ADR-010](DECISIONS.md
 Siehe **[ADR-007](DECISIONS.md)** für vollständigen Kontext.
 
 - **Regel 8.1:** Funktions-Präfixe: PowerShell Approved Verbs (Get, Set, Test, New, Remove, Add, Clear, etc.)
-  - **Exception:** Boolean-Funktionen verwenden `Is`-Prefix statt Approved Verb (siehe Regel 8.7)
+  - **Exception:** Boolean-Funktionen verwenden `Is`-Prefix statt Approved Verb (siehe Regel 8.7, ADR-007)
+  - **Grund:** 'Is' ist semantisch korrekter für Zustandsabfragen als Test-Verben
+    (z.B. 'Is-SystemHealthy' vs. 'Test-SystemHealth' — ersteres ist idiomatischer)
+  - **PSScriptAnalyzer:** Diese Exception ist in PSScriptAnalyzerSettings.psd1 dokumentiert und wird nicht als Fehler gemeldet
 - **Regel 8.2:** Funktions-Format: `Verb-Noun` (z.B. `Get-SystemInfo`)
 - **Regel 8.3:** Private Funktionen: Prefix `_` (z.B. `_PrivateHelper`)
 - **Regel 8.4:** Parameter-Namen: PascalCase (z.B. `$ComputerName`)
@@ -255,7 +261,9 @@ Siehe **[ADR-005](DECISIONS.md)** für vollständigen Kontext.
 
 Siehe **[ADR-008](DECISIONS.md)** für vollständigen Kontext.
 
-- **Regel 11.1:** Getrennte Module (nicht alles in 1 .psm1): `Core.psm1`, `System.psm1`, `User.psm1`, `Maintenance.psm1`
+- **Regel 11.1:** Getrennte Module (nicht alles in 1 .psm1):
+  - **Implementiert:** `Core.psm1`, `System.psm1`
+  - **Geplant (Phase 2+, siehe ADR-008):** `User.psm1`, `Maintenance.psm1`
 - **Regel 11.2:** Core-Modul ist **Basis für alles** (Write-Log, Error-Helpers, Validatoren, Masking)
 - **Regel 11.3:** Core-Modul IMMER laden (erste Zeile in Scripts)
 - **Regel 11.4:** Zusätzliche Module on-demand laden (nur wenn nötig)
@@ -275,7 +283,11 @@ Siehe **[ADR-009](DECISIONS.md)** für vollständigen Kontext.
 - **Regel 12.3:** Inter-Module Dependencies explizit dokumentieren (Kommentar: `# DEPENDS ON: ...`)
 - **Regel 12.4:** Test-Mocking für alle Inter-Modul-Aufrufe (ADR-003)
 - **Regel 12.5:** External Dependencies optional deklarieren (Kommentar: `# REQUIRES (optional): ...`)
-- **Regel 12.6:** Graceful Degradation: External Module fehlt → Loggen + Error + Continue (nicht throw)
+- **Regel 12.6:** Graceful Degradation für externe Abhängigkeiten:
+  - Wenn externes PowerShell-Modul fehlt: Loggen + `Write-Error` + `return` gracefully (NICHT `throw`)
+  - `Write-Error` ist non-terminating (setzt $? zu $false, aber Ausführung läuft weiter)
+  - `throw` ist terminating (stoppt sofort) — NICHT für externe Dependencies nutzen
+  - Beispiel: Wenn ActiveDirectory-Modul fehlt, loggen und return, Script läuft mit Einschränkungen
 - **Regel 12.7:** PowerShell-Version Constraint: Minimum 5.1, Runtime-Checks für 7.x Features (ADR-002)
 - **Regel 12.8:** Optional: `Test-WinHardenDependencies` Helper-Funktion in Core (nicht blocking)
 
@@ -292,10 +304,10 @@ WinHarden/
 │   ├── User/
 │   └── Maintenance/
 ├── modules/                # Geladene PowerShell-Module (exports)
-│   ├── Core.psm1           # Zentrale Basis-Funktionen (IMMER laden)
-│   ├── System.psm1         # System-Admin Funktionen (optional)
-│   ├── User.psm1           # User/Group Management (optional)
-│   └── Maintenance.psm1    # Updates, Cleanup, Monitoring (optional)
+│   ├── Core.psm1           # [IMPLEMENTED] Zentrale Basis-Funktionen (IMMER laden)
+│   ├── System.psm1         # [IMPLEMENTED] System-Admin Funktionen (optional)
+│   ├── User.psm1           # [PLANNED] User/Group Management (Phase 2+, siehe ADR-008)
+│   └── Maintenance.psm1    # [PLANNED] Updates, Cleanup, Monitoring (Phase 2+, siehe ADR-008)
 ├── scripts/                # Hauptscripte (modular aus modules aufgebaut)
 ├── tests/                  # Test-Funktionen (pro function/ eine entsprechende)
 │   └── fixtures/           # Test-Daten (JSON, CSV, PowerShell-Objekte)
@@ -310,7 +322,7 @@ WinHarden/
 
 ## Status: Infrastruktur-Phase [OK] COMPLETE
 
-Alle 9 ADRs sind dokumentiert und akzeptiert:
+Alle 10 ADRs sind dokumentiert und akzeptiert:
 
 - [OK] **ADR-001:** Modulare PowerShell-Architektur mit Funktionen & Scripts
 - [OK] **ADR-002:** PowerShell-Version (5.1 vs. 7.x compatibility)
@@ -321,5 +333,6 @@ Alle 9 ADRs sind dokumentiert und akzeptiert:
 - [OK] **ADR-007:** Naming Conventions (Approved Verbs, camelCase)
 - [OK] **ADR-008:** Modul-Import-Strategie (Core-Modul + Optional)
 - [OK] **ADR-009:** Dependency Management (Linear Hierarchy, Graceful Degradation)
+- [OK] **ADR-010:** Output-Handling & Logging-Konventionen (ASCII-only, Write-* Korrektheit)
 
 **Nächste Phase:** Implementation (Code schreiben)

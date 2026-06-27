@@ -104,5 +104,14 @@
         PSUseSingularNouns = @{
             Enable = $false
         }
+
+        # EXCEPTION: Is-Prefix for Boolean Functions (ADR-007, STRUCTURE.md Regel 8.7)
+        # Boolean functions use 'Is' prefix instead of official Approved Verbs (Get, Test, etc.)
+        # - 'Is' is more idiomatically correct for status checks: Is-Healthy, Is-Valid, Is-Installed
+        # - Compare: Is-Healthy (more intuitive) vs. Test-Health or Get-HealthStatus (verbose)
+        # - This follows common programming conventions: Python has .is_valid(), C# has IsValid property
+        # Reason: 'Is' is semantically clearer for boolean-returning functions
+        # Note: PSUseApprovedVerbs still enforces other approved verbs; only 'Is' is allowed for boolean functions
+        # Status: Documented exception, allowed in codebase (ADR-007, Zeile 360-361)
     }
 }
