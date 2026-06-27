@@ -63,10 +63,12 @@ Describe "Get-AccountPoliciesDrift" {
         }
 
         It "detects password length drift" {
-            $result = Get-AccountPoliciesDrift
+            InModuleScope System.Test {
+                $result = Get-AccountPoliciesDrift
 
-            $result | Should -Not -BeNullOrEmpty
-            $result.Count | Should -Be 1
+                $result | Should -Not -BeNullOrEmpty
+                $result.Count | Should -Be 1
+            }
         }
 
         It "includes drift setting name in result" {
@@ -109,6 +111,16 @@ Describe "Get-AccountPoliciesDrift" {
         }
 
         It "accepts custom minimum password length parameter" {
+            Mock Get-ItemProperty {
+                if ($Name -eq "MinimumPasswordLength") {
+                    return [PSCustomObject]@{ MinimumPasswordLength = 10 }
+                }
+                elseif ($Name -eq "PasswordComplexity") {
+                    return [PSCustomObject]@{ PasswordComplexity = 1 }
+                }
+                return $null
+            } -ModuleName System.Test -ParameterFilter { $Path -match "Netlogon" }
+
             $result = Get-AccountPoliciesDrift -MinimumPasswordLength 10
 
             $result | Should -BeNullOrEmpty
@@ -130,10 +142,12 @@ Describe "Get-AccountPoliciesDrift" {
         }
 
         It "detects password complexity drift" {
-            $result = Get-AccountPoliciesDrift
+            InModuleScope System.Test {
+                $result = Get-AccountPoliciesDrift
 
-            $result | Should -Not -BeNullOrEmpty
-            $result.Count | Should -Be 1
+                $result | Should -Not -BeNullOrEmpty
+                $result.Count | Should -Be 1
+            }
         }
 
         It "indicates complexity is disabled when expected enabled" {
@@ -206,10 +220,12 @@ Describe "Get-AccountPoliciesDrift" {
         }
 
         It "logs error message" {
-            { Get-AccountPoliciesDrift -ErrorAction SilentlyContinue } | Out-Null
+            InModuleScope System.Test {
+                { Get-AccountPoliciesDrift -ErrorAction SilentlyContinue } | Out-Null
 
-            Assert-MockCalled Write-Log -ModuleName System.Test -ParameterFilter {
-                $Level -eq "Error"
+                Assert-MockCalled Write-Log -ParameterFilter {
+                    $Level -eq "Error"
+                }
             }
         }
     }
@@ -257,6 +273,15 @@ Describe "Get-AccountPoliciesDrift" {
         }
 
         It "accepts RequirePasswordComplexity parameter" {
+            Mock Get-ItemProperty {
+                if ($Name -eq "MinimumPasswordLength") {
+                    return [PSCustomObject]@{ MinimumPasswordLength = 12 }
+                }
+                elseif ($Name -eq "PasswordComplexity") {
+                    return [PSCustomObject]@{ PasswordComplexity = 0 }
+                }
+            } -ModuleName System.Test
+
             $result = Get-AccountPoliciesDrift -RequirePasswordComplexity $false
 
             $result | Should -BeNullOrEmpty
