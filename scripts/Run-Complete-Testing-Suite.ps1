@@ -59,7 +59,7 @@ function Write-TestOutput {
     $timestamp = Get-Date -Format 'HH:mm:ss'
     $output = "[$timestamp] [$Level] $Message"
 
-    Write-Host $output
+    Write-Output $output
     Add-Content -Path $testLogFile -Value $output
 }
 
@@ -494,8 +494,8 @@ Write-TestOutput "  TOTAL:                       $totalPass/25 PASS"
 Write-TestOutput ""
 
 if ($totalPass -eq 25) {
-    Write-TestOutput "CERTIFICATION STATUS: APPROVED ✅" -Level CERT
-    Write-TestOutput "PRODUCTION READY: YES ✅" -Level CERT
+    Write-TestOutput "CERTIFICATION STATUS: APPROVED [OK]" -Level CERT
+    Write-TestOutput "PRODUCTION READY: YES [OK]" -Level CERT
 } else {
     Write-TestOutput "CERTIFICATION STATUS: $totalPass/25 PASS" -Level WARN
 }
@@ -768,7 +768,7 @@ if ($GenerateHTML) {
             <p>All 5 Phases Executed</p>
             <p>Test Run: $testRunID | Environment: $Environment | Date: $(Get-Date -Format 'yyyy-MM-dd')</p>
             <div class="cert">
-                $(if ($totalPass -eq 25) { 'CERTIFICATION: APPROVED ✅' } else { "RESULTS: $totalPass/25 PASS" })
+                $(if ($totalPass -eq 25) { 'CERTIFICATION: APPROVED [OK]' } else { "RESULTS: $totalPass/25 PASS" })
             </div>
         </div>
     </div>
@@ -786,4 +786,4 @@ if ($GenerateHTML) {
     Write-TestOutput "HTML Report: $htmlReportFile"
 }
 Write-TestOutput ""
-Write-TestOutput "Status: $(if ($totalPass -eq 25) { 'ALL TESTS PASSED ✅' } else { "$totalPass/25 PASSED" })"
+Write-TestOutput "Status: $(if ($totalPass -eq 25) { 'ALL TESTS PASSED [OK]' } else { "$totalPass/25 PASSED" })"

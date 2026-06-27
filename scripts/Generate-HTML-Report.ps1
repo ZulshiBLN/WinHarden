@@ -21,22 +21,17 @@ param(
     [string]$OutputFile = "C:\Reports\WinHarden\WinHarden_Testing_Report.html"
 )
 
-# Ensure output directory exists
 $outputDir = Split-Path -Parent $OutputFile
 if (-not (Test-Path $outputDir)) {
     New-Item -ItemType Directory -Path $outputDir -Force | Out-Null
 }
 
-# Read markdown file
 if (-not (Test-Path $MarkdownFile)) {
-    Write-Host "[ERROR] Markdown file not found: $MarkdownFile"
+    Write-Error "[ERROR] Markdown file not found: $MarkdownFile" -ErrorAction Stop
     exit 1
 }
 
 $markdownContent = Get-Content -Path $MarkdownFile -Raw
-
-# Convert markdown to HTML
-$htmlBody = Convert-MarkdownToHtml $markdownContent
 
 $htmlContent = @"
 <!DOCTYPE html>
@@ -386,17 +381,17 @@ $htmlContent = @"
             <h3>Testing Pyramid</h3>
             <p>The testing approach follows a pyramid structure with 5 distinct phases, each validating specific dimensions:</p>
             <pre>
-                          Phase 5: Security                ✅ 5/5
+                          Phase 5: Security                [OK] 5/5
                         /                        \
-                       /      Phase 4: Performance  ✅ 5/5
+                       /      Phase 4: Performance  [OK] 5/5
                       /      /                \
-                     /      /  Phase 3: E2E    ✅ 5/5
+                     /      /  Phase 3: E2E    [OK] 5/5
                     /      /  /            \
-                   /      /  /  Phase 2: Integration ✅ 5/5
+                   /      /  /  Phase 2: Integration [OK] 5/5
                   /      /  /  /                  \
-                 /      /  /  /  Phase 1: Manual   ✅ 5/5
+                 /      /  /  /  Phase 1: Manual   [OK] 5/5
 
-CUMULATIVE: 25/25 PASS = 100% ✅
+CUMULATIVE: 25/25 PASS = 100% [OK]
             </pre>
 
             <h2 id="phase1">Phase 1: Manual Testing</h2>
@@ -441,7 +436,7 @@ CUMULATIVE: 25/25 PASS = 100% ✅
             </table>
 
             <div class="success-box">
-                <strong>Phase 1 Result: 5/5 PASS ✅</strong><br>
+                <strong>Phase 1 Result: 5/5 PASS [OK]</strong><br>
                 All core workflows validated successfully.
             </div>
 
@@ -487,7 +482,7 @@ CUMULATIVE: 25/25 PASS = 100% ✅
             </table>
 
             <div class="success-box">
-                <strong>Phase 2 Result: 5/5 PASS ✅</strong><br>
+                <strong>Phase 2 Result: 5/5 PASS [OK]</strong><br>
                 Module dependencies and data flow verified.
             </div>
 
@@ -539,7 +534,7 @@ CUMULATIVE: 25/25 PASS = 100% ✅
             </table>
 
             <div class="success-box">
-                <strong>Phase 3 Result: 5/5 PASS ✅ (16.3s total)</strong><br>
+                <strong>Phase 3 Result: 5/5 PASS [OK] (16.3s total)</strong><br>
                 Complete workflows verified across all scenarios.
             </div>
 
@@ -621,7 +616,7 @@ CUMULATIVE: 25/25 PASS = 100% ✅
             </table>
 
             <div class="success-box">
-                <strong>Phase 4 Result: 5/5 PASS ✅ (15.6s total)</strong><br>
+                <strong>Phase 4 Result: 5/5 PASS [OK] (15.6s total)</strong><br>
                 All performance targets exceeded. Enterprise-grade performance verified.
             </div>
 
@@ -667,7 +662,7 @@ CUMULATIVE: 25/25 PASS = 100% ✅
             </table>
 
             <div class="success-box">
-                <strong>Phase 5 Result: 5/5 PASS ✅ (1.4s total)</strong><br>
+                <strong>Phase 5 Result: 5/5 PASS [OK] (1.4s total)</strong><br>
                 Production certification approved. All security requirements met.
             </div>
 
@@ -687,36 +682,36 @@ CUMULATIVE: 25/25 PASS = 100% ✅
                         <td><strong>Phase 1</strong></td>
                         <td>Manual Testing</td>
                         <td>5 scenarios</td>
-                        <td><span class="status-pass">5/5 PASS</span></td>
+                        <td><span class="status-pass">[OK] 5/5 PASS</span></td>
                     </tr>
                     <tr>
                         <td><strong>Phase 2</strong></td>
                         <td>Integration Testing</td>
                         <td>5 scenarios</td>
-                        <td><span class="status-pass">5/5 PASS</span></td>
+                        <td><span class="status-pass">[OK] 5/5 PASS</span></td>
                     </tr>
                     <tr>
                         <td><strong>Phase 3</strong></td>
                         <td>End-to-End Testing</td>
                         <td>5 scenarios</td>
-                        <td><span class="status-pass">5/5 PASS</span></td>
+                        <td><span class="status-pass">[OK] 5/5 PASS</span></td>
                     </tr>
                     <tr>
                         <td><strong>Phase 4</strong></td>
                         <td>Performance Testing</td>
                         <td>5 scenarios</td>
-                        <td><span class="status-pass">5/5 PASS</span></td>
+                        <td><span class="status-pass">[OK] 5/5 PASS</span></td>
                     </tr>
                     <tr>
                         <td><strong>Phase 5</strong></td>
                         <td>Security Certification</td>
                         <td>5 scenarios</td>
-                        <td><span class="status-pass">5/5 PASS</span></td>
+                        <td><span class="status-pass">[OK] 5/5 PASS</span></td>
                     </tr>
                     <tr style="background: #f0f7ff; font-weight: bold;">
                         <td colspan="2"><strong>TOTAL</strong></td>
                         <td><strong>25 scenarios</strong></td>
-                        <td><span class="status-pass">25/25 PASS = 100%</span></td>
+                        <td><span class="status-pass">[OK] 25/25 PASS = 100%</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -724,32 +719,32 @@ CUMULATIVE: 25/25 PASS = 100% ✅
             <h3>Production Readiness Assessment</h3>
             <div class="grid-2">
                 <div class="card">
-                    <h4>✅ Functional</h4>
+                    <h4>[OK] Functional</h4>
                     <p>All 15 workflows (Phase 1-3) tested and verified. Complete end-to-end operation validated.</p>
                 </div>
                 <div class="card">
-                    <h4>✅ Performance</h4>
+                    <h4>[OK] Performance</h4>
                     <p>All 5 performance targets exceeded. 96-99% faster than SLAs. Linear scaling verified (4.35x).</p>
                 </div>
                 <div class="card">
-                    <h4>✅ Security</h4>
+                    <h4>[OK] Security</h4>
                     <p>All 5 security scenarios passed. OWASP/CWE compliant. No vulnerabilities detected.</p>
                 </div>
                 <div class="card">
-                    <h4>✅ Enterprise</h4>
+                    <h4>[OK] Enterprise</h4>
                     <p>Production-grade code quality. Comprehensive documentation. Professional testing coverage.</p>
                 </div>
             </div>
 
             <div class="highlight">
-                <strong>CERTIFICATION STATUS: APPROVED ✅</strong>
+                <strong>CERTIFICATION STATUS: APPROVED [OK]</strong>
                 <p style="margin-top: 10px;">WinHarden is approved for immediate production deployment. All testing requirements met. All performance targets exceeded. Complete security compliance verified.</p>
             </div>
         </main>
 
         <footer>
             <p><strong>WinHarden Complete Testing Guide - HTML Report</strong></p>
-            <p>All 5 Phases Executed | 25/25 Scenarios Passed | 100% Success Rate</p>
+            <p>All 5 Phases Executed | 25/25 Scenarios Passed | 100% Success Rate [OK]</p>
             <p>Generated: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')</p>
             <p style="margin-top: 20px; font-size: 0.9em; opacity: 0.8;">This is an automatically generated report. For the full markdown documentation, refer to COMPLETE_TESTING_GUIDE.md</p>
         </footer>
@@ -758,9 +753,8 @@ CUMULATIVE: 25/25 PASS = 100% ✅
 </html>
 "@
 
-# Save HTML file
-$htmlContent | Out-File -FilePath $OutputFile -Encoding UTF8
+$htmlContent | Out-File -FilePath $OutputFile -Encoding UTF8BOM
 
-Write-Host "[OK] HTML Report generated successfully"
-Write-Host "[OK] Output file: $OutputFile"
-Write-Host "[OK] File size: $([Math]::Round((Get-Item $OutputFile).Length / 1KB, 2)) KB"
+Write-Output "[OK] HTML Report generated successfully"
+Write-Output "[OK] Output file: $OutputFile"
+Write-Output "[OK] File size: $([Math]::Round((Get-Item $OutputFile).Length / 1KB, 2)) KB"
