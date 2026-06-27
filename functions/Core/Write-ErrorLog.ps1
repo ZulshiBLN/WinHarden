@@ -32,11 +32,8 @@ function Write-ErrorLog {
         $Caller
     )
 
-    # Handle -WhatIf parameter
-    if ($WhatIfPreference) {
-        Write-Verbose "WhatIf: Would log error '$Message'"
-        return
+    # Handle -WhatIf and -Confirm parameters
+    if ($PSCmdlet.ShouldProcess($Message, 'Log error message')) {
+        Write-Log -Message $Message -Level Error -Caller $Caller
     }
-
-    Write-Log -Message $Message -Level Error -Caller $Caller
 }
