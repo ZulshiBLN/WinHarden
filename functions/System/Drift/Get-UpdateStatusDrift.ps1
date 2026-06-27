@@ -7,6 +7,7 @@ function Get-UpdateStatusDrift {
     Comprehensive Windows Update drift detection supporting multiple security profiles (Basis, Recommended, Strict).
     Checks automatic update enablement, scheduled install times, reboot behavior, notification levels, and update recency.
     Supports both local and remote computer analysis with optional detailed output.
+    Logging via Write-Log from Core module.
     Returns PSCustomObject array with drift findings.
 
     .PARAMETER ComputerName
@@ -48,9 +49,9 @@ function Get-UpdateStatusDrift {
     Get-UpdateStatusDrift -Profile Basis -ReportDriftOnly | Export-Csv -Path drifts.csv
 
     .NOTES
-    DEPENDENCIES: Write-Log (Core) for logging; Applies to Windows Server 2016+ and Windows 10+
-    PROFILES: Basis (3 checks), Recommended (5+ checks), Strict (7+ checks with detailed)
-    RETURNS: PSCustomObject array with drift findings
+    Depends on Write-Log (Core) for logging. Applies to Windows Server 2016+ and Windows 10+.
+    Supports three profiles: Basis (3 checks), Recommended (5+ checks), Strict (7+ checks with detailed).
+    Returns PSCustomObject array with drift findings including Category, Setting, Expected, Actual, Status, and Severity.
     #>
     [CmdletBinding(SupportsShouldProcess)]
     param(
