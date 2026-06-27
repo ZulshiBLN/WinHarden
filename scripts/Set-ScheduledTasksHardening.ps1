@@ -41,6 +41,7 @@ Write-Output "==========================================================="
 Write-Output "`nScript: Set-ScheduledTasksHardening"
 Write-Output "Purpose: Create all WinHarden automation tasks in Task Scheduler"
 Write-Output "Run Time: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
+
 # [STEP 1] Admin Rights Check
 Write-Output "`n[STEP 1] VERIFYING ADMIN RIGHTS"
 Write-Output "==========================================================="
@@ -58,13 +59,13 @@ if (-not $isAdmin) {
 
 Write-Log -Message "Admin rights confirmed" -Level Info -Caller "Admin Rights Check"
 Write-Output "[OK] Admin rights confirmed"
+
 # [STEP 2] Verify Script Paths
 Write-Output "`n[STEP 2] VERIFYING AUTOMATION SCRIPTS EXIST"
 Write-Output "==========================================================="
 $scriptsPath = $PSScriptRoot
 $requiredScripts = @(
     "Monthly_Compliance_Audit.ps1",
-    "Monitor_Audit_Logs.ps1",
     "Archive_Old_Reports.ps1",
     "Detect_Security_Drift.ps1",
     "Monitor_Windows_Updates.ps1"
@@ -90,6 +91,7 @@ if (-not $allScriptsFound) {
 }
 
 Write-Output "`n[OK] All required scripts found"
+
 # [STEP 3] Define Scheduled Tasks
 Write-Output "`n[STEP 3] DEFINING SCHEDULED TASKS"
 Write-Output "==========================================================="
@@ -102,14 +104,6 @@ $tasks = @(
         Day = "1"
         Time = "08:00"
         Description = "Monthly hardening compliance verification and audit"
-    },
-    @{
-        Name = "Daily-Security-Monitor"
-        DisplayName = "WinHarden Daily Security Monitor"
-        Script = "Monitor_Audit_Logs.ps1"
-        Schedule = "DAILY"
-        Time = "09:00"
-        Description = "Daily real-time security event monitoring and threat detection"
     },
     @{
         Name = "Archive-Old-Reports"
@@ -158,11 +152,11 @@ if ($Cleanup -or $Force) {
     )
 
     foreach ($taskName in $oldTaskNames) {
-        $existingTask = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
+        $existingTask = Get-ScheduledTask -TaskName $taskName -TaskPath "\Hardening\" -ErrorAction SilentlyContinue
         if ($existingTask) {
             if ($PSCmdlet.ShouldProcess($taskName, "Remove old scheduled task")) {
                 Write-Output "Removing old task: $taskName"
-                & schtasks /delete /tn $taskName /f 2>&1 | Out-Null
+                Unregister-ScheduledTask -TaskName $taskName -TaskPath "\Hardening\" -Confirm:$false -ErrorAction SilentlyContinue
                 Write-Log -Message "Removed old task: $taskName" -Level Info -Caller "Task Cleanup"
             }
         }
@@ -191,43 +185,40 @@ foreach ($task in $tasks) {
     }
 
     try {
-        # Build schtasks command parameters
+        # Build schtasks parameters as array
+        $scriptArg = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File `"$scriptFullPath`""
+
         $schtasksParams = @(
-            "/create"
-            "/tn"
-            $taskPath
-            "/tr"
-            "powershell.exe -NoProfile -ExecutionPolicy Bypass -File `'$scriptFullPath`'"
-            "/sc"
-            $task.Schedule
+            "/create",
+            "/tn", $taskPath,
+            "/tr", $scriptArg,
+            "/sc", $task.Schedule,
+            "/st", $task.Time,
+            "/ru", "SYSTEM",
+            "/f"
         )
 
-        # Add schedule-specific parameters
+        # Add day parameter for MONTHLY and WEEKLY schedules
         if ($task.Schedule -eq "MONTHLY" -or $task.Schedule -eq "WEEKLY") {
             $schtasksParams += "/d"
             $schtasksParams += $task.Day
         }
 
-        $schtasksParams += "/st"
-        $schtasksParams += $task.Time
-        $schtasksParams += "/ru"
-        $schtasksParams += "SYSTEM"
-        $schtasksParams += "/z"                     # Enable missed task catchup
-        $schtasksParams += "/f"
-
         # Execute task creation using call operator
-        $result = & schtasks @schtasksParams 2>&1
+        $result = & schtasks.exe $schtasksParams 2>&1
 
-        # Check if task was created successfully
-        $taskExists = Get-ScheduledTask -TaskName $task.Name -ErrorAction SilentlyContinue
+        # Verify task was created
+        Start-Sleep -Milliseconds 500
+        $taskExists = Get-ScheduledTask -TaskName $task.Name -TaskPath "\Hardening\" -ErrorAction SilentlyContinue
+
         if ($taskExists) {
             Write-Output "  [OK] Created successfully"
             Write-Log -Message "Created scheduled task: $taskPath ($($task.Schedule))" -Level Info -Caller "Task Creation"
             $createdTasks += $task
         }
         else {
-            Write-Output "  [ERROR] Creation failed: $result"
-            Write-Log -Message "Failed to create scheduled task $taskPath : $result" -Level Error -Caller "Task Creation"
+            Write-Output "  [ERROR] Task verification failed"
+            Write-Log -Message "Failed to create scheduled task $taskPath" -Level Error -Caller "Task Creation"
             $failedTasks += $task
         }
     }
@@ -242,7 +233,7 @@ foreach ($task in $tasks) {
 Write-Output "`n[STEP 6] VERIFICATION & SUMMARY"
 Write-Output "==========================================================="
 Write-Output "`nScheduled Tasks in 'Hardening' Folder:"
-$allHardeningTasks = Get-ScheduledTask -ErrorAction SilentlyContinue | Where-Object { $_.TaskPath -like "*Hardening*" }
+$allHardeningTasks = Get-ScheduledTask -TaskPath "\Hardening\*" -ErrorAction SilentlyContinue
 
 if ($allHardeningTasks) {
     $allHardeningTasks | Select-Object TaskName, @{ Name = "State"; Expression = { $_.State } }, @{ Name = "Enabled"; Expression = { $_.Enabled } } | Format-Table -AutoSize
@@ -280,12 +271,6 @@ $scheduleTable = @(
         'Purpose' = 'Check for security updates'
     },
     [PSCustomObject]@{
-        'Task' = 'Daily Security Monitor'
-        'Schedule' = 'Daily'
-        'Time' = '09:00 AM'
-        'Purpose' = 'Real-time threat detection'
-    },
-    [PSCustomObject]@{
         'Task' = 'Drift Detection'
         'Schedule' = 'Weekly (Monday)'
         'Time' = '10:00 AM'
@@ -314,7 +299,7 @@ Write-Output "   taskschd.msc - Expand 'Task Scheduler Library' - Find 'Hardenin
 Write-Output "`n2. Verify Tasks via PowerShell:"
 Write-Output "   Get-ScheduledTask -TaskPath '\Hardening\*' | Format-Table TaskName, State"
 Write-Output "`n3. Run a Task Manually (for testing):"
-Write-Output "   schtasks /run /tn 'Hardening\Monthly-Compliance-Audit'"
+Write-Output "   Start-ScheduledTask -TaskName 'Monthly-Compliance-Audit' -TaskPath '\Hardening\'"
 Write-Output "`n4. View Task History/Logs:"
 Write-Output "   Event Viewer - Windows Logs - System (filter for Task Scheduler)"
 Write-Output "`n5. Monitor Reports:"
@@ -331,6 +316,7 @@ Write-Output "`nTo remove all WinHarden tasks:"
 Write-Output "  PowerShell (Admin):"
 Write-Output "  Get-ScheduledTask -TaskPath '\Hardening\*' | Unregister-ScheduledTask -Confirm:`$false"
 Write-Output "`n==========================================================="
+
 if ($createdTasks.Count -eq $tasks.Count) {
     Write-Output "[OK] DEPLOYMENT SUCCESSFUL"
     Write-Output "All $($tasks.Count) WinHarden automation tasks have been created!"
@@ -338,8 +324,8 @@ if ($createdTasks.Count -eq $tasks.Count) {
     exit 0
 }
 else {
-    Write-Output "[WARN] DEPLOYMENT COMPLETED WITH WARNINGS"
-    Write-Output "Some tasks may need manual verification."
-    Write-Log -Message "Deployment completed with warnings: $($createdTasks.Count)/$($tasks.Count) tasks created, $($failedTasks.Count) failed" -Level Warning -Caller "Deployment Summary"
+    Write-Output "[WARN] DEPLOYMENT COMPLETED WITH ISSUES"
+    Write-Output "Created: $($createdTasks.Count)/$($tasks.Count) | Failed: $($failedTasks.Count)"
+    Write-Log -Message "Deployment completed with issues: $($createdTasks.Count)/$($tasks.Count) tasks created, $($failedTasks.Count) failed" -Level Warning -Caller "Deployment Summary"
     exit 1
 }

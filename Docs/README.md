@@ -2,7 +2,7 @@
 
 Comprehensive documentation for the WinHarden PowerShell automation and security hardening toolkit for Windows Server.
 
-**Version:** v1.1  
+**Version:** v1.11  
 **Status:** Infrastructure complete (10 ADRs accepted) | Implementation COMPLETE - Production Ready  
 **Updated:** 2026-06-27 | **Test Recovery:** 96%+ pass rate | **Build:** PSScriptAnalyzer PASSED
 
