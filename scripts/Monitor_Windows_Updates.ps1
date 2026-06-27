@@ -52,7 +52,14 @@ Import-Module $corePath -Force -ErrorAction Stop
 # Import System module for Update functions
 $systemPath = Join-Path -Path $projectRoot -ChildPath "modules\System.psm1"
 if (Test-Path $systemPath) {
-    Import-Module $systemPath -Force -ErrorAction SilentlyContinue
+    try {
+        Import-Module $systemPath -Force -ErrorAction Stop
+    }
+    catch {
+        Write-Log -Message "System module failed to load: $($_.Exception.Message)" `
+            -Level Warning -Caller $MyInvocation.MyCommand.Name
+        Write-Output "[WARN] System functions unavailable - Update checks may fail"
+    }
 }
 
 Write-Output ""
@@ -102,7 +109,14 @@ try {
             Select-Object -First 5
 
         foreach ($update in $importantUpdates) {
-            Write-Output "  * KB$($update.KBArticleIDs[0]): $($update.Title)"
+            $kbNumber = $update.KBArticleIDs[0]
+            $kbPrefix = if ($kbNumber) {
+                "KB$kbNumber"
+            }
+            else {
+                "[No KB]"
+            }
+            Write-Output "  * $kbPrefix : $($update.Title)"
         }
     }
 }
