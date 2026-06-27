@@ -26,7 +26,7 @@ function New-SecurityDriftReport {
     [CmdletBinding(SupportsShouldProcess)]
     param(
         [PSCustomObject[]]$DriftFindings = @(),
-        [string]$OutputDirectory = "$(Split-Path $PSScriptRoot -Parent)\logs"
+        [string]$OutputDirectory = "$(Split-Path (Split-Path $PSScriptRoot -Parent) -Parent)\logs"
     )
 
     # DEPENDS ON: Write-Log (Core)
