@@ -125,9 +125,9 @@ try {
 
     Write-TestOutput "1.3 Applying hardening (21+ rules)..."
     $harden1Start = Get-Date
-    $harden1Result = Invoke-SecurityHardening -Session $session1 -Verbose 4>&1 -ErrorAction SilentlyContinue
-    $harden1Duration = (Get-Date - $harden1Start).TotalSeconds
-    Write-TestOutput "[OK] Hardening completed: $($harden1Result.AppliedRules.Count) rules in ${harden1Duration}s" -Level OK
+    $harden1Result = Invoke-SecurityHardening -Session $session1 -ErrorAction SilentlyContinue
+    $harden1Duration = [math]::Round((Get-Date - $harden1Start).TotalSeconds, 2)
+    Write-TestOutput "[OK] Hardening completed: $($harden1Result.AppliedRules.Count) rules in $harden1Duration seconds" -Level OK
 
     Write-TestOutput "1.4 Running compliance check..."
     $comp1Result = Test-HardeningCompliance -Session $session1 -Verbose 4>&1 -ErrorAction SilentlyContinue
@@ -346,7 +346,9 @@ try {
             DriftCount = ($snapshot | Where-Object Status -eq "DRIFT" | Measure-Object).Count
         }
 
-        Write-TestOutput "  Snapshot $i: $($snapshots[$i-1].CompliantCount) compliant, $($snapshots[$i-1].DriftCount) drift" -Level INFO
+        $idx = $i - 1
+        $msg = "  Snapshot $i`: $($snapshots[$idx].CompliantCount) compliant, $($snapshots[$idx].DriftCount) drift"
+        Write-TestOutput $msg -Level INFO
 
         if ($i -lt 5) {
             Start-Sleep -Milliseconds 500
@@ -357,8 +359,9 @@ try {
 
     $stable = $true
     for ($i = 1; $i -lt $snapshots.Count; $i++) {
-        if ($snapshots[$i].CompliantCount -ne $snapshots[$i-1].CompliantCount -or
-            $snapshots[$i].DriftCount -ne $snapshots[$i-1].DriftCount) {
+        $prevIdx = $i - 1
+        if ($snapshots[$i].CompliantCount -ne $snapshots[$prevIdx].CompliantCount -or
+            $snapshots[$i].DriftCount -ne $snapshots[$prevIdx].DriftCount) {
             $stable = $false
             break
         }
