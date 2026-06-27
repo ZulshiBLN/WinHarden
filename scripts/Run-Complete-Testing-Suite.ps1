@@ -310,4 +310,10 @@ if ($GenerateHTML) {
 Write-Section "TESTING COMPLETE"
 Write-TestOutput "Test Log: $testLogFile"
 Write-TestOutput ""
-Write-TestOutput "Status: $(if ($totalPass -eq 25) { 'ALL TESTS PASSED [OK]' } else { "$totalPass/25 PASSED" })"
+
+if ($totalPass -eq 25) {
+    Write-TestOutput "Status: ALL TESTS PASSED [OK]"
+}
+else {
+    Write-TestOutput "Status: $totalPass/25 PASSED"
+}
