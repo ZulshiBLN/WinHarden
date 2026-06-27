@@ -1,59 +1,106 @@
-# WinHarden - Catchup Configuration Guide
+# WinHarden Automations - Catchup Configuration Guide
+
+**Master the task recovery and missed-run mechanisms for continuous compliance monitoring.**
+
+---
 
 ## Table of Contents
 
-1. [Overview](#overview)
-2. [Catchup Mechanism Explained](#catchup-mechanism-explained)
+1. [Catchup Overview](#catchup-overview)
+2. [How Catchup Works](#how-catchup-works)
 3. [Current Configuration](#current-configuration)
 4. [Managing Missed Runs](#managing-missed-runs)
 5. [Recovery Strategies](#recovery-strategies)
 6. [Monitoring Missed Tasks](#monitoring-missed-tasks)
-7. [Advanced Configuration](#advanced-configuration)
-8. [Troubleshooting](#troubleshooting)
+7. [Advanced Catchup Configuration](#advanced-catchup-configuration)
+8. [Troubleshooting Catchup Issues](#troubleshooting-catchup-issues)
+9. [Best Practices](#best-practices)
 
 ---
 
-## Overview
-
-The "catchup" mechanism ensures that scheduled tasks run even if the system was powered off or unavailable during their scheduled time. This guide explains how WinHarden implements task recovery and how to customize it for your environment.
+## Catchup Overview
 
 ### Why Catchup Matters
 
 **Scenario:**
-- Monthly-Compliance-Audit scheduled for 1st of month at 08:00 AM
-- System is powered off from 6:00 PM - 10:00 AM next morning
-- Without catchup: Audit is missed, no compliance report generated
-- With catchup: Audit runs at 10:15 AM when system comes online
+- System scheduled to perform Monthly-Compliance-Audit on the 1st at 08:00 AM
+- System powered off: 6:00 PM day before through 10:00 AM on the 1st
+- Without catchup: Task is skipped, no compliance report generated that month
+- With catchup: Task runs at 10:15 AM when system comes online, report generated
+
+### What Catchup Does
+
+Windows Task Scheduler's catchup mechanism ensures:
+1. **No missed executions** - Tasks run even if system was offline
+2. **Audit trail continuity** - Reports generated for all scheduled periods
+3. **Compliance verification** - Monthly audits never skipped
+4. **Data consistency** - All monitoring intervals covered
+
+### When Catchup Is Triggered
+
+Catchup runs when:
+- System boots after scheduled task execution time
+- System has been offline longer than task interval
+- Task is enabled and catchup flag is set
+
+Example:
+```
+Scheduled: Every Monday 08:00
+System: Offline for 2 weeks (missed 2 Mondays)
+Result: Task runs at boot-up time, executes for both missed Mondays
+```
 
 ---
 
-## Catchup Mechanism Explained
+## How Catchup Works
 
-### How Task Scheduler Catchup Works
+### Catchup Mechanism in Windows Task Scheduler
 
-Windows Task Scheduler has built-in catchup functionality:
+| Setting | Default Value | Effect |
+|---------|---------------|--------|
+| Catchup Flag | /z enabled | Enables "run if missed" |
+| Missed Task Threshold | 1 | Minimum missed occurrences to trigger |
+| Catchup Trigger | System boot | When missed task gets executed |
+| Retry Interval | None | No retry if catchup fails |
+| Max Concurrent | Unlimited | Multiple catchup tasks can run together |
 
-| Setting | Default | Effect |
-|---------|---------|--------|
-| Catchup Flag (`/z`) | Enabled | Task runs ASAP if missed |
-| Missed Task Threshold | 1 | Runs after 1 missed occurrence |
-| Recovery Action | None | Task doesn't retry on failure |
-| Run with highest privileges | Varies | Determines task access level |
+### Catchup Technical Flow
 
-### WinHarden Catchup Configuration
-
-The setup script (`Set-ScheduledTasksHardening.ps1`) enables catchup for all tasks:
-
-```powershell
-# Line 177 in Set-ScheduledTasksHardening.ps1
-$command += "/z "  # Enable missed task catchup
-$command += "/f"   # Force flag
+```
+[Scheduled Trigger Time Passes]
+        |
+        v
+[System Offline?]
+        |
+    YES |
+        v
+[Catchup Flag Set?]
+        |
+    YES |
+        v
+[System Boots or Available]
+        |
+        v
+[Execute Task Immediately]
+        |
+        v
+[Clear Missed Run Count]
 ```
 
-This translates to schtasks command:
+### WinHarden Catchup Implementation
+
+In `Set-ScheduledTasksHardening.ps1`, catchup is enabled for ALL tasks:
+
 ```powershell
-schtasks /create /tn "Hardening\[TaskName]" /z /f [other params]
+# Line 177 - Enable catchup for all tasks
+$command += "/z "  # Enable missed task catchup flag
+
+# Result in schtasks command:
+schtasks /create /tn "Hardening\Daily-Security-Monitor" /z ...
 ```
+
+This flag is set when tasks are created:
+- `/z` = "Run the task as soon as possible after a scheduled start is missed"
 
 ---
 
@@ -61,358 +108,592 @@ schtasks /create /tn "Hardening\[TaskName]" /z /f [other params]
 
 ### Default Catchup Settings
 
-All 5 WinHarden tasks are configured with:
-
-| Task | Catchup Enabled | Start If Missed | User Context | Run Duration |
-|------|-----------------|-----------------|---------------|--------------|
-| Daily-Security-Monitor | Yes (/z) | As soon as possible | SYSTEM | 5-10 min |
-| Monitor-Windows-Updates | Yes (/z) | As soon as possible | SYSTEM | 1-2 min |
-| Detect-Configuration-Drift | Yes (/z) | As soon as possible | SYSTEM | 3-5 min |
-| Monthly-Compliance-Audit | Yes (/z) | As soon as possible | SYSTEM | 10-15 min |
-| Archive-Old-Reports | Yes (/z) | As soon as possible | SYSTEM | 2-3 min |
-
-### Verify Current Settings
+All 5 WinHarden tasks have catchup ENABLED by default:
 
 ```powershell
-# Check catchup status in Task Scheduler GUI
-# For each task:
-# 1. Right-click task
-# 2. Properties tab
-# 3. Look for "If the task is missed, then run it as soon as possible"
+# Verify catchup is enabled for all tasks
+Get-ScheduledTask -TaskPath '\Hardening\*' | 
+    ForEach-Object {
+        $taskXml = [xml]$_.XML
+        $catchupEnabled = $taskXml.Task.Settings.StartWhenAvailable
+        Write-Host "$($_.TaskName): Catchup=$(if($catchupEnabled) { 'ENABLED' } else { 'DISABLED' })"
+    }
 
-# Or via PowerShell:
-$task = Get-ScheduledTask -TaskName "Daily-Security-Monitor"
-$task | Get-ScheduledTaskInfo
-
-# Check task XML for catchup flag
-$task.XML | Select-String "StopIfGoingOnBatteries|RunOnlyIfNetworkAvailable|AllowDemandStart"
+# Expected output:
+# Daily-Security-Monitor: Catchup=ENABLED
+# Monitor-Windows-Updates: Catchup=ENABLED
+# Detect-Configuration-Drift: Catchup=ENABLED
+# Monthly-Compliance-Audit: Catchup=ENABLED
+# Archive-Old-Reports: Catchup=ENABLED
 ```
+
+### Configuration Summary
+
+| Task | Frequency | Catchup | Duration | Missed Runs Impact |
+|------|-----------|---------|----------|-------------------|
+| Daily-Security-Monitor | Daily | Enabled | 5-10 min | 1 missed day = 1 catchup run |
+| Monitor-Windows-Updates | Weekly | Enabled | 1-2 min | 1 missed week = 1 catchup run |
+| Detect-Configuration-Drift | Weekly | Enabled | 3-5 min | 1 missed week = 1 catchup run |
+| Monthly-Compliance-Audit | Monthly | Enabled | 10-15 min | 1 missed month = 1 catchup run |
+| Archive-Old-Reports | Monthly | Enabled | 2-3 min | 1 missed month = 1 catchup run |
+
+### Enable/Disable Catchup in GUI
+
+For each task in Task Scheduler:
+1. Right-click task -> **Properties**
+2. Click **Conditions** tab
+3. Check/uncheck: **"If the task is missed, then run it as soon as possible"**
+4. Click **OK**
 
 ---
 
 ## Managing Missed Runs
 
-### Viewing Missed Runs
-
-**Method 1: Task Scheduler GUI**
-```
-1. Open taskschd.msc
-2. Navigate to: Hardening folder
-3. Select a task
-4. Properties -> History tab
-5. Look for events with status "The task was run due to a trigger condition"
-```
-
-**Method 2: PowerShell**
-```powershell
-# Check missed run count for each task
-Get-ScheduledTask -TaskPath '\Hardening\*' | ForEach-Object {
-    $info = $_ | Get-ScheduledTaskInfo
-    Write-Host "Task: $($_.TaskName)"
-    Write-Host "  Missed Runs: $($info.NumberOfMissedRuns)"
-    Write-Host "  Last Run: $($info.LastRunTime)"
-    Write-Host "  Last Result: $($info.LastTaskResult)"
-    Write-Host ""
-}
-```
-
-**Method 3: Event Viewer**
-```powershell
-# View all Task Scheduler events
-eventvwr.msc
-# Path: Windows Logs -> System -> Task Scheduler
-# Filter by Event ID:
-# 141 = Task triggered
-# 142 = Task missed and caught up
-# 200 = Task executed
-# 201 = Task execution failed
-```
-
-### Clearing Missed Run History
+### View Missed Run Count
 
 ```powershell
-# Option 1: Clear all missed runs for a task
-$task = Get-ScheduledTask -TaskName "Daily-Security-Monitor"
-# No direct PowerShell cmdlet to clear missed runs
-# Use Event Viewer to view only (clearing requires manual action)
+# Method 1: PowerShell - Current missed runs
+Get-ScheduledTask -TaskPath '\Hardening\*' | 
+    ForEach-Object {
+        $info = $_ | Get-ScheduledTaskInfo
+        Write-Host "$($_.TaskName): Missed=$($info.NumberOfMissedRuns) LastRun=$($info.LastRunTime)"
+    }
 
-# Option 2: Re-register task (clears history)
-Get-ScheduledTask -TaskName "Daily-Security-Monitor" | Unregister-ScheduledTask -Confirm:$false
-# Then re-run setup script:
-# .\Set-ScheduledTasksHardening.ps1 -Force
+# Example output:
+# Daily-Security-Monitor: Missed=3 LastRun=2026-06-24 09:00:00
+# Monthly-Compliance-Audit: Missed=0 LastRun=2026-06-01 08:00:00
+
+# Method 2: Task Scheduler GUI
+# 1. Open taskschd.msc
+# 2. Navigate to: Task Scheduler Library -> Hardening
+# 3. Select task, view "Last Run Time" and "Next Run Time" columns
+
+# Method 3: Event Viewer
+# 1. Open eventvwr.msc
+# 2. Navigate to: Windows Logs -> System
+# 3. Filter by Source: "TaskScheduler"
+# 4. Look for Event ID 142 (missed task)
+```
+
+### View Missed Run History
+
+```powershell
+# Get detailed missed run information from Event Log
+Get-EventLog -LogName System -Source "TaskScheduler" -Newest 50 | 
+    Where-Object { $_.Message -like '*missed*' } | 
+    Format-Table TimeGenerated, Message -AutoSize
+
+# Filter for specific task
+Get-EventLog -LogName System -Source "TaskScheduler" -Newest 50 | 
+    Where-Object { $_.Message -like '*Daily-Security-Monitor*' } | 
+    Format-Table TimeGenerated, EventID, Message -AutoSize
+```
+
+### Clear Missed Run Count
+
+```powershell
+# Option 1: Allow tasks to naturally clear after running
+# Missed count resets automatically when task executes
+
+# Option 2: Re-register task (clears all history)
+Get-ScheduledTask -TaskName "Daily-Security-Monitor" | 
+    Unregister-ScheduledTask -Confirm:$false
+
+# Then recreate:
+.\Set-ScheduledTasksHardening.ps1 -Force
+
+# Option 3: Manual trigger (runs catchup immediately)
+schtasks /run /tn "Hardening\Daily-Security-Monitor"
 ```
 
 ---
 
 ## Recovery Strategies
 
-### Strategy 1: Automatic Catchup (Current)
+### Strategy 1: Automatic Catchup (Default - Recommended)
 
 **Configuration:**
 - Catchup enabled for all tasks
 - Tasks run as soon as system becomes available
-- No loss of scheduled execution
+- No user intervention required
 
-**Pros:**
-- Simple, automatic
-- No missed audits
-- Minimal user intervention
+**Behavior:**
+```
+Friday 09:00 - Daily-Security-Monitor scheduled
+System offline: Friday 14:00 - Monday 08:00
+Monday 08:15 - System boots
+Monday 08:20 - Daily-Security-Monitor runs immediately (catchup)
+Monday 09:00 - Regular scheduled run happens
+```
 
-**Cons:**
-- May cause resource spike when system comes online
-- Multiple tasks may run simultaneously if system was down
+**Advantages:**
+- Automatic, no manual intervention
+- No missed audits or compliance reports
+- Simple to understand and manage
+- Auditable (all catchup runs logged)
 
-**Best For:** Standard deployments, normal office environments
+**Disadvantages:**
+- Resource spike when system comes online
+- Multiple tasks may run simultaneously
+- Not ideal for high-load servers
+- May not be suitable for very slow systems
+
+**Best for:**
+- Standard deployments
+- Office/business environments
+- Systems with predictable availability
+- Compliance-driven organizations
 
 ### Strategy 2: Staggered Recovery
 
-Modify task schedules to spread out execution if system was down.
-
-**Example:**
-```powershell
-# Original schedule
-# Daily-Security-Monitor: 09:00 AM (every day)
-# Detect-Configuration-Drift: 10:00 AM (Monday)
-# Monitor-Windows-Updates: 08:00 AM (Monday)
-
-# Staggered schedule (reduce simultaneous execution)
-# Daily-Security-Monitor: 09:00 AM (every day)
-# Detect-Configuration-Drift: 10:30 AM (Monday)  <- 30 min offset
-# Monitor-Windows-Updates: 08:30 AM (Monday)     <- 30 min offset
-```
+**Configuration:**
+Modify task start times to spread execution if system was down.
 
 **Implementation:**
 ```powershell
-# Edit task via GUI:
-# 1. Open taskschd.msc
-# 2. Right-click task -> Properties
-# 3. Triggers tab -> Edit trigger
-# 4. Change "Start time" to new value
+# Original schedule
+# 08:00 - Monitor-Windows-Updates
+# 09:00 - Daily-Security-Monitor
+# 10:00 - Detect-Configuration-Drift
 
-# Or via schtasks:
+# Staggered schedule (30-min offsets)
+schtasks /change /tn "Hardening\Monitor-Windows-Updates" /st 08:00
 schtasks /change /tn "Hardening\Daily-Security-Monitor" /st 09:00
+schtasks /change /tn "Hardening\Detect-Configuration-Drift" /st 10:00
+
+# If system boots at 08:30, tasks execute:
+# 08:30 - Monitor-Windows-Updates (catchup)
+# 09:00 - Daily-Security-Monitor (scheduled)
+# 10:00 - Detect-Configuration-Drift (scheduled)
 ```
 
-### Strategy 3: No Catchup (Not Recommended)
+**Advantages:**
+- Reduces simultaneous execution
+- Lower resource spike
+- Better predictability
+- Easier load balancing
 
-Disable catchup for non-critical tasks.
+**Disadvantages:**
+- Manual setup required
+- Requires monitoring and adjustment
+- Some tasks may start later than expected
+- More complex to maintain
 
+**Best for:**
+- Resource-constrained systems
+- High-load environments
+- Systems with predictable offline windows
+- Custom scheduling requirements
+
+### Strategy 3: Selective Catchup (Per-Task)
+
+**Configuration:**
+Enable catchup for critical tasks only, disable for others.
+
+**Implementation:**
 ```powershell
-# WARNING: Only for non-critical tasks
-# Run schtasks without /z flag
+# Disable catchup for Archive-Old-Reports (non-critical)
+# 1. Get task XML
+$task = Get-ScheduledTask -TaskName "Archive-Old-Reports"
 
-# To disable catchup for existing task:
-# 1. Delete task: Get-ScheduledTask -TaskName "Archive-Old-Reports" | Unregister-ScheduledTask
-# 2. Manually re-create without /z flag
+# 2. Modify to disable catchup
+# (Advanced - requires XML manipulation)
 
-# This is NOT recommended - use Strategy 1 or 2 instead
+# Easier method: Recreate without /z flag
+Get-ScheduledTask -TaskName "Archive-Old-Reports" | 
+    Unregister-ScheduledTask -Confirm:$false
+
+# Recreate manually:
+schtasks /create /tn "Hardening\Archive-Old-Reports" `
+    /tr "powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Repos\WinHarden\scripts\Archive_Old_Reports.ps1" `
+    /sc MONTHLY /d 2 /st 09:00 /ru SYSTEM /f
+    # NOTE: No /z flag (catchup disabled)
 ```
+
+**Catchup Status per Task:**
+```powershell
+# Critical (catchup enabled)
+schtasks /create ... /z ... # Daily-Security-Monitor
+schtasks /create ... /z ... # Monthly-Compliance-Audit
+
+# Non-critical (catchup disabled)
+schtasks /create ... /f ... # Archive-Old-Reports (no /z)
+```
+
+**Advantages:**
+- Fine-grained control
+- Only critical tasks catch up
+- Reduces unnecessary executions
+- Optimizes for specific environment
+
+**Disadvantages:**
+- Complex setup and maintenance
+- Requires understanding of each task
+- May lead to missed non-critical reports
+- Harder to debug
+
+**Best for:**
+- Sophisticated environments
+- Mixed-priority workloads
+- Systems with specific compliance requirements
 
 ---
 
 ## Monitoring Missed Tasks
 
-### Real-Time Monitoring
+### Daily Monitoring
 
 ```powershell
-# Create a monitoring script to check missed runs every hour
-$while ($true) {
+# Create a daily check script
+$hardeningTasks = Get-ScheduledTask -TaskPath '\Hardening\*'
+
+Write-Host "=== Daily Task Status Report ==="
+Write-Host "Generated: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
+Write-Host ""
+
+foreach ($task in $hardeningTasks) {
+    $info = $task | Get-ScheduledTaskInfo
+    $status = if ($info.NumberOfMissedRuns -gt 0) { "[WARNING]" } else { "[OK]" }
+    
+    Write-Host "$($task.TaskName)"
+    Write-Host "  Status: $status"
+    Write-Host "  Missed Runs: $($info.NumberOfMissedRuns)"
+    Write-Host "  Last Run: $(if ($info.LastRunTime) { $info.LastRunTime } else { 'Never' })"
+    Write-Host "  Next Run: $(if ($info.NextRunTime) { $info.NextRunTime } else { 'Not scheduled' })"
+    Write-Host "  Result Code: $($info.LastTaskResult)"
+    Write-Host ""
+}
+```
+
+### Real-Time Monitoring Script
+
+```powershell
+# Monitor missed tasks every hour
+# Save as: C:\Repos\WinHarden\scripts\Monitor_Missed_Tasks.ps1
+
+$runInterval = 3600  # 1 hour
+$maxMissedThreshold = 5  # Alert if >5 missed runs
+
+while ($true) {
     Clear-Host
-    Write-Host "Missed Task Monitor - $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
-    Write-Host "=" * 60
+    Write-Host "[MISSED TASK MONITOR]"
+    Write-Host "Time: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
+    Write-Host "========================================"
+    Write-Host ""
+    
+    $alertsFound = 0
     
     Get-ScheduledTask -TaskPath '\Hardening\*' | ForEach-Object {
         $info = $_ | Get-ScheduledTaskInfo
         $missed = $info.NumberOfMissedRuns
-        $color = if ($missed -gt 0) { "Yellow" } else { "Green" }
         
-        Write-Host "$($_.TaskName) - Missed: $missed - $(if($missed -gt 0) { '[ATTENTION]' } else { '[OK]' })" -ForegroundColor $color
+        if ($missed -gt 0) {
+            $alertsFound++
+            $severity = if ($missed -gt $maxMissedThreshold) { "[CRITICAL]" } else { "[WARNING]" }
+            Write-Host "$($_.TaskName) $severity"
+            Write-Host "  Missed Runs: $missed"
+        }
     }
     
-    Write-Host "`nNext check in 60 minutes..."
-    Start-Sleep -Seconds 3600
+    if ($alertsFound -eq 0) {
+        Write-Host "All tasks OK - no missed runs"
+    }
+    
+    Write-Host ""
+    Write-Host "Next check in $($runInterval / 60) minutes..."
+    Start-Sleep -Seconds $runInterval
 }
 ```
 
-### Automated Alert for Missed Tasks
+### Automated Alert for Excessive Missed Runs
 
 ```powershell
-# Add to a scheduled task that checks every 6 hours
-$missedCount = 0
+# Save as: C:\Repos\WinHarden\scripts\Alert_Missed_Tasks.ps1
+
+$missedThreshold = 10
+$alertFile = "C:\Repos\WinHarden\logs\missed_tasks_alert.txt"
+$alertedTasks = @()
+
 Get-ScheduledTask -TaskPath '\Hardening\*' | ForEach-Object {
     $info = $_ | Get-ScheduledTaskInfo
-    $missedCount += $info.NumberOfMissedRuns
-}
-
-if ($missedCount -gt 0) {
-    # Log alert
-    "ALERT: $missedCount missed task runs detected at $(Get-Date)" | 
-        Add-Content C:\Repos\WinHarden\logs\missed_tasks_alert.log
     
-    # Optional: Send email notification (requires SMTP setup)
-    # Send-MailMessage ...
-}
-```
-
-### Dashboard Reporting
-
-Parse task history for reporting:
-
-```powershell
-# Generate missed tasks report
-$report = Get-ScheduledTask -TaskPath '\Hardening\*' | ForEach-Object {
-    $info = $_ | Get-ScheduledTaskInfo
-    [PSCustomObject]@{
-        TaskName = $_.TaskName
-        LastRun = $info.LastRunTime
-        LastResult = $info.LastTaskResult
-        MissedRuns = $info.NumberOfMissedRuns
-        NextRunTime = $info.NextRunTime
+    if ($info.NumberOfMissedRuns -gt $missedThreshold) {
+        $alertedTasks += "$($_.TaskName): $($info.NumberOfMissedRuns) missed runs"
     }
 }
 
-$report | Export-Csv -Path "C:\Repos\WinHarden\logs\task_status_report.csv" -NoTypeInformation
+if ($alertedTasks.Count -gt 0) {
+    $alert = @"
+[ALERT] Excessive Missed Task Runs
+Time: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')
+Threshold: $missedThreshold missed runs
+
+Tasks:
+$($alertedTasks -join "`n")
+
+Recommended Actions:
+1. Check system availability/uptime
+2. Verify Task Scheduler service is running
+3. Review Event Viewer for task failures
+4. Consider disabling catchup for low-priority tasks
+"@
+    
+    Add-Content -Path $alertFile -Value $alert
+    Write-Host $alert
+}
+```
+
+### Monthly Missed Task Report
+
+```powershell
+# Generate comprehensive missed task report
+$reportDate = Get-Date -Format 'yyyy-MM-dd'
+$reportPath = "C:\Repos\WinHarden\logs\missed_tasks_report_$reportDate.csv"
+
+$report = Get-ScheduledTask -TaskPath '\Hardening\*' | 
+    ForEach-Object {
+        $info = $_ | Get-ScheduledTaskInfo
+        [PSCustomObject]@{
+            TaskName = $_.TaskName
+            LastRunTime = $info.LastRunTime
+            NextRunTime = $info.NextRunTime
+            LastTaskResult = $info.LastTaskResult
+            MissedRuns = $info.NumberOfMissedRuns
+            Enabled = $_.Enabled
+            ReportDate = $reportDate
+        }
+    }
+
+$report | Export-Csv -Path $reportPath -NoTypeInformation
+Write-Host "Report saved to: $reportPath"
+
+# Display summary
+$totalMissed = ($report | Measure-Object -Property MissedRuns -Sum).Sum
+Write-Host "Total missed runs across all tasks: $totalMissed"
 ```
 
 ---
 
-## Advanced Configuration
+## Advanced Catchup Configuration
 
-### Custom Catchup Behavior
-
-**Enable Catchup Only on Weekdays**
+### Enable Catchup Only on Business Days
 
 ```powershell
-# For tasks that should only catch up on business days:
-# 1. Create two task instances:
-#    - "Daily-Security-Monitor-Weekday" (catch up enabled)
-#    - "Daily-Security-Monitor-Weekend" (catch up disabled)
+# Create two instances of Daily-Security-Monitor:
+# 1. Weekday version (Mon-Fri, catchup enabled)
+# 2. Weekend version (Sat-Sun, catchup disabled)
 
-# 2. Or manually adjust via schtasks:
-schtasks /change /tn "Hardening\Daily-Security-Monitor" /d MO,TU,WE,TH,FR
+# Weekday instance
+schtasks /create /tn "Hardening\Daily-Security-Monitor-Weekday" `
+    /tr "powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Repos\WinHarden\scripts\Monitor_Audit_Logs.ps1" `
+    /sc WEEKLY /d MO,TU,WE,TH,FR /st 09:00 /ru SYSTEM /z /f
+
+# Weekend instance (no catchup)
+schtasks /create /tn "Hardening\Daily-Security-Monitor-Weekend" `
+    /tr "powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Repos\WinHarden\scripts\Monitor_Audit_Logs.ps1" `
+    /sc WEEKLY /d SA,SU /st 09:00 /ru SYSTEM /f
+    # NOTE: No /z flag
 ```
 
-**Delayed Catchup Start**
+### Delayed Catchup Execution
 
-Windows doesn't natively support "delay before catchup", but you can:
+Windows doesn't natively support "delay before catchup", but you can add a delay wrapper:
 
 ```powershell
-# Create wrapper script that delays execution:
-# filename: Delayed_Monitor_Audit_Logs.ps1
+# Create wrapper: C:\Repos\WinHarden\scripts\Delayed_Monitor_Audit_Logs.ps1
 
-# Add delay before calling actual script
-Start-Sleep -Seconds 300  # 5-minute delay before running
+# Add delay before executing actual script
+# This prevents immediate catchup, allowing normal schedule to run first
+Start-Sleep -Seconds 300  # 5-minute delay
 
 # Then call actual script
 & C:\Repos\WinHarden\scripts\Monitor_Audit_Logs.ps1
+
+# Schedule wrapper instead of original script
+schtasks /create /tn "Hardening\Daily-Security-Monitor-Delayed" `
+    /tr "powershell.exe -File C:\Repos\WinHarden\scripts\Delayed_Monitor_Audit_Logs.ps1" `
+    /sc DAILY /st 09:00 /ru SYSTEM /z /f
 ```
 
-### Per-Task Catchup Configuration
-
-Disable catchup for low-priority tasks:
+### Conditional Catchup (Power State Check)
 
 ```powershell
-# Remove catchup from Archive task (low priority)
-# Get current task definition
-$task = Get-ScheduledTask -TaskName "Archive-Old-Reports"
+# Create intelligent wrapper that only catches up if system was actually offline
 
-# Edit XML to remove /Z flag equivalent
-# (advanced - requires manual XML manipulation)
+# Save as: C:\Repos\WinHarden\scripts\Smart_Catchup_Monitor_Audit_Logs.ps1
 
-# Easier: Recreate task without /z flag
-Get-ScheduledTask -TaskName "Archive-Old-Reports" | Unregister-ScheduledTask -Confirm:$false
+$lastRunFile = "C:\Repos\WinHarden\logs\.last_run_timestamp"
 
-# Manually recreate:
-schtasks /create /tn "Hardening\Archive-Old-Reports" `
-  /tr "powershell.exe -File C:\Repos\WinHarden\scripts\Archive_Old_Reports.ps1" `
-  /sc MONTHLY /d 2 /st 09:00 /ru SYSTEM `
-  /f
-  # Note: NO /z flag this time
+# Check if this is first run or catchup run
+$currentTime = Get-Date
+$isFirstRun = -not (Test-Path $lastRunFile)
+
+if ($isFirstRun) {
+    # First run - execute normally
+    Write-Host "First run at $currentTime"
+} else {
+    # Check if sufficient time has passed (indicates catchup)
+    $lastRun = [DateTime]::Parse((Get-Content $lastRunFile))
+    $timeDiff = ($currentTime - $lastRun).TotalHours
+    
+    if ($timeDiff -gt 24) {
+        Write-Host "Catchup detected (offline for $([Math]::Round($timeDiff, 1)) hours)"
+    }
+}
+
+# Save current run time
+$currentTime.ToString('o') | Set-Content -Path $lastRunFile
+
+# Execute actual monitoring script
+& C:\Repos\WinHarden\scripts\Monitor_Audit_Logs.ps1
 ```
 
 ---
 
-## Troubleshooting
+## Troubleshooting Catchup Issues
 
 ### Issue: Task Caught Up Too Frequently
 
-**Symptom:** Task runs multiple times in succession after system startup
+**Symptoms:**
+- Task shows multiple missed runs
+- Task executes multiple times in succession
+- Event Viewer shows many catchup events
 
-**Cause:** System was off multiple scheduled intervals, and catchup ran for each missed occurrence
+**Causes:**
+- System powered off during multiple scheduled intervals
+- Catchup flag enabled for all missed occurrences
+- System uptime shorter than task intervals
 
-**Solution:**
+**Diagnosis:**
 ```powershell
-# Option 1: Disable catchup for this task
-# (See "Per-Task Catchup Configuration" above)
+# Check system uptime
+$uptime = (Get-Date) - (Get-CimInstance Win32_OperatingSystem).LastBootUpTime
+Write-Host "System uptime: $($uptime.Days) days, $($uptime.Hours) hours"
 
-# Option 2: Reduce task frequency
-# Change from DAILY to WEEKLY for less-critical tasks
+# Check missed run count
+Get-ScheduledTask -TaskPath '\Hardening\*' | 
+    Get-ScheduledTaskInfo | 
+    Select-Object TaskName, NumberOfMissedRuns | 
+    Where-Object { $_.NumberOfMissedRuns -gt 0 }
 
-# Option 3: Check system power settings
-# Ensure system doesn't power off during scheduled maintenance windows
-Get-PowerCfg -L | Where-Object { $_.Name -like "*Sleep*" }
+# Check Event Viewer for pattern
+Get-EventLog -LogName System -Source "TaskScheduler" -Newest 100 | 
+    Where-Object { $_.EventID -eq 142 } | 
+    Measure-Object
 ```
 
-### Issue: "Too Many Missed Runs" in Event Viewer
-
-**Symptom:** Event ID 142 shows task caught up 10+ times
-
-**Cause:** System was off for extended period (days/weeks)
-
-**Solution:**
+**Solutions:**
 ```powershell
-# 1. Identify which task is reporting excessive missed runs
-Get-ScheduledTask -TaskPath '\Hardening\*' | ForEach-Object {
-    Write-Host "$($_.TaskName): $($_ | Get-ScheduledTaskInfo | Select -Expand NumberOfMissedRuns) missed"
+# Option 1: Disable catchup for low-priority tasks
+Get-ScheduledTask -TaskName "Archive-Old-Reports" | 
+    Unregister-ScheduledTask -Confirm:$false
+
+schtasks /create /tn "Hardening\Archive-Old-Reports" `
+    /tr "powershell.exe -File C:\Repos\WinHarden\scripts\Archive_Old_Reports.ps1" `
+    /sc MONTHLY /d 2 /st 09:00 /ru SYSTEM /f
+    # No /z flag
+
+# Option 2: Reduce frequency of high-frequency tasks
+schtasks /change /tn "Hardening\Daily-Security-Monitor" /sc WEEKLY /d MO,WE,FR
+
+# Option 3: Schedule during longer availability window
+# Move system to always-on or longer online periods
+
+# Option 4: Manually clear missed runs
+schtasks /run /tn "Hardening\Daily-Security-Monitor"
+Start-Sleep -Seconds 5
+schtasks /run /tn "Hardening\Monitor-Windows-Updates"
+Start-Sleep -Seconds 5
+# Run all tasks manually to clear missed count
+```
+
+### Issue: "Too Many Missed Runs" Alert
+
+**Symptoms:**
+- Event ID 142 appears frequently in Event Viewer
+- NumberOfMissedRuns >10 for multiple tasks
+- System sluggish after boot
+
+**Causes:**
+- System offline for extended period (days/weeks)
+- Multiple tasks accumulating missed runs
+- Catchup processing consuming resources
+
+**Diagnosis:**
+```powershell
+# Identify which tasks have excessive missed runs
+Get-ScheduledTask -TaskPath '\Hardening\*' | 
+    ForEach-Object {
+        $info = $_ | Get-ScheduledTaskInfo
+        if ($info.NumberOfMissedRuns -gt 5) {
+            Write-Host "$($_.TaskName): $($info.NumberOfMissedRuns) missed runs [ALERT]"
+        }
+    }
+
+# Check Event Viewer for failure patterns
+Get-EventLog -LogName System -Source "TaskScheduler" -After (Get-Date).AddHours(-24) | 
+    Where-Object { $_.EventID -eq 201 } | 
+    Measure-Object
+```
+
+**Solutions:**
+```powershell
+# Option 1: Manually trigger all tasks to clear missed count
+Write-Host "Clearing missed task runs..."
+@(
+    "Daily-Security-Monitor",
+    "Monitor-Windows-Updates",
+    "Detect-Configuration-Drift",
+    "Monthly-Compliance-Audit",
+    "Archive-Old-Reports"
+) | ForEach-Object {
+    schtasks /run /tn "Hardening\$_"
+    Start-Sleep -Seconds 3
 }
 
-# 2. Manually clear by re-registering task
-Get-ScheduledTask -TaskName "[TaskName]" | Unregister-ScheduledTask -Confirm:$false
+# Option 2: Re-register all tasks (clears history completely)
+Write-Host "Re-registering all tasks..."
+Get-ScheduledTask -TaskPath '\Hardening\*' | 
+    Unregister-ScheduledTask -Confirm:$false
 
-# 3. Re-run setup script to restore
-.\Set-ScheduledTasksHardening.ps1 -Force
+# Reinstall fresh
+& C:\Repos\WinHarden\scripts\Set-ScheduledTasksHardening.ps1 -Force
 
-# 4. Or update in GUI: Clear task history and recreate
+# Option 3: Monitor resource usage during catchup
+# Stagger task execution to spread load
 ```
 
-### Issue: Catchup Task Failures Masking Real Errors
+### Issue: Catchup Tasks Blocking Other Operations
 
-**Symptom:** Task caught up but failed, making it hard to debug
+**Symptoms:**
+- System sluggish during catchup execution
+- Other processes delayed
+- High CPU/memory usage
 
-**Solution:**
+**Causes:**
+- Multiple catchup tasks running simultaneously
+- Task resource requirements too high
+- System underpowered for concurrent execution
+
+**Solutions:**
 ```powershell
-# Review detailed error logs in Event Viewer
-# Each catchup attempt is logged separately
+# Option 1: Increase schedule spacing
+schtasks /change /tn "Hardening\Monitor-Windows-Updates" /st 08:00
+Start-Sleep -Seconds 1
+schtasks /change /tn "Hardening\Daily-Security-Monitor" /st 09:00
+Start-Sleep -Seconds 1
+schtasks /change /tn "Hardening\Detect-Configuration-Drift" /st 10:00
 
-# Filter for failed catchup events:
-Get-EventLog -LogName System -Source "TaskScheduler" -ErrorAction SilentlyContinue | 
-  Where-Object { $_.Message -like "*missed*" -and $_.Message -like "*failed*" } | 
-  Format-Table TimeGenerated, Message
-
-# Test task manually to reproduce error:
-schtasks /run /tn "Hardening\Daily-Security-Monitor"
-```
-
-### Issue: Catchup Tasks Blocking Other System Operations
-
-**Symptom:** System sluggish after multiple catchup tasks run
-
-**Solution:**
-```powershell
-# 1. Increase schedule spacing
-# Move tasks to different times (see Strategy 2)
-
-# 2. Reduce task intensity
-# Remove non-critical checks from scripts
-# Optimize scripts for performance
-
-# 3. Limit concurrent tasks
-# Use task scheduler's built-in concurrency limits
-# (Advanced: modify task XML)
-
-# 4. Schedule during off-peak hours
-# Move compliance audits to evening/night
+# Option 2: Move to off-peak hours
 schtasks /change /tn "Hardening\Monthly-Compliance-Audit" /st 22:00
+schtasks /change /tn "Hardening\Detect-Configuration-Drift" /st 23:00
+schtasks /change /tn "Hardening\Daily-Security-Monitor" /st 00:00
+
+# Option 3: Disable catchup for low-priority tasks
+# (See "Selective Catchup" strategy above)
+
+# Option 4: Limit system power state changes
+# Prevent unexpected power-downs during production hours
 ```
 
 ---
@@ -421,56 +702,84 @@ schtasks /change /tn "Hardening\Monthly-Compliance-Audit" /st 22:00
 
 ### For System Availability
 
-- **Enable catchup** for all critical compliance and security tasks
-- **Stagger execution times** to prevent resource spikes
-- **Schedule audits** during off-peak hours when possible
-- **Monitor missed runs** weekly to detect patterns
+1. **Enable catchup for all critical tasks** - Monthly-Compliance-Audit, Daily-Security-Monitor
+2. **Stagger execution times** - Prevent simultaneous starts
+3. **Schedule off-peak audits** - Run heavy tasks at night
+4. **Monitor missed runs daily** - Detect patterns early
+5. **Set system to always-on** - Avoid scheduled power-downs
 
 ### For Data Consistency
 
-- **Catchup runs are not guaranteed** to run in exact order if multiple missed
-- **Audit scripts should be idempotent** (safe to run multiple times)
-- **Report timestamps** will reflect actual run time, not scheduled time
-- **Document dependencies** if one task depends on another
+1. **Audit scripts must be idempotent** - Safe to run multiple times
+2. **Report timestamps reflect actual execution time** - Not scheduled time
+3. **Catchup runs are sequential** - No parallel execution of same task
+4. **Document task dependencies** - If one task depends on another
+5. **Verify data integrity** - Check reports for duplicate entries
 
-### For Performance
+### For Compliance
 
-- **Disable catchup** only for truly optional/redundant tasks
-- **Use task priorities** to ensure critical tasks run first after catchup
-- **Monitor resource usage** during high-activity periods
-- **Clean up logs regularly** to prevent disk space issues
-
----
-
-## FAQ
-
-**Q: If system is off for 3 days, will missed Daily-Security-Monitor tasks all run?**
-A: Yes, the task will catch up for 3 missed runs. They'll execute sequentially on system startup.
-
-**Q: Does catchup affect the integrity of audit reports?**
-A: No. Reports still represent the time range they were designed to cover. Timestamps will show actual run time.
-
-**Q: Can I manually trigger a missed task?**
-A: Yes - use `schtasks /run /tn "Hardening\[TaskName]"` to run any task on-demand.
-
-**Q: What if a task is too large and catches up multiple times?**
-A: Consider disabling catchup for that task, or breaking it into smaller subtasks.
-
-**Q: How long are missed run records kept?**
-A: Until task history is cleared manually or system event log is rolled over.
+1. **Keep detailed audit logs** - For compliance verification
+2. **Never disable catchup for compliance tasks** - Risk missed audits
+3. **Review missed runs monthly** - Document reasons for unavailability
+4. **Archive reports systematically** - Maintain historical compliance data
+5. **Alert on excessive missed runs** - >5 misses = investigation needed
 
 ---
 
-## Next Steps
+## Common Issues FAQ
 
-1. Monitor missed run trends in your environment
-2. Adjust catchup strategy based on system availability patterns
-3. Document any custom catchup rules you implement
-4. Review monthly to optimize schedule timing
+**Q: If system is offline for 7 days, will Daily-Security-Monitor run 7 times?**  
+A: Yes. The task will execute for each missed day in sequence upon system boot.
+
+**Q: Does catchup affect report accuracy?**  
+A: No. Reports still represent intended time periods. Timestamps show actual execution time.
+
+**Q: Can I manually clear missed runs without re-registering?**  
+A: Practically, no. Either re-register task or manually trigger all missed occurrences.
+
+**Q: What if a task takes longer than its interval to run?**  
+A: Task will still complete. Next scheduled/catchup run occurs after completion.
+
+**Q: Are catchup runs logged in Event Viewer?**  
+A: Yes. Event ID 142 specifically logs "task missed and caught up" events.
+
+**Q: Can I set different catchup strategies per task?**  
+A: Yes. Recreate individual tasks with or without /z flag as needed.
 
 ---
 
-**Last Updated:** 2026-06-26  
-**Document Version:** 1.0  
-**Target Audience:** System Administrators, DevOps Engineers  
+## Quick Reference Commands
+
+```powershell
+# Check catchup status for all tasks
+Get-ScheduledTask -TaskPath '\Hardening\*' | 
+    ForEach-Object {
+        $info = $_ | Get-ScheduledTaskInfo
+        [PSCustomObject]@{
+            Task = $_.TaskName
+            Missed = $info.NumberOfMissedRuns
+            LastRun = $info.LastRunTime
+            NextRun = $info.NextRunTime
+        }
+    } | Format-Table
+
+# Manually execute missed task
+schtasks /run /tn "Hardening\Daily-Security-Monitor"
+
+# Check catchup in Event Viewer
+Get-EventLog -LogName System -Source "TaskScheduler" -Newest 20 | 
+    Where-Object { $_.EventID -eq 142 } | 
+    Format-Table TimeGenerated, Message
+
+# Clear missed runs by re-registering
+Get-ScheduledTask -TaskName "Daily-Security-Monitor" | 
+    Unregister-ScheduledTask -Confirm:$false
+.\Set-ScheduledTasksHardening.ps1 -Force
+```
+
+---
+
+**Document Version:** 2.0  
+**Last Updated:** 2026-06-27  
+**Target Audience:** System Administrators, DevOps Engineers, Compliance Officers  
 **Complexity Level:** Intermediate to Advanced
