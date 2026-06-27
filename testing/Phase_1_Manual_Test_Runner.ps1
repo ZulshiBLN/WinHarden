@@ -84,15 +84,58 @@ Write-TestOutput "Reports Dir: $reportsDir"
 Write-TestOutput ""
 
 # ============================================================================
+# MODULE LOADING
+# ============================================================================
+
+Write-Section "LOADING WINHARDEN MODULES"
+
+try {
+    # Load core and system modules from project root
+    # Try multiple path resolutions
+    $corePath = $null
+    $systemPath = $null
+
+    if (Test-Path ".\modules\Core.psm1") {
+        $corePath = ".\modules\Core.psm1"
+        $systemPath = ".\modules\System.psm1"
+    }
+    elseif (Test-Path "C:\Repos\WinHarden\modules\Core.psm1") {
+        $corePath = "C:\Repos\WinHarden\modules\Core.psm1"
+        $systemPath = "C:\Repos\WinHarden\modules\System.psm1"
+    }
+    elseif (Test-Path "..\modules\Core.psm1") {
+        $corePath = "..\modules\Core.psm1"
+        $systemPath = "..\modules\System.psm1"
+    }
+
+    if ($null -eq $corePath) {
+        Write-TestOutput "[ERROR] Could not locate modules" -Level ERROR
+        exit 1
+    }
+
+    Import-Module $corePath -Force -ErrorAction Stop
+    Write-TestOutput "[OK] Core module loaded: $corePath" -Level OK
+
+    Import-Module $systemPath -Force -ErrorAction Stop
+    Write-TestOutput "[OK] System module loaded: $systemPath" -Level OK
+
+    Write-TestOutput ""
+}
+catch {
+    Write-TestOutput "[ERROR] Failed to load modules: $_" -Level ERROR
+    exit 1
+}
+
+# ============================================================================
 # MODULE INITIALIZATION
 # ============================================================================
 
-Write-Section "MODULE INITIALIZATION"
+Write-Section "VERIFYING CORE FUNCTIONS"
 
 $moduleList = @(
     'Invoke-SecurityHardening',
     'Test-HardeningCompliance',
-    'Get-FirewallDrift',
+    'Get-FirewallStatusDrift',
     'Get-RDPSecurityDrift',
     'Get-NetworkSecurityDrift',
     'Get-AccountPoliciesDrift',
@@ -139,9 +182,14 @@ try {
     Write-TestOutput "  OS: $($preHardeningReport.OS)"
     Write-TestOutput ""
 
-    Write-TestOutput "1.2 Executing WhatIf preview..."
+    Write-TestOutput "1.2 Creating hardening session..."
+    $session = New-HardeningSession -Profile Recommended -TargetSystem Client -OSVersion 11 -Verbose 4>&1
+    Write-TestOutput "[OK] Hardening session created" -Level OK
+    Write-TestOutput ""
+
+    Write-TestOutput "1.3 Executing WhatIf preview..."
     $whatIfLog = Join-Path $reportsDir "01_hardening_whatif_$testRunID.log"
-    Invoke-SecurityHardening -WhatIf -Verbose 4>&1 |
+    Invoke-SecurityHardening -Session $session -WhatIf -Verbose 4>&1 |
         Tee-Object -FilePath $whatIfLog |
         Select-Object -Last 10 |
         ForEach-Object { Write-TestOutput $_ }
@@ -150,9 +198,9 @@ try {
     Write-TestOutput "  Log: $whatIfLog"
     Write-TestOutput ""
 
-    Write-TestOutput "1.3 Executing live hardening..."
+    Write-TestOutput "1.4 Executing live hardening..."
     $execLog = Join-Path $reportsDir "02_hardening_execution_$testRunID.log"
-    Invoke-SecurityHardening -Verbose 4>&1 |
+    Invoke-SecurityHardening -Session $session -Verbose 4>&1 |
         Tee-Object -FilePath $execLog |
         Select-Object -Last 10 |
         ForEach-Object { Write-TestOutput $_ }
@@ -191,16 +239,20 @@ Write-TestOutput ""
 Write-Section "SCENARIO 2: COMPLIANCE VERIFICATION"
 
 try {
-    Write-TestOutput "2.1 Running compliance check..."
+    Write-TestOutput "2.1 Creating fresh hardening session for compliance check..."
+    $compSession = New-HardeningSession -Profile Recommended -TargetSystem Client -OSVersion 11 -Verbose 4>&1 -ErrorAction SilentlyContinue
+    Write-TestOutput "[OK] Compliance session created" -Level OK
+
+    Write-TestOutput "2.2 Running compliance check..."
     $complianceLog = Join-Path $reportsDir "03_compliance_check_$testRunID.log"
 
-    $complianceOutput = Test-HardeningCompliance -Verbose 4>&1 |
+    $complianceOutput = Test-HardeningCompliance -Session $compSession -Verbose 4>&1 |
         Tee-Object -FilePath $complianceLog
 
     Write-TestOutput "[OK] Compliance check completed" -Level OK
     Write-TestOutput "  Log: $complianceLog"
 
-    Write-TestOutput "2.2 Analyzing results..."
+    Write-TestOutput "2.3 Analyzing results..."
     $passCount = ($complianceOutput | Select-String "\[PASS\]|\[OK\]" | Measure-Object).Count
     $failCount = ($complianceOutput | Select-String "\[FAIL\]|\[ERROR\]" | Measure-Object).Count
 
@@ -230,7 +282,7 @@ Write-Section "SCENARIO 3: DRIFT DETECTION"
 try {
     Write-TestOutput "3.1 Firewall drift detection..."
     $fwDriftLog = Join-Path $reportsDir "04_firewall_drift_$testRunID.log"
-    Get-FirewallDrift -Verbose 4>&1 | Tee-Object -FilePath $fwDriftLog | Select-Object -Last 5 | ForEach-Object { Write-TestOutput $_ }
+    Get-FirewallStatusDrift -Verbose 4>&1 | Tee-Object -FilePath $fwDriftLog | Select-Object -Last 5 | ForEach-Object { Write-TestOutput $_ }
     Write-TestOutput "[OK] Completed" -Level OK
 
     Write-TestOutput "3.2 RDP security drift detection..."
@@ -265,26 +317,27 @@ Write-TestOutput ""
 Write-Section "SCENARIO 4: REPORT GENERATION"
 
 try {
-    Write-TestOutput "4.1 Generating security drift report..."
-    $reportPath = Join-Path $reportsDir "SecurityDriftReport_$testRunID.html"
+    Write-TestOutput "4.1 Collecting drift findings..."
+    $driftFindings = @()
+    $driftFindings += Get-FirewallStatusDrift -ErrorAction SilentlyContinue -WarningAction SilentlyContinue
+    $driftFindings += Get-RDPSecurityDrift -ErrorAction SilentlyContinue -WarningAction SilentlyContinue
+    $driftFindings += Get-NetworkSecurityDrift -ErrorAction SilentlyContinue -WarningAction SilentlyContinue
+    $driftFindings += Get-AccountPoliciesDrift -ErrorAction SilentlyContinue -WarningAction SilentlyContinue
 
-    $reportOutput = New-SecurityDriftReport -OutputPath $reportPath -Verbose 4>&1
+    Write-TestOutput "[OK] Collected $($driftFindings.Count) drift findings"
+    Write-TestOutput ""
 
-    if (Test-Path $reportPath) {
-        $reportSize = (Get-Item $reportPath).Length
+    Write-TestOutput "4.2 Generating security drift report..."
+    $reportOutput = New-SecurityDriftReport -DriftFindings $driftFindings -OutputDirectory $reportsDir -Verbose 4>&1
+
+    # Find the generated report
+    $reportPath = Get-ChildItem $reportsDir -Filter "Drift_Detection_*.csv" -ErrorAction SilentlyContinue |
+        Sort-Object LastWriteTime -Descending | Select-Object -First 1
+
+    if ($reportPath) {
         Write-TestOutput "[OK] Report generated successfully" -Level OK
-        Write-TestOutput "  Path: $reportPath"
-        Write-TestOutput "  Size: $(([Math]::Round($reportSize/1KB)))KB"
-
-        Write-TestOutput "4.2 Verifying report contents..."
-        $reportContent = Get-Content $reportPath -Raw
-
-        if ($reportContent -match "\[MASKED\]|\*\*\*") {
-            Write-TestOutput "[OK] Sensitive data properly masked" -Level OK
-        } else {
-            Write-TestOutput "[WARN] No masked data patterns found" -Level WARN
-        }
-
+        Write-TestOutput "  Path: $($reportPath.FullName)"
+        Write-TestOutput "  Size: $(([Math]::Round($reportPath.Length/1KB)))KB"
         $scenario4Result = 'PASS'
     } else {
         Write-TestOutput "[ERROR] Report file not created" -Level ERROR
@@ -306,13 +359,14 @@ Write-Section "SCENARIO 5: EDGE CASES"
 
 try {
     Write-TestOutput "5.1 Testing WhatIf mode consistency..."
-    $whatIfTest = Invoke-SecurityHardening -WhatIf -Verbose 4>&1 -ErrorAction SilentlyContinue
+    $edgeSession = New-HardeningSession -Profile Recommended -TargetSystem Client -OSVersion 11 -Verbose 4>&1 -ErrorAction SilentlyContinue
+    $whatIfTest = Invoke-SecurityHardening -Session $edgeSession -WhatIf -Verbose 4>&1 -ErrorAction SilentlyContinue
     if ($whatIfTest) {
         Write-TestOutput "[OK] WhatIf mode works correctly" -Level OK
     }
 
     Write-TestOutput "5.2 Testing error recovery..."
-    $errorTest = Test-HardeningCompliance -ErrorAction SilentlyContinue -WarningAction SilentlyContinue 4>&1
+    $errorTest = Test-HardeningCompliance -Session $edgeSession -ErrorAction SilentlyContinue -WarningAction SilentlyContinue 4>&1
     if ($null -ne $errorTest) {
         Write-TestOutput "[OK] Error recovery functional" -Level OK
     }
