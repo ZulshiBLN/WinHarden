@@ -1,13 +1,12 @@
-BeforeAll {
-    $modulePath = (Resolve-Path "$PSScriptRoot\..\modules\System.psm1").Path
-    Import-Module $modulePath -Force
-}
-
-AfterAll {
-    Remove-Module System -Force -ErrorAction SilentlyContinue
-}
-
 Describe "Test-HardeningCompliance" {
+    BeforeAll {
+        $modulePath = (Resolve-Path "$PSScriptRoot\..\modules\System.psm1").Path
+        Import-Module $modulePath -Force
+    }
+
+    AfterAll {
+        Remove-Module System -Force -ErrorAction SilentlyContinue
+    }
     Context "Parameter Validation" {
         It "accepts a valid hardening session object" {
             $session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11 -SkipPrerequisiteCheck

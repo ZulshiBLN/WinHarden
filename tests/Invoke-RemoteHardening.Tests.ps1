@@ -1,25 +1,24 @@
-BeforeAll {
-    # Load Core module first (contains Write-Log and other dependencies)
-    $coreModulePath = (Resolve-Path "$PSScriptRoot\..\modules\Core.psm1").Path
-    Import-Module $coreModulePath -Force -Scope Global
-
-    # Load System module (contains Invoke-RemoteHardening and related functions)
-    $systemModulePath = (Resolve-Path "$PSScriptRoot\..\modules\System.psm1").Path
-    Import-Module $systemModulePath -Force -Scope Global
-}
-
-AfterAll {
-    Remove-Module Core -Force -ErrorAction SilentlyContinue
-    Remove-Module System -Force -ErrorAction SilentlyContinue
-}
-
-BeforeEach {
-    # Mock Write-Log to prevent actual logging during tests
-    Mock -CommandName Write-Log -MockWith { } -Scope Global
-    Mock -CommandName Write-ErrorLog -MockWith { } -Scope Global
-}
-
 Describe "Invoke-RemoteHardening" {
+    BeforeAll {
+        # Load Core module first (contains Write-Log and other dependencies)
+        $coreModulePath = (Resolve-Path "$PSScriptRoot\..\modules\Core.psm1").Path
+        Import-Module $coreModulePath -Force -Scope Global
+
+        # Load System module (contains Invoke-RemoteHardening and related functions)
+        $systemModulePath = (Resolve-Path "$PSScriptRoot\..\modules\System.psm1").Path
+        Import-Module $systemModulePath -Force -Scope Global
+    }
+
+    AfterAll {
+        Remove-Module Core -Force -ErrorAction SilentlyContinue
+        Remove-Module System -Force -ErrorAction SilentlyContinue
+    }
+
+    BeforeEach {
+        # Mock Write-Log to prevent actual logging during tests
+        Mock -CommandName Write-Log -MockWith { }
+        Mock -CommandName Write-ErrorLog -MockWith { }
+    }
     Context "Parameter Validation" {
         It "throws when ComputerName is empty" {
             { Invoke-RemoteHardening -ComputerName @() -Profile Basis } | Should -Throw
