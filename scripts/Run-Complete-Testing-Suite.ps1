@@ -121,6 +121,14 @@ try {
     Import-Module $systemPath -Force -ErrorAction Stop | Out-Null
     Write-TestOutput "[OK] System module loaded" -Level OK
 
+    # Verify HTML report function is available
+    if (Get-Command -Name Invoke-HardeningHTMLReport -ErrorAction SilentlyContinue) {
+        Write-TestOutput "[OK] Invoke-HardeningHTMLReport function available" -Level OK
+    }
+    else {
+        Write-TestOutput "[WARN] Invoke-HardeningHTMLReport not available" -Level WARN
+    }
+
     Write-TestOutput ""
 }
 catch {
@@ -270,7 +278,7 @@ Write-TestOutput "Test Log: $testLogFile" -Level OK
 Write-TestOutput ""
 
 # ============================================================================
-# GENERATE HTML REPORT (Using New-HardeningHTMLReport function)
+# GENERATE HTML REPORT (Using Invoke-HardeningHTMLReport function)
 # ============================================================================
 
 if ($GenerateHTML) {
@@ -281,9 +289,14 @@ if ($GenerateHTML) {
         $htmlReportFile = Join-Path $reportsDir "Complete_Testing_Report_$testRunID.html"
 
         if (Test-Path $markdownFile) {
-            $htmlResult = New-HardeningHTMLReport -MarkdownFile $markdownFile -OutputFile $htmlReportFile
-            Write-TestOutput "[OK] HTML Report generated: $htmlReportFile" -Level OK
-            Write-TestOutput "[OK] File size: $([Math]::Round($htmlResult.Length / 1KB, 2)) KB" -Level OK
+            if (Get-Command -Name Invoke-HardeningHTMLReport -ErrorAction SilentlyContinue) {
+                $htmlResult = Invoke-HardeningHTMLReport -MarkdownFile $markdownFile -OutputFile $htmlReportFile
+                Write-TestOutput "[OK] HTML Report generated: $htmlReportFile" -Level OK
+                Write-TestOutput "[OK] File size: $([Math]::Round($htmlResult.Length / 1KB, 2)) KB" -Level OK
+            }
+            else {
+                Write-TestOutput "[WARN] Invoke-HardeningHTMLReport function not available" -Level WARN
+            }
         }
         else {
             Write-TestOutput "[WARN] Markdown file not found, skipping HTML report" -Level WARN
