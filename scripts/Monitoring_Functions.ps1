@@ -1,6 +1,10 @@
 # WinHarden Monitoring Functions
 # Add these to your PowerShell profile for quick access
 
+$ErrorActionPreference = 'Stop'
+
+. "$PSScriptRoot/../modules/Core.psm1"
+
 function Get-SecurityEvents {
     <#
     .SYNOPSIS
@@ -39,11 +43,22 @@ function Get-SecurityEvents {
     )
 
     if ($PSCmdlet.ShouldProcess("Security event log", "Query")) {
-        $startTime = (Get-Date).AddHours(-$Hours)
-        Get-WinEvent -FilterHashtable @{
-            LogName = "Security"
-            StartTime = $startTime
-        } -MaxEvents 100 | Sort-Object TimeCreated -Descending
+        try {
+            $startTime = (Get-Date).AddHours(-$Hours)
+            Write-Verbose "Querying Security event log for events from last $Hours hours"
+
+            $events = Get-WinEvent -FilterHashtable @{
+                LogName = "Security"
+                StartTime = $startTime
+            } -MaxEvents 100 -ErrorAction Stop | Sort-Object TimeCreated -Descending
+
+            Write-Log -Message "Retrieved $($events.Count) security events from last $Hours hours" -Level Info -Caller $MyInvocation.MyCommand.Name
+            $events
+        }
+        catch {
+            Write-Log -Message "Failed to query Security event log: $($_.Exception.Message)" -Level Error -Caller $MyInvocation.MyCommand.Name
+            Write-Error -Message "Failed to retrieve security events: $($_.Exception.Message)" -ErrorAction Stop
+        }
     }
 }
 
@@ -87,12 +102,23 @@ function Get-FailedLogins {
     )
 
     if ($PSCmdlet.ShouldProcess("Security event log", "Query failed login events (ID 4625)")) {
-        $startTime = (Get-Date).AddHours(-$Hours)
-        Get-WinEvent -FilterHashtable @{
-            LogName = "Security"
-            ID = 4625
-            StartTime = $startTime
-        } | Sort-Object TimeCreated -Descending
+        try {
+            $startTime = (Get-Date).AddHours(-$Hours)
+            Write-Verbose "Querying Security event log for failed login attempts (Event ID 4625) from last $Hours hours"
+
+            $failedLogins = Get-WinEvent -FilterHashtable @{
+                LogName = "Security"
+                ID = 4625
+                StartTime = $startTime
+            } -ErrorAction Stop | Sort-Object TimeCreated -Descending
+
+            Write-Log -Message "Retrieved $($failedLogins.Count) failed login attempts from last $Hours hours" -Level Info -Caller $MyInvocation.MyCommand.Name
+            $failedLogins
+        }
+        catch {
+            Write-Log -Message "Failed to query failed login events: $($_.Exception.Message)" -Level Error -Caller $MyInvocation.MyCommand.Name
+            Write-Error -Message "Failed to retrieve failed login events: $($_.Exception.Message)" -ErrorAction Stop
+        }
     }
 }
 
@@ -136,12 +162,23 @@ function Get-PrivilegeEscalations {
     )
 
     if ($PSCmdlet.ShouldProcess("Security event log", "Query privilege escalation events (IDs 4672, 4673)")) {
-        $startTime = (Get-Date).AddHours(-$Hours)
-        Get-WinEvent -FilterHashtable @{
-            LogName = "Security"
-            ID = 4672, 4673
-            StartTime = $startTime
-        } | Sort-Object TimeCreated -Descending
+        try {
+            $startTime = (Get-Date).AddHours(-$Hours)
+            Write-Verbose "Querying Security event log for privilege escalation events (IDs 4672, 4673) from last $Hours hours"
+
+            $escalations = Get-WinEvent -FilterHashtable @{
+                LogName = "Security"
+                ID = 4672, 4673
+                StartTime = $startTime
+            } -ErrorAction Stop | Sort-Object TimeCreated -Descending
+
+            Write-Log -Message "Retrieved $($escalations.Count) privilege escalation events from last $Hours hours" -Level Info -Caller $MyInvocation.MyCommand.Name
+            $escalations
+        }
+        catch {
+            Write-Log -Message "Failed to query privilege escalation events: $($_.Exception.Message)" -Level Error -Caller $MyInvocation.MyCommand.Name
+            Write-Error -Message "Failed to retrieve privilege escalation events: $($_.Exception.Message)" -ErrorAction Stop
+        }
     }
 }
 
