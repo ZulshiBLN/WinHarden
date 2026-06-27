@@ -141,6 +141,12 @@ Security profiles for different deployment scenarios. Each profile builds on pre
 2. **[IMMEDIATE]** Get-UpdateHistory: Either implement function or remove tests
 3. **[HIGH]** Get-AccountPoliciesDrift: Debug parameter binding and mocking
 4. **[MEDIUM]** Invoke-SecurityHardening: Investigate 7 failing tests
+5. **[BACKLOG]** Implement Mocking Strategy for Drift Detection Tests (Option 1)
+   - Mock external system calls (Registry reads, Audit policies, Network security)
+   - Tests run without admin rights via mocks
+   - Separate unit tests (mocked) from optional integration tests (admin-required)
+   - Reference: Get-AccountPoliciesDrift, Get-NetworkSecurityDrift, Get-RDPSecurityDrift
+   - Target: 95%+ coverage, all tests pass without elevation
 
 ---
 
