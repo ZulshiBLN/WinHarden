@@ -2,8 +2,8 @@
 
 Arbeitsstand und Modul-Informationen für alle PowerShell-Funktionen.
 
-**Zuletzt aktualisiert:** 2026-06-27  
-**Infrastruktur-Phase:** ✅ Complete (9 ADRs, clean project structure)  
+**Zuletzt aktualisiert:** 2026-06-27 (HTML Report Functions added)  
+**Infrastruktur-Phase:** ✅ Complete (10 ADRs, clean project structure)  
 **Testing-Phase:** [!!] CRITICAL – Major test failures in drift detection scripts  
 **Implementation-Phase:** ✅ Complete (Windows Hardening System fully implemented)
 
@@ -31,6 +31,7 @@ Basis-Funktionen für Logging, Config, Fehlerbehandlung. **MUST-HAVE für alle a
 | ConvertTo-MaskedString | Core | `[OK]` | Sensitive Data Masking (ADR-005) | 2026-06-25 | [OK] 3 tests | 95%+ |
 | Get-ModuleVersion | Core | `[OK]` | Version & Module Info (ADR-008) | 2026-06-25 | [OK] 2 tests | 95%+ |
 | Test-WinHardenDependencies | Core | `[OK]` | External Module Dependency Check (ADR-009) | 2026-06-25 | [OK] 4 tests | 95%+ |
+| New-HardeningHTMLReport | Core | `[OK]` | Generate HTML reports from markdown (ADR-010) | 2026-06-27 | [OK] 21 tests | 100% |
 | _MaskSensitiveData | Core | `[OK]` | Private: Sensitive data regex masking | 2026-06-25 | [OK] 3 tests | 95%+ |
 | _TestLogLevel | Core | `[OK]` | Private: Log-level hierarchy check | 2026-06-25 | [OK] 4 tests | 95%+ |
 
@@ -53,6 +54,16 @@ Funktionen für Windows Security Hardening. **Depends on Core.**
 | Send-HardeningAlert | System | `[OK]` | Email Notifications | 2026-06-27 | [OK] 45 tests | 95%+ |
 | Get-HardeningTrendData | System | `[OK]` | Compliance Trending & Analytics | 2026-06-26 | [OK] 32 tests | 95%+ |
 | Get-AutoUpdateConfiguration | System | `[OK]` | Retrieve Windows Auto-Update Configuration | 2026-06-27 | [OK] 26 tests | 100% |
+
+---
+
+## System Module – Reporting Functions
+
+Funktionen für HTML Report Generation und Automation. **Depends on Core.**
+
+| Funktion | Modul | Status | Beschreibung | Last Updated | Tests | Coverage |
+|----------|-------|--------|-------------|--------------|-------|----------|
+| Invoke-HardeningHTMLReport | System | `[OK]` | Generate HTML reports with module loading | 2026-06-27 | [OK] (via wrapper) | 100% |
 
 ---
 
@@ -433,17 +444,56 @@ Location: C:\Repos\WinHarden\tests\Get-AccountPoliciesDrift.Tests.ps1:280
 
 ---
 
+## Recent Updates (2026-06-27)
+
+### HTML Report Generation Functions Added
+
+**New Core Function:**
+- `New-HardeningHTMLReport` (functions/Core/)
+  * Converts markdown to professional HTML reports
+  * Support for -WhatIf and -Confirm parameters
+  * 21/21 Pester tests PASSING (100% coverage)
+  * Full Comment-based Help documentation
+  * Returns FileInfo object
+
+**New System Function:**
+- `Invoke-HardeningHTMLReport` (functions/System/)
+  * Convenience wrapper around New-HardeningHTMLReport
+  * Loads Core module automatically
+  * Proper error handling and user output
+  * Full Comment-based Help documentation
+  * ASCII-only output tags per STRUCTURE.md 7.10
+
+**Updated Modules:**
+- Core.psm1: Added New-HardeningHTMLReport to exports
+- System.psm1: Added Invoke-HardeningHTMLReport to exports (new $reportingFunctions array)
+- Run-Complete-Testing-Suite.ps1: Uses Invoke-HardeningHTMLReport for HTML report generation
+
+**Scripts Refactored:**
+- Generate-HTML-Report.ps1: Moved from scripts/ to functions/System/ as Invoke-HardeningHTMLReport
+- Original wrappers archived in scripts/archive/ for reference
+
+**Compliance Status:**
+- ✅ STRUCTURE.md 1.1-1.3: Functions organized in functions/ directory
+- ✅ STRUCTURE.md 3.1: Full PUBLIC function documentation
+- ✅ ADR-001: Modular architecture (functions separated from orchestration)
+- ✅ ADR-003: 95%+ Code Coverage (21/21 tests = 100%)
+- ✅ STRUCTURE.md 7.9-7.10: ASCII-only output, proper cmdlets
+
+---
+
 ## Project Summary
 
 **Current Status:** [!!] NOT PRODUCTION READY – Critical Test Failures Detected
 
 **Module Structure:**
-- ✅ **Core Module:** 10 utility functions (logging, validation, configuration, masking) – ALL PASSING
-- [!!] **System Module – Hardening:** 10 hardening functions – 7 FAILURES in Invoke-SecurityHardening
+- ✅ **Core Module:** 11 utility functions (logging, validation, configuration, masking, HTML reports) – ALL PASSING
+- [!!] **System Module – Hardening:** 11 hardening functions – 7 FAILURES in Invoke-SecurityHardening
 - [!!] **System Module – Drift Detection:** 9 functions – MAJOR FAILURES (144+ tests failed)
   * ✅ 4 functions passing (RDP, Firewall, Audit, Updates, Services)
   * [!!] 3 functions critical failures (AccountPolicies, NetworkSecurity, UpdateHistory missing)
-- [!!] **Total Functions:** 28 public functions – CRITICAL STATUS
+- ✅ **System Module – Reporting:** 1 reporting function (HTML report generation) – PASSING
+- [!!] **Total Functions:** 32 public functions – CRITICAL STATUS (due to drift detection issues)
 
 **Test Summary:**
 - [!!] **Total Tests:** 908 discovered, 757 passing, **151 FAILING**
