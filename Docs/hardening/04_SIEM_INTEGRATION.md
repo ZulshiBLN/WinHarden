@@ -1,388 +1,336 @@
-# WinHarden Hardening – SIEM Integration Guide
+# WinHarden - SIEM Integration Guide
 
-**Version:** 1.0  
-**Last Updated:** 2026-06-26  
-**Target Audience:** Security Operations, SIEM Administrators, Monitoring Engineers
+**Integration procedures for security information and event management systems.**
 
 ---
 
 ## Table of Contents
 
-1. [Overview](#overview)
-2. [Log Format & Structure](#log-format--structure)
-3. [Integration Methods](#integration-methods)
-4. [Splunk Integration](#splunk-integration)
-5. [ELK Stack Integration](#elk-stack-integration)
-6. [Microsoft Sentinel Integration](#microsoft-sentinel-integration)
-7. [Alert Configuration](#alert-configuration)
-8. [Dashboards & Reporting](#dashboards--reporting)
+1. [SIEM Integration Overview](#siem-integration-overview)
+2. [Data Export Formats](#data-export-formats)
+3. [Splunk Integration](#splunk-integration)
+4. [ELK Stack Integration](#elk-stack-integration)
+5. [Webhook Integration](#webhook-integration)
+6. [Alert Configuration](#alert-configuration)
+7. [Dashboards](#dashboards)
 
 ---
 
-## Overview
-
-WinHarden generates comprehensive logs and metrics that integrate with enterprise SIEM platforms for centralized monitoring, compliance reporting, and threat detection.
-
-### Key Log Sources
-
-1. **Hardening Operation Logs** – Rule application, compliance checks
-2. **System Event Logs** – Windows Event Viewer integration
-3. **Compliance Reports** – Compliance percentage, non-compliant rules
-4. **Performance Metrics** – Execution time, resource usage
-5. **Alert Events** – Drift detection, failures, anomalies
+## SIEM Integration Overview
 
 ### Supported SIEM Platforms
 
-- Splunk Enterprise / Cloud
-- ELK Stack (Elasticsearch, Logstash, Kibana)
-- Microsoft Sentinel
-- ArcSight
-- Generic Syslog (rsyslog, syslog-ng)
+| Platform | Method | Export Format | Real-time |
+|----------|--------|---------------|-----------|
+| Splunk | HEC/File | JSON | Yes |
+| Elastic Stack | API/File | JSON | Yes |
+| Splunk Cloud | HEC | JSON | Yes |
+| ArcSight | Syslog/API | JSON | Yes |
+| QRadar | API | JSON | Yes |
+| Generic SIEM | Webhook | JSON | Yes |
 
----
+### Integration Points
 
-## Log Format & Structure
-
-### CSV Log Format
-
-WinHarden logs to local CSV files in `logs/` directory:
-
-**File Format:**
 ```
-logs/
-├── log_2026-06-26.csv
-├── log_2026-06-25.csv
-├── log_2026-06-24.csv
-└── ... (7-day rotation)
-```
-
-**CSV Structure:**
-
-| Column | Type | Example | Description |
-|--------|------|---------|-------------|
-| Timestamp | DateTime | 2026-06-26T14:23:45.123Z | ISO 8601 UTC timestamp |
-| Level | String | INFO, WARNING, ERROR | Log severity level |
-| Caller | String | Invoke-SecurityHardening:42 | Function:LineNumber |
-| Function | String | Invoke-SecurityHardening | Function name |
-| LineNumber | Integer | 42 | Source line number |
-| Message | String | Starting security hardening | Log message |
-
-**Example CSV Data:**
-
-```csv
-Timestamp,Level,Caller,Function,LineNumber,Message
-2026-06-26T14:23:45.123Z,INFO,Invoke-SecurityHardening:42,Invoke-SecurityHardening,42,Starting security hardening: Profile=Recommended ComputerName=WORKSTATION01
-2026-06-26T14:23:46.234Z,INFO,_ApplyHardeningRule:15,_ApplyHardeningRule,15,Applying rule: Account-MinimumPasswordLength
-2026-06-26T14:23:47.345Z,INFO,_ApplyHardeningRule:22,_ApplyHardeningRule,22,Rule applied successfully: Account-MinimumPasswordLength=8
-2026-06-26T14:23:48.456Z,INFO,Test-HardeningCompliance:50,Test-HardeningCompliance,50,Compliance verification completed: CompliancePercentage=100
-```
-
-### Sensitive Data Masking
-
-**Automatic masking of sensitive fields:**
-
-All CSV logs automatically mask sensitive patterns:
-
-```csv
-# Original (before masking):
-Message="Connecting with password: SecureP@ssw0rd"
-
-# In CSV (after masking):
-Message="Connecting with password: ***"
-
-# Masked keywords:
-- password, passwd, pwd
-- secret, secretkey
-- token, apikey, api_key
-- credential, cred, apitoken
+WinHarden
+├── Compliance Reports
+│   └── Export to SIEM
+├── Drift Detection
+│   └── Alert to SIEM
+├── Remediation Actions
+│   └── Log to SIEM
+├── Audit Events
+│   └── Stream to SIEM
+└── Performance Metrics
+    └── Send to SIEM
 ```
 
 ---
 
-## Integration Methods
+## Data Export Formats
 
-### Method 1: Local Log Forwarding (Syslog/SNMP)
+### JSON Export Format
 
-**Send logs to SIEM via syslog protocol:**
-
-```powershell
-# Create forwarding script
-$scriptPath = "C:\Scripts\ForwardHardeningLogs.ps1"
-
-# Content:
-param(
-    [string]$SyslogServer = "siem.company.com",
-    [int]$SyslogPort = 514,
-    [string]$LogPath = "C:\Program Files\WinHarden\logs"
-)
-
-# Read latest log file
-$logFile = Get-ChildItem -Path $LogPath -Filter "log_*.csv" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
-$logs = Import-Csv -Path $logFile.FullName
-
-# Forward each log entry to syslog
-foreach ($log in $logs) {
-    $syslogMessage = "$($log.Timestamp) WinHarden[$($log.Function):$($log.LineNumber)] $($log.Level): $($log.Message)"
-    
-    # Send via UDP to syslog server
-    $udpClient = New-Object System.Net.Sockets.UdpClient
-    $bytes = [System.Text.Encoding]::ASCII.GetBytes($syslogMessage)
-    $udpClient.Send($bytes, $bytes.Length, $SyslogServer, $SyslogPort) | Out-Null
-    $udpClient.Close()
+```json
+{
+  "event_type": "compliance_check",
+  "timestamp": "2026-06-27T10:30:00Z",
+  "source_system": "Server01",
+  "baseline": "Production-Baseline",
+  "compliance_data": {
+    "overall_compliance": 95,
+    "total_checks": 100,
+    "passed_checks": 95,
+    "failed_checks": 5,
+    "categories": {
+      "firewall": {
+        "status": "pass",
+        "compliance": 100
+      },
+      "services": {
+        "status": "fail",
+        "compliance": 80,
+        "violations": [
+          {
+            "service": "RDP",
+            "expected": "disabled",
+            "actual": "enabled",
+            "severity": "high"
+          }
+        ]
+      }
+    }
+  }
 }
 ```
 
-**Schedule forwarding:**
+### CSV Export Format
 
-```powershell
-# Run every hour
-$trigger = New-ScheduledTaskTrigger -RepetitionInterval (New-TimeSpan -Hours 1) -RepeatIndefinitely -At 9am
-$action = New-ScheduledTaskAction -Execute PowerShell.exe -Argument "-NoProfile -File $scriptPath"
-Register-ScheduledTask -TaskName "ForwardHardeningLogs" -Trigger $trigger -Action $action
+```
+timestamp,event_type,source_system,baseline,category,check_name,status,expected,actual,severity
+2026-06-27T10:30:00Z,compliance,Server01,Production-Baseline,Firewall,InboundPolicy,pass,block,block,low
+2026-06-27T10:30:15Z,compliance,Server01,Production-Baseline,Services,RDP,fail,disabled,enabled,high
+2026-06-27T10:30:30Z,compliance,Server01,Production-Baseline,Registry,LSARestrict,pass,2,2,low
 ```
 
-### Method 2: Direct API Integration
+### Syslog Format
 
-**Send logs directly to SIEM API:**
-
-```powershell
-# Function to send logs to SIEM HTTP endpoint
-function Send-LogsToSIEM {
-    param(
-        [string]$SIEMUrl = "https://siem.company.com/api/logs",
-        [string]$ApiKey = $env:SIEM_API_KEY,
-        [string]$LogPath = "C:\Program Files\WinHarden\logs"
-    )
-    
-    $logFile = Get-ChildItem -Path $LogPath -Filter "log_*.csv" | Sort-Object LastWriteTime -Descending | Select-Object -First 1
-    $logs = Import-Csv -Path $logFile.FullName
-    
-    $payload = @{
-        source = $env:COMPUTERNAME
-        sourcetype = "WinHarden"
-        events = $logs
-    } | ConvertTo-Json
-    
-    $headers = @{
-        "Authorization" = "Bearer $ApiKey"
-        "Content-Type" = "application/json"
-    }
-    
-    try {
-        Invoke-RestMethod -Uri $SIEMUrl -Method Post -Headers $headers -Body $payload -ErrorAction Stop
-        Write-Log -Message "Logs sent to SIEM successfully" -Level Info
-    } catch {
-        Write-ErrorLog -Message "Failed to send logs to SIEM: $($_.Exception.Message)" -Level Error
-    }
-}
+```
+<134>Jun 27 10:30:00 Server01 WinHarden[1234]: event_type=compliance baseline=Production-Baseline compliance=95% failed_checks=5
 ```
 
-### Method 3: File Forwarding (WinRM/SMB)
+### Custom Format Definition
 
-**Copy logs to central collection point:**
-
-```powershell
-# Copy logs to network share
-$centralLogPath = "\\siem-server\WinHarden-Logs\$env:COMPUTERNAME"
-New-Item -ItemType Directory -Path $centralLogPath -Force
-
-$logPath = "C:\Program Files\WinHarden\logs"
-Get-ChildItem -Path $logPath -Filter "log_*.csv" | Copy-Item -Destination $centralLogPath -Force
-
-# SIEM can then ingest from network share
+```xml
+<ExportFormat>
+  <Name>Custom-SIEM</Name>
+  <Fields>
+    <Field Name="timestamp" Source="Event.Timestamp" />
+    <Field Name="event_type" Source="Event.Type" />
+    <Field Name="severity" Source="Event.Severity" />
+    <Field Name="message" Source="Event.Message" />
+    <Field Name="source_system" Source="Environment.ComputerName" />
+    <Field Name="user" Source="Environment.UserName" />
+  </Fields>
+  <Delimiter>,</Delimiter>
+  <IncludeHeaders>true</IncludeHeaders>
+</ExportFormat>
 ```
 
 ---
 
 ## Splunk Integration
 
-### Step 1: Install Splunk Universal Forwarder
+### Splunk HTTP Event Collector (HEC) Setup
+
+#### Step 1: Configure Splunk HEC Endpoint
 
 ```powershell
-# Download and install UF
-Invoke-WebRequest -Uri "https://download.splunk.com/products/universalforwarder/releases/9.1.0/windows/splunkforwarder-9.1.0-8e2e6d7ef3c1-x64-release.msi" `
-    -OutFile "C:\Temp\splunk-uf.msi"
+# In Splunk, create HTTP Event Collector token
+# Settings -> Data Inputs -> HTTP Event Collector
+# Create new token with:
+# - Name: WinHarden
+# - Source type: json
+# - Index: winharden (create if needed)
+# - Token: [Generated Token]
 
-# Install
-msiexec.exe /i C:\Temp\splunk-uf.msi DEPLOYMENTSERVER="splunk-ds.company.com:8089" AGREETOLICENSE=yes
+# Note the HEC endpoint and token:
+$splunkHEC = "https://splunk.example.com:8088"
+$splunkToken = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 ```
 
-### Step 2: Configure Data Input
+#### Step 2: Configure WinHarden for Splunk
 
-**Edit `$SPLUNK_HOME\etc\system\local\inputs.conf`:**
+```powershell
+# Create Splunk export configuration
+$splunkConfig = @{
+    Enabled = $true
+    Endpoint = "https://splunk.example.com:8088/services/collector"
+    Token = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    Index = "winharden"
+    SourceType = "winharden_compliance"
+    BatchSize = 10
+    RetryAttempts = 3
+    VerifySSL = $false  # For self-signed certs
+}
 
-```ini
-[monitor://C:\Program Files\WinHarden\logs\]
-index = winharden
-source = WinHarden
-sourcetype = csv
-disabled = false
-
-# Set to parse CSV format
-[csv]
-definition = Timestamp,Level,Caller,Function,LineNumber,Message
+# Save configuration
+$splunkConfig | ConvertTo-Json | Out-File "C:\Repos\WinHarden\config\splunk_hec.json"
 ```
 
-### Step 3: Configure Index
+#### Step 3: Export Compliance to Splunk
 
-**Create WinHarden index in Splunk:**
+```powershell
+# Export compliance data to Splunk
+function Export-ComplianceToSplunk {
+    param(
+        [string]$BaselineName,
+        [string]$ConfigPath = "C:\Repos\WinHarden\config\splunk_hec.json"
+    )
+    
+    # Load configuration
+    $config = Get-Content $ConfigPath | ConvertFrom-Json
+    
+    # Get compliance data
+    $compliance = Test-SystemCompliance -BaselineName $BaselineName
+    
+    # Prepare event
+    $event = @{
+        time = (Get-Date).ToUniversalTime().ToString("o")
+        source = $env:COMPUTERNAME
+        sourcetype = $config.SourceType
+        index = $config.Index
+        event = @{
+            event_type = "compliance"
+            baseline = $BaselineName
+            overall_compliance = $compliance.ComplianceRate
+            total_checks = $compliance.TotalChecks
+            passed_checks = $compliance.PassedChecks
+            failed_checks = $compliance.FailedChecks
+        }
+    }
+    
+    # Send to Splunk
+    $body = $event | ConvertTo-Json
+    $headers = @{
+        "Authorization" = "Splunk $($config.Token)"
+        "Content-Type" = "application/json"
+    }
+    
+    try {
+        Invoke-RestMethod `
+            -Uri $config.Endpoint `
+            -Method POST `
+            -Body $body `
+            -Headers $headers `
+            -SkipCertificateCheck:$(-not $config.VerifySSL)
+        
+        Write-Host "Compliance data sent to Splunk"
+    } catch {
+        Write-Error "Failed to send to Splunk: $_"
+    }
+}
 
-```splunk
-index=main sourcetype=csv source=WinHarden | head 100
+# Export compliance
+Export-ComplianceToSplunk -BaselineName "Production-Baseline"
 ```
 
-**Splunk Search Query Examples:**
+#### Step 4: Create Splunk Search
 
-```splunk
-# All WinHarden events today
-index=winharden earliest=-24h
+```spl
+index=winharden source=Server01
+| stats
+    latest(overall_compliance) as compliance,
+    latest(failed_checks) as failures
+    by baseline
 
-# Errors and warnings
-index=winharden Level IN (ERROR, WARNING)
-
-# Compliance events
-index=winharden "Test-HardeningCompliance"
-
-# Failed rule applications
-index=winharden "Rule applied successfully" | NOT "successfully"
-
-# Specific computer
-index=winharden Caller="WORKSTATION01"
-
-# Timeline of hardening application
-index=winharden "Invoke-SecurityHardening" | timechart count by ComputerName
-
-# Non-compliant rules
-index=winharden "CompliancePercentage" | where CompliancePercentage < 100
-```
-
-### Step 4: Create Splunk Dashboard
-
-**Splunk Dashboard Definition (XML):**
-
-```xml
-<dashboard>
-  <label>WinHarden Compliance</label>
-  
-  <row>
-    <panel>
-      <title>Overall Compliance Status</title>
-      <table>
-        <search>
-          <query>index=winharden "CompliancePercentage" 
-            | stats latest(CompliancePercentage) as Compliance by ComputerName
-            | eval Status = if(Compliance >= 95, "COMPLIANT", "DRIFT")
-          </query>
-        </search>
-      </table>
-    </panel>
-  </row>
-  
-  <row>
-    <panel>
-      <title>Recent Errors</title>
-      <table>
-        <search>
-          <query>index=winharden Level=ERROR 
-            | stats count by ComputerName, Function, Message
-            | sort - count
-          </query>
-        </search>
-      </table>
-    </panel>
-  </row>
-  
-  <row>
-    <panel>
-      <title>Hardening Activity Timeline</title>
-      <timechart>
-        <search>
-          <query>index=winharden "Invoke-SecurityHardening" 
-            | timechart count by ComputerName
-          </query>
-        </search>
-      </timechart>
-    </panel>
-  </row>
-</dashboard>
+| eval compliance_status=if(compliance>=95, "Good", "Poor")
+| table baseline, compliance, failures, compliance_status
 ```
 
 ---
 
 ## ELK Stack Integration
 
-### Step 1: Configure Logstash
+### Elasticsearch Setup
 
-**Create `winharden.conf` in Logstash:**
+#### Step 1: Configure Elasticsearch
 
-```
-input {
-  file {
-    path => "C:\Program Files\WinHarden\logs\log_*.csv"
-    start_position => "beginning"
-    codec => plain { charset => "UTF-8" }
-  }
+```powershell
+# Elasticsearch endpoint configuration
+$elasticsearchConfig = @{
+    Endpoint = "https://elasticsearch.example.com:9200"
+    Index = "winharden-compliance"
+    Username = "elastic"
+    Password = "password"
+    VerifySSL = $false
 }
 
-filter {
-  # Parse CSV
-  csv {
-    columns => ["Timestamp", "Level", "Caller", "Function", "LineNumber", "Message"]
-    separator => ","
-  }
-  
-  # Extract computer name from Caller field
-  grok {
-    match => { "Caller" => "%{DATA:FunctionName}:%{INT:SourceLine}" }
-  }
-  
-  # Parse timestamp
-  date {
-    match => ["Timestamp", "ISO8601"]
-  }
-  
-  # Add metadata
-  mutate {
-    add_field => { "source_system" => "WinHarden" }
-    add_field => { "[@metadata][index_name]" => "winharden-%{+YYYY.MM.dd}" }
-  }
-}
-
-output {
-  elasticsearch {
-    hosts => ["elasticsearch.company.com:9200"]
-    index => "%{[@metadata][index_name]}"
-  }
-}
+# Save configuration
+$elasticsearchConfig | ConvertTo-Json | Out-File "C:\Repos\WinHarden\config\elasticsearch.json"
 ```
 
-### Step 2: Configure Elasticsearch
-
-**Create index template:**
+#### Step 2: Create Index Template
 
 ```json
-PUT _index_template/winharden
 {
-  "index_patterns": ["winharden-*"],
+  "template": "winharden-*",
   "settings": {
-    "number_of_shards": 2,
+    "number_of_shards": 1,
     "number_of_replicas": 1
   },
   "mappings": {
     "properties": {
-      "Timestamp": { "type": "date" },
-      "Level": { "type": "keyword" },
-      "Function": { "type": "keyword" },
-      "Message": { "type": "text" },
-      "ComputerName": { "type": "keyword" }
+      "timestamp": { "type": "date" },
+      "event_type": { "type": "keyword" },
+      "source_system": { "type": "keyword" },
+      "baseline": { "type": "keyword" },
+      "compliance": { "type": "integer" },
+      "failed_checks": { "type": "integer" },
+      "passed_checks": { "type": "integer" },
+      "violations": { "type": "nested" }
     }
   }
 }
 ```
 
-### Step 3: Create Kibana Dashboard
+#### Step 3: Export to Elasticsearch
 
-**Kibana Dashboard:**
+```powershell
+# Export compliance to Elasticsearch
+function Export-ComplianceToElasticsearch {
+    param(
+        [string]$BaselineName,
+        [string]$ConfigPath = "C:\Repos\WinHarden\config\elasticsearch.json"
+    )
+    
+    # Load configuration
+    $config = Get-Content $ConfigPath | ConvertFrom-Json
+    
+    # Get compliance data
+    $compliance = Test-SystemCompliance -BaselineName $BaselineName
+    
+    # Prepare document
+    $doc = @{
+        timestamp = Get-Date -AsUTC -Format "o"
+        event_type = "compliance_check"
+        source_system = $env:COMPUTERNAME
+        baseline = $BaselineName
+        compliance = $compliance.ComplianceRate
+        total_checks = $compliance.TotalChecks
+        passed_checks = $compliance.PassedChecks
+        failed_checks = $compliance.FailedChecks
+    }
+    
+    # Send to Elasticsearch
+    $body = $doc | ConvertTo-Json
+    $auth = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes("$($config.Username):$($config.Password)"))
+    $headers = @{
+        "Authorization" = "Basic $auth"
+        "Content-Type" = "application/json"
+    }
+    
+    $indexName = "$($config.Index)-$(Get-Date -Format 'yyyy.MM.dd')"
+    
+    try {
+        Invoke-RestMethod `
+            -Uri "$($config.Endpoint)/$indexName/_doc" `
+            -Method POST `
+            -Body $body `
+            -Headers $headers `
+            -SkipCertificateCheck
+        
+        Write-Host "Document indexed in Elasticsearch"
+    } catch {
+        Write-Error "Failed to send to Elasticsearch: $_"
+    }
+}
+
+# Export compliance
+Export-ComplianceToElasticsearch -BaselineName "Production-Baseline"
+```
+
+#### Step 4: Create Kibana Dashboard
 
 ```json
 {
@@ -390,247 +338,260 @@ PUT _index_template/winharden
     "title": "WinHarden Compliance Overview",
     "panels": [
       {
-        "id": "compliance-status",
-        "type": "metric",
-        "properties": {
-          "query": "Level: ERROR",
-          "metric": "count"
-        }
-      },
-      {
-        "id": "hardening-timeline",
+        "title": "Overall Compliance Trend",
         "type": "line",
-        "properties": {
-          "xAxis": "Timestamp",
-          "yAxis": "count",
-          "groupBy": "Function"
-        }
+        "query": "select compliance from winharden-* group by date_histogram(1h)"
       },
       {
-        "id": "compliance-by-computer",
+        "title": "Failed Checks by Category",
         "type": "bar",
-        "properties": {
-          "xAxis": "ComputerName",
-          "yAxis": "compliance_percentage"
-        }
+        "query": "select category, count(*) from winharden-* where status='fail' group by category"
+      },
+      {
+        "title": "Systems by Compliance Level",
+        "type": "table",
+        "query": "select source_system, compliance, failed_checks from winharden-*"
       }
     ]
   }
 }
 ```
 
-**Kibana Query Examples:**
-
-```
-# Recent hardening operations
-source_system: WinHarden AND Function: Invoke-SecurityHardening
-
-# Compliance issues
-source_system: WinHarden AND Level: ERROR
-
-# Timeline of all changes
-source_system: WinHarden | histogram(@timestamp, 1h)
-```
-
 ---
 
-## Microsoft Sentinel Integration
+## Webhook Integration
 
-### Step 1: Install Log Analytics Agent
+### Generic Webhook Configuration
 
 ```powershell
-# Download and install agent
-$msiPath = "C:\Temp\MicrosoftMonitoringAgent.msi"
-$workspaceId = "YOUR_WORKSPACE_ID"
-$workspaceKey = "YOUR_WORKSPACE_KEY"
+# Configure webhook for any SIEM
+$webhookConfig = @{
+    Url = "https://monitoring.example.com/api/events"
+    Method = "POST"
+    ContentType = "application/json"
+    Headers = @{
+        "Authorization" = "Bearer token123"
+        "X-Source" = "WinHarden"
+    }
+    Timeout = 30
+    RetryAttempts = 3
+}
 
-# Install
-msiexec.exe /i $msiPath /qn /l*v install.log `
-    NOAPM=1 `
-    ADD_OPINSIGHTS_WORKSPACE=1 `
-    OPINSIGHTS_WORKSPACE_ID=$workspaceId `
-    OPINSIGHTS_WORKSPACE_KEY=$workspaceKey
+# Save configuration
+$webhookConfig | ConvertTo-Json | Out-File "C:\Repos\WinHarden\config\webhook.json"
 ```
 
-### Step 2: Configure Custom Log Collection
+### Send Events via Webhook
 
-**In Log Analytics Workspace:**
+```powershell
+function Send-WinHardenEventToWebhook {
+    param(
+        [string]$EventType,
+        [hashtable]$EventData,
+        [string]$ConfigPath = "C:\Repos\WinHarden\config\webhook.json"
+    )
+    
+    # Load configuration
+    $config = Get-Content $ConfigPath | ConvertFrom-Json
+    
+    # Prepare payload
+    $payload = @{
+        timestamp = Get-Date -AsUTC -Format "o"
+        source = $env:COMPUTERNAME
+        event_type = $EventType
+        data = $EventData
+    }
+    
+    $body = $payload | ConvertTo-Json
+    
+    # Send to webhook
+    for ($attempt = 1; $attempt -le $config.RetryAttempts; $attempt++) {
+        try {
+            $response = Invoke-WebRequest `
+                -Uri $config.Url `
+                -Method $config.Method `
+                -Body $body `
+                -ContentType $config.ContentType `
+                -Headers $config.Headers `
+                -TimeoutSec $config.Timeout
+            
+            Write-Host "Event sent successfully (HTTP $($response.StatusCode))"
+            return
+        } catch {
+            Write-Host "Attempt $attempt failed: $_"
+            if ($attempt -lt $config.RetryAttempts) {
+                Start-Sleep -Seconds 5
+            }
+        }
+    }
+    
+    Write-Error "Failed to send event after $($config.RetryAttempts) attempts"
+}
 
-1. Go to Settings → Custom Logs
-2. Create new custom log
-3. Upload sample WinHarden CSV log
-4. Set collection path: `C:\Program Files\WinHarden\logs\log_*.csv`
-5. Name: `WinHarden_CL`
+# Example: Send compliance event
+$eventData = @{
+    baseline = "Production-Baseline"
+    compliance = 95
+    failed_checks = 5
+}
 
-### Step 3: Create Sentinel Analytics Rules
-
-**KQL Query for Compliance Drift:**
-
-```kusto
-WinHarden_CL
-| where TimeGenerated > ago(24h)
-| where Message_s contains "CompliancePercentage"
-| parse Message_s with * "CompliancePercentage=" CompliancePercentage:int
-| where CompliancePercentage < 95
-| summarize LatestCompliance = max(CompliancePercentage) by Computer
-| where LatestCompliance < 95
-```
-
-**KQL Query for Rule Failures:**
-
-```kusto
-WinHarden_CL
-| where Level_s == "ERROR"
-| where Function_s == "_ApplyHardeningRule"
-| summarize ErrorCount = count() by Message_s, Computer
-| where ErrorCount > 5
-```
-
-### Step 4: Create Sentinel Incidents
-
-```kusto
-// Scheduled Rule - Run every hour
-WinHarden_CL
-| where TimeGenerated > ago(1h)
-| where Level_s in ("ERROR", "WARNING")
-| summarize TotalIssues = count() by Computer, Level_s
-| where TotalIssues > 3
+Send-WinHardenEventToWebhook -EventType "compliance_check" -EventData $eventData
 ```
 
 ---
 
 ## Alert Configuration
 
-### Alert Rule 1: High Compliance Drift
+### High-Severity Drift Alert
 
 ```powershell
-function Send-HardeningAlert {
+# Configure alert for high-severity drift
+function New-DriftAlert {
     param(
-        [PSCustomObject]$ComplianceStatus,
-        [ValidateSet("LOW", "MEDIUM", "HIGH", "CRITICAL")]
-        [string]$AlertLevel = "HIGH"
+        [string]$BaselineName,
+        [string]$AlertThreshold = "High"  # Critical, High, Medium, Low
     )
     
-    if ($ComplianceStatus.CompliancePercentage -lt 85) {
-        $severity = "CRITICAL"
-    } elseif ($ComplianceStatus.CompliancePercentage -lt 90) {
-        $severity = "HIGH"
-    } else {
-        $severity = "MEDIUM"
-    }
+    # Detect drift
+    $drift = Get-SecurityDrift -BaselineName $BaselineName
     
-    $alert = @{
-        ComputerName = $env:COMPUTERNAME
-        Severity = $severity
-        CompliancePercentage = $ComplianceStatus.CompliancePercentage
-        NonCompliantRules = $ComplianceStatus.NonCompliantRuleCount
-        AlertTime = Get-Date
-        Status = "OPEN"
-    }
+    # Filter by severity
+    $alertItems = $drift | Where-Object Severity -eq $AlertThreshold
     
-    # Send to SIEM
-    Send-LogsToSIEM -Alert $alert
+    if ($alertItems.Count -gt 0) {
+        Write-Host "[ALERT] $($alertItems.Count) $AlertThreshold severity drift items detected"
+        
+        # Send alert to SIEM
+        foreach ($item in $alertItems) {
+            $alertData = @{
+                alert_type = "security_drift"
+                severity = $item.Severity
+                category = $item.Category
+                setting = $item.Setting
+                expected = $item.ExpectedValue
+                actual = $item.ActualValue
+                remediation = $item.RemediationStep
+            }
+            
+            Send-WinHardenEventToWebhook -EventType "security_alert" -EventData $alertData
+        }
+    }
 }
+
+# Run drift alert check
+New-DriftAlert -BaselineName "Production-Baseline" -AlertThreshold "Critical"
 ```
 
-### Alert Rule 2: Rule Application Failures
-
-**Threshold:** >5 failures in 1 hour
-
-```splunk
-index=winharden Level=ERROR earliest=-1h | stats count | where count > 5
-```
-
-### Alert Rule 3: Unauthorized Changes
-
-**Detect non-WinHarden modifications to hardening settings:**
+### Compliance Threshold Alert
 
 ```powershell
-# Compare current state with baseline
-$baseline = Get-HardeningProfile -ProfileName Recommended
-$current = Test-HardeningCompliance -Session $session -Detailed
-
-$driftRules = $current.RuleResults | Where-Object {
-    $_.Compliant -eq $false -and
-    $_.LastModifiedBy -ne "WinHarden"
+# Alert if compliance drops below threshold
+function Test-ComplianceThreshold {
+    param(
+        [string]$BaselineName,
+        [int]$Threshold = 90  # Alert if below 90%
+    )
+    
+    $compliance = Test-SystemCompliance -BaselineName $BaselineName
+    
+    if ($compliance.ComplianceRate -lt $Threshold) {
+        Write-Host "[ALERT] Compliance $($compliance.ComplianceRate)% is below threshold $Threshold%"
+        
+        $alertData = @{
+            alert_type = "low_compliance"
+            baseline = $BaselineName
+            current_compliance = $compliance.ComplianceRate
+            threshold = $Threshold
+            failed_checks = $compliance.FailedChecks
+            total_checks = $compliance.TotalChecks
+        }
+        
+        Send-WinHardenEventToWebhook -EventType "compliance_alert" -EventData $alertData
+    }
 }
 
-if ($driftRules) {
-    # Alert on unauthorized modifications
-    Send-HardeningAlert -ComplianceStatus $current -AlertLevel CRITICAL
-}
+# Run threshold check
+Test-ComplianceThreshold -BaselineName "Production-Baseline" -Threshold 90
 ```
 
 ---
 
-## Dashboards & Reporting
+## Dashboards
 
-### Compliance Dashboard
+### Splunk Dashboard Definition
 
-**Key Metrics:**
-
-```
-┌─────────────────────────────────────────┐
-│  Compliance Overview                    │
-├─────────────────────────────────────────┤
-│  Overall Compliance:        97.2%       │
-│  Compliant Systems:         48/50       │
-│  Non-Compliant Systems:     2/50        │
-│  Last Verified:             2 mins ago  │
-│  Average Rule Compliance:   98.1%       │
-└─────────────────────────────────────────┘
-
-┌─────────────────────────────────────────┐
-│  Compliance by Category                 │
-├─────────────────────────────────────────┤
-│  Account Policies:          100%        │
-│  Registry Hardening:        95%         │
-│  Firewall Rules:            87%         │
-│  Audit Policies:            100%        │
-│  Service Configuration:     98%         │
-└─────────────────────────────────────────┘
-```
-
-### Weekly Compliance Report
-
-```
-WINHARDEN COMPLIANCE REPORT
-Week of June 26, 2026
-
-EXECUTIVE SUMMARY
-================
-Overall Compliance:     97.2% (↑2.1% from last week)
-Compliant Systems:      48 of 50 (96%)
-Non-Compliant Systems:  2 of 50 (4%)
-
-SYSTEM STATUS BREAKDOWN
-=======================
-Basis Profile:
-  Compliant Systems:    15/15 (100%)
+```xml
+<dashboard>
+  <label>WinHarden Compliance Overview</label>
+  <refresh>300</refresh>
   
-Recommended Profile:
-  Compliant Systems:    30/32 (93.8%)
-  Non-Compliant:        SRV-02 (92%), SRV-15 (89%)
+  <row>
+    <panel>
+      <title>Overall Compliance Rate</title>
+      <single>
+        <search>
+          <query>
+            index=winharden event_type=compliance
+            | stats latest(overall_compliance) as compliance
+            | fields compliance
+          </query>
+        </search>
+        <option name="underLabel">% Compliant</option>
+        <option name="colorMode">block</option>
+        <option name="rangeColors">["0x D93F35","0x F7BC38","0x 65A637"]</option>
+        <option name="rangeValues">[85,95]</option>
+      </single>
+    </panel>
+    
+    <panel>
+      <title>Failed Checks</title>
+      <single>
+        <search>
+          <query>
+            index=winharden event_type=compliance
+            | stats latest(failed_checks) as failures
+            | fields failures
+          </query>
+        </search>
+      </single>
+    </panel>
+  </row>
   
-Strict Profile:
-  Compliant Systems:    3/3 (100%)
-
-ISSUES DETECTED
-===============
-Top Non-Compliant Rules:
-1. Firewall-EnableWindowsDefender (8 systems, 91% compliant)
-2. Account-MinimumPasswordLength (5 systems, 94% compliant)
-3. Registry-DisableSMBv1 (2 systems, 98% compliant)
-
-RECOMMENDATIONS
-===============
-1. Restart services on SRV-02 to restore Firewall compliance
-2. Review password policies on 5 non-compliant systems
-3. Force audit on 2 systems with registry drift
+  <row>
+    <panel>
+      <title>Compliance Trend</title>
+      <chart>
+        <search>
+          <query>
+            index=winharden event_type=compliance
+            | timechart latest(overall_compliance) by source
+          </query>
+        </search>
+        <option name="charting.chart">line</option>
+      </chart>
+    </panel>
+  </row>
+  
+  <row>
+    <panel>
+      <title>Failed Checks by Category</title>
+      <table>
+        <search>
+          <query>
+            index=winharden event_type=compliance failures
+            | stats sum(failures) as count by category
+            | sort - count
+          </query>
+        </search>
+      </table>
+    </panel>
+  </row>
+</dashboard>
 ```
 
 ---
 
-**End of SIEM Integration Guide**
-
-For support, consult the User Guide or contact your SIEM administrator.
+**Document Version:** 2.0  
+**Last Updated:** 2026-06-27  
+**Target Audience:** Security Operations Center, SIEM Administrators  
+**Complexity Level:** Intermediate to Advanced

@@ -1,367 +1,432 @@
-# WinHarden Hardening – Frequently Asked Questions (FAQ)
+# WinHarden - FAQ
 
-**Version:** 1.0  
-**Last Updated:** 2026-06-26  
-**Topic:** Common Questions & Troubleshooting
+**Frequently asked questions and troubleshooting solutions.**
 
 ---
 
-## Getting Started
+## Table of Contents
+
+1. [General Questions](#general-questions)
+2. [Installation & Setup](#installation--setup)
+3. [Baseline & Compliance](#baseline--compliance)
+4. [Remediation](#remediation)
+5. [Drift Detection](#drift-detection)
+6. [Performance & Optimization](#performance--optimization)
+7. [Troubleshooting](#troubleshooting)
+8. [Security & Compliance](#security--compliance)
+
+---
+
+## General Questions
 
 ### Q: What is WinHarden?
 
-**A:** WinHarden is a PowerShell security hardening automation toolkit for Windows Server and desktop systems. It applies security best practices through rules organized in profiles (Basis, Recommended, Strict), providing a scalable way to harden systems at enterprise scale.
+A: WinHarden is a PowerShell-based security hardening framework for Windows systems. It automates:
+- Security hardening based on CIS benchmarks
+- Compliance verification against baselines
+- Drift detection to identify unauthorized changes
+- Remediation of security violations
+- Comprehensive audit logging
 
-**Key capabilities:**
-- 55+ security hardening rules across multiple categories
-- Automated compliance verification
-- Dry-run (WhatIf) support for safe testing
-- Enterprise-scale deployment
-- SIEM integration for monitoring
-- Full audit logging with sensitive data masking
+### Q: What Windows versions are supported?
 
-### Q: What systems does WinHarden support?
+A: WinHarden supports:
+- Windows Server 2016 and later
+- Windows 10 and later
+- Windows 11
 
-**A:** WinHarden supports:
-- Windows Server 2016, 2019, 2022
-- Windows 10 (all versions)
-- Windows 11 (all versions)
-- PowerShell 5.1+ (with 7.x supported)
+Minimum requirement: Windows 7+ with PowerShell 5.1
 
-**Not supported:**
-- Windows Server 2012 R2 or older
-- Windows 7 or 8.1
-- Cross-platform scenarios
+### Q: Do I need Administrator privileges?
 
-### Q: What are the three hardening profiles?
+A: Yes. All WinHarden operations require Administrator privileges because they:
+- Modify firewall rules (requires admin)
+- Change service configurations (requires admin)
+- Modify registry settings (requires admin)
+- Manage user accounts (requires admin)
+- Enable audit policies (requires admin)
 
-**A:**
+### Q: How much does WinHarden cost?
 
-| Profile | Rules | Best For | Impact |
-|---------|-------|----------|--------|
-| **Basis** | 20 | Legacy systems, baseline hardening | Minimal |
-| **Recommended** | 35 | Standard production systems | Moderate |
-| **Strict** | 55+ | High-security environments | High |
+A: WinHarden is open-source and free to use. The repository is available on GitHub.
 
-Start with Basis, move to Recommended once validated.
+### Q: Can WinHarden be used in production?
 
-### Q: How long does hardening take?
+A: Yes, WinHarden is designed for production use. However:
+- Test in staging environment first
+- Create backups before deployment
+- Follow the deployment guide procedures
+- Monitor system performance after deployment
 
-**A:**
-- **Basis profile:** ~30 seconds
-- **Recommended profile:** ~45 seconds
-- **Strict profile:** ~2 minutes
-- **Compliance verification:** ~12 seconds
+### Q: Is WinHarden certified for compliance?
 
-Total time including verification: 1-3 minutes depending on profile.
+A: WinHarden itself is not officially certified, but it implements:
+- CIS Benchmarks
+- NIST guidelines
+- DoD STIG recommendations
+- GDPR hardening controls
 
 ---
 
-## Installation & Deployment
+## Installation & Setup
 
-### Q: How do I install WinHarden?
+### Q: Where should I install WinHarden?
 
-**A:** Three steps:
-
-1. **Extract files:**
-```powershell
-Expand-Archive -Path WinHarden.zip -DestinationPath C:\Program Files\WinHarden -Force
+A: The recommended location is:
+```
+C:\Repos\WinHarden
 ```
 
-2. **Verify installation:**
+However, you can install anywhere by:
 ```powershell
-cd C:\Program Files\WinHarden
-.\build.ps1 -Validate
+cd [Your-Path]
+git clone https://github.com/your-org/WinHarden.git
 ```
 
-3. **Test run:**
+### Q: How do I import WinHarden functions?
+
+A: There are three methods:
+
+**Method 1: Import Module**
 ```powershell
-Import-Module .\modules\Core.psm1
-Import-Module .\modules\System.psm1
-$session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11
-Invoke-SecurityHardening -Session $session -WhatIf
+Import-Module C:\Repos\WinHarden -Force
+Get-Command -Module WinHarden
 ```
 
-### Q: Do I need administrator privileges?
-
-**A:** **Yes, administrator privileges are required** to:
-- Apply hardening rules (registry, services, firewall, etc.)
-- Verify compliance
-- Create scheduled tasks
-
-User-level accounts can only view logs and profiles.
-
-### Q: Can I deploy WinHarden remotely?
-
-**A:** **Yes, three methods:**
-
-1. **WinRM (Recommended):**
+**Method 2: Dot-source specific function**
 ```powershell
-Invoke-Command -ComputerName SERVER01 -ScriptBlock {
-    $session = New-HardeningSession -Profile Recommended -TargetSystem Server
-    Invoke-SecurityHardening -Session $session
+. C:\Repos\WinHarden\functions\Hardening\New-HardeningBaseline.ps1
+```
+
+**Method 3: Load all functions**
+```powershell
+Get-ChildItem C:\Repos\WinHarden\functions -Recurse -Filter *.ps1 | ForEach-Object {
+    . $_.FullName
 }
 ```
 
-2. **Group Policy:**
-Create GPO startup script that runs WinHarden on each system boot.
+### Q: What if I get "execution policy" error?
 
-3. **Configuration Management:**
-Integrate with Ansible, DSC, or other CM tools.
-
-### Q: How do I uninstall WinHarden?
-
-**A:** WinHarden is not persistent – it's a script toolkit. To remove:
+A: Set execution policy to allow scripts:
 
 ```powershell
-# Remove directory
-Remove-Item -Path "C:\Program Files\WinHarden" -Recurse -Force
+# For current session only
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process -Force
 
-# Remove scheduled tasks (if any)
-Unregister-ScheduledTask -TaskName "WinHarden-*" -Confirm:$false
+# For current user
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
 
-# Rollback hardening changes (optional)
-# Use Windows System Restore or Group Policy to revert to baseline
+# For all users (admin required)
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine -Force
+```
+
+### Q: Can I run WinHarden on remote servers?
+
+A: Yes, using PowerShell Remoting:
+
+```powershell
+$session = New-PSSession -ComputerName "RemoteServer"
+Invoke-Command -Session $session -ScriptBlock {
+    Import-Module C:\Repos\WinHarden
+    Invoke-HardeningRemediation -BaselineName "Production-Baseline" -Force
+}
 ```
 
 ---
 
-## Usage & Operation
+## Baseline & Compliance
 
-### Q: What does WhatIf mode do?
+### Q: What is a baseline?
 
-**A:** WhatIf mode shows what would happen WITHOUT making changes:
+A: A baseline is a snapshot of desired system security configuration. It contains:
+- Firewall rules
+- Service states
+- Registry settings
+- Account policies
+- Audit policies
+
+### Q: How do I create a baseline?
+
+A: Create from current system state:
 
 ```powershell
-Invoke-SecurityHardening -Session $session -WhatIf
-
-# Output (example):
-# What if: Performing the operation "Apply Rule: Account-MinimumPasswordLength" on target "LOCAL SYSTEM".
-# What if: Performing the operation "Apply Rule: Firewall-EnableWindowsDefender" on target "LOCAL SYSTEM".
+New-HardeningBaseline `
+    -Name "MyBaseline" `
+    -Description "Production baseline"
 ```
 
-**Key point:** In WhatIf mode, **no actual changes are made** to the system. Use this to preview changes before applying.
+Or customize manually by editing the XML file.
 
-### Q: Can I apply only specific rules?
+### Q: Can I have multiple baselines?
 
-**A:** **Yes, use the `-RuleFilter` parameter:**
-
-```powershell
-# Apply only firewall rules
-Invoke-SecurityHardening -Session $session -RuleFilter @('Firewall-*')
-
-# Apply specific rules
-Invoke-SecurityHardening -Session $session -RuleFilter @(
-    'Account-MinimumPasswordLength',
-    'Firewall-EnableWindowsDefender'
-)
+A: Yes. Create different baselines for different environments:
+```
+Production-Baseline
+Development-Baseline
+Testing-Baseline
 ```
 
-### Q: What happens if a rule fails?
+And apply the appropriate baseline to each environment.
 
-**A:** By default, **one rule failure doesn't stop the process**:
+### Q: What does "compliance" mean?
 
-```powershell
-# Graceful (default): Continue if rule fails
-Invoke-SecurityHardening -Session $session
-# Result: All other rules applied, failed rule logged
+A: Compliance is how well the current system matches the baseline configuration.
 
-# Strict: Stop on first failure
-Invoke-SecurityHardening -Session $session -FailOnError
-# Result: Stops at first failure
+```
+Compliance = (Passed Checks / Total Checks) * 100
+
+Example:
+95 passed checks out of 100 = 95% compliance
 ```
 
-Check logs for details:
+### Q: What compliance score is considered acceptable?
+
+A: General guidelines:
+- **95-100%**: Excellent (well-hardened)
+- **85-94%**: Good (acceptable for most environments)
+- **75-84%**: Fair (needs attention)
+- **<75%**: Poor (immediate remediation needed)
+
+### Q: How often should I run compliance checks?
+
+A: Recommended frequencies:
+- **Critical systems**: Daily
+- **Production systems**: Weekly
+- **Development systems**: Monthly
+- **After major changes**: Immediately
+
+### Q: Can I exclude certain checks from compliance?
+
+A: Not directly, but you can:
+1. Create a custom baseline without those checks
+2. Modify baseline XML to disable specific checks
+3. Use custom compliance categories
+
+---
+
+## Remediation
+
+### Q: What does remediation do?
+
+A: Remediation applies hardening configurations to fix compliance violations. It:
+1. Backs up current configuration
+2. Applies hardening changes
+3. Verifies changes were applied
+4. Logs all operations
+
+### Q: Is remediation reversible?
+
+A: Mostly yes. Before remediation, WinHarden creates backups. However:
+- Some registry changes may require system restart
+- Service configuration changes may need restart
+- Always test in staging first
+
+### Q: How long does remediation take?
+
+A: Typical times:
+- Single server: 5-10 minutes
+- 5 servers (parallel): 10-15 minutes
+- 20+ servers: 20-30 minutes
+
+Performance depends on:
+- Hardware speed
+- Network latency
+- System configuration complexity
+
+### Q: What happens if remediation fails?
+
+A: If remediation fails:
+1. Check error message in log file
+2. Verify prerequisites are met
+3. Review backup was created
+4. Retry with verbose output:
+   ```powershell
+   Invoke-HardeningRemediation `
+       -BaselineName "Production-Baseline" `
+       -Verbose -Force
+   ```
+
+### Q: Can I undo remediation?
+
+A: Yes, using pre-remediation backup:
+
 ```powershell
-Get-Content logs/log_*.csv | Where-Object { $_ -match "ERROR" }
+# Restore from backup
+# (Requires manual restoration or rollback script)
+
+# Or re-baseline to current state
+New-HardeningBaseline -Name "Rollback-Baseline"
 ```
 
-### Q: How do I check compliance?
+### Q: Should I use WhatIf before remediation?
 
-**A:**
-
-```powershell
-# Quick check (percentage)
-$compliance = Test-HardeningCompliance -Session $session
-$compliance.CompliancePercentage  # e.g., 98%
-
-# Detailed check (rule-by-rule)
-$compliance = Test-HardeningCompliance -Session $session -Detailed
-$compliance.RuleResults | Where-Object { $_.Compliant -eq $false }
-
-# Auto-remediate non-compliant rules
-$remediation = Test-HardeningCompliance -Session $session -Remediate
-$remediation.RemediatedRules
-```
-
-### Q: What if compliance drops below 100%?
-
-**A:** Check the detailed report:
+A: Absolutely. Always preview changes first:
 
 ```powershell
-$compliance = Test-HardeningCompliance -Session $session -Detailed
-$nonCompliant = $compliance.RuleResults | Where-Object { $_.Compliant -eq $false }
-
-# Show non-compliant rules
-$nonCompliant | Select-Object RuleName, Expected, Actual, Severity
-
-# Causes of drift:
-# 1. Manual changes to system (outside WinHarden)
-# 2. Windows Update resets settings
-# 3. Third-party software modified settings
-# 4. Service restart cleared settings
-```
-
-**Solutions:**
-- Use `-Remediate` to auto-fix: `Test-HardeningCompliance -Session $session -Remediate`
-- Manually reapply hardening: `Invoke-SecurityHardening -Session $session`
-- Implement scheduled compliance checks to detect drift early
-
-### Q: Can I undo hardening changes?
-
-**A:** **Partial rollback:**
-
-```powershell
-# Revert specific rules
-# (WinHarden provides revert functions for each rule type)
-Revert-RegistryHardeningRule -RuleName "Account-MinimumPasswordLength"
-```
-
-**Full rollback:**
-
-```powershell
-# Option 1: System Restore
-Restore-ComputerRestorePoint -Description "Pre-WinHarden" -Confirm:$false
-Restart-Computer
-
-# Option 2: Group Policy reset
-# Use Group Policy to revert settings to baseline
-
-# Option 3: Restore from backup
-# Restore from VM snapshot or system backup
+Invoke-HardeningRemediation `
+    -BaselineName "Production-Baseline" `
+    -WhatIf  # Preview only
 ```
 
 ---
 
-## Compliance & Verification
+## Drift Detection
 
-### Q: How often should I verify compliance?
+### Q: What is drift?
 
-**A:** Recommended schedule:
+A: Drift is when the current system configuration differs from the baseline. Examples:
+- Firewall rule manually added
+- Service restarted outside of schedule
+- Registry key manually changed
+- Account policy manually relaxed
 
-- **Daily:** Automated compliance checks (via scheduled task)
-- **Weekly:** Manual review of compliance dashboard
-- **Monthly:** Full audit and reporting
-- **Quarterly:** Re-baseline compliance targets
+### Q: How often does drift occur?
+
+A: Drift can occur when:
+- Administrators make manual changes
+- Software installation changes configuration
+- Windows Update modifies settings
+- Malware/compromise attempts change settings
+
+### Q: How do I detect drift?
+
+A: Use the drift detection function:
 
 ```powershell
-# Set up daily verification
-$trigger = New-ScheduledTaskTrigger -Daily -At 2am
-$action = New-ScheduledTaskAction -Execute PowerShell.exe -Argument `
-    "-NoProfile -File C:\Scripts\DailyComplianceCheck.ps1"
-Register-ScheduledTask -TaskName "DailyComplianceCheck" -Trigger $trigger -Action $action
+$drift = Get-SecurityDrift -BaselineName "Production-Baseline"
+$drift | Format-Table
 ```
 
-### Q: What should I do if compliance is below 95%?
+### Q: Should I be concerned about drift?
 
-**A:** Investigate and remediate:
+A: It depends:
+- **Authorized drift**: If manually approved, document and update baseline
+- **Unauthorized drift**: Indicates possible compromise, investigate immediately
+- **Minor drift**: May be acceptable depending on security policy
+
+### Q: How do I fix drift?
+
+A: Use remediation to restore to baseline:
 
 ```powershell
-# 1. Identify non-compliant rules
-$compliance = Test-HardeningCompliance -Session $session -Detailed
-$drift = $compliance.RuleResults | Where-Object CompliancePercentage -lt 95
-
-# 2. Check for drift cause
-foreach ($rule in $drift) {
-    Write-Host "Rule: $($rule.RuleName)"
-    Write-Host "  Expected: $($rule.Expected)"
-    Write-Host "  Actual: $($rule.Actual)"
-    Write-Host "  Last Modified: $($rule.LastModifiedDate)"
-}
-
-# 3. Remediate
-Test-HardeningCompliance -Session $session -Remediate
-
-# 4. Verify fix
-Test-HardeningCompliance -Session $session
+Invoke-HardeningRemediation -BaselineName "Production-Baseline" -Force
 ```
 
-### Q: How do I interpret compliance percentages?
+Or manually adjust and update baseline.
 
-**A:**
+### Q: Can I automatically alert on drift?
 
-| Compliance | Status | Action |
-|-----------|--------|--------|
-| 100% | Fully Compliant | Continue normal monitoring |
-| 95-99% | Acceptable | Investigate drift, schedule remediation |
-| 90-95% | Concerning | Investigate immediately, remediate within 24 hours |
-| <90% | Critical | Investigate immediately, remediate now |
-
-### Q: Can I customize compliance thresholds?
-
-**A:** Not built-in, but you can create custom alerts:
+A: Yes, create a scheduled monitoring task:
 
 ```powershell
-# Custom alert on 95% threshold
-$compliance = Test-HardeningCompliance -Session $session
-if ($compliance.CompliancePercentage -lt 95) {
-    Send-MailMessage -To "security@company.com" `
-        -Subject "WinHarden Alert: Compliance below 95%" `
-        -Body "Compliance: $($compliance.CompliancePercentage)%"
-}
+# Create monitoring script that alerts on high-severity drift
+# Schedule as daily task via Task Scheduler
 ```
 
 ---
 
 ## Performance & Optimization
 
-### Q: How can I speed up hardening?
+### Q: Is WinHarden slow?
 
-**A:** Several optimizations:
+A: No. Typical performance:
+- Compliance check: 2-3 minutes
+- Remediation: 5-10 minutes
+- Drift detection: 1-2 minutes
+
+Performance depends on system specs and configuration complexity.
+
+### Q: How can I speed up operations?
+
+A: Several strategies:
+
+1. **Incremental checks**: Only check specific categories
+   ```powershell
+   Test-SystemCompliance -Category "Firewall"
+   ```
+
+2. **Parallel execution**: Run on multiple servers simultaneously
+3. **Caching**: Reuse baseline in memory for multiple checks
+4. **Filtering**: Skip non-critical categories
+
+### Q: Does WinHarden impact system performance?
+
+A: Minimal impact:
+- Idle memory usage: 50-100 MB
+- During operations: 100-200 MB
+- CPU impact: 10-40% during operations, 0% when idle
+- No continuous background processes
+
+### Q: Can I run WinHarden on low-spec systems?
+
+A: Yes, but with adjustments:
+- Run compliance checks during off-peak hours
+- Use single-category checks instead of full scans
+- Avoid parallel multi-server deployments
+- Monitor memory usage
+
+---
+
+## Troubleshooting
+
+### Q: Getting "file not found" error
+
+A: Verify module location:
 
 ```powershell
-# 1. Use parallel execution (5.5x faster)
-Invoke-SecurityHardening -Session $session -Parallel
-
-# 2. Skip verification if verifying separately
-Invoke-SecurityHardening -Session $session -SkipVerification
-
-# 3. Apply only needed rules
-Invoke-SecurityHardening -Session $session -RuleFilter @('Account-*')
-
-# 4. Use Basis profile instead of Recommended or Strict
-$session = New-HardeningSession -Profile Basis -TargetSystem Client
+Test-Path C:\Repos\WinHarden\functions
+Get-ChildItem C:\Repos\WinHarden\functions -Recurse -Filter *.ps1 | Measure-Object
 ```
 
-**Performance comparison:**
-- Sequential (default): 8.3s
-- Parallel: 1.5s (5.5x faster)
-- Skip verification: 8.3s instead of 20.7s
-- Basis profile only: 4.6s
+If files missing, clone repository again:
+```powershell
+cd C:\Repos
+git clone https://github.com/your-org/WinHarden.git
+```
 
-### Q: Will hardening impact system performance?
+### Q: Getting "access denied" error
 
-**A:** **Minimal impact:**
+A: Verify administrator privileges:
 
-- **CPU:** <2% during execution
-- **Memory:** ~40-50MB temporary
-- **Disk:** ~100MB logs per week
-- **Network:** Only during remote deployment
-- **User experience:** No noticeable impact after completion
+```powershell
+$isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
+Write-Host "Admin: $isAdmin"
+```
 
-**One-time impact:** 30 seconds to 2 minutes depending on profile.
+If not admin, restart PowerShell as Administrator.
 
-### Q: How much disk space does WinHarden use?
+### Q: Baseline file corrupted
 
-**A:**
+A: Restore from backup:
 
-| Component | Size |
-|-----------|------|
-| Installation | 50MB |
-| Logs (per day) | 2-5MB |
-| Logs (7-day rotation) | ~21-35MB |
-| Temporary (peak) | ~30MB |
-| **Total** | **~150MB** |
+```powershell
+# Find backup
+Get-ChildItem C:\Repos\WinHarden\backups -Filter *.xml
+
+# Restore
+Copy-Item C:\Repos\WinHarden\backups\backup_baseline.xml `
+    -Destination C:\Repos\WinHarden\baselines\Production-Baseline.xml -Force
+```
+
+### Q: Compliance reports missing
+
+A: Check logs directory:
+
+```powershell
+Get-ChildItem C:\Repos\WinHarden\logs -Filter *.csv | Select-Object Name, LastWriteTime
+
+# Verify directory permissions
+icacls C:\Repos\WinHarden\logs
+```
+
+### Q: System became unstable after remediation
+
+A: Follow emergency rollback procedure:
+
+```powershell
+# Restore from pre-remediation backup
+# (See Deployment Guide - Rollback Procedures)
+```
 
 ---
 
@@ -369,194 +434,100 @@ $session = New-HardeningSession -Profile Basis -TargetSystem Client
 
 ### Q: Is WinHarden secure?
 
-**A:** **Yes, with multiple security features:**
+A: Yes. WinHarden:
+- Uses PowerShell 5.1 security features
+- Avoids Invoke-Expression (injection risk)
+- Validates all inputs at system boundaries
+- Logs all operations for audit trail
+- Implements OWASP security practices
 
-- Zero hardcoded credentials (uses Windows Credential Manager)
-- Automatic sensitive data masking in logs (passwords, tokens, keys → `***`)
-- Full audit logging for compliance
-- Input validation on all parameters
-- Error handling that doesn't expose sensitive data
-- Admin-only operations
+### Q: Does WinHarden meet compliance requirements?
 
-### Q: What compliance frameworks does WinHarden support?
+A: WinHarden implements:
+- CIS Benchmarks
+- NIST SP 800-171
+- DoD STIG guidelines
+- GDPR technical controls
 
-**A:** WinHarden rules align with multiple frameworks:
+But you should still verify against your specific compliance requirements.
 
-- **HIPAA** – Account policies, audit logging, encryption
-- **PCI-DSS** – Firewall rules, service hardening, audit policies
-- **SOC2** – Logging, compliance verification, monitoring
-- **ISO 27001** – Security controls, access control, audit trails
-- **CIS Benchmarks** – Windows hardening rules
-- **DISA STIG** – Windows Server hardening rules
+### Q: Can I use WinHarden for HIPAA/PCI/SOC2?
 
-See [SIEM Integration](04_SIEM_INTEGRATION.md) for compliance reporting.
+A: WinHarden can help meet hardening requirements for:
+- HIPAA (security controls)
+- PCI-DSS (system hardening)
+- SOC2 (security baseline)
 
-### Q: How is sensitive data protected?
+However, compliance involves more than just hardening. Consult your compliance team.
 
-**A:** Multi-layer protection:
+### Q: How are credentials handled?
 
-1. **At rest:** Credentials stored in Windows Credential Manager, not config files
-2. **In transit:** HTTPS for remote operations, WinRM encryption
-3. **In logs:** Automatic masking of passwords, tokens, keys (`password: ***`)
-4. **In memory:** Cleared after use, no persistence to disk
+A: WinHarden:
+- Never stores credentials in plaintext
+- Never logs sensitive information
+- Uses Windows authentication
+- Requires administrator context
 
-### Q: Can I audit who ran hardening?
+### Q: What should I do if a server is compromised?
 
-**A:** **Yes, full audit trail:**
+A: Steps to recover:
 
+1. Isolate the compromised system
+2. Run emergency remediation:
+   ```powershell
+   Invoke-HardeningRemediation -BaselineName "Secure-Baseline" -Force -Aggressive
+   ```
+3. Run drift detection to verify:
+   ```powershell
+   $drift = Get-SecurityDrift -BaselineName "Secure-Baseline"
+   $drift | Where-Object Status -eq "Drift"
+   ```
+4. Change all credentials
+5. Review logs for unauthorized access
+6. Perform forensic analysis
+
+---
+
+## Common Error Messages
+
+### Error: "Cannot find baseline"
+
+**Solution:**
 ```powershell
-# Check logs for user/account information
-Get-Content logs/log_*.csv | Select-Object Caller, Function, Message | 
-    Where-Object Caller -match "Admin|System"
+# List available baselines
+Get-ChildItem C:\Repos\WinHarden\baselines\ -Filter "*.xml" | Select-Object Name
 
-# Event log integration
-Get-WinEvent -LogName Security | Where-Object ID -eq 4625 | Select-Object TimeCreated, Message
+# Create baseline if missing
+New-HardeningBaseline -Name "Default-Baseline"
+```
 
-# SIEM integration provides centralized audit dashboard
+### Error: "Access denied" on registry modification
+
+**Solution:**
+```powershell
+# Ensure running as Administrator
+# Verify UAC is not blocking
+# Check registry permissions
+
+icacls "HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa"
+```
+
+### Error: "Service cannot be modified"
+
+**Solution:**
+```powershell
+# Check if service is running
+Get-Service -Name RDP | Select-Object Status, StartType
+
+# Stop service before modifying
+Stop-Service -Name RDP -Force
+
+# Then apply hardening
 ```
 
 ---
 
-## Troubleshooting
-
-### Q: "Administrator privileges required" – How do I fix this?
-
-**A:** Run PowerShell as Administrator:
-
-```powershell
-# Option 1: Right-click PowerShell → "Run as administrator"
-
-# Option 2: From command line
-PowerShell -NoProfile -WindowStyle Hidden -Command "Start-Process PowerShell -Verb RunAs"
-```
-
-### Q: Modules won't load – "Module not found"
-
-**A:** Check file paths:
-
-```powershell
-# Verify files exist
-Test-Path "C:\Program Files\WinHarden\modules\Core.psm1"  # Should be True
-Test-Path "C:\Program Files\WinHarden\modules\System.psm1"  # Should be True
-
-# Use absolute paths, not relative
-Import-Module "C:\Program Files\WinHarden\modules\Core.psm1" -ErrorAction Stop
-```
-
-### Q: Rules apply but don't take effect
-
-**A:** Common causes:
-
-1. **Service needs restart:**
-```powershell
-Restart-Computer -Force
-```
-
-2. **Group Policy needs refresh:**
-```powershell
-gpupdate /force
-```
-
-3. **Setting requires user logout:**
-```powershell
-logoff
-```
-
-4. **Windows Update overwrote setting:**
-```powershell
-# Reapply hardening
-Invoke-SecurityHardening -Session $session
-```
-
-### Q: Compliance verification always fails
-
-**A:** Debugging steps:
-
-```powershell
-# 1. Check detailed compliance
-$compliance = Test-HardeningCompliance -Session $session -Detailed
-$compliance.RuleResults | Where-Object Compliant -eq $false
-
-# 2. Check specific rule state
-Get-Item -Path "HKLM:\path\to\rule" -ErrorAction SilentlyContinue
-
-# 3. Check service state
-Get-Service -Name "ServiceName" | Select-Object Status
-
-# 4. Check logs for errors
-Get-Content logs/log_*.csv | Where-Object Level -eq ERROR
-
-# 5. Run in administrator prompt (run `whoami /priv` to verify)
-whoami /priv | find /i "SeRestorePrivilege"
-```
-
-### Q: Scripts blocked by execution policy
-
-**A:** Set execution policy:
-
-```powershell
-# For current user
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
-
-# For all users (requires admin)
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine -Force
-
-# Or run specific script with bypass
-powershell -ExecutionPolicy Bypass -File "C:\Program Files\WinHarden\scripts\Deploy.ps1"
-```
-
-### Q: Can't connect to remote systems
-
-**A:** Enable WinRM:
-
-```powershell
-# On target systems
-Enable-PSRemoting -Force
-Set-WSManInstance -ResourceURI winrm/config -ValueSet @{MaxTimeoutms=300000}
-
-# Test connection
-Test-WSMan -ComputerName SERVER01
-
-# If fails, check firewall
-Get-NetFirewallRule -DisplayName "*Windows Remote Management*" | Enable-NetFirewallRule
-```
-
----
-
-## Support & Resources
-
-### Q: Where can I find more help?
-
-**A:** Resources:
-
-1. **[User Guide](01_USER_GUIDE.md)** – Step-by-step usage
-2. **[Deployment Guide](02_DEPLOYMENT_GUIDE.md)** – Enterprise deployment
-3. **[Architecture Guide](03_ARCHITECTURE.md)** – Technical details
-4. **[SIEM Integration](04_SIEM_INTEGRATION.md)** – Monitoring setup
-5. **[Performance Guide](05_PERFORMANCE.md)** – Optimization
-6. **Logs** – Check `logs/log_*.csv` for detailed error messages
-
-### Q: How do I report issues?
-
-**A:** When reporting issues, include:
-
-1. WinHarden version
-2. Operating system (Windows Server 2019, Windows 11, etc.)
-3. PowerShell version (`$PSVersionTable.PSVersion`)
-4. Steps to reproduce
-5. Relevant log entries from `logs/log_*.csv`
-6. Error messages (sanitized of sensitive data)
-
-### Q: Can I contribute improvements?
-
-**A:** Yes! See CLAUDE.md in the project repository for:
-- Development guidelines
-- Pull request process
-- Testing requirements
-- Code standards
-
----
-
-**End of FAQ**
-
-For questions not covered here, consult the User Guide or contact your system administrator.
+**Document Version:** 2.0  
+**Last Updated:** 2026-06-27  
+**Target Audience:** All Users, Support Teams  
+**Complexity Level:** Beginner to Intermediate

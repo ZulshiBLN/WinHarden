@@ -1,658 +1,629 @@
-# WinHarden Hardening – Architecture Guide
+# WinHarden - Architecture
 
-**Version:** 1.0  
-**Last Updated:** 2026-06-26  
-**Target Audience:** Software Architects, Senior Engineers, Security Engineers
+**Technical design, components, and system architecture of WinHarden.**
 
 ---
 
 ## Table of Contents
 
-1. [System Architecture](#system-architecture)
-2. [Module Design](#module-design)
-3. [Hardening Profile System](#hardening-profile-system)
-4. [Rule Application Pipeline](#rule-application-pipeline)
-5. [Compliance Verification](#compliance-verification)
-6. [Data Flow](#data-flow)
-7. [Security Considerations](#security-considerations)
-8. [Performance Optimization](#performance-optimization)
+1. [System Overview](#system-overview)
+2. [Component Architecture](#component-architecture)
+3. [Hardening Categories](#hardening-categories)
+4. [Baseline System](#baseline-system)
+5. [Compliance Engine](#compliance-engine)
+6. [Drift Detection](#drift-detection)
+7. [Data Flow](#data-flow)
+8. [Extensibility](#extensibility)
 
 ---
 
-## System Architecture
-
-### High-Level Design
-
-WinHarden follows a **modular, layered architecture** with clear separation of concerns:
-
-```
-┌─────────────────────────────────────────────────────────┐
-│                  Entry Points (Scripts)                 │
-│  Deploy-Hardening.ps1  Monitor-Compliance.ps1  etc.    │
-└──────────────────┬────────────────────────────────────┘
-                   │
-┌──────────────────▼────────────────────────────────────┐
-│              High-Level API Layer                     │
-│  New-HardeningSession  Invoke-SecurityHardening     │
-│  Test-HardeningCompliance  Get-HardeningProfile     │
-└──────────────────┬────────────────────────────────────┘
-                   │
-┌──────────────────▼────────────────────────────────────┐
-│         System Module (System.psm1)                  │
-│  Rule Engine | Session Management | Verification    │
-│  Remote Execution | Scheduling                       │
-└──────────────────┬────────────────────────────────────┘
-                   │
-┌──────────────────▼────────────────────────────────────┐
-│         Core Module (Core.psm1)                      │
-│  Logging | Error Handling | Validation              │
-│  Sensitive Data Masking | Base Utilities             │
-└──────────────────┬────────────────────────────────────┘
-                   │
-┌──────────────────▼────────────────────────────────────┐
-│       Operating System & External Services            │
-│  Windows Registry | Services | Firewall              │
-│  Group Policy | Event Viewer | SIEM/Monitoring      │
-└────────────────────────────────────────────────────────┘
-```
+## System Overview
 
 ### Design Principles
 
-1. **Modularity** – Clear separation between concerns (Core, System, Rules)
-2. **Reusability** – Each function performs a single, composable task
-3. **Testability** – 95%+ code coverage with comprehensive unit tests
-4. **Security** – Sensitive data masking, validation at boundaries
-5. **Performance** – Efficient algorithms, parallel execution where possible
-6. **Maintainability** – Clear naming, inline documentation, ADR-based decisions
+WinHarden is built on the following architectural principles:
 
----
+1. **Modularity** - Independent hardening categories
+2. **Idempotency** - Safe to run multiple times
+3. **Auditability** - All actions logged and trackable
+4. **Compliance** - Standards-based hardening (CIS, NIST)
+5. **Safety** - Graceful error handling, rollback capability
+6. **Performance** - Minimal system impact
 
-## Module Design
-
-### Module Hierarchy
+### High-Level Architecture
 
 ```
-Core.psm1                    [FOUNDATION]
-   │
-   ├─ Write-Log              # Central logging (all modules depend)
-   ├─ Write-ErrorLog         # Error logging wrapper
-   ├─ ConvertTo-MaskedString # Sensitive data masking
-   ├─ Test-* Validators      # Input validation helpers
-   └─ Get-ModuleVersion      # Version info
-        │
-        └──────────────────────┐
-                               │
-System.psm1              [ORCHESTRATION]
-   │
-   ├─ New-HardeningSession              # Session creation
-   ├─ Invoke-SecurityHardening          # Rule application
-   ├─ Test-HardeningCompliance          # Compliance verification
-   ├─ Get-HardeningProfile              # Profile loading
-   ├─ _ApplyHardeningRule               # Private rule executor
-   ├─ Invoke-RemoteHardening            # Remote execution
-   ├─ New-HardeningSchedule             # Scheduling
-   ├─ Export-HardeningReport            # Reporting
-   └─ Send-HardeningAlert               # Alerting
-```
-
-### Dependency Management
-
-**Linear dependency hierarchy (no circular dependencies):**
-
-```
-Core (no dependencies)
-   ↓
-System (depends on Core only)
-   ↓
-Scripts (depend on Core + System)
-```
-
-**Explicit dependency documentation:**
-
-```powershell
-function Invoke-SecurityHardening {
-    # DEPENDS ON: Write-Log (Core), Get-HardeningProfile (System)
-    # OPTIONAL: Send-HardeningAlert (System – graceful degradation)
-    
-    # Implementation...
-}
-```
-
-### Module Loading Strategy
-
-**Lazy loading for performance:**
-
-```powershell
-# All scripts load Core first (always required)
-Import-Module "$PSScriptRoot\modules\Core.psm1" -ErrorAction Stop
-
-# Optional modules loaded on demand
-if ($useRemoteExecution) {
-    Import-Module "$PSScriptRoot\modules\System.psm1" -ErrorAction Stop
-}
-
-# System module loads automatically when needed
-Import-Module "$PSScriptRoot\modules\System.psm1" -ErrorAction SilentlyContinue
+[User Interface Layer]
+     |
+     v
+[PowerShell Cmdlets]
+     |
+     v
+[Hardening Engine]
+  |      |      |
+  v      v      v
+[Baseline] [Compliance] [Remediation]
+  |      |      |
+  v      v      v
+[Windows Components]
+  - Firewall Rules
+  - Registry Settings
+  - Service Configuration
+  - Audit Policy
+  - User Accounts
 ```
 
 ---
 
-## Hardening Profile System
+## Component Architecture
 
-### Profile Architecture
+### Core Components
 
-Each hardening profile is a **rules collection** with metadata:
+#### 1. Baseline Management Module
 
-```powershell
-# Internal structure of Get-HardeningProfile
-[PSCustomObject]@{
-    ProfileName = "Recommended"
-    TargetSystem = "Client"  # Client | Server
-    Description = "Balanced security and usability"
-    Severity = "MEDIUM"
-    Rules = @(
-        # Rule 1
-        @{
-            Name = "Account-MinimumPasswordLength"
-            Category = "Account"
-            Type = "Registry"
-            Path = "HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters"
-            Value = "MinimumPasswordLength"
-            ExpectedValue = 8
-            Severity = "HIGH"
-            Enabled = $true
-        },
-        # Rule 2
-        @{
-            Name = "Firewall-EnableWindowsDefender"
-            Category = "Firewall"
-            Type = "Service"
-            ServiceName = "MpsSvc"
-            ExpectedState = "Running"
-            Severity = "CRITICAL"
-            Enabled = $true
-        }
-        # ... more rules
-    )
-}
+**Purpose:** Capture and manage system configuration baselines
+
+**Components:**
+- `New-HardeningBaseline` - Create baseline from current state
+- `Get-HardeningBaseline` - Retrieve existing baselines
+- `Update-HardeningBaseline` - Update baseline configuration
+- `Compare-Baseline` - Compare two baselines
+
+**Storage:**
+```
+C:\Repos\WinHarden\baselines\
+  ├── Default-Baseline.xml
+  ├── Production-Baseline.xml
+  ├── Development-Baseline.xml
+  └── [Custom-Baselines].xml
 ```
 
-### Profile Composition
-
+**Baseline Format (XML):**
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Baseline>
+  <Name>Production-Baseline</Name>
+  <Description>Production hardening baseline</Description>
+  <CreatedDate>2026-06-27T10:00:00Z</CreatedDate>
+  <Categories>
+    <Category Name="Firewall">
+      <Setting Name="Enabled" Value="true" />
+      <Setting Name="DefaultInbound" Value="Block" />
+      <Setting Name="DefaultOutbound" Value="Allow" />
+    </Category>
+    <Category Name="Services">
+      <Service Name="RDP" Enabled="false" />
+      <Service Name="WinRM" Enabled="false" />
+    </Category>
+    <Category Name="Registry">
+      <Registry Path="HKLM:\System\CurrentControlSet\Control\Lsa" 
+                Key="RestrictAnonymous" Value="2" Type="DWORD" />
+    </Category>
+  </Categories>
+</Baseline>
 ```
-Basis Profile (20 rules)
-├─ Registry (5 rules)
-├─ Service (4 rules)
-├─ Firewall (3 rules)
-├─ Account (5 rules)
-└─ Audit (3 rules)
 
-Recommended Profile (35 rules) = Basis + Additional 15
-├─ Credential Guard
-├─ SmartScreen
-├─ Advanced Audit
-├─ Enhanced Firewall
-└─ ...
+#### 2. Compliance Engine
 
-Strict Profile (55+ rules) = Recommended + Additional 20+
-├─ Exploit Protection
-├─ Device Guard
-├─ Restricted USB
-├─ Advanced Threat Protection
-└─ ...
+**Purpose:** Test system against baseline for compliance violations
+
+**Components:**
+- `Test-SystemCompliance` - Run compliance checks
+- `Get-ComplianceResult` - Retrieve compliance results
+- `Export-ComplianceReport` - Export compliance data
+
+**Compliance Check Types:**
+```
+Account Policies
+├── Password minimum length
+├── Password maximum age
+├── Account lockout threshold
+└── Account lockout duration
+
+Firewall
+├── Firewall enabled
+├── Inbound rules
+├── Outbound rules
+└── Exceptions
+
+Services
+├── Unnecessary services disabled
+├── Critical services enabled
+├── Service startup types
+└── Service permissions
+
+Registry
+├── Security keys
+├── Performance keys
+├── System keys
+└── User keys
+
+Audit Policy
+├── Account logon events
+├── Account management
+├── Privilege use
+└── Object access
 ```
 
-### Rule Metadata
+#### 3. Remediation Engine
 
-Each rule contains:
+**Purpose:** Apply hardening configurations to fix violations
 
-```powershell
-@{
-    Name              # "Firewall-EnableWindowsDefender"
-    Category          # "Firewall" | "Account" | "Registry" | "Service" | "Audit"
-    Type              # "Registry" | "Service" | "Firewall" | "Audit"
-    Severity          # "CRITICAL" | "HIGH" | "MEDIUM" | "LOW"
-    Enabled           # $true | $false (can disable rules)
-    AppliesTo         # "Client" | "Server" | "Both"
-    Description       # Human-readable description
-    Path              # Registry path or service name
-    Value             # Registry value or service state
-    ExpectedValue     # Expected state
-    RemediationSteps  # How to fix if non-compliant
-    Dependencies      # Rules that must run first
-}
+**Components:**
+- `Invoke-HardeningRemediation` - Apply hardening fixes
+- `Get-RemediationStatus` - Check remediation progress
+- `Undo-HardeningRemediation` - Rollback changes
+
+**Remediation Process:**
+```
+[Compliance Check]
+      |
+      v
+[Identify Violations]
+      |
+      v
+[Generate Remediation Plan]
+      |
+      v
+[Backup Current State]
+      |
+      v
+[Apply Changes]
+      |
+      v
+[Verify Changes]
+      |
+      v
+[Log Results]
+```
+
+#### 4. Drift Detection Engine
+
+**Purpose:** Identify unauthorized configuration changes
+
+**Components:**
+- `Get-SecurityDrift` - Detect drift from baseline
+- `Report-SecurityDrift` - Generate drift reports
+- `Remediate-Drift` - Restore to baseline
+
+**Drift Types:**
+```
+Registry Drift
+├── Key added
+├── Key deleted
+├── Value changed
+└── Type changed
+
+Firewall Drift
+├── Rule added
+├── Rule deleted
+└── Rule modified
+
+Service Drift
+├── Service state changed
+├── Startup type changed
+└── Service deleted
+
+User Account Drift
+├── Account created
+├── Account deleted
+├── Password changed
+└── Permissions changed
+```
+
+#### 5. Audit & Logging Module
+
+**Purpose:** Track all hardening operations
+
+**Components:**
+- `Write-HardeningLog` - Log operations
+- `Get-HardeningLog` - Retrieve logs
+- `Export-AuditTrail` - Export audit data
+
+**Log Locations:**
+```
+C:\Repos\WinHarden\logs\
+├── hardening_operations.log
+├── compliance_*.csv
+├── drift_*.csv
+├── remediation_*.log
+└── audit_*.txt
 ```
 
 ---
 
-## Rule Application Pipeline
+## Hardening Categories
 
-### Execution Flow
+### Category 1: Firewall Hardening
 
-```
-New-HardeningSession
-    │
-    ├─ Validate session parameters
-    ├─ Load hardening profile
-    ├─ Check prerequisites (OS version, admin rights)
-    └─ Create session object with State tracking
-        │
-        ▼
-    Invoke-SecurityHardening
-        │
-        ├─ Validate session state
-        ├─ Load rules from profile
-        ├─ Filter rules (if RuleFilter specified)
-        │
-        ├─ For each rule:
-        │   ├─ Check if applicable (AppliesTo)
-        │   ├─ Check dependencies
-        │   │
-        │   └─ _ApplyHardeningRule
-        │       ├─ Registry rules   → Set-RegistryValue
-        │       ├─ Service rules    → Set-Service / Start-Service
-        │       ├─ Firewall rules   → New-NetFirewallRule
-        │       ├─ Audit rules      → auditpol.exe
-        │       └─ Account rules    → Set-LocalUser / net.exe
-        │
-        ├─ Track results (Applied, Failed, Skipped)
-        ├─ Log all operations
-        └─ Return result object
-        │
-        ▼
-    Test-HardeningCompliance
-        │
-        ├─ For each applied rule:
-        │   ├─ Read current system state
-        │   ├─ Compare with expected value
-        │   ├─ Store result (Compliant/Non-Compliant)
-        │   └─ If -Remediate: re-apply rule
-        │
-        └─ Generate compliance report
-```
+**Configuration Points:**
+- Windows Defender Firewall state (Enabled/Disabled)
+- Inbound policy (Block/Allow)
+- Outbound policy (Allow/Block)
+- Logging configuration
+- Rule exceptions
 
-### Rule Application Strategy
-
-**Sequential vs. Parallel:**
-
+**Applied Rules:**
 ```powershell
-# Sequential (safe, default)
-# Rules applied one-by-one, respecting dependencies
-Invoke-SecurityHardening -Session $session
-
-# Parallel (faster, for independent rules)
-# Registry and Service rules run in parallel
-# Firewall and Audit rules run sequentially (OS constraint)
-Invoke-SecurityHardening -Session $session -Parallel
+Disable-NetFirewallProfile  # Ensure all profiles hardened
+Set-NetFirewallProfile -DefaultInboundAction Block -DefaultOutboundAction Allow
+Add-NetFirewallRule -DisplayName "Allow RDP" -Direction Inbound -Protocol TCP -LocalPort 3389
 ```
 
-**Error Handling:**
+### Category 2: Service Hardening
 
+**Critical Services (Must Enable):**
+- wuauserv (Windows Update)
+- winlogon (Winlogon)
+- lsass (Local Security Authority)
+- EventLog (Event Log Service)
+- Eventlog
+
+**Unnecessary Services (Must Disable):**
+- RDP (Terminal Services)
+- WinRM (Windows Remote Management)
+- SNMP (Simple Network Management)
+- Telnet
+- UPnP Device Host
+
+**Service Hardening:**
 ```powershell
-# Graceful (default)
-# Individual rule failure doesn't stop the process
-# All rules attempted, results logged
-Invoke-SecurityHardening -Session $session  # -FailOnError = $false
+Set-Service -Name RDP -StartupType Disabled
+Set-Service -Name WinRM -StartupType Disabled
+# Verify service is disabled
+Get-Service -Name RDP | Select-Object Status, StartType
+```
 
-# Strict (fail-fast)
-# First rule failure stops execution
-# Useful for CI/CD pipelines
-Invoke-SecurityHardening -Session $session -FailOnError
+### Category 3: Registry Hardening
+
+**Critical Registry Settings:**
+```
+HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa
+├── RestrictAnonymous = 2 (Restrict Anonymous to no access)
+├── RestrictRemoteSAM = "O:BAG:BAD:(A;;RC;;;BA)"
+└── LimitBlankPasswordUse = 1
+
+HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Winlogon
+├── AutoLogonSID = "" (No auto-logon)
+└── DefaultUserName = "" (No default user)
+
+HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies
+├── System\DontDisplayLastUserName = 1
+├── System\EnableUIADesktopToggle = 0
+└── System\PromptOnSecureDesktopTermination = 1
+```
+
+### Category 4: Audit Policy Hardening
+
+**Enabled Audit Categories:**
+- Account Logon Events
+- Account Management
+- Directory Service Access
+- Logon/Logoff
+- Object Access
+- Policy Change
+- Privilege Use
+- Process Tracking
+- System
+
+**Audit Policy Configuration:**
+```powershell
+auditpol /set /category:"Account Logon" /success:enable /failure:enable
+auditpol /set /category:"Account Management" /success:enable /failure:enable
+auditpol /set /category:"Logon/Logoff" /success:enable /failure:enable
+```
+
+### Category 5: User Account Hardening
+
+**Password Policies:**
+- Minimum password length: 14 characters
+- Password complexity: Enabled
+- Password history: 24 passwords
+- Maximum password age: 60 days
+- Minimum password age: 1 day
+
+**Account Lockout Policies:**
+- Account lockout threshold: 5 invalid attempts
+- Account lockout duration: 30 minutes
+- Reset account lockout counter: 30 minutes
+
+**Configuration:**
+```powershell
+net accounts /minpwlen:14
+net accounts /uniquepw:24
+net accounts /maxpwage:60
+net accounts /minpwage:1
+net accounts /lockoutthreshold:5
+net accounts /lockoutduration:30
+```
+
+### Category 6: Windows Update Hardening
+
+**Configuration:**
+- Automatic updates: Enabled
+- Download updates: Automatic
+- Install updates: Scheduled (monthly)
+- Quality updates: Install immediately
+- Definition updates: Auto-install
+
+**Implementation:**
+```powershell
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" `
+    -Name "NoAutoUpdate" -Value 0
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" `
+    -Name "AUOptions" -Value 3  # Auto-download and notify for install
 ```
 
 ---
 
-## Compliance Verification
+## Baseline System
 
-### Verification Strategy
+### Baseline Structure
 
-```powershell
-# 1. Full verification (default)
-# Checks all rules in profile, even if not applied
-Test-HardeningCompliance -Session $session
-
-# 2. Delta verification
-# Checks only rules that were applied in this session
-Test-HardeningCompliance -Session $session -RuleFilter @('Rule1', 'Rule2')
-
-# 3. Remediation
-# Auto-fix non-compliant rules
-Test-HardeningCompliance -Session $session -Remediate
+```
+Baseline
+├── Metadata
+│   ├── Name
+│   ├── Description
+│   ├── CreatedDate
+│   ├── CreatedBy
+│   └── Version
+├── Configuration
+│   ├── Firewall Rules
+│   ├── Service States
+│   ├── Registry Settings
+│   ├── Audit Policies
+│   └── Account Settings
+└── Policies
+    ├── Enforcement Level
+    ├── Severity Mappings
+    └── Remediation Actions
 ```
 
-### Compliance Data Structure
+### Baseline Lifecycle
 
-```powershell
-# Compliance report contains:
-@{
-    CompliancePercentage    # 0-100% (overall)
-    CompliantRuleCount      # Number of compliant rules
-    NonCompliantRuleCount   # Number of non-compliant rules
-    VerifiedRuleCount       # Total verified
-    RuleResults = @(
-        @{
-            RuleName = "Account-MinimumPasswordLength"
-            Category = "Account"
-            Compliant = $true | $false
-            Expected = 8
-            Actual = 8
-            Severity = "HIGH"
-            RemediationAttempted = $false | $true
-            RemediationStatus = "SUCCESS" | "FAILED"
-        }
-        # ... more results
-    )
-    
-    ComplianceByCategory = @{
-        "Account" = 95%
-        "Registry" = 100%
-        "Firewall" = 87%
-        # ...
-    }
-}
+```
+[Create Baseline]
+      |
+      v
+[Test Baseline]
+      |
+      v
+[Approve Baseline]
+      |
+      v
+[Deploy Baseline]
+      |
+      v
+[Monitor Baseline Compliance]
+      |
+      v
+[Update Baseline] (as needed)
+      |
+      v
+[Archive Old Baseline]
+```
+
+---
+
+## Compliance Engine
+
+### Compliance Check Process
+
+```
+1. Load Baseline Configuration
+   ├── Read baseline file (XML)
+   ├── Parse settings
+   └── Create check list
+
+2. Run Compliance Checks
+   ├── Check each category
+   │   ├── Firewall rules
+   │   ├── Service states
+   │   ├── Registry settings
+   │   ├── Account policies
+   │   └── Audit policies
+   └── Collect results
+
+3. Compare Results
+   ├── Current state vs Expected state
+   ├── Identify violations
+   └── Classify severity
+
+4. Generate Report
+   ├── Compliance percentage
+   ├── Failed checks
+   ├── Passed checks
+   └── Recommendations
+```
+
+### Compliance Scoring
+
+```
+Compliance Score = (Passed Checks / Total Checks) * 100
+
+Example:
+Passed: 95 checks
+Failed: 5 checks
+Total: 100 checks
+Compliance: 95%
+```
+
+### Severity Levels
+
+| Level | Range | Impact | Action |
+|-------|-------|--------|--------|
+| Critical | 95-100% | System highly exposed | Immediate remediation |
+| High | 85-94% | Significant vulnerabilities | Urgent remediation |
+| Medium | 75-84% | Notable issues | Schedule remediation |
+| Low | <75% | Minor violations | Planned remediation |
+
+---
+
+## Drift Detection
+
+### Drift Detection Process
+
+```
+1. Load Baseline State
+   ├── Read baseline configuration
+   └── Create expected-state model
+
+2. Capture Current State
+   ├── Query firewall rules
+   ├── Query service states
+   ├── Query registry settings
+   ├── Query account policies
+   └── Query audit configuration
+
+3. Compare States
+   ├── For each configuration item:
+   │   ├── Current == Expected?
+   │   └── If NO: Mark as DRIFT
+   └── Classify drift severity
+
+4. Report Drift
+   ├── List all drift items
+   ├── Provide remediation steps
+   └── Export to CSV/JSON
+```
+
+### Drift Types
+
+```
+Addition Drift
+├── New firewall rule added
+├── New service installed
+└── New user account created
+
+Deletion Drift
+├── Rule deleted
+├── Service removed
+└── Account deleted
+
+Modification Drift
+├── Setting value changed
+├── Service startup type changed
+└── Account permissions modified
+
+Configuration Drift
+├── Sensitive settings changed
+├── Security policies relaxed
+└── Hardening controls disabled
 ```
 
 ---
 
 ## Data Flow
 
-### Session Object Lifecycle
-
-```powershell
-# 1. Creation (New-HardeningSession)
-$session = New-HardeningSession -Profile Recommended -TargetSystem Client
-# Result: PSCustomObject with metadata and empty State
-
-# 2. Execution (Invoke-SecurityHardening)
-# Updates $session.State with:
-#   - AppliedRules (list of applied rules)
-#   - RuleResults (success/failure per rule)
-#   - Timestamp
-#   - FailedRules (if any)
-
-# 3. Verification (Test-HardeningCompliance)
-# Reads $session.State to determine what to verify
-# Generates compliance report (separate from session)
-
-# 4. Cleanup (automatic)
-# Session can be reused, or discarded
-Remove-Variable -Name session
-```
-
-### Logging Data Flow
-
-```powershell
-# All operations logged to central CSV file:
-# logs/log_YYYY-MM-DD.csv
-
-# CSV columns:
-Timestamp, Level, Caller, Function, LineNumber, Message
-
-# Example:
-2026-06-26 14:23:45.123, INFO, Invoke-SecurityHardening:42, Invoke-SecurityHardening, 42, "Starting security hardening: Profile=Recommended"
-2026-06-26 14:23:46.234, INFO, _ApplyHardeningRule:15, _ApplyHardeningRule, 15, "Applying rule: Account-MinimumPasswordLength"
-2026-06-26 14:23:47.345, ERROR, _ApplyHardeningRule:22, _ApplyHardeningRule, 22, "Failed to apply rule: Access denied to registry path"
-```
-
-### Sensitive Data Masking Flow
+### Hardening Operation Flow
 
 ```
 User Input
-    ↓
-Validation (check for sensitive keywords)
-    ↓
-Masking (password, token, secret, apikey, credential → ***)
-    ↓
-Logging (Write-Log, always masked)
-    ↓
-Output (to console, reports, SIEM)
+    |
+    v
+Cmdlet Execution
+    |
+    v
+[Pre-checks]
+├── Admin verification
+├── Baseline validation
+└── Dependency check
+    |
+    v
+[Execution]
+├── Backup current state
+├── Apply changes
+├── Verify changes
+└── Log operation
+    |
+    v
+Output Report
+    |
+    v
+Logs & Artifacts
+```
+
+### Compliance Check Flow
+
+```
+Start Compliance Test
+    |
+    v
+Load Baseline
+    |
+    v
+For Each Check:
+├── Collect current setting
+├── Compare to baseline
+├── Record result (Pass/Fail)
+└── Classify severity
+    |
+    v
+Generate Results
+├── Calculate compliance %
+├── List violations
+└── Provide remediation
+    |
+    v
+Export Report
 ```
 
 ---
 
-## Security Considerations
+## Extensibility
 
-### 1. Input Validation
-
-**All external inputs validated at boundaries:**
+### Adding Custom Hardening Rules
 
 ```powershell
-# Parameter validation attributes
-[Parameter(Mandatory = $true)]
-[ValidateSet('Basis', 'Recommended', 'Strict')]
-[string]$Profile
-
-[Parameter(Mandatory = $true)]
-[ValidateSet('Client', 'Server')]
-[string]$TargetSystem
-
-[Parameter(Mandatory = $true)]
-[ValidateSet(10, 11, 2016, 2019, 2022)]
-[int]$OSVersion
-
-# Custom validation
-[Parameter(Mandatory = $true)]
-[ValidateScript({
-    if (-not (Test-Path $_)) {
-        throw "Path does not exist: $_"
-    }
-    return $true
-})]
-[string]$ConfigPath
-```
-
-### 2. Credential Handling
-
-**Zero hardcoded credentials:**
-
-```powershell
-# CORRECT: Use environment variables or Credential Manager
-$cred = Get-StoredCredential -Target "WinHarden"
-
-# WRONG (NEVER DO THIS):
-$password = "SecureP@ssw0rd"  # Hardcoded!
-$cred = New-Object System.Management.Automation.PSCredential("admin", (ConvertTo-SecureString -String $password -AsPlainText -Force))
-```
-
-### 3. Sensitive Data Masking
-
-**Automatic masking in logs:**
-
-```powershell
-# These keywords are automatically masked:
-# - password, passwd, pwd
-# - secret, secretkey
-# - token, apikey, api_key
-# - credential, cred
-# - key, private, private_key
-
-Write-Log -Message "Password: SecureP@ssw0rd" -Level Info
-# Logged as: "Password: ***"
-
-Write-Log -Message "API Key: sk_live_abc123xyz" -Level Info
-# Logged as: "API Key: ***"
-```
-
-### 4. Error Handling
-
-**No sensitive data exposed in errors:**
-
-```powershell
-# Error message doesn't expose secrets
-try {
-    $registry = [Microsoft.Win32.Registry]::LocalMachine.OpenSubKey("HKLM:\Path")
-} catch {
-    Write-ErrorLog -Message "Failed to access registry: Access denied" -Level Error
-    # NOT: "Failed to access registry: $($_.Exception.Message)" (might contain sensitive data)
-}
-```
-
-### 5. Access Control
-
-**Admin rights enforced:**
-
-```powershell
-# Check admin rights at session start
-if (-not ([Security.Principal.WindowsIdentity]::GetCurrent()).Owner) {
-    throw "Administrator privileges required"
-}
-```
-
-### 6. Audit Logging
-
-**Comprehensive audit trail:**
-
-```powershell
-# All operations logged with:
-# - Timestamp
-# - User/function that made change
-# - What was changed
-# - Result (success/failure)
-# - Who authorized it
-
-# Enables detection of unauthorized modifications
-```
-
----
-
-## Performance Optimization
-
-### Performance Profile
-
-| Operation | Time | Target | Status |
-|-----------|------|--------|--------|
-| Module Load | 180ms | <500ms | OK |
-| Session Creation | 50ms | <200ms | OK |
-| Rule Application (10 rules) | 2.3s | <5s | OK |
-| Full Hardening (35 rules) | 8.3s | <15s | OK |
-| Compliance Verification | 12.4s | <30s | OK |
-| Parallel Execution (5 rules) | 1.5s | <3s | OK |
-
-### Optimization Techniques
-
-#### 1. Lazy Module Loading
-
-```powershell
-# Load Core immediately (small, essential)
-Import-Module Core.psm1
-
-# Load System only when needed
-if ($useRemoteHardening) {
-    Import-Module System.psm1
-}
-```
-
-#### 2. Parallel Rule Application
-
-```powershell
-# Rules with no dependencies run in parallel
-Invoke-SecurityHardening -Session $session -Parallel
-
-# Uses PowerShell ForEach-Object -Parallel (PS 7.0+)
-# Gracefully falls back to sequential on PS 5.1
-```
-
-#### 3. Batch Operations
-
-```powershell
-# Apply registry rules in single batch instead of one-by-one
-# Reduces registry access time by 40-50%
-$registryRules | Group-Object -Property Path | ForEach-Object {
-    $path = $_.Name
-    $values = $_.Group
-    
-    $reg = [Microsoft.Win32.Registry]::LocalMachine.OpenSubKey($path, $true)
-    foreach ($rule in $values) {
-        $reg.SetValue($rule.ValueName, $rule.Value)
-    }
-    $reg.Dispose()
-}
-```
-
-#### 4. Caching
-
-```powershell
-# Cache frequently accessed data
-# Profile metadata loaded once, reused for all rules
-$cachedProfiles = @{}
-$profile = $cachedProfiles["Recommended"] ?? (Get-HardeningProfile -ProfileName "Recommended")
-
-# Reduces disk I/O, especially for remote execution
-```
-
-#### 5. Verification Skipping
-
-```powershell
-# Skip verification when not needed
-# Saves 10-15 seconds for large rule sets
-Invoke-SecurityHardening -Session $session -SkipVerification
-
-# Verify later separately
-Test-HardeningCompliance -Session $session
-```
-
-### Scalability
-
-**Multi-system deployment optimization:**
-
-```powershell
-# Parallel remote execution
-$servers = @('SERVER01', 'SERVER02', ... 'SERVER50')
-
-$results = $servers | ForEach-Object -Parallel {
-    $session = New-HardeningSession -Profile Recommended -TargetSystem Server
-    Invoke-RemoteHardening -ComputerName $_ -Session $session
-} -ThrottleLimit 10
-
-# Processes 10 systems in parallel, maintains system health
-```
-
----
-
-## Extension Points
-
-### Adding Custom Rules
-
-```powershell
-# Rules are data-driven – easy to extend
-$customRule = @{
-    Name = "Custom-MyRule"
-    Category = "Custom"
-    Type = "Registry"
-    Path = "HKLM:\Software\MyApp"
-    Value = "Setting"
-    ExpectedValue = 1
-    Severity = "MEDIUM"
-    Enabled = $true
-}
-
-# Integrate with hardening profile
-$profile.Rules += $customRule
-```
-
-### Custom Profile Creation
-
-```powershell
-# Create custom profile
-$customProfile = @{
-    ProfileName = "CustomStrict"
-    TargetSystem = "Server"
-    Rules = @(
-        # Select from Recommended
-        (Get-HardeningProfile -ProfileName "Recommended").Rules |
-        Where-Object { $_.Severity -eq "HIGH" -or $_.Severity -eq "CRITICAL" }
-    ) + @(
-        # Add custom rules
-        $customRule
+# Structure for custom hardening function
+function New-CustomHardeningRule {
+    param(
+        [string]$RuleName,
+        [string]$Description,
+        [scriptblock]$CheckScript,
+        [scriptblock]$RemediationScript
     )
+    
+    # Define rule
+    $rule = @{
+        Name = $RuleName
+        Description = $Description
+        Check = $CheckScript
+        Remediation = $RemediationScript
+    }
+    
+    # Register rule
+    Add-HardeningRule -Rule $rule
 }
-
-# Save to profile store
-Save-HardeningProfile -Profile $customProfile
 ```
+
+### Integration Points
+
+1. **Baseline Export/Import**
+   - Support for external baseline sources
+   - XML, JSON format support
+
+2. **Custom Remediation Scripts**
+   - Plugin-based remediation
+   - Custom severity mappings
+
+3. **SIEM Integration**
+   - Export to Splunk, ELK, ArcSight
+   - Webhook notifications
+
+4. **Configuration Management**
+   - Integration with Ansible, Puppet, Chef
+   - Infrastructure-as-Code support
+
+5. **Compliance Frameworks**
+   - CIS Benchmarks
+   - NIST guidelines
+   - Custom compliance mappings
 
 ---
 
-**End of Architecture Guide**
-
-For implementation details, consult the Source Code. For operational guidance, see the User Guide and Deployment Guide.
+**Document Version:** 2.0  
+**Last Updated:** 2026-06-27  
+**Target Audience:** Architects, Security Engineers, System Designers  
+**Complexity Level:** Advanced

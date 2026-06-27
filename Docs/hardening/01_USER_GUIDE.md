@@ -1,600 +1,533 @@
-# WinHarden Hardening – User Guide
+# WinHarden - User Guide
 
-**Version:** 1.0  
-**Last Updated:** 2026-06-26  
-**Audience:** System Administrators, Security Operations Teams
+**Complete reference for using WinHarden hardening features and cmdlets.**
 
 ---
 
 ## Table of Contents
 
-1. [Quick Start](#quick-start)
-2. [Core Concepts](#core-concepts)
-3. [Installation](#installation)
-4. [Basic Hardening Workflow](#basic-hardening-workflow)
-5. [Hardening Profiles](#hardening-profiles)
-6. [Advanced Usage](#advanced-usage)
-7. [Compliance Verification](#compliance-verification)
-8. [Troubleshooting](#troubleshooting)
-9. [Best Practices](#best-practices)
+1. [Overview](#overview)
+2. [Getting Started](#getting-started)
+3. [Core Cmdlets](#core-cmdlets)
+4. [Common Tasks](#common-tasks)
+5. [Monitoring & Reporting](#monitoring--reporting)
+6. [Troubleshooting](#troubleshooting)
+7. [Advanced Usage](#advanced-usage)
 
 ---
 
-## Quick Start
+## Overview
 
-### Prerequisites
+WinHarden is a comprehensive PowerShell-based security hardening framework for Windows servers and workstations. It provides:
 
-- Windows Server 2016+ or Windows 10/11
-- PowerShell 5.1+ (with 7.x supported)
-- Administrator privileges
-- Network connectivity for SIEM/monitoring integration
+### What WinHarden Does
 
-### 30-Second Setup
+- **Security Hardening** - Applies CIS benchmark configurations
+- **Compliance Verification** - Checks against hardening baselines
+- **Drift Detection** - Identifies unauthorized configuration changes
+- **Audit Logging** - Records all hardening actions
+- **Automated Remediation** - Fixes security issues automatically
 
-```powershell
-# Import WinHarden
-Import-Module .\modules\Core.psm1
-Import-Module .\modules\System.psm1
+### Key Features
 
-# Create a hardening session
-$session = New-HardeningSession -Profile Recommended -TargetSystem Client -OSVersion 11
-
-# Apply hardening (with preview)
-Invoke-SecurityHardening -Session $session -WhatIf
-
-# Apply for real
-Invoke-SecurityHardening -Session $session
-
-# Verify compliance
-$compliance = Test-HardeningCompliance -Session $session
-$compliance.CompliancePercentage
-```
+| Feature | Purpose | Scope |
+|---------|---------|-------|
+| Account Hardening | Enforce strong password policies | Local & domain users |
+| Firewall Configuration | Deploy security rules | Windows Defender Firewall |
+| Service Hardening | Disable unnecessary services | Critical system services |
+| Registry Hardening | Secure registry settings | Sensitive registry paths |
+| Windows Updates | Enforce security patches | Patch management |
+| Audit Policy | Enable comprehensive logging | Windows Event Log |
+| BitLocker Integration | Full-disk encryption | Supported volumes |
+| UAC Management | User Account Control settings | Windows security |
 
 ---
 
-## Core Concepts
+## Getting Started
 
-### Hardening Session
-
-A hardening session is an isolated execution context that contains:
-- Target profile (Basis, Recommended, Strict)
-- System configuration (Client/Server, OS version)
-- Rules to apply
-- Execution state and results
-
-Each session is **independent** – you can run multiple sessions without interference.
+### Installation
 
 ```powershell
-# Create a session (doesn't apply anything yet)
-$session = New-HardeningSession -Profile Recommended -TargetSystem Client -OSVersion 11
+# Clone the WinHarden repository
+cd C:\Repos
+git clone https://github.com/your-org/WinHarden.git
 
-# The session object contains:
-# - Profile: Name of the hardening profile
-# - TargetSystem: Client | Server
-# - ComputerName: Target system
-# - OSVersion: Windows version
-# - State: Session state tracking
+# Navigate to WinHarden directory
+cd WinHarden
+
+# Review CLAUDE.md for project guidelines
+Get-Content CLAUDE.md -Head 50
+
+# Review available functions
+Get-ChildItem functions/ -Recurse -Filter *.ps1 | Select-Object Name
 ```
 
-### Hardening Profiles
-
-Three profiles available, each with increasing security strictness:
-
-| Profile | Rules | Use Case | Risk Level |
-|---------|-------|----------|-----------|
-| **Basis** | 20 rules | Minimal hardening, maximum compatibility | Low |
-| **Recommended** | 35 rules | Balanced security and usability | Medium |
-| **Strict** | 55+ rules | Maximum security, restricted functionality | High |
-
-Choose based on your security requirements and user impact tolerance.
-
-### Rule Categories
-
-Hardening rules are organized by type:
-
-- **Registry** – Registry key modifications
-- **Service** – Disable/configure Windows services
-- **Firewall** – Windows Defender Firewall rules
-- **Audit** – Audit policy configuration
-- **Account** – Password policy, account lockout
-- **Group Policy** – GPO-based hardening
-
----
-
-## Installation
-
-### Step 1: Extract WinHarden
+### Importing the Module
 
 ```powershell
-# Extract to a secure location
-Expand-Archive -Path WinHarden.zip -DestinationPath C:\Program Files\WinHarden -Force
-cd C:\Program Files\WinHarden
+# Method 1: Import entire module
+Import-Module C:\Repos\WinHarden -Force
+
+# Method 2: Dot-source specific functions
+. C:\Repos\WinHarden\functions\Hardening\New-HardeningBaseline.ps1
+
+# Verify functions are loaded
+Get-Command -Module WinHarden | Select-Object Name | Format-Table
 ```
 
-### Step 2: Verify Installation
+### Admin Requirements
+
+All WinHarden operations require Administrator privileges:
 
 ```powershell
-# Check directory structure
-ls -R functions/, modules/, scripts/
+# Check if running as Administrator
+$isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
 
-# Verify Core module loads
-Import-Module .\modules\Core.psm1
-Get-Command Write-Log  # Should return the function
-```
-
-### Step 3: Test Run
-
-```powershell
-# Run in WhatIf mode to verify everything works
-$session = New-HardeningSession -Profile Basis -TargetSystem Client -OSVersion 11
-Invoke-SecurityHardening -Session $session -WhatIf
-
-# Expected output: Lists rules to be applied without applying them
-```
-
----
-
-## Basic Hardening Workflow
-
-### Step 1: Create a Session
-
-```powershell
-$session = New-HardeningSession `
-    -Profile Recommended `
-    -TargetSystem Client `
-    -OSVersion 11
-```
-
-**Parameters:**
-- `-Profile`: Basis | Recommended | Strict
-- `-TargetSystem`: Client | Server (determines applicable rules)
-- `-OSVersion`: 10 | 11 | 2016 | 2019 | 2022
-- `-SkipPrerequisiteCheck`: (optional) Skip environment validation
-
-### Step 2: Preview Changes (WhatIf)
-
-```powershell
-# Dry-run mode – shows what will change WITHOUT applying
-Invoke-SecurityHardening -Session $session -WhatIf
-
-# Output:
-# What if: Performing the operation "Apply Rule: Account-MinimumPasswordLength" on target "LOCAL SYSTEM".
-# What if: Performing the operation "Apply Rule: Firewall-EnableWindowsDefender" on target "LOCAL SYSTEM".
-# ...
-```
-
-### Step 3: Apply Hardening
-
-```powershell
-# Apply the hardening rules
-$result = Invoke-SecurityHardening -Session $session
-
-# View results
-$result | Select-Object Profile, RulesApplied, RulesFailed, CompliancePercentage
-
-# Output:
-# Profile              : Recommended
-# RulesApplied         : 33
-# RulesFailed          : 0
-# CompliancePercentage : 100
-```
-
-### Step 4: Verify Compliance
-
-```powershell
-# Check compliance after applying hardening
-$compliance = Test-HardeningCompliance -Session $session
-
-# Summary
-$compliance.CompliancePercentage        # 100%
-$compliance.CompliantRuleCount          # 33
-$compliance.NonCompliantRuleCount       # 0
-
-# Details
-$compliance.RuleResults | Where-Object { $_.Compliant -eq $false }
-```
-
----
-
-## Hardening Profiles
-
-### Basis Profile
-
-**Security Level:** Low-to-Medium  
-**Rules:** 20  
-**Impact:** Minimal  
-**Best For:** Legacy systems, maximum compatibility
-
-Key rules:
-- Disable obsolete protocols (SMBv1, LLMNR)
-- Set minimum password length (8 chars)
-- Enable basic Windows Defender
-- Configure basic audit logging
-
-**Deployment Time:** 30 seconds  
-**User Impact:** None to minimal
-
-```powershell
-$session = New-HardeningSession -Profile Basis -TargetSystem Client
-Invoke-SecurityHardening -Session $session
-```
-
-### Recommended Profile
-
-**Security Level:** Medium  
-**Rules:** 35  
-**Impact:** Moderate  
-**Best For:** Standard production systems
-
-Key rules:
-- All Basis rules
-- Credential Guard enabled
-- SmartScreen enabled
-- Advanced audit policies
-- Windows Update mandatory
-- Firewall rules configured
-
-**Deployment Time:** 45 seconds  
-**User Impact:** Slight (some deprecated features disabled)
-
-```powershell
-$session = New-HardeningSession -Profile Recommended -TargetSystem Client
-Invoke-SecurityHardening -Session $session
-```
-
-### Strict Profile
-
-**Security Level:** High  
-**Rules:** 55+  
-**Impact:** Significant  
-**Best For:** High-security environments, sensitive systems
-
-Key rules:
-- All Recommended rules
-- Exploit protection hardening
-- Device Guard enabled
-- Advanced Threat Protection
-- Restrictive UAC
-- Disabled USB ports
-- Enhanced logging
-
-**Deployment Time:** 2 minutes  
-**User Impact:** High (functionality restrictions)
-
-```powershell
-$session = New-HardeningSession -Profile Strict -TargetSystem Server
-Invoke-SecurityHardening -Session $session
-```
-
----
-
-## Advanced Usage
-
-### Selective Rule Application
-
-Apply only specific rules:
-
-```powershell
-$session = New-HardeningSession -Profile Recommended -TargetSystem Client -OSVersion 11
-
-# Apply only firewall and account rules
-$result = Invoke-SecurityHardening -Session $session -RuleFilter @(
-    'Firewall-EnableWindowsDefender',
-    'Account-MinimumPasswordLength',
-    'Account-AccountLockoutThreshold'
-)
-
-$result.RulesApplied  # 3 rules applied
-```
-
-### Fail-Safe Mode
-
-Stop on first error:
-
-```powershell
-# Strict mode: any rule failure stops execution
-$result = Invoke-SecurityHardening -Session $session -FailOnError
-
-# Handles errors more strictly; useful for CI/CD pipelines
-```
-
-### Parallel Execution
-
-Apply compatible rules in parallel:
-
-```powershell
-# Faster execution for large rule sets
-$result = Invoke-SecurityHardening -Session $session -Parallel
-
-# Execution time reduced by ~30-40% on multi-core systems
-```
-
-### Scheduled Hardening
-
-Run hardening on a schedule:
-
-```powershell
-# Create a scheduled task
-$trigger = New-ScheduledTaskTrigger -Weekly -DaysOfWeek Sunday -At 2am
-$action = New-ScheduledTaskAction -Execute PowerShell.exe -Argument `
-    "-NoProfile -File C:\Scripts\ApplyHardening.ps1"
-Register-ScheduledTask -TaskName "WinHarden-Weekly" -Trigger $trigger -Action $action
-```
-
-### Remote Hardening
-
-Apply hardening to remote systems:
-
-```powershell
-# Harden remote servers
-$session = New-HardeningSession -Profile Recommended -TargetSystem Server -OSVersion 2022 `
-    -ComputerName SERVER01, SERVER02, SERVER03
-
-$result = Invoke-RemoteHardening -Session $session
-
-# Results
-$result | Group-Object ComputerName | ForEach-Object {
-    "$($_.Name): $($_.Group.Count) rules applied"
+if ($isAdmin) {
+    Write-Host "Running as Administrator [OK]"
+} else {
+    Write-Host "NOT running as Administrator [ERROR]"
+    Write-Host "Please re-run PowerShell as Administrator"
+    exit 1
 }
 ```
 
 ---
 
-## Compliance Verification
+## Core Cmdlets
 
-### Quick Compliance Check
+### Baseline Management
+
+#### New-HardeningBaseline
+
+Creates a new security baseline from current system state.
 
 ```powershell
-$compliance = Test-HardeningCompliance -Session $session
+# Create baseline with default settings
+New-HardeningBaseline -Name "Production-Baseline-2026" -Description "Baseline for production servers"
 
-# Results
-$compliance.CompliancePercentage        # Percentage (0-100)
-$compliance.CompliantRuleCount          # Number compliant
-$compliance.NonCompliantRuleCount       # Number non-compliant
-$compliance.AppliedRuleCount            # Total rules applied
+# Create baseline with custom scope
+New-HardeningBaseline `
+    -Name "Development-Baseline" `
+    -Description "Baseline for dev environment" `
+    -IncludeServices $true `
+    -IncludeRegistry $true `
+    -IncludeAuditPolicy $true
+
+# Verify baseline created
+Get-ChildItem C:\Repos\WinHarden\baselines\ | Select-Object Name, LastWriteTime
 ```
 
-### Detailed Compliance Report
+**Output:** Baseline file created in `C:\Repos\WinHarden\baselines\`
+
+#### Get-HardeningBaseline
+
+Retrieves existing baseline configurations.
 
 ```powershell
-# Full details on every rule
-$compliance = Test-HardeningCompliance -Session $session -Detailed
+# List all baselines
+Get-HardeningBaseline
 
-# Show non-compliant rules
-$compliance.RuleResults | Where-Object { $_.Compliant -eq $false } | Select-Object `
-    RuleName, Category, Expected, Actual, Severity
+# Get specific baseline
+Get-HardeningBaseline -Name "Production-Baseline-2026"
 
-# Output:
-# RuleName                Expected        Actual          Severity
-# --------                --------        ------          --------
-# Firewall-EnableWD       Enabled         Disabled        HIGH
-# Account-MinPassword     8               6               MEDIUM
+# Get baseline details
+Get-HardeningBaseline -Name "Production-Baseline-2026" | Format-List
+
+# Export baseline
+$baseline = Get-HardeningBaseline -Name "Production-Baseline-2026"
+$baseline | Export-Clixml -Path "C:\Repos\WinHarden\baselines\backup_prod.xml"
 ```
 
-### Automatic Remediation
+### Compliance Operations
+
+#### Test-SystemCompliance
+
+Tests current system against baseline for compliance violations.
 
 ```powershell
-# Automatically fix non-compliant rules
-$remediation = Test-HardeningCompliance -Session $session -Remediate
+# Test against default baseline
+$result = Test-SystemCompliance -BaselineName "Production-Baseline-2026"
 
-$remediation.RemediatedRules | ForEach-Object {
-    Write-Host "$($_.RuleName): $($_.Status)"
+# View compliance summary
+$result | Select-Object Category, ComplianceRate, IssueCount
+
+# View detailed compliance report
+$result | Format-List
+
+# Export compliance report
+$result | Export-Csv -Path "C:\Repos\WinHarden\logs\compliance_report_$(Get-Date -Format 'yyyyMMdd').csv"
+
+# Test specific categories only
+Test-SystemCompliance `
+    -BaselineName "Production-Baseline-2026" `
+    -Categories @("Firewall", "Services", "Registry")
+```
+
+**Output:** Compliance report with pass/fail status for each check
+
+#### Invoke-HardeningRemediation
+
+Applies hardening configurations to fix compliance violations.
+
+```powershell
+# Apply all remediations
+Invoke-HardeningRemediation -BaselineName "Production-Baseline-2026" -Force
+
+# Apply specific category remediations
+Invoke-HardeningRemediation `
+    -BaselineName "Production-Baseline-2026" `
+    -Category "Firewall" `
+    -WhatIf  # Preview changes without applying
+
+# Apply with logging
+Invoke-HardeningRemediation `
+    -BaselineName "Production-Baseline-2026" `
+    -Verbose `
+    -LogPath "C:\Repos\WinHarden\logs\remediation_$(Get-Date -Format 'yyyyMMdd_HHmmss').log"
+```
+
+### Drift Detection
+
+#### Get-SecurityDrift
+
+Compares current system state against baseline and reports changes.
+
+```powershell
+# Detect all drift
+$drift = Get-SecurityDrift -BaselineName "Production-Baseline-2026"
+
+# View drift summary
+$drift | Group-Object Category | Select-Object Name, Count
+
+# View drift details
+$drift | Where-Object Status -eq "Drift" | Format-Table
+
+# Filter by severity
+$drift | Where-Object Severity -in @("High", "Critical") | Format-Table
+
+# Export drift report
+$drift | Export-Csv -Path "C:\Repos\WinHarden\logs\drift_report_$(Get-Date -Format 'yyyyMMdd').csv"
+```
+
+### Reporting
+
+#### New-SecurityDriftReport
+
+Generates comprehensive security drift report.
+
+```powershell
+# Generate full drift report
+New-SecurityDriftReport `
+    -BaselineName "Production-Baseline-2026" `
+    -OutputPath "C:\Repos\WinHarden\logs"
+
+# Generate with summary only
+New-SecurityDriftReport `
+    -BaselineName "Production-Baseline-2026" `
+    -OutputPath "C:\Repos\WinHarden\logs" `
+    -SummaryOnly
+
+# Generate for specific category
+New-SecurityDriftReport `
+    -BaselineName "Production-Baseline-2026" `
+    -OutputPath "C:\Repos\WinHarden\logs" `
+    -Category "Firewall"
+```
+
+**Output:** CSV and JSON reports in logs directory
+
+---
+
+## Common Tasks
+
+### Task 1: Initial Hardening Deployment
+
+```powershell
+# Step 1: Create baseline from current state
+New-HardeningBaseline -Name "MyServer-Baseline" -Description "Initial baseline"
+
+# Step 2: Manually adjust baseline if needed
+# Edit baseline file in C:\Repos\WinHarden\baselines\
+
+# Step 3: Test compliance before applying
+$compliance = Test-SystemCompliance -BaselineName "MyServer-Baseline"
+$compliance | Where-Object Status -eq "Failed" | Format-Table
+
+# Step 4: Review what will change
+Invoke-HardeningRemediation -BaselineName "MyServer-Baseline" -WhatIf
+
+# Step 5: Apply hardening
+Invoke-HardeningRemediation -BaselineName "MyServer-Baseline" -Force -Verbose
+
+# Step 6: Verify application
+$compliance = Test-SystemCompliance -BaselineName "MyServer-Baseline"
+Write-Host "Overall Compliance: $($compliance.ComplianceRate)%"
+```
+
+### Task 2: Regular Compliance Monitoring
+
+```powershell
+# Daily: Check for drift
+$drift = Get-SecurityDrift -BaselineName "MyServer-Baseline"
+if ($drift | Where-Object Status -eq "Drift") {
+    Write-Host "[WARNING] Drift detected"
+    $drift | Where-Object Status -eq "Drift" | Format-Table
 }
 
-# Output:
-# Firewall-EnableWD: FIXED
-# Account-MinPassword: FIXED
+# Weekly: Generate drift report
+New-SecurityDriftReport -BaselineName "MyServer-Baseline" -OutputPath "C:\Repos\WinHarden\logs"
+
+# Monthly: Full compliance audit
+$compliance = Test-SystemCompliance -BaselineName "MyServer-Baseline"
+$compliance | Export-Csv -Path "C:\Repos\WinHarden\logs\monthly_compliance_$(Get-Date -Format 'yyyyMM').csv"
 ```
 
-### Export Compliance Report
+### Task 3: Multi-Server Hardening
 
 ```powershell
-# Save compliance report for auditing
-$compliance = Test-HardeningCompliance -Session $session -Detailed
+# Create baseline for all servers
+$servers = @("Server1", "Server2", "Server3")
 
-$compliance | ConvertTo-Json | Out-File -FilePath "compliance_$(Get-Date -Format yyyyMMdd).json"
+foreach ($server in $servers) {
+    Write-Host "Hardening $server..."
+    
+    # Test compliance
+    $compliance = Test-SystemCompliance -ComputerName $server -BaselineName "MyServer-Baseline"
+    
+    # Apply remediation
+    Invoke-HardeningRemediation -ComputerName $server -BaselineName "MyServer-Baseline" -Force
+    
+    # Verify
+    $compliance = Test-SystemCompliance -ComputerName $server -BaselineName "MyServer-Baseline"
+    Write-Host "$server: Compliance=$(($compliance.ComplianceRate | Measure-Object -Average).Average)%"
+}
+```
 
-# CSV format for spreadsheets
-$compliance.RuleResults | Export-Csv -Path "compliance_rules.csv" -NoTypeInformation
+### Task 4: Emergency Compliance Restoration
+
+```powershell
+# If system is compromised, restore from baseline immediately
+Invoke-HardeningRemediation -BaselineName "MyServer-Baseline" -Force -Aggressive
+
+# Then verify restoration
+$drift = Get-SecurityDrift -BaselineName "MyServer-Baseline"
+$drift | Where-Object Status -eq "Drift" | Format-Table
+
+# Generate incident report
+New-SecurityDriftReport `
+    -BaselineName "MyServer-Baseline" `
+    -OutputPath "C:\Repos\WinHarden\logs" `
+    -IncidentReport
+```
+
+---
+
+## Monitoring & Reporting
+
+### View Hardening Logs
+
+```powershell
+# List all logs
+Get-ChildItem C:\Repos\WinHarden\logs\ | Select-Object Name, LastWriteTime
+
+# View latest hardening operations
+Get-Content C:\Repos\WinHarden\logs\hardening_operations.log -Tail 50
+
+# Filter for errors
+Get-Content C:\Repos\WinHarden\logs\hardening_operations.log | 
+    Select-String -Pattern "ERROR|WARN" |
+    Format-Table
+```
+
+### Generate Summary Reports
+
+```powershell
+# Compliance summary
+$baseline = "MyServer-Baseline"
+$compliance = Test-SystemCompliance -BaselineName $baseline
+
+Write-Host "=== Compliance Summary ==="
+Write-Host "Baseline: $baseline"
+Write-Host "Timestamp: $(Get-Date)"
+Write-Host "Overall Compliance: $($compliance.ComplianceRate)%"
+Write-Host "Total Checks: $($compliance.TotalChecks)"
+Write-Host "Failed Checks: $($compliance.FailedChecks)"
+Write-Host "Passed Checks: $($compliance.PassedChecks)"
+```
+
+### Export for Analysis
+
+```powershell
+# Export compliance data
+$compliance = Test-SystemCompliance -BaselineName "MyServer-Baseline"
+$compliance | Export-Csv -Path "compliance_export.csv" -NoTypeInformation
+
+# Export drift data
+$drift = Get-SecurityDrift -BaselineName "MyServer-Baseline"
+$drift | Export-Csv -Path "drift_export.csv" -NoTypeInformation
+
+# Export as JSON for SIEM
+$compliance | ConvertTo-Json | Out-File "compliance_report.json"
 ```
 
 ---
 
 ## Troubleshooting
 
-### Issue: "Invalid session object"
-
-**Symptom:** `throw "Invalid session object: missing State property"`
+### Issue: "Permission Denied" error
 
 **Solution:**
 ```powershell
-# Ensure session was created with New-HardeningSession
-$session = New-HardeningSession -Profile Recommended -TargetSystem Client
+# Verify running as Administrator
+$isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
+Write-Host "Admin: $isAdmin"
 
-# Do NOT manually construct session objects
+# If not admin, restart PowerShell as Administrator
+# Win + X -> PowerShell (Admin)
 ```
 
-### Issue: Rules Not Applying
-
-**Symptom:** Rules applied but not taking effect
+### Issue: "Cannot find baseline" error
 
 **Solution:**
 ```powershell
-# 1. Check if running as administrator
-[Security.Principal.WindowsIdentity]::GetCurrent().Owner
+# List available baselines
+Get-ChildItem C:\Repos\WinHarden\baselines\ -Filter "*.xml"
 
-# 2. Verify WhatIf is not enabled
-# (WhatIf mode previews but doesn't apply changes)
-
-# 3. Check logs for errors
-Get-Content logs/log_*.csv | Where-Object { $_ -match "ERROR" }
+# Create baseline if missing
+New-HardeningBaseline -Name "MyServer-Baseline"
 ```
 
-### Issue: Performance Issues
-
-**Symptom:** Hardening takes too long to apply
+### Issue: Remediation fails with "Access Denied"
 
 **Solution:**
 ```powershell
-# Use Parallel mode
-$result = Invoke-SecurityHardening -Session $session -Parallel
+# Verify SYSTEM account can access paths
+icacls C:\Repos\WinHarden\
+icacls C:\Repos\WinHarden\baselines\
+icacls C:\Repos\WinHarden\logs\
 
-# Or apply only specific rules
-$result = Invoke-SecurityHardening -Session $session -RuleFilter @('Account-*', 'Firewall-*')
-
-# Skip verification
-$result = Invoke-SecurityHardening -Session $session -SkipVerification
+# Grant permissions if needed
+icacls C:\Repos\WinHarden /grant:r "SYSTEM:(F)" /T
 ```
 
-### Issue: Compliance Verification Failing
-
-**Symptom:** `Test-HardeningCompliance` shows non-compliant rules after applying
+### Issue: Performance degradation during remediation
 
 **Solution:**
 ```powershell
-# 1. Wait for system updates to apply
-Start-Sleep -Seconds 30
+# Run with reduced scope
+Invoke-HardeningRemediation `
+    -BaselineName "MyServer-Baseline" `
+    -Category "Firewall"  # Single category
 
-# 2. Re-test compliance
-$compliance = Test-HardeningCompliance -Session $session
+# Run during off-peak hours
+# Schedule via Task Scheduler for 02:00 AM
 
-# 3. Use -Remediate to auto-fix
-$remediation = Test-HardeningCompliance -Session $session -Remediate
-
-# 4. Check logs for errors
-Write-Log -Level Error  # Shows recent errors
-```
-
-### Issue: Cannot Run Scripts
-
-**Symptom:** "File cannot be loaded because running scripts is disabled"
-
-**Solution:**
-```powershell
-# Set execution policy for current user
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
-
-# Or for all users (admin required)
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine -Force
-
-# Then run WinHarden again
+# Monitor resource usage
+Get-Process | Where-Object CPU -gt 50 | Format-Table
 ```
 
 ---
 
-## Best Practices
+## Advanced Usage
 
-### 1. Always Test First
-
-```powershell
-# ALWAYS use WhatIf before applying
-Invoke-SecurityHardening -Session $session -WhatIf
-
-# Review output carefully before pressing Enter to apply
-```
-
-### 2. Start with Basis, Work Up
+### Custom Baseline Creation
 
 ```powershell
-# First: Deploy Basis (safe, minimal impact)
-$basis = New-HardeningSession -Profile Basis -TargetSystem Client
-Invoke-SecurityHardening -Session $basis
-
-# After 1-2 weeks: Move to Recommended if no issues
-$recommended = New-HardeningSession -Profile Recommended -TargetSystem Client
-Invoke-SecurityHardening -Session $recommended
-
-# Only use Strict if required by compliance
-$strict = New-HardeningSession -Profile Strict -TargetSystem Server
-Invoke-SecurityHardening -Session $strict
-```
-
-### 3. Verify After Each Change
-
-```powershell
-# Always verify compliance after applying hardening
-$session = New-HardeningSession -Profile Recommended -TargetSystem Client
-Invoke-SecurityHardening -Session $session
-$compliance = Test-HardeningCompliance -Session $session
-
-if ($compliance.CompliancePercentage -lt 100) {
-    Write-Host "Compliance issues detected!"
-    $compliance.RuleResults | Where-Object { $_.Compliant -eq $false }
+# Create baseline with specific settings
+$baseline = @{
+    Name = "Custom-Baseline"
+    Description = "Custom hardening configuration"
+    Firewall = @{
+        Enabled = $true
+        DefaultInbound = "Block"
+        DefaultOutbound = "Allow"
+    }
+    Services = @{
+        DisabledServices = @("RDP", "WinRM")
+        MustRunServices = @("WinDefender", "WindowsUpdate")
+    }
+    Registry = @{
+        UAC = "Enabled"
+        DEP = "Enabled"
+        ASLR = "Enabled"
+    }
 }
+
+# Apply custom baseline (implementation-specific)
 ```
 
-### 4. Monitor Logs
+### Scheduled Hardening Operations
 
 ```powershell
-# Check logs for errors
-$logs = Import-Csv logs/log_$(Get-Date -Format yyyyMMdd).csv
-$logs | Where-Object { $_.Level -eq 'ERROR' }
+# Create scheduled task for daily compliance check
+$action = New-ScheduledTaskAction `
+    -Execute "powershell.exe" `
+    -Argument "-NoProfile -ExecutionPolicy Bypass -File C:\Repos\WinHarden\scripts\Daily-Compliance-Check.ps1"
 
-# Keep logs for audit trail (7 days retention by default)
+$trigger = New-ScheduledTaskTrigger -Daily -At 02:00AM
+
+Register-ScheduledTask `
+    -TaskName "WinHarden-Daily-Compliance" `
+    -Action $action `
+    -Trigger $trigger `
+    -RunLevel Highest `
+    -Force
 ```
 
-### 5. Document Your Changes
+### Integration with External Tools
 
 ```powershell
-# Keep a record of what was applied
-$session = New-HardeningSession -Profile Recommended -TargetSystem Client
-$result = Invoke-SecurityHardening -Session $session
+# Export compliance data for Splunk
+$compliance = Test-SystemCompliance -BaselineName "MyServer-Baseline"
+$compliance | ConvertTo-Json | 
+    Out-File "C:\Splunk\compliance_$(Get-Date -Format 'yyyyMMddHHmmss').json"
 
-# Export session info
-$session | ConvertTo-Json | Out-File -FilePath "hardening_session_$(Get-Date -Format yyyyMMdd).json"
-```
+# Send to webhook
+$body = @{
+    baseline = "MyServer-Baseline"
+    compliance_rate = $compliance.ComplianceRate
+    timestamp = (Get-Date -Format 'o')
+} | ConvertTo-Json
 
-### 6. Plan for Rollback
-
-```powershell
-# Before applying Strict hardening, create a system restore point
-Checkpoint-Computer -Description "Pre-WinHarden-Strict" -RestorePointType "MODIFY_SETTINGS"
-
-# Or export baseline for comparison
-Get-HardeningProfile -ProfileName Recommended | Export-Csv -Path "baseline.csv"
-```
-
-### 7. Use Scheduled Compliance Checks
-
-```powershell
-# Set up daily compliance verification
-$scriptPath = "C:\Scripts\DailyComplianceCheck.ps1"
-
-# Content of DailyComplianceCheck.ps1:
-# $session = New-HardeningSession -Profile Recommended -TargetSystem Client
-# $compliance = Test-HardeningCompliance -Session $session
-# if ($compliance.CompliancePercentage -lt 100) {
-#     Send-HardeningAlert -ComplianceStatus $compliance -AlertLevel WARNING
-# }
-
-# Schedule it
-$trigger = New-ScheduledTaskTrigger -Daily -At 8am
-$action = New-ScheduledTaskAction -Execute PowerShell.exe -Argument "-NoProfile -File $scriptPath"
-Register-ScheduledTask -TaskName "DailyComplianceCheck" -Trigger $trigger -Action $action
+Invoke-WebRequest `
+    -Uri "https://monitoring.example.com/api/compliance" `
+    -Method POST `
+    -Body $body `
+    -ContentType "application/json"
 ```
 
 ---
 
-## Support & Resources
+## Quick Reference
 
-### Getting Help
+### Essential Commands
 
-1. **Check the FAQ** – See [FAQ.md](06_FAQ.md)
-2. **Review logs** – `logs/log_*.csv`
-3. **Run Test-HardeningCompliance** – Shows detailed results
-4. **Check CLAUDE.md** – Developer collaboration rules
-5. **Review DECISIONS.md** – Architecture decisions
+```powershell
+# Create baseline
+New-HardeningBaseline -Name "MyBaseline"
 
-### Additional Documentation
+# Test compliance
+Test-SystemCompliance -BaselineName "MyBaseline"
 
-- [Deployment Guide](02_DEPLOYMENT_GUIDE.md) – Enterprise deployment procedures
-- [Architecture Guide](03_ARCHITECTURE.md) – Technical architecture details
-- [SIEM Integration](04_SIEM_INTEGRATION.md) – Integrate with monitoring systems
-- [Performance Guide](05_PERFORMANCE.md) – Performance tuning and optimization
-- [Full Report](07_FULL_REPORT.md) – Comprehensive technical documentation
+# Detect drift
+Get-SecurityDrift -BaselineName "MyBaseline"
+
+# Apply hardening
+Invoke-HardeningRemediation -BaselineName "MyBaseline" -Force
+
+# Generate report
+New-SecurityDriftReport -BaselineName "MyBaseline" -OutputPath "C:\Repos\WinHarden\logs"
+
+# Get help
+Get-Help New-HardeningBaseline -Full
+Get-Help Test-SystemCompliance -Full
+Get-Help Get-SecurityDrift -Full
+```
 
 ---
 
-**End of User Guide**
-
-For questions or issues, consult the Troubleshooting section or contact your system administrator.
+**Document Version:** 2.0  
+**Last Updated:** 2026-06-27  
+**Target Audience:** System Administrators, Security Engineers, Operations Teams  
+**Complexity Level:** Beginner to Intermediate
