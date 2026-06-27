@@ -33,6 +33,7 @@ $publicFunctions = @(
     'Test-ValidPath'
     'Get-ModuleVersion'
     'Test-WinHardenDependencies'
+    'New-HardeningHTMLReport'
 )
 
 # Private helper functions to load
