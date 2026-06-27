@@ -28,19 +28,25 @@ function New-SecurityDriftReport {
         [PSCustomObject[]]$DriftFindings = @(),
         [string]$OutputDirectory = "$(Split-Path $PSScriptRoot -Parent)\logs"
     )
-    
+
+    # DEPENDS ON: Write-Log (Core)
+    # DEPENDS ON: Get-Date (native), Export-Csv (native), New-Item (native)
+    $ErrorActionPreference = 'Stop'
+
     try {
         # Ensure output directory exists
         if (-not (Test-Path $OutputDirectory)) {
-            New-Item -ItemType Directory -Path $OutputDirectory -Force | Out-Null
-            Write-Log -Message "Created output directory: $OutputDirectory" -Level Info `
-                -Caller $MyInvocation.MyCommand.Name
+            if ($PSCmdlet.ShouldProcess($OutputDirectory, "Create output directory")) {
+                New-Item -ItemType Directory -Path $OutputDirectory -Force | Out-Null
+                Write-Log -Message "Created output directory: $OutputDirectory" -Level Info `
+                    -Caller $MyInvocation.MyCommand.Name
+            }
         }
-    
+
         # Generate report filename with timestamp
         $reportDate = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
         $reportFile = Join-Path $OutputDirectory "Drift_Detection_$reportDate.csv"
-    
+
         # Determine overall status and severity
         if ($DriftFindings.Count -eq 0) {
             $status = "COMPLIANT"
@@ -60,7 +66,7 @@ function New-SecurityDriftReport {
         else {
             $overallSeverity = "MEDIUM"
         }
-    
+
         # Create summary object
         $summary = [PSCustomObject]@{
             'Scan_Date' = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
@@ -72,17 +78,19 @@ function New-SecurityDriftReport {
             'Medium_Count' = $mediumCount
             'Overall_Severity' = $overallSeverity
         }
-    
+
         # Export summary
-        $summary | Export-Csv -Path $reportFile -NoTypeInformation -Force
-        Write-Log -Message "Drift report exported: $reportFile (Status: $status, Drifts: $($DriftFindings.Count))" `
-            -Level Info -Caller $MyInvocation.MyCommand.Name
-    
-        # Append detailed findings
-        if ($DriftFindings.Count -gt 0) {
-            $DriftFindings | Export-Csv -Path $reportFile -NoTypeInformation -Append -Force
+        if ($PSCmdlet.ShouldProcess($reportFile, "Export drift report")) {
+            $summary | Export-Csv -Path $reportFile -NoTypeInformation -Force
+            Write-Log -Message "Drift report exported: $reportFile (Status: $status, Drifts: $($DriftFindings.Count))" `
+                -Level Info -Caller $MyInvocation.MyCommand.Name
+
+            # Append detailed findings
+            if ($DriftFindings.Count -gt 0) {
+                $DriftFindings | Export-Csv -Path $reportFile -NoTypeInformation -Append -Force
+            }
         }
-    
+
         return [PSCustomObject]@{
             ReportPath = $reportFile
             Status = $status
