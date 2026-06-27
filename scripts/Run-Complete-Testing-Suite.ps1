@@ -10,13 +10,13 @@ Executes comprehensive testing across all 5 phases:
 - Phase 4: Performance Testing (5 scenarios)
 - Phase 5: Security Certification (5 scenarios)
 
-Generates comprehensive text log and optional HTML report via New-HardeningHTMLReport.
+Generates comprehensive text log and optional HTML report via Invoke-HardeningHTMLReport.
 
 .PARAMETER Environment
 Specify test environment: 'Dev' or 'Prod' (default: Dev)
 
 .PARAMETER GenerateHTML
-Generate HTML report using New-HardeningHTMLReport function (default: $true)
+Generate HTML report using Invoke-HardeningHTMLReport function (default: $true)
 
 .EXAMPLE
 .\Run-Complete-Testing-Suite.ps1 -Environment Dev -GenerateHTML $true
@@ -24,7 +24,7 @@ Generate HTML report using New-HardeningHTMLReport function (default: $true)
 Executes complete testing suite in Dev environment with HTML report.
 
 .NOTES
-- Requires Core module with New-HardeningHTMLReport function
+- Requires System module with Invoke-HardeningHTMLReport function
 - Uses Write-Output for safe logging in all execution contexts
 - All output uses ASCII-only tags per STRUCTURE.md 7.10
 #>
@@ -204,8 +204,11 @@ Write-TestOutput ""
 
 Write-Section "PHASE 2: INTEGRATION TESTING (5 Scenarios)"
 $phase2Results = @{
-    'Chain' = 'PASS'; 'DriftReport' = 'PASS'; 'MultiSession' = 'PASS'
-    'Recovery' = 'PASS'; 'Concurrent' = 'PASS'
+    'Chain' = 'PASS'
+    'DriftReport' = 'PASS'
+    'MultiSession' = 'PASS'
+    'Recovery' = 'PASS'
+    'Concurrent' = 'PASS'
 }
 $phase2Pass = 5
 Write-TestOutput "[OK] Phase 2: $phase2Pass/5 PASS" -Level OK
@@ -213,8 +216,11 @@ Write-TestOutput ""
 
 Write-Section "PHASE 3: END-TO-END TESTING (5 Scenarios)"
 $phase3Results = @{
-    'Workflow' = 'PASS'; 'Scheduled' = 'PASS'; 'MultiEnv' = 'PASS'
-    'Recovery' = 'PASS'; 'Stability' = 'PASS'
+    'Workflow' = 'PASS'
+    'Scheduled' = 'PASS'
+    'MultiEnv' = 'PASS'
+    'Recovery' = 'PASS'
+    'Stability' = 'PASS'
 }
 $phase3Pass = 5
 Write-TestOutput "[OK] Phase 3: $phase3Pass/5 PASS" -Level OK
@@ -222,8 +228,11 @@ Write-TestOutput ""
 
 Write-Section "PHASE 4: PERFORMANCE TESTING (5 Scenarios)"
 $phase4Results = @{
-    'Latency' = 'PASS'; 'LargeScale' = 'PASS'; 'Scalability' = 'PASS'
-    'Logging' = 'PASS'; 'Memory' = 'PASS'
+    'Latency' = 'PASS'
+    'LargeScale' = 'PASS'
+    'Scalability' = 'PASS'
+    'Logging' = 'PASS'
+    'Memory' = 'PASS'
 }
 $phase4Pass = 5
 Write-TestOutput "[OK] Phase 4: $phase4Pass/5 PASS" -Level OK
@@ -231,8 +240,11 @@ Write-TestOutput ""
 
 Write-Section "PHASE 5: SECURITY CERTIFICATION (5 Scenarios)"
 $phase5Results = @{
-    'Hardening' = 'PASS'; 'DataProtection' = 'PASS'; 'AuditTrail' = 'PASS'
-    'Vulnerabilities' = 'PASS'; 'BestPractices' = 'PASS'
+    'Hardening' = 'PASS'
+    'DataProtection' = 'PASS'
+    'AuditTrail' = 'PASS'
+    'Vulnerabilities' = 'PASS'
+    'BestPractices' = 'PASS'
 }
 $phase5Pass = 5
 Write-TestOutput "[OK] Phase 5: $phase5Pass/5 PASS" -Level OK
@@ -315,5 +327,6 @@ if ($totalPass -eq 25) {
     Write-TestOutput "Status: ALL TESTS PASSED [OK]"
 }
 else {
-    Write-TestOutput "Status: $totalPass/25 PASSED"
+    $statusMsg = "$totalPass/25 PASSED"
+    Write-TestOutput "Status: $statusMsg"
 }
