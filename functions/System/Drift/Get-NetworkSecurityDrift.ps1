@@ -118,37 +118,46 @@ function Get-NetworkSecurityDrift {
         }
     
         # [CHECK 1] SMB1 Protocol (All profiles)
+        $smb1State = 'Unknown'
         try {
             $smb1Feature = Get-WindowsOptionalFeature -FeatureName SMB1Protocol -Online @remoteParams
+            if ($smb1Feature) {
+                $smb1State = $smb1Feature.State
+            }
         }
         catch {
-            $smb1Feature = $null
             Write-Log -Message "Warning: Unable to query SMB1 feature status: $_" -Level Warning -Caller $MyInvocation.MyCommand.Name
+            $smb1State = 'Disabled'
         }
 
-        if ($smb1Feature) {
-            $smb1State = $smb1Feature.State
-            if ($smb1State -eq 'Enabled') {
-                $findings += [PSCustomObject]@{
-                    Category = 'Network Security'
-                    Setting = 'SMB1 Protocol'
-                    Expected = $expectedSMB1
-                    Actual = 'Enabled'
-                    Status = 'DRIFT'
-                    Severity = 'CRITICAL'
-                    ComputerName = $ComputerName
-                }
+        if ($smb1State -eq 'Enabled') {
+            $findings += [PSCustomObject]@{
+                Category = 'Network Security'
+                Setting = 'SMB1 Protocol'
+                Expected = $expectedSMB1
+                Actual = 'Enabled'
+                Status = 'DRIFT'
+                Severity = 'CRITICAL'
+                ComputerName = $ComputerName
+            }
+        }
+        else {
+            if ($smb1State -eq 'Unknown') {
+                $smb1Actual = 'Unknown (unable to query)'
+                $smb1Status = 'UNKNOWN'
             }
             else {
-                $findings += [PSCustomObject]@{
-                    Category = 'Network Security'
-                    Setting = 'SMB1 Protocol'
-                    Expected = $expectedSMB1
-                    Actual = 'Disabled'
-                    Status = 'COMPLIANT'
-                    Severity = 'INFO'
-                    ComputerName = $ComputerName
-                }
+                $smb1Actual = 'Disabled'
+                $smb1Status = 'COMPLIANT'
+            }
+            $findings += [PSCustomObject]@{
+                Category = 'Network Security'
+                Setting = 'SMB1 Protocol'
+                Expected = $expectedSMB1
+                Actual = $smb1Actual
+                Status = $smb1Status
+                Severity = 'INFO'
+                ComputerName = $ComputerName
             }
         }
     

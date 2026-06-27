@@ -48,10 +48,9 @@ function Get-UpdateStatusDrift {
     Get-UpdateStatusDrift -Profile Basis -ReportDriftOnly | Export-Csv -Path drifts.csv
 
     .NOTES
-    DEPENDS ON: Write-Log (Core) for logging drift findings
-    APPLIES TO: Windows Server 2016+, Windows 10+
+    DEPENDENCIES: Write-Log (Core) for logging; Applies to Windows Server 2016+ and Windows 10+
     PROFILES: Basis (3 checks), Recommended (5+ checks), Strict (7+ checks with detailed)
-    RETURNS: PSCustomObject array with drift findings (Category, Setting, Expected, Actual, Status, Severity, ComputerName)
+    RETURNS: PSCustomObject array with drift findings
     #>
     [CmdletBinding(SupportsShouldProcess)]
     param(
