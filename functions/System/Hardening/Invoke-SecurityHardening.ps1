@@ -69,7 +69,6 @@ function Invoke-SecurityHardening {
         $Session,
 
         [Parameter(Mandatory = $false)]
-        [ValidateNotNullOrEmpty()]
         [string[]]
         $RuleFilter,
 
