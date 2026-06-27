@@ -66,7 +66,7 @@ Funktionen für Configuration Drift Detection. **Depends on Core.**
 | Get-NetworkSecurityDrift | System | `[OK]` | Detect drift: Network Security (SMB1, NTLM) | 2026-06-26 | [OK] 2 tests | 95%+ |
 | Get-RDPSecurityDrift | System | `[OK]` | Detect drift: RDP Security (encryption, NLA) | 2026-06-26 | [OK] 2 tests | 95%+ |
 | Get-FirewallStatusDrift | System | `[OK]` | Detect drift: Firewall profiles | 2026-06-26 | [OK] 1 test | 95%+ |
-| Get-AuditPoliciesDrift | System | `[OK]` | Detect drift: Audit policies | 2026-06-26 | [OK] 1 test | 95%+ |
+| Get-AuditPoliciesDrift | System | `[OK]` | Detect drift: Audit policies (Logon, Privilege Use) | 2026-06-27 | [OK] 12 tests | 95%+ |
 | Get-UpdateStatusDrift | System | `[OK]` | Detect drift: Windows Updates | 2026-06-26 | [OK] 1 test | 95%+ |
 | Get-ServiceSecurityDrift | System | `[OK]` | Detect drift: Service security | 2026-06-26 | [OK] 1 test | 95%+ |
 | New-SecurityDriftReport | System | `[OK]` | Create structured CSV drift report | 2026-06-26 | [OK] 2 tests | 95%+ |

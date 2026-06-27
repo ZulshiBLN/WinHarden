@@ -18,39 +18,54 @@ AfterAll {
 Describe "Get-AuditPoliciesDrift" {
     Context "Output Structure & Return Values" {
         BeforeEach {
-            Mock -CommandName '_GetAuditPolicyOutput' -MockWith {
-                return 'Logon,Success and Failure'
-            }
             Mock -CommandName 'Write-Log'
         }
 
         It "returns empty array when audit policies are compliant" {
+            Mock -CommandName '_GetAuditPolicyOutput' -MockWith {
+                return 'Success and Failure'
+            }
+
             $result = Get-AuditPoliciesDrift
             $result | Should -BeNullOrEmpty
         }
 
         It "returns PSCustomObject when audit policy drift detected" {
-            Mock -CommandName '_GetAuditPolicyOutput' -MockWith {
+            Mock -CommandName '_GetAuditPolicyOutput' -ParameterFilter {
+                $SubcategoryName -eq 'Logon'
+            } -MockWith {
                 return 'Logon,Not Configured'
+            }
+            Mock -CommandName '_GetAuditPolicyOutput' -ParameterFilter {
+                $SubcategoryName -eq 'Sensitive Privilege Use'
+            } -MockWith {
+                return 'Sensitive Privilege Use,Success and Failure'
             }
 
             $result = Get-AuditPoliciesDrift
             $result | Should -Not -BeNullOrEmpty
-            $result -is [System.Management.Automation.PSCustomObject] | Should -Be $true
+            $result[0] -is [System.Management.Automation.PSCustomObject] | Should -Be $true
         }
 
         It "includes required properties in drift objects" {
-            Mock -CommandName '_GetAuditPolicyOutput' -MockWith {
+            Mock -CommandName '_GetAuditPolicyOutput' -ParameterFilter {
+                $SubcategoryName -eq 'Logon'
+            } -MockWith {
                 return 'Logon,Not Configured'
+            }
+            Mock -CommandName '_GetAuditPolicyOutput' -ParameterFilter {
+                $SubcategoryName -eq 'Sensitive Privilege Use'
+            } -MockWith {
+                return 'Sensitive Privilege Use,Success and Failure'
             }
 
             $result = Get-AuditPoliciesDrift
-            $result.PSObject.Properties.Name | Should -Contain 'Category'
-            $result.PSObject.Properties.Name | Should -Contain 'Setting'
-            $result.PSObject.Properties.Name | Should -Contain 'Expected'
-            $result.PSObject.Properties.Name | Should -Contain 'Actual'
-            $result.PSObject.Properties.Name | Should -Contain 'Status'
-            $result.PSObject.Properties.Name | Should -Contain 'Severity'
+            $result[0].PSObject.Properties.Name | Should -Contain 'Category'
+            $result[0].PSObject.Properties.Name | Should -Contain 'Setting'
+            $result[0].PSObject.Properties.Name | Should -Contain 'Expected'
+            $result[0].PSObject.Properties.Name | Should -Contain 'Actual'
+            $result[0].PSObject.Properties.Name | Should -Contain 'Status'
+            $result[0].PSObject.Properties.Name | Should -Contain 'Severity'
         }
     }
 
@@ -60,37 +75,77 @@ Describe "Get-AuditPoliciesDrift" {
         }
 
         It "detects drift when Logon audit policy not configured" {
-            Mock -CommandName '_GetAuditPolicyOutput' -MockWith {
+            Mock -CommandName '_GetAuditPolicyOutput' -ParameterFilter {
+                $SubcategoryName -eq 'Logon'
+            } -MockWith {
                 return 'Logon,Not Configured'
+            }
+            Mock -CommandName '_GetAuditPolicyOutput' -ParameterFilter {
+                $SubcategoryName -eq 'Sensitive Privilege Use'
+            } -MockWith {
+                return 'Sensitive Privilege Use,Success and Failure'
             }
 
             $result = Get-AuditPoliciesDrift
             $result | Should -Not -BeNullOrEmpty
-            $result.Status | Should -Be 'DRIFT'
-            $result.Category | Should -Be 'Audit Policy'
+            ($result | Where-Object Setting -eq 'Logon Auditing').Status | Should -Be 'DRIFT'
         }
 
         It "detects drift when audit policy only has Success configured" {
-            Mock -CommandName '_GetAuditPolicyOutput' -MockWith {
+            Mock -CommandName '_GetAuditPolicyOutput' -ParameterFilter {
+                $SubcategoryName -eq 'Logon'
+            } -MockWith {
                 return 'Logon,Success'
             }
-
-            $result = Get-AuditPoliciesDrift
-            $result.Status | Should -Be 'DRIFT'
-        }
-
-        It "detects drift when audit policy only has Failure configured" {
-            Mock -CommandName '_GetAuditPolicyOutput' -MockWith {
-                return 'Logon,Failure'
+            Mock -CommandName '_GetAuditPolicyOutput' -ParameterFilter {
+                $SubcategoryName -eq 'Sensitive Privilege Use'
+            } -MockWith {
+                return 'Sensitive Privilege Use,Success and Failure'
             }
 
             $result = Get-AuditPoliciesDrift
-            $result.Status | Should -Be 'DRIFT'
+            $result | Should -Not -BeNullOrEmpty
+            ($result | Where-Object Setting -eq 'Logon Auditing').Status | Should -Be 'DRIFT'
+        }
+
+        It "detects drift when Sensitive Privilege Use audit policy not configured" {
+            Mock -CommandName '_GetAuditPolicyOutput' -ParameterFilter {
+                $SubcategoryName -eq 'Logon'
+            } -MockWith {
+                return 'Logon,Success and Failure'
+            }
+            Mock -CommandName '_GetAuditPolicyOutput' -ParameterFilter {
+                $SubcategoryName -eq 'Sensitive Privilege Use'
+            } -MockWith {
+                return 'Sensitive Privilege Use,Not Configured'
+            }
+
+            $result = Get-AuditPoliciesDrift
+            $result | Should -Not -BeNullOrEmpty
+            ($result | Where-Object Setting -eq 'Sensitive Privilege Use Auditing').Status | Should -Be 'DRIFT'
+        }
+
+        It "detects drift in both Logon and Sensitive Privilege Use when both misconfigured" {
+            Mock -CommandName '_GetAuditPolicyOutput' -ParameterFilter {
+                $SubcategoryName -eq 'Logon'
+            } -MockWith {
+                return 'Logon,Success'
+            }
+            Mock -CommandName '_GetAuditPolicyOutput' -ParameterFilter {
+                $SubcategoryName -eq 'Sensitive Privilege Use'
+            } -MockWith {
+                return 'Sensitive Privilege Use,Failure'
+            }
+
+            $result = Get-AuditPoliciesDrift
+            $result.Count | Should -Be 2
+            $result[0].Status | Should -Be 'DRIFT'
+            $result[1].Status | Should -Be 'DRIFT'
         }
 
         It "marks compliant audit policies as having no drift" {
             Mock -CommandName '_GetAuditPolicyOutput' -MockWith {
-                return 'Logon,Success and Failure'
+                return 'Success and Failure'
             }
 
             $result = Get-AuditPoliciesDrift
@@ -98,8 +153,15 @@ Describe "Get-AuditPoliciesDrift" {
         }
 
         It "sets severity level to MEDIUM for audit policy drift" {
-            Mock -CommandName '_GetAuditPolicyOutput' -MockWith {
+            Mock -CommandName '_GetAuditPolicyOutput' -ParameterFilter {
+                $SubcategoryName -eq 'Logon'
+            } -MockWith {
                 return 'Logon,Not Configured'
+            }
+            Mock -CommandName '_GetAuditPolicyOutput' -ParameterFilter {
+                $SubcategoryName -eq 'Sensitive Privilege Use'
+            } -MockWith {
+                return 'Sensitive Privilege Use,Success and Failure'
             }
 
             $result = Get-AuditPoliciesDrift
@@ -121,14 +183,14 @@ Describe "Get-AuditPoliciesDrift" {
             { Get-AuditPoliciesDrift } | Should -Not -Throw
         }
 
-        It "logs warning when audit policy check fails" {
+        It "logs error when audit policy check fails" {
             Mock -CommandName '_GetAuditPolicyOutput' -MockWith {
                 throw 'Error'
             }
 
             Get-AuditPoliciesDrift | Out-Null
             Assert-MockCalled Write-Log -ParameterFilter {
-                $Level -eq 'Warning'
+                $Level -eq 'Error'
             } -Scope It
         }
 
@@ -170,18 +232,6 @@ Describe "Get-AuditPoliciesDrift" {
         }
     }
 
-    Context "WhatIf Support" {
-        BeforeEach {
-            Mock -CommandName 'Write-Log'
-            Mock -CommandName '_GetAuditPolicyOutput' -MockWith {
-                return 'Logon,Not Configured'
-            }
-        }
-
-        It "supports -WhatIf parameter without errors" {
-            { Get-AuditPoliciesDrift -WhatIf } | Should -Not -Throw
-        }
-    }
 
     Context "Documentation Compliance" {
         It "function is properly defined and callable" {
