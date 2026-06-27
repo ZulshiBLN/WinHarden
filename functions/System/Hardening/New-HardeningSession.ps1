@@ -131,9 +131,15 @@ function New-HardeningSession {
         # Validate profile compatibility with OS
         _ValidateProfileCompatibility -Session $session
 
-        # Load profile rules count
-        $profileRules = Get-HardeningProfile -ProfileName $Profile -TargetSystem $TargetSystem
-        $session.State.TotalRules = @($profileRules.Rules).Count
+        # Load profile rules count (disable WhatIf to get actual rule count)
+        $profileRules = Get-HardeningProfile -ProfileName $Profile -TargetSystem $TargetSystem -WhatIf:$false
+        $ruleCount = ($profileRules.Rules | Measure-Object).Count
+        if ($ruleCount -eq 0) {
+            $session.State.TotalRules = @($profileRules.Rules).Count
+        }
+        else {
+            $session.State.TotalRules = $ruleCount
+        }
 
         Write-Log -Message "Hardening session created successfully. SessionId=$($session.SessionId), Rules=$($session.State.TotalRules)" -Level Info
 

@@ -20,7 +20,7 @@ function Write-ErrorLog {
     CREATED: 2026-06-25
     #>
 
-    [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'High')]
+    [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
@@ -32,8 +32,5 @@ function Write-ErrorLog {
         $Caller
     )
 
-    # Handle -WhatIf and -Confirm parameters
-    if ($PSCmdlet.ShouldProcess($Message, 'Log error message')) {
-        Write-Log -Message $Message -Level Error -Caller $Caller
-    }
+    Write-Log -Message $Message -Level Error -Caller $Caller
 }

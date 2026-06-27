@@ -192,9 +192,9 @@ function Invoke-SecurityHardening {
                 TargetSystem = $Session.TargetSystem
                 ComputerName = $Session.ComputerName
                 State = $Session.State
-                AppliedRules = $Session.State.AppliedRules
-                FailedRules = $Session.State.FailedRules
-                SkippedRules = $Session.State.SkippedRules
+                AppliedRules = @($Session.State.AppliedRules)
+                FailedRules = @($Session.State.FailedRules)
+                SkippedRules = @($Session.State.SkippedRules)
                 ComplianceReport = $Session.State.ComplianceStatus
                 Duration = $Session.State.Duration
                 Success = ($failedCount -eq 0)
