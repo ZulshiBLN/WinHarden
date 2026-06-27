@@ -47,7 +47,12 @@ $reportDate = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
 $reportPath = Join-Path $OutputDir "Monthly_Audit_$reportDate"
 
 if (-not (Test-Path $reportPath)) {
-    $null = New-Item -ItemType Directory -Path $reportPath -Force
+    try {
+        $null = New-Item -ItemType Directory -Path $reportPath -Force
+    }
+    catch {
+        Write-Error "Cannot create report directory '$reportPath': $_" -ErrorAction Stop
+    }
 }
 
 Write-Output ""
@@ -100,6 +105,14 @@ foreach ($fn in $hardeningFunctions) {
 
 Write-Log -Message "WinHarden functions loaded successfully" -Level Info -Caller "Monthly_Compliance_Audit"
 Write-Output ""
+
+$requiredFunctions = @('New-HardeningSession', 'Test-HardeningCompliance', 'Export-HardeningReport')
+foreach ($fnName in $requiredFunctions) {
+    if (-not (Get-Command $fnName -ErrorAction SilentlyContinue)) {
+        Write-Error "Required function not available: $fnName" -ErrorAction Stop
+    }
+}
+
 Write-Log -Message "Creating hardening session with HardeningProfile=$HardeningProfile, TargetSystem=$TargetSystem, OSVersion=$OSVersion" -Level Info -Caller "Monthly_Compliance_Audit"
 
 try {
