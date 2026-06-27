@@ -60,10 +60,16 @@ $driftFunctions = @(
 # Public functions to load (System Status)
 $systemStatusFunctions = @(
     'Get-PendingRebootStatus',
-    'Get-WindowsUpdateStatus'
+    'Get-WindowsUpdateStatus',
+    'Get-UpdateHistory'
 )
 
-$publicFunctions = $hardeningFunctions + $driftFunctions + $systemStatusFunctions
+# Public functions to load (Task Scheduling)
+$taskSchedulingFunctions = @(
+    'Set-TaskScheduleCatchup'
+)
+
+$publicFunctions = $hardeningFunctions + $driftFunctions + $systemStatusFunctions + $taskSchedulingFunctions
 $privateFunctions = @()
 
 # Load all functions

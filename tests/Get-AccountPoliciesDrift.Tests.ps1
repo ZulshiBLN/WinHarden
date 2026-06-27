@@ -1,11 +1,17 @@
 BeforeAll {
+    # Load Core module first (ADR-008: Module Import Strategy)
+    $coreModulePath = (Resolve-Path "$PSScriptRoot\..\modules\Core.psm1").Path
+    Import-Module $coreModulePath -Force
+
     # Load System.Test module (contains only Get-AccountPoliciesDrift, avoids elevation issues)
     $testModulePath = Resolve-Path "$PSScriptRoot\..\modules\System.Test.psm1"
     Import-Module $testModulePath -Force
 
     # Load test data
     $fixturesPath = "$PSScriptRoot\fixtures\AccountPoliciesScenarios.json"
-    $scenarios = Get-Content -Path $fixturesPath | ConvertFrom-Json
+    if (Test-Path $fixturesPath) {
+        $scenarios = Get-Content -Path $fixturesPath | ConvertFrom-Json
+    }
 }
 
 AfterAll {

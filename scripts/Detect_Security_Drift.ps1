@@ -60,6 +60,19 @@ try {
         throw "Drift functions directory not found at: $driftFunctionsPath"
     }
 
+    # Required drift detection functions
+    $requiredFunctions = @(
+        'Get-AccountPoliciesDrift',
+        'Get-NetworkSecurityDrift',
+        'Get-RDPSecurityDrift',
+        'Get-FirewallStatusDrift',
+        'Get-AuditPoliciesDrift',
+        'Get-UpdateStatusDrift',
+        'Get-ServiceSecurityDrift',
+        'New-SecurityDriftReport'
+    )
+
+    # Load all Get-*.ps1 files
     Get-ChildItem -Path $driftFunctionsPath -Filter "Get-*.ps1" | ForEach-Object {
         Write-Verbose "Loading drift detection function: $($_.BaseName)"
         . $_.FullName
@@ -69,6 +82,18 @@ try {
     $reportFuncPath = Join-Path $driftFunctionsPath "New-SecurityDriftReport.ps1"
     if (Test-Path $reportFuncPath) {
         . $reportFuncPath
+    }
+
+    # Validate that all required functions are loaded
+    $missingFunctions = @()
+    foreach ($funcName in $requiredFunctions) {
+        if (-not (Get-Command $funcName -ErrorAction SilentlyContinue)) {
+            $missingFunctions += $funcName
+        }
+    }
+
+    if ($missingFunctions.Count -gt 0) {
+        throw "Required drift detection functions not loaded: $($missingFunctions -join ', ')"
     }
 
     # [1] Account Policies

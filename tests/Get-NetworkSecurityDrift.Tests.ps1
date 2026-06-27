@@ -1,10 +1,16 @@
 BeforeAll {
+    # Load Core module first (ADR-008: Module Import Strategy)
+    $coreModulePath = (Resolve-Path "$PSScriptRoot\..\modules\Core.psm1").Path
+    Import-Module $coreModulePath -Force
+
+    # Then load System module (which depends on Core)
     $modulePath = (Resolve-Path "$PSScriptRoot\..\modules\System.psm1").Path
     Import-Module $modulePath -Force
 }
 
 AfterAll {
     Remove-Module System -Force -ErrorAction SilentlyContinue
+    Remove-Module Core -Force -ErrorAction SilentlyContinue
 }
 
 Describe "Get-NetworkSecurityDrift" {
