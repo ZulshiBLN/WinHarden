@@ -2,7 +2,7 @@
 
 **Version:** 1.0  
 **Status:** Production Ready (Grade A+)  
-**Last Updated:** 2026-06-26
+**Last Updated:** 2026-06-27
 
 ---
 
@@ -12,16 +12,16 @@
 
 ### Key Features
 
-- 🔒 **Automated Hardening:** Profile-based security rule application
-- ✅ **Compliance Verification:** Verify system hardening status
-- 🔧 **Auto-Remediation:** Automatically fix non-compliant settings
-- 📊 **Multi-Format Reporting:** JSON, CSV, HTML, and Text exports
-- 🌐 **Remote Deployment:** Harden multiple systems in parallel
-- 📧 **Email Alerts:** Notifications for compliance events
-- ⏰ **Scheduled Automation:** Recurring compliance checks
-- 🏢 **Group Policy Integration:** Domain-wide deployment via GPO
-- 📈 **Compliance Trending:** Track hardening progress over time
-- 🔌 **SIEM Integration:** Splunk, Elasticsearch, Azure Sentinel support
+- **Automated Hardening:** Profile-based security rule application
+- **Compliance Verification:** Verify system hardening status
+- **Auto-Remediation:** Automatically fix non-compliant settings
+- **Multi-Format Reporting:** JSON, CSV, HTML, and Text exports
+- **Remote Deployment:** Harden multiple systems in parallel
+- **Email Alerts:** Notifications for compliance events
+- **Scheduled Automation:** Recurring compliance checks
+- **Group Policy Integration:** Domain-wide deployment via GPO
+- **Compliance Trending:** Track hardening progress over time
+- **SIEM Integration:** Splunk, Elasticsearch, Azure Sentinel support
 
 ---
 
@@ -54,14 +54,16 @@ Write-Host "Compliance: $($compliance.CompliancePercentage)%"
 
 ## Documentation
 
-Complete documentation is available in `Docs/Hardening/`:
+Complete documentation is available in `docs/`:
 
-- **[User Guide](Docs/Hardening/HARDENING_USER_GUIDE.md)** - Installation, quick start, use cases
-- **[Deployment Guide](Docs/Hardening/HARDENING_DEPLOYMENT_GUIDE.md)** - Local, remote, GPO deployment
-- **[Architecture Guide](Docs/Hardening/HARDENING_ARCHITECTURE.md)** - System design and components
-- **[SIEM Integration](Docs/Hardening/HARDENING_SIEM_INTEGRATION.md)** - Enterprise monitoring
-- **[Performance Guide](Docs/Hardening/HARDENING_PERFORMANCE.md)** - Baselines and optimization
-- **[FAQ](Docs/Hardening/HARDENING_FAQ.md)** - Common questions (60+ Q&A)
+- **[User Guide](docs/hardening/01_USER_GUIDE.md)** - Installation, quick start, use cases
+- **[Deployment Guide](docs/hardening/02_DEPLOYMENT_GUIDE.md)** - Local, remote, GPO deployment
+- **[Architecture Guide](docs/hardening/03_ARCHITECTURE.md)** - System design and components
+- **[SIEM Integration](docs/hardening/04_SIEM_INTEGRATION.md)** - Enterprise monitoring
+- **[Performance Guide](docs/hardening/05_PERFORMANCE.md)** - Baselines and optimization
+- **[FAQ](docs/hardening/06_FAQ.md)** - Common questions (60+ Q&A)
+
+For complete documentation index, see [docs/README.md](docs/README.md)
 
 ---
 
@@ -97,12 +99,12 @@ Maximum security for high-security environments.
 
 ### Supported Platforms
 
-- ✅ Windows 11 (Client)
-- ✅ Windows Server 2019
-- ✅ Windows Server 2022
-- ✅ Windows Server 2025
-- ✅ PowerShell 5.1
-- ✅ PowerShell 7.x
+- [OK] Windows 11 (Client)
+- [OK] Windows Server 2019
+- [OK] Windows Server 2022
+- [OK] Windows Server 2025
+- [OK] PowerShell 5.1
+- [OK] PowerShell 7.x
 
 ---
 
@@ -110,54 +112,35 @@ Maximum security for high-security environments.
 
 ```
 WinHarden/
-├── Docs/                          # Documentation
-│   ├── README.md
-│   └── Hardening/                 # Hardening guides
-│       ├── README.md
-│       ├── HARDENING_USER_GUIDE.md
-│       ├── HARDENING_DEPLOYMENT_GUIDE.md
-│       ├── HARDENING_ARCHITECTURE.md
-│       ├── HARDENING_SIEM_INTEGRATION.md
-│       ├── HARDENING_PERFORMANCE.md
-│       ├── HARDENING_FAQ.md
-│       ├── HARDENING_PLAN.md
-│       └── OPTIMIZATION_CHECKLIST.md
+├── docs/                          # Complete documentation
+│   ├── README.md                  # Documentation index
+│   ├── hardening/                 # Hardening guides (7 documents)
+│   ├── automations/               # Automation setup guides (3 documents)
+│   └── audit/                     # Compliance and assessment reports (4 documents)
 │
 ├── functions/                     # PowerShell functions
-│   └── System/
-│       ├── Hardening/             # Hardening functions
-│       │   ├── New-HardeningSession.ps1
-│       │   ├── Get-HardeningProfile.ps1
-│       │   ├── Invoke-SecurityHardening.ps1
-│       │   ├── Test-HardeningCompliance.ps1
-│       │   ├── Export-HardeningReport.ps1
-│       │   ├── Invoke-RemoteHardening.ps1
-│       │   ├── New-HardeningSchedule.ps1
-│       │   ├── Import-HardeningGPO.ps1
-│       │   ├── Send-HardeningAlert.ps1
-│       │   └── Get-HardeningTrendData.ps1
-│       └── Hardening.Profiles/    # Security rule profiles
-│           ├── Basis.psd1
-│           ├── Recommended.psd1
-│           └── Strict.psd1
+│   ├── Core/                      # Core utility functions
+│   ├── System/                    # System administration functions
+│   │   ├── Drift/                 # Configuration drift detection
+│   │   ├── Hardening/             # Hardening application and verification
+│   │   └── Monitoring/            # System monitoring and alerting
+│   └── Other/                     # Additional functionality
 │
 ├── modules/                       # PowerShell modules
-│   ├── Core.psm1                  # Core utilities
-│   └── System.psm1                # System/hardening functions
+│   ├── Core.psm1                  # Core utilities and logging
+│   └── System.psm1                # System/hardening cmdlets
 │
-├── tests/                         # Test suites
-│   ├── System.Hardening.Tests.ps1
-│   ├── System.Hardening.Invoke.Tests.ps1
-│   ├── System.Hardening.Compliance.Tests.ps1
-│   ├── System.Hardening.Advanced.Tests.ps1
-│   ├── System.Hardening.ErrorScenarios.Tests.ps1
-│   ├── System.Hardening.EdgeCases.Tests.ps1
-│   ├── System.Hardening.Integration.Tests.ps1
-│   └── System.Hardening.Performance.Tests.ps1
+├── tests/                         # Comprehensive test suite
+│   ├── *.Tests.ps1                # 30+ test files
+│   └── fixtures/                  # Test fixtures and mocks
 │
-├── AUDIT_REPORT.md                # Code quality audit results
-├── IMPROVEMENT_PLAN.md            # Optimization recommendations
-└── README.md                       # This file
+├── hooks/                         # Git hooks
+├── scripts/                       # Utility scripts
+├── CLAUDE.md                      # Collaboration rules and guidelines
+├── DECISIONS.md                   # Architecture decision records
+├── STRUCTURE.md                   # Implementation standards
+├── build.ps1                      # Build and validation script
+└── README.md                      # This file
 ```
 
 ---
@@ -198,7 +181,7 @@ WinHarden/
 
 ## Getting Started
 
-1. **Read:** [User Guide](Docs/Hardening/HARDENING_USER_GUIDE.md)
+1. **Read:** [User Guide](docs/hardening/01_USER_GUIDE.md)
 2. **Install:** Import PowerShell modules
 3. **Test:** Run with -WhatIf first
 4. **Deploy:** Apply hardening to systems
@@ -233,10 +216,10 @@ Track and forecast hardening progress over time.
 
 ## Support & Resources
 
-- **Documentation:** See `Docs/Hardening/` directory
-- **Quick Questions:** Check [FAQ](Docs/Hardening/HARDENING_FAQ.md)
-- **Deployment Help:** See [Deployment Guide](Docs/Hardening/HARDENING_DEPLOYMENT_GUIDE.md)
-- **Architecture Details:** See [Architecture Guide](Docs/Hardening/HARDENING_ARCHITECTURE.md)
+- **Documentation Index:** See [docs/README.md](docs/README.md)
+- **Quick Questions:** Check [FAQ](docs/hardening/06_FAQ.md)
+- **Deployment Help:** See [Deployment Guide](docs/hardening/02_DEPLOYMENT_GUIDE.md)
+- **Architecture Details:** See [Architecture Guide](docs/hardening/03_ARCHITECTURE.md)
 
 ---
 
@@ -250,11 +233,11 @@ Production Ready (Grade A+)
 
 ## Status
 
-✅ **Production Ready**  
-✅ **Enterprise Certified**  
-✅ **Fully Tested (95%+ coverage)**  
-✅ **Comprehensively Documented**  
-✅ **Performance Optimized**
+[OK] **Production Ready**  
+[OK] **Enterprise Certified**  
+[OK] **Fully Tested (95%+ coverage)**  
+[OK] **Comprehensively Documented**  
+[OK] **Performance Optimized**
 
 ---
 
