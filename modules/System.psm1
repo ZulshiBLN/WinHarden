@@ -72,7 +72,12 @@ $taskSchedulingFunctions = @(
     'Set-TaskScheduleCatchup'
 )
 
-$publicFunctions = $hardeningFunctions + $driftFunctions + $systemStatusFunctions + $taskSchedulingFunctions
+# Public functions to load (Reporting)
+$reportingFunctions = @(
+    'Invoke-HardeningHTMLReport'
+)
+
+$publicFunctions = $hardeningFunctions + $driftFunctions + $systemStatusFunctions + $taskSchedulingFunctions + $reportingFunctions
 $privateFunctions = @()
 
 # Load all functions
