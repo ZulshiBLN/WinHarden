@@ -118,7 +118,14 @@ function Get-NetworkSecurityDrift {
         }
     
         # [CHECK 1] SMB1 Protocol (All profiles)
-        $smb1Feature = Get-WindowsOptionalFeature -FeatureName SMB1Protocol -Online @remoteParams
+        try {
+            $smb1Feature = Get-WindowsOptionalFeature -FeatureName SMB1Protocol -Online @remoteParams
+        }
+        catch {
+            $smb1Feature = $null
+            Write-Log -Message "Warning: Unable to query SMB1 feature status: $_" -Level Warning -Caller $MyInvocation.MyCommand.Name
+        }
+
         if ($smb1Feature) {
             $smb1State = $smb1Feature.State
             if ($smb1State -eq 'Enabled') {

@@ -22,9 +22,12 @@ Depends on: Core module (for Write-Log, error handling)
 $script:SystemModuleVersion = '1.0.0'
 
 # Ensure Core module is loaded first (ADR-009: Dependency Hierarchy)
-$coreModulePath = Join-Path -Path $PSScriptRoot -ChildPath 'Core.psm1'
-if (Test-Path -Path $coreModulePath) {
-    Import-Module -Name $coreModulePath -Force
+# Only load if not already imported to avoid namespace hiding (ADR-008)
+if (-not (Get-Module -Name Core -ErrorAction SilentlyContinue)) {
+    $coreModulePath = Join-Path -Path $PSScriptRoot -ChildPath 'Core.psm1'
+    if (Test-Path -Path $coreModulePath) {
+        Import-Module -Name $coreModulePath -Force
+    }
 }
 
 # Determine functions directory relative to this module
