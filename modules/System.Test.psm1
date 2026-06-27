@@ -13,18 +13,20 @@ DEPENDS ON: functions\System\Drift\Get-AccountPoliciesDrift.ps1
 # DEPENDS ON: Core.psm1, Get-AccountPoliciesDrift function (ADR-009 / Rule 12.3)
 $ErrorActionPreference = 'Stop'
 
-# Ensure Core module is loaded first
+# Ensure Core module is loaded first (only load if not already imported to avoid namespace hiding)
 $coreModulePath = Join-Path -Path $PSScriptRoot -ChildPath 'Core.psm1'
-if (Test-Path -Path $coreModulePath) {
-    try {
-        Import-Module -Name $coreModulePath -Force -ErrorAction Stop
+if (-not (Get-Module -Name Core -ErrorAction SilentlyContinue)) {
+    if (Test-Path -Path $coreModulePath) {
+        try {
+            Import-Module -Name $coreModulePath -Force -ErrorAction Stop
+        }
+        catch {
+            Write-Error "Failed to load Core module from '$coreModulePath': $_" -ErrorAction Stop
+        }
     }
-    catch {
-        Write-Error "Failed to load Core module from '$coreModulePath': $_" -ErrorAction Stop
+    else {
+        Write-Error "Core module not found at: $coreModulePath" -ErrorAction Stop
     }
-}
-else {
-    Write-Error "Core module not found at: $coreModulePath" -ErrorAction Stop
 }
 
 # Validate Core module loaded correctly (helps debug issues like Get-NetworkSecurityDrift Write-Log failure)

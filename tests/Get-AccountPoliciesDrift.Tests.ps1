@@ -56,7 +56,8 @@ Describe "Get-AccountPoliciesDrift" {
                 elseif ($Name -eq "PasswordComplexity") {
                     return [PSCustomObject]@{ PasswordComplexity = 1 }
                 }
-            } -ModuleName System.Test
+                return $null
+            } -ModuleName System.Test -ParameterFilter { $Path -match "Netlogon" }
 
             Mock Write-Log -ModuleName System.Test
         }

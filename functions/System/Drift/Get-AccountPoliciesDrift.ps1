@@ -93,5 +93,6 @@ function Get-AccountPoliciesDrift {
         throw
     }
 
-    return $findings
+    # Return array (even if empty) to avoid PowerShell array-unwrapping for single elements
+    return @($findings)
 }
