@@ -2,24 +2,37 @@
 .env
 .env.local
 *.local.json
+settings.local.json
 
 # Logs
 *.log
+logs/
+*.trx
 
 # IDE
 .vscode/settings.json
 .idea/
 *.swp
 *.swo
+*.bak
 
 # OS
 .DS_Store
 Thumbs.db
+*.lnk
 
-# Temporary & Build
+# PowerShell & Build
+*.psd1.backup
+.PSScriptAnalyzerCache/
+PSScriptAnalyzer.log
+TestResults/
+coverage.xml
+*.coverage
+
+# Temporary & Artifacts
 *.tmp
 temp/
 dist/
-coverage.xml
-*.coverage
+obj/
+bin/
 .claude/worktrees/
