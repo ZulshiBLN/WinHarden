@@ -173,6 +173,9 @@ function Invoke-SecurityHardening {
                 Write-Log -Message "Verifying hardening compliance" -Level Info
                 $Session.State.ComplianceStatus = _GenerateComplianceReport -Session $Session
             }
+            else {
+                $Session.State.ComplianceStatus = $null
+            }
 
             # Summary
             $totalRules = $Session.State.TotalRules
