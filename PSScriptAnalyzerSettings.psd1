@@ -29,7 +29,6 @@
         'PSMissingModuleManifestField'
         'PSReservedCmdletChar'
         'PSReservedParams'
-        'PSUseApprovedVerbs'
         'PSUseBOMForUnicodeEncodedFile'
         'PSUsePSCredentialType'
         'PSUseSingularNouns'

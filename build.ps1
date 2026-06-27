@@ -9,29 +9,11 @@ $ErrorActionPreference = 'Stop'
 
 Write-Output "[BUILD] === WinHarden Build ==="
 
-# PSScriptAnalyzer â€“ Inline Settings (Option B)
+# PSScriptAnalyzer - Inline Settings (removed - use external config file)
 if (-not $SkipAnalyzer) {
     Write-Output "`n[PSScriptAnalyzer] Linting..."
 
-    $settingsPath = Join-Path $PSScriptRoot 'PSScriptAnalyzerSettings.psd1'
-    $analyzerSettings = if (Test-Path $settingsPath) {
-        $settingsPath
-    }
-    else {
-        @{
-            Rules = @{
-                PSUseApprovedVerbs = @{ Enable = $true }
-                PSUseConsistentIndentation = @{ Enable = $true; IndentationSize = 4 }
-                PSUseConsistentWhitespace = @{ Enable = $true }
-                PSAvoidUsingCmdletAliases = @{ Enable = $true }
-                PSPlaceCloseBrace = @{ Enable = $true; NoEmptyLineBefore = $false }
-                PSPlaceOpenBrace = @{ Enable = $true; OnSameLine = $true }
-                PSMeasureBasicParseCount = @{ Enable = $true }
-                PSProvideCommentHelp = @{ Enable = $true }
-            }
-            Severity = @('Error', 'Warning')
-        }
-    }
+    $analyzerSettings = Join-Path $PSScriptRoot 'PSScriptAnalyzerSettings.psd1'
 
     $analyzerPaths = @('./functions', './scripts')
     $analyzerResults = @()
@@ -52,7 +34,7 @@ if (-not $SkipAnalyzer) {
     Write-Output "[PSScriptAnalyzer] PASSED"
 }
 
-# Pester Tests â€“ mit Code Coverage (Pester 5.x)
+# Pester Tests - Code Coverage (Pester 5.x)
 if (-not $SkipTests) {
     Write-Output "`n[Pester] Running tests..."
 
