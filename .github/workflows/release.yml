@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -62,28 +62,15 @@ jobs:
 
       - name: Create ZIP archive
         run: |
-          mkdir -p release
-          cd release
-          # Create clean copy without git files
-          rsync -av ../ . \
-            --exclude='.git' \
-            --exclude='.github' \
-            --exclude='.gitignore' \
-            --exclude='*.md' \
-            --exclude='node_modules' \
-            --exclude='*.log' || true
+          # Create ZIP with important files
+          zip -r WinHarden-${{ steps.version.outputs.tag }}.zip . \
+            -x '*.git*' '*.github*' '*.log' 'release/*' \
+            --exclude='*/.*'
 
-          # Copy important docs
-          cp ../README.md . 2>/dev/null || true
-          cp ../LICENSE . 2>/dev/null || true
-
-          # Create archive
-          cd ..
-          zip -r WinHarden-${{ steps.version.outputs.tag }}.zip release/ -q
           ls -lh WinHarden-${{ steps.version.outputs.tag }}.zip
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version.outputs.tag }}
           name: WinHarden ${{ steps.version.outputs.tag }}
