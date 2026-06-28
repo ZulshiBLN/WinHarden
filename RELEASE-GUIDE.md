@@ -34,6 +34,55 @@ git push origin v1.12.0 && git push github v1.12.0
 
 ---
 
+## PowerShell Gallery Listing Policy ⭐
+
+**Critical Policy:** Only stable releases are listed on PowerShell Gallery.
+
+### Listing Rules
+
+| Version Type | Listed on PSGallery | Available On | Use Case |
+|---|---|---|---|
+| **Stable** (v1.13.0) | ✅ YES | PowerShell Gallery + GitHub | Production use, `Install-Module` |
+| **Beta** (v1.13.0-beta.1) | ❌ NO | GitHub Releases only | Community testing, early feedback |
+| **RC** (v1.13.0-rc.1) | ❌ NO | GitHub Releases only | Final pre-release testing |
+| **Old Versions** | ❌ UNLISTED | GitHub Releases only | Backward compatibility |
+
+### Why This Matters
+
+```
+Goal: Ensure stable users only see production-ready versions
+
+❌ BAD: All versions on PSGallery → Confusion, users install beta by accident
+✅ GOOD: Only stable on PSGallery → Clear, only production versions public
+
+Pre-releases are GitHub-only for interested testers.
+Stable releases go to PSGallery for mainstream users.
+```
+
+### Policy Enforcement
+
+**Automatic checks:**
+1. ✅ Publish-ToGallery.ps1 validates version format before publishing
+2. ✅ GitHub Actions detects pre-release tags and SKIPS PSGallery
+3. ✅ Manual publish requires stable version (no -beta/-rc/-alpha suffix)
+
+**What happens if you try to publish a beta version:**
+```powershell
+$ .\Publish-ToGallery.ps1 -NuGetApiKey "..."
+
+[PUBLISH] Validating Release Type
+[ERROR] Cannot publish pre-release to PowerShell Gallery: 1.13.0-beta.1
+ERROR: Only stable releases (v1.x.x) can be published to PSGallery
+
+To publish a stable version:
+  1. Update ModuleVersion to remove -beta/-rc suffix
+  2. Merge from prerelease → main
+  3. Tag as stable (v1.x.x)
+  4. Re-run publish script
+```
+
+---
+
 ## Detailed Release Process
 
 ### Phase 1: Development (develop branch)

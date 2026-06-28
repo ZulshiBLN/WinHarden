@@ -391,6 +391,32 @@ git tag -a v1.12.0 -m "Release: v1.12.0 - Description"
 git tag v1.12.0
 ```
 
+### PowerShell Gallery Listing Policy
+
+**Kritische Regel:** Nur stabile Releases werden auf PowerShell Gallery published.
+
+```
+Stable Versions (v1.x.x)
+  ✅ Published zu PSGallery (automatisch)
+  ✅ Listed und sichtbar via Find-Module
+  ✅ Installierbar via Install-Module -Name WinHarden
+
+Pre-Release Versions (v1.x.x-beta.*, v1.x.x-rc.*)
+  ❌ NICHT published zu PSGallery
+  ✅ Verfügbar via GitHub Releases (nur)
+  ✅ Für Beta-Tester: GitHub Download
+```
+
+**Automatische Validierung:**
+1. ✅ Publish-ToGallery.ps1 lehnt Pre-Releases ab
+2. ✅ GitHub Actions skipped PSGallery für Beta/RC
+3. ✅ Nur stabile Versionen → PSGallery
+
+**Warum?**
+- Stabile Nutzer sehen nur produktionsreife Versionen
+- Pre-Release Tester greifen via GitHub zu
+- Klare Trennung: Stable (PSGallery) vs. Beta (GitHub)
+
 ### Merge-Richtung
 
 ```
@@ -398,10 +424,10 @@ develop → prerelease → main (nur forward)
 ```
 
 **Regeln:**
-- ✅ develop → prerelease
-- ✅ prerelease → main
+- ✅ develop → prerelease (beliebig oft)
+- ✅ prerelease → main (nur nach Testing ok)
 - ✅ Bugfixes in prerelease, rebase develop
-- ❌ Nie von main zurück mergen
+- ❌ Nie von main zurück mergen (nur in Notfällen)
 
 ---
 
