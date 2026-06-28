@@ -1,6 +1,6 @@
 @{
     RootModule        = 'modules/System.psm1'
-    ModuleVersion     = '1.11.0'
+    ModuleVersion     = '1.12.0'
     GUID              = 'f5c8d1a4-2b9e-4c7f-8a1b-9d3e5f2a1b8c'
     Author            = 'Michel Brosche'
     CompanyName       = 'WinHarden Project'

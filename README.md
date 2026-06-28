@@ -1,9 +1,9 @@
 ﻿# WinHarden - Windows Hardening System
 
-**Version:** 1.11  
+**Version:** 1.12.0  
 **Status:** Production Ready (Grade A+)  
-**Last Updated:** 2026-06-27  
-**Release:** v1.11 - Scheduled Tasks & Script Fixes
+**Last Updated:** 2026-06-28  
+**Release:** v1.12.0 - GitHub Releases & PowerShell Gallery Distribution
 
 ---
 

@@ -6,7 +6,7 @@ PowerShell Automation & Operations Toolkit für Windows Server-Administration.
 
 ## Projekt-Kontext
 
-**Version:** v1.11  
+**Version:** v1.12.0  
 **Status:** [OK] Infrastruktur-Phase COMPLETE (10 ADRs accepted) – Implementation COMPLETE - Production Ready  
 **Sprache:** PowerShell 5.1 (Windows)  
 **Ziel:** Sichere, performante, tokensparende Zusammenarbeit mit Claude
