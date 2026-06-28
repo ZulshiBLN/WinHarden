@@ -94,11 +94,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Publish to PowerShell Gallery
-        uses: actions/setup-powershell@v2
-        with:
-          powershell-version: '7.2'
-
       - name: Run PowerShell Publishing Script
         shell: pwsh
         env:
