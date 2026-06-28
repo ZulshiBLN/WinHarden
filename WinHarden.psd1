@@ -57,30 +57,30 @@
     # Module dependencies
     RequiredModules   = @()
 
-    # License and project information
-    LicenseUri        = 'https://github.com/ZulshiBLN/WinHarden/blob/main/LICENSE'
-    ProjectUri        = 'https://github.com/ZulshiBLN/WinHarden'
-    ReleaseNotes      = 'https://github.com/ZulshiBLN/WinHarden/releases'
-
-    # Tags for discovery
-    Tags              = @(
-        'PowerShell'
-        'Windows'
-        'Hardening'
-        'Security'
-        'Compliance'
-        'Automation'
-        'Drift-Detection'
-        'System-Administration'
-        'Windows-Server'
-        'DevOps'
-    )
-
-    # Additional metadata
+    # Additional metadata (PowerShell 5.1 compatible format)
     PrivateData       = @{
         PSData = @{
-            # Additional release notes
-            Prerelease = ''
+            # License and project information
+            LicenseUri     = 'https://github.com/ZulshiBLN/WinHarden/blob/main/LICENSE'
+            ProjectUri     = 'https://github.com/ZulshiBLN/WinHarden'
+            ReleaseNotes   = 'https://github.com/ZulshiBLN/WinHarden/releases'
+
+            # Tags for discovery
+            Tags           = @(
+                'PowerShell'
+                'Windows'
+                'Hardening'
+                'Security'
+                'Compliance'
+                'Automation'
+                'Drift-Detection'
+                'System-Administration'
+                'Windows-Server'
+                'DevOps'
+            )
+
+            # Release prerelease status
+            Prerelease     = ''
         }
     }
 }
