@@ -95,30 +95,42 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to PowerShell Gallery
-        if: secrets.PSGALLERY_API_KEY != ''
         uses: actions/setup-powershell@v2
         with:
           powershell-version: '7.2'
 
       - name: Run PowerShell Publishing Script
-        if: secrets.PSGALLERY_API_KEY != ''
         shell: pwsh
+        env:
+          PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
         run: |
           Write-Host "Publishing to PowerShell Gallery..."
           Write-Host "Version: ${{ steps.version.outputs.version }}"
 
+          if ([string]::IsNullOrEmpty($env:PSGALLERY_API_KEY)) {
+            Write-Host "⚠ PSGALLERY_API_KEY not set - skipping PowerShell Gallery publishing"
+            Write-Host "To enable: Add PSGALLERY_API_KEY secret to GitHub repository"
+            exit 0
+          }
+
           # Run publish script with API key
           .\Publish-ToGallery.ps1 `
-            -NuGetApiKey "${{ secrets.PSGALLERY_API_KEY }}" `
+            -NuGetApiKey "$env:PSGALLERY_API_KEY" `
             -ModulePath "." `
             -ErrorAction Stop
 
           Write-Host "Publishing to PowerShell Gallery completed!"
 
       - name: Verify PowerShell Gallery Publication
-        if: secrets.PSGALLERY_API_KEY != ''
         shell: pwsh
+        env:
+          PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
         run: |
+          if ([string]::IsNullOrEmpty($env:PSGALLERY_API_KEY)) {
+            Write-Host "Skipping verification - PSGALLERY_API_KEY not set"
+            exit 0
+          }
+
           Write-Host "Waiting for PSGallery indexing (30 seconds)..."
           Start-Sleep -Seconds 30
 
