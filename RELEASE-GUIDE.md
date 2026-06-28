@@ -4,17 +4,23 @@ Complete guide for releasing WinHarden to GitHub and PowerShell Gallery.
 
 ---
 
-## Quick Release (2 Steps)
+## Quick Release (1 Step - Fully Automated!)
 
 ```powershell
-# Step 1: Tag and push (triggers GitHub Release)
+# Create tag and push (both GitHub Release & PSGallery publishing are automatic!)
 git tag -a v1.12.0 -m "Release: v1.12.0 - Description here"
 git push origin v1.12.0
 git push github v1.12.0
 
-# Step 2: Publish to PowerShell Gallery (manual, ~5 min later)
-.\Publish-ToGallery.ps1 -NuGetApiKey $env:PSGALLERY_API_KEY
+# Done! Workflow handles everything:
+# - Creates GitHub Release (~1 min)
+# - Publishes to PowerShell Gallery (~2 min)
+# - Verifies publication (~30 sec)
 ```
+
+**Watch the automation:**
+- GitHub: https://github.com/ZulshiBLN/WinHarden/actions
+- Check progress in "Workflows" tab
 
 ---
 
@@ -66,32 +72,36 @@ git push github v1.12.0
 - Generates ZIP download
 - Creates release notes from commits
 
-### Phase 3: Publish to PowerShell Gallery
+### Phase 3: Automatic PowerShell Gallery Publishing ✅ AUTOMATED
 
-**Prerequisites:**
+GitHub Actions automatically handles PowerShell Gallery publishing!
+
+**Prerequisites (Setup Once):**
 1. Register at https://www.powershellgallery.com
 2. Create API key: https://www.powershellgallery.com/account/apikeys
-3. Store API key securely
+3. Add to GitHub Secrets:
+   - Repo Settings → Secrets and variables → Actions
+   - New secret: `PSGALLERY_API_KEY = "oy2a1b2c3d4e5f6g7h8i9j0k1l2m3n4o"`
 
-**Publishing:**
+**That's it!** Tag push automatically triggers:
 ```powershell
-# Option 1: Direct (requires API key)
-.\Publish-ToGallery.ps1 -NuGetApiKey "oy2a1b2c3d4e5f6g7h8i9j0k1l2m3n4o"
-
-# Option 2: Environment variable (more secure)
-$env:PSGALLERY_API_KEY = "oy2a1b2c3d4e5f6g7h8i9j0k1l2m3n4o"
-.\Publish-ToGallery.ps1 -NuGetApiKey $env:PSGALLERY_API_KEY
-
-# Option 3: GitHub Secrets (future automation)
-# Add PSGALLERY_API_KEY to GitHub Secrets
-# Then GitHub Actions can auto-publish
+git tag v1.12.0
+git push github v1.12.0
+# → GitHub Actions automatically publishes to PSGallery
 ```
+
+**Monitor Publication:**
+- GitHub Actions: https://github.com/ZulshiBLN/WinHarden/actions
+- Watch "Create Release & Publish" workflow
+- Should complete in ~3-5 minutes total
 
 **Verify Publication:**
 ```powershell
-# Wait 5-10 minutes for indexing
-Find-Module -Name WinHarden
-Find-Module -Name WinHarden -RequiredVersion 1.12.0
+# Check GitHub Release (instant, ~1 min)
+# https://github.com/ZulshiBLN/WinHarden/releases
+
+# Check PowerShell Gallery (takes 5-10 min to index)
+Find-Module -Name WinHarden -Repository PSGallery
 
 # Install to test
 Install-Module -Name WinHarden -RequiredVersion 1.12.0 -Scope CurrentUser
@@ -192,27 +202,36 @@ Examples:
 
 ---
 
-## Automated Release (Future)
+## Fully Automated Release (ENABLED ✅)
 
-To fully automate PowerShell Gallery publishing:
+Your release pipeline is **fully automated**!
 
-1. **Add API Key to GitHub Secrets**
-   - Settings → Secrets and variables → Actions
-   - Create: `PSGALLERY_API_KEY = "oy2a..."`
+### Setup (One-time)
+```
+GitHub Repo → Settings → Secrets and variables → Actions
+→ New secret: PSGALLERY_API_KEY = "your-api-key"
+```
 
-2. **Update Workflow**
-   ```yaml
-   - name: Publish to PowerShell Gallery
-     env:
-       PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
-     run: |
-       pwsh -Command ".\Publish-ToGallery.ps1 -NuGetApiKey $env:PSGALLERY_API_KEY"
-   ```
+### Release (Just tag & push)
+```powershell
+git tag -a v1.12.0 -m "Release: v1.12.0 - Description"
+git push origin v1.12.0
+git push github v1.12.0
+```
 
-3. **Tag & Push** (workflow handles rest)
-   ```powershell
-   git tag v1.12.0 && git push origin v1.12.0
-   ```
+### What happens automatically
+1. **GitHub Actions triggered** (0 sec)
+2. **GitHub Release created** (~1 min)
+3. **ZIP archive generated** (~1 min)
+4. **PowerShell Gallery publish** (~2 min)
+5. **Publication verified** (~30 sec)
+
+Total time: **~4-5 minutes** ⚡
+
+### Monitor progress
+- Open: https://github.com/ZulshiBLN/WinHarden/actions
+- Click latest workflow run
+- Watch each step execute
 
 ---
 

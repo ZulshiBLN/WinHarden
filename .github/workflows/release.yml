@@ -95,18 +95,53 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to PowerShell Gallery
+        if: secrets.PSGALLERY_API_KEY != ''
+        uses: actions/setup-powershell@v2
+        with:
+          powershell-version: '7.2'
+
+      - name: Run PowerShell Publishing Script
+        if: secrets.PSGALLERY_API_KEY != ''
+        shell: pwsh
         run: |
-          # This step requires manual trigger for now
-          # To publish: .\Publish-ToGallery.ps1 -NuGetApiKey ${{ secrets.PSGALLERY_API_KEY }}
-          echo "To publish to PowerShell Gallery:"
-          echo "Run: .\Publish-ToGallery.ps1 -NuGetApiKey \$env:PSGALLERY_API_KEY"
-          echo "Requires: PSGALLERY_API_KEY secret in GitHub repository settings"
+          Write-Host "Publishing to PowerShell Gallery..."
+          Write-Host "Version: ${{ steps.version.outputs.version }}"
+
+          # Run publish script with API key
+          .\Publish-ToGallery.ps1 `
+            -NuGetApiKey "${{ secrets.PSGALLERY_API_KEY }}" `
+            -ModulePath "." `
+            -ErrorAction Stop
+
+          Write-Host "Publishing to PowerShell Gallery completed!"
+
+      - name: Verify PowerShell Gallery Publication
+        if: secrets.PSGALLERY_API_KEY != ''
+        shell: pwsh
+        run: |
+          Write-Host "Waiting for PSGallery indexing (30 seconds)..."
+          Start-Sleep -Seconds 30
+
+          Write-Host "Checking PowerShell Gallery for module..."
+          $module = Find-Module -Name WinHarden -Repository PSGallery -ErrorAction SilentlyContinue
+
+          if ($module) {
+            Write-Host "✓ Module found on PowerShell Gallery!"
+            Write-Host "  Name: $($module.Name)"
+            Write-Host "  Version: $($module.Version)"
+            Write-Host "  Published: $($module.PublishedDate)"
+          } else {
+            Write-Host "⚠ Module not yet indexed on PowerShell Gallery (may take 5-10 minutes)"
+            Write-Host "Check: https://www.powershellgallery.com/packages/WinHarden"
+          }
 
       - name: Notify Completion
         run: |
-          echo "Release ${{ steps.version.outputs.tag }} created successfully!"
-          echo "GitHub Release: https://github.com/ZulshiBLN/WinHarden/releases/tag/${{ steps.version.outputs.tag }}"
+          echo "Release ${{ steps.version.outputs.tag }} published successfully!"
           echo ""
-          echo "Next step: Manually publish to PowerShell Gallery"
-          echo "  1. Get API key from https://www.powershellgallery.com/account/apikeys"
-          echo "  2. Run: .\Publish-ToGallery.ps1 -NuGetApiKey <API_KEY>"
+          echo "Available at:"
+          echo "  - GitHub Release: https://github.com/ZulshiBLN/WinHarden/releases/tag/${{ steps.version.outputs.tag }}"
+          echo "  - PowerShell Gallery: https://www.powershellgallery.com/packages/WinHarden/${{ steps.version.outputs.version }}"
+          echo ""
+          echo "Installation:"
+          echo "  Install-Module -Name WinHarden -RequiredVersion ${{ steps.version.outputs.version }}"
