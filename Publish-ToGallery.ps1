@@ -98,6 +98,24 @@ if (-not $SkipValidation) {
     }
 }
 
+# Step 2.5: Verify this is a stable release (not pre-release)
+Write-Header "Validating Release Type"
+if ($manifest.ModuleVersion -match "-beta|-rc|-alpha|-preview") {
+    Write-Error-Custom "Cannot publish pre-release to PowerShell Gallery: $($manifest.ModuleVersion)"
+    Write-Output ""
+    Write-Output "Policy: Only stable releases (v1.x.x) can be published to PSGallery"
+    Write-Output "Pre-releases (beta, rc) must be tested separately"
+    Write-Output ""
+    Write-Output "To publish a stable version:"
+    Write-Output "  1. Update ModuleVersion to remove -beta/-rc suffix"
+    Write-Output "  2. Merge from prerelease → main"
+    Write-Output "  3. Tag as stable (v1.x.x)"
+    Write-Output "  4. Re-run publish script"
+    exit 1
+}
+Write-Success "Release type is stable - ready to publish"
+Write-Output "  - Version: $($manifest.ModuleVersion) (stable)"
+
 # Step 3: Test module import
 Write-Header "Testing Module Import"
 try {
