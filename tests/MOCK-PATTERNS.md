@@ -1,4 +1,4 @@
-# WinHarden – Mock-Patterns für Unit-Tests
+﻿# WinHarden – Mock-Patterns für Unit-Tests
 
 **Regelwerk-Referenz:** STRUCTURE.md Regel 4.4 (Pester Mock), ADR-003 (Testing Framework)
 

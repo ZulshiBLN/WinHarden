@@ -1,4 +1,4 @@
-# WinHarden – Architectural Decision Records (ADRs)
+﻿# WinHarden – Architectural Decision Records (ADRs)
 
 Zentrale Dokumentation für Architektur-Entscheidungen, die das Projekt massgeblich beeinflussen.
 

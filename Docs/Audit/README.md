@@ -1,4 +1,4 @@
-# WinHarden Audit Documentation
+﻿# WinHarden Audit Documentation
 
 Complete audit documentation index for the WinHarden PowerShell Security Hardening Toolkit.
 

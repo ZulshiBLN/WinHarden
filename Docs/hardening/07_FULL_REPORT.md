@@ -1,4 +1,4 @@
-# WinHarden - Full Report & Complete Feature Documentation
+﻿# WinHarden - Full Report & Complete Feature Documentation
 
 **Comprehensive documentation of all WinHarden features, functions, and capabilities.**
 

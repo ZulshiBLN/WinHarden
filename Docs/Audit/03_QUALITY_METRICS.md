@@ -1,4 +1,4 @@
-# WinHarden Quality Metrics
+﻿# WinHarden Quality Metrics
 
 Comprehensive quality assessment of the WinHarden PowerShell Security Hardening Toolkit.
 

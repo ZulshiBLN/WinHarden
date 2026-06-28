@@ -1,4 +1,4 @@
-# WinHarden - FAQ
+﻿# WinHarden - FAQ
 
 **Frequently asked questions and troubleshooting solutions.**
 
@@ -74,7 +74,7 @@ A: WinHarden itself is not officially certified, but it implements:
 
 A: The recommended location is:
 ```
-C:\Repos\WinHarden
+<WINHARDEN_REPO>
 ```
 
 However, you can install anywhere by:
@@ -89,18 +89,18 @@ A: There are three methods:
 
 **Method 1: Import Module**
 ```powershell
-Import-Module C:\Repos\WinHarden -Force
+Import-Module <WINHARDEN_REPO> -Force
 Get-Command -Module WinHarden
 ```
 
 **Method 2: Dot-source specific function**
 ```powershell
-. C:\Repos\WinHarden\functions\Hardening\New-HardeningBaseline.ps1
+. <WINHARDEN_REPO>\functions\Hardening\New-HardeningBaseline.ps1
 ```
 
 **Method 3: Load all functions**
 ```powershell
-Get-ChildItem C:\Repos\WinHarden\functions -Recurse -Filter *.ps1 | ForEach-Object {
+Get-ChildItem <WINHARDEN_REPO>\functions -Recurse -Filter *.ps1 | ForEach-Object {
     . $_.FullName
 }
 ```
@@ -127,7 +127,7 @@ A: Yes, using PowerShell Remoting:
 ```powershell
 $session = New-PSSession -ComputerName "RemoteServer"
 Invoke-Command -Session $session -ScriptBlock {
-    Import-Module C:\Repos\WinHarden
+    Import-Module <WINHARDEN_REPO>
     Invoke-HardeningRemediation -BaselineName "Production-Baseline" -Force
 }
 ```
@@ -374,8 +374,8 @@ A: Yes, but with adjustments:
 A: Verify module location:
 
 ```powershell
-Test-Path C:\Repos\WinHarden\functions
-Get-ChildItem C:\Repos\WinHarden\functions -Recurse -Filter *.ps1 | Measure-Object
+Test-Path <WINHARDEN_REPO>\functions
+Get-ChildItem <WINHARDEN_REPO>\functions -Recurse -Filter *.ps1 | Measure-Object
 ```
 
 If files missing, clone repository again:
@@ -401,11 +401,11 @@ A: Restore from backup:
 
 ```powershell
 # Find backup
-Get-ChildItem C:\Repos\WinHarden\backups -Filter *.xml
+Get-ChildItem <WINHARDEN_REPO>\backups -Filter *.xml
 
 # Restore
-Copy-Item C:\Repos\WinHarden\backups\backup_baseline.xml `
-    -Destination C:\Repos\WinHarden\baselines\Production-Baseline.xml -Force
+Copy-Item <WINHARDEN_REPO>\backups\backup_baseline.xml `
+    -Destination <WINHARDEN_REPO>\baselines\Production-Baseline.xml -Force
 ```
 
 ### Q: Compliance reports missing
@@ -413,10 +413,10 @@ Copy-Item C:\Repos\WinHarden\backups\backup_baseline.xml `
 A: Check logs directory:
 
 ```powershell
-Get-ChildItem C:\Repos\WinHarden\logs -Filter *.csv | Select-Object Name, LastWriteTime
+Get-ChildItem <WINHARDEN_REPO>\logs -Filter *.csv | Select-Object Name, LastWriteTime
 
 # Verify directory permissions
-icacls C:\Repos\WinHarden\logs
+icacls <WINHARDEN_REPO>\logs
 ```
 
 ### Q: System became unstable after remediation
@@ -495,7 +495,7 @@ A: Steps to recover:
 **Solution:**
 ```powershell
 # List available baselines
-Get-ChildItem C:\Repos\WinHarden\baselines\ -Filter "*.xml" | Select-Object Name
+Get-ChildItem <WINHARDEN_REPO>\baselines\ -Filter "*.xml" | Select-Object Name
 
 # Create baseline if missing
 New-HardeningBaseline -Name "Default-Baseline"

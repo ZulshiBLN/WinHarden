@@ -1,4 +1,4 @@
-# WinHarden - SIEM Integration Guide
+﻿# WinHarden - SIEM Integration Guide
 
 **Integration procedures for security information and event management systems.**
 
@@ -155,7 +155,7 @@ $splunkConfig = @{
 }
 
 # Save configuration
-$splunkConfig | ConvertTo-Json | Out-File "C:\Repos\WinHarden\config\splunk_hec.json"
+$splunkConfig | ConvertTo-Json | Out-File "<WINHARDEN_REPO>\config\splunk_hec.json"
 ```
 
 #### Step 3: Export Compliance to Splunk
@@ -165,7 +165,7 @@ $splunkConfig | ConvertTo-Json | Out-File "C:\Repos\WinHarden\config\splunk_hec.
 function Export-ComplianceToSplunk {
     param(
         [string]$BaselineName,
-        [string]$ConfigPath = "C:\Repos\WinHarden\config\splunk_hec.json"
+        [string]$ConfigPath = "<WINHARDEN_REPO>\config\splunk_hec.json"
     )
     
     # Load configuration
@@ -247,7 +247,7 @@ $elasticsearchConfig = @{
 }
 
 # Save configuration
-$elasticsearchConfig | ConvertTo-Json | Out-File "C:\Repos\WinHarden\config\elasticsearch.json"
+$elasticsearchConfig | ConvertTo-Json | Out-File "<WINHARDEN_REPO>\config\elasticsearch.json"
 ```
 
 #### Step 2: Create Index Template
@@ -281,7 +281,7 @@ $elasticsearchConfig | ConvertTo-Json | Out-File "C:\Repos\WinHarden\config\elas
 function Export-ComplianceToElasticsearch {
     param(
         [string]$BaselineName,
-        [string]$ConfigPath = "C:\Repos\WinHarden\config\elasticsearch.json"
+        [string]$ConfigPath = "<WINHARDEN_REPO>\config\elasticsearch.json"
     )
     
     # Load configuration
@@ -378,7 +378,7 @@ $webhookConfig = @{
 }
 
 # Save configuration
-$webhookConfig | ConvertTo-Json | Out-File "C:\Repos\WinHarden\config\webhook.json"
+$webhookConfig | ConvertTo-Json | Out-File "<WINHARDEN_REPO>\config\webhook.json"
 ```
 
 ### Send Events via Webhook
@@ -388,7 +388,7 @@ function Send-WinHardenEventToWebhook {
     param(
         [string]$EventType,
         [hashtable]$EventData,
-        [string]$ConfigPath = "C:\Repos\WinHarden\config\webhook.json"
+        [string]$ConfigPath = "<WINHARDEN_REPO>\config\webhook.json"
     )
     
     # Load configuration

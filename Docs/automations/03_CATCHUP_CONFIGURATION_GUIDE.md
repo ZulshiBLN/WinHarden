@@ -1,4 +1,4 @@
-# WinHarden Automations - Catchup Configuration Guide
+﻿# WinHarden Automations - Catchup Configuration Guide
 
 **Master the task recovery and missed-run mechanisms for continuous compliance monitoring.**
 
@@ -305,7 +305,7 @@ Get-ScheduledTask -TaskName "Archive-Old-Reports" |
 
 # Recreate manually:
 schtasks /create /tn "Hardening\Archive-Old-Reports" `
-    /tr "powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Repos\WinHarden\scripts\Archive_Old_Reports.ps1" `
+    /tr "powershell.exe -NoProfile -ExecutionPolicy Bypass -File <WINHARDEN_REPO>\scripts\Archive_Old_Reports.ps1" `
     /sc MONTHLY /d 2 /st 09:00 /ru SYSTEM /f
     # NOTE: No /z flag (catchup disabled)
 ```
@@ -369,7 +369,7 @@ foreach ($task in $hardeningTasks) {
 
 ```powershell
 # Monitor missed tasks every hour
-# Save as: C:\Repos\WinHarden\scripts\Monitor_Missed_Tasks.ps1
+# Save as: <WINHARDEN_REPO>\scripts\Monitor_Missed_Tasks.ps1
 
 $runInterval = 3600  # 1 hour
 $maxMissedThreshold = 5  # Alert if >5 missed runs
@@ -408,10 +408,10 @@ while ($true) {
 ### Automated Alert for Excessive Missed Runs
 
 ```powershell
-# Save as: C:\Repos\WinHarden\scripts\Alert_Missed_Tasks.ps1
+# Save as: <WINHARDEN_REPO>\scripts\Alert_Missed_Tasks.ps1
 
 $missedThreshold = 10
-$alertFile = "C:\Repos\WinHarden\logs\missed_tasks_alert.txt"
+$alertFile = "<WINHARDEN_REPO>\logs\missed_tasks_alert.txt"
 $alertedTasks = @()
 
 Get-ScheduledTask -TaskPath '\Hardening\*' | ForEach-Object {
@@ -448,7 +448,7 @@ Recommended Actions:
 ```powershell
 # Generate comprehensive missed task report
 $reportDate = Get-Date -Format 'yyyy-MM-dd'
-$reportPath = "C:\Repos\WinHarden\logs\missed_tasks_report_$reportDate.csv"
+$reportPath = "<WINHARDEN_REPO>\logs\missed_tasks_report_$reportDate.csv"
 
 $report = Get-ScheduledTask -TaskPath '\Hardening\*' | 
     ForEach-Object {
@@ -485,12 +485,12 @@ Write-Host "Total missed runs across all tasks: $totalMissed"
 
 # Weekday instance
 schtasks /create /tn "Hardening\Daily-Security-Monitor-Weekday" `
-    /tr "powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Repos\WinHarden\scripts\Monitor_Audit_Logs.ps1" `
+    /tr "powershell.exe -NoProfile -ExecutionPolicy Bypass -File <WINHARDEN_REPO>\scripts\Monitor_Audit_Logs.ps1" `
     /sc WEEKLY /d MO,TU,WE,TH,FR /st 09:00 /ru SYSTEM /z /f
 
 # Weekend instance (no catchup)
 schtasks /create /tn "Hardening\Daily-Security-Monitor-Weekend" `
-    /tr "powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Repos\WinHarden\scripts\Monitor_Audit_Logs.ps1" `
+    /tr "powershell.exe -NoProfile -ExecutionPolicy Bypass -File <WINHARDEN_REPO>\scripts\Monitor_Audit_Logs.ps1" `
     /sc WEEKLY /d SA,SU /st 09:00 /ru SYSTEM /f
     # NOTE: No /z flag
 ```
@@ -500,18 +500,18 @@ schtasks /create /tn "Hardening\Daily-Security-Monitor-Weekend" `
 Windows doesn't natively support "delay before catchup", but you can add a delay wrapper:
 
 ```powershell
-# Create wrapper: C:\Repos\WinHarden\scripts\Delayed_Monitor_Audit_Logs.ps1
+# Create wrapper: <WINHARDEN_REPO>\scripts\Delayed_Monitor_Audit_Logs.ps1
 
 # Add delay before executing actual script
 # This prevents immediate catchup, allowing normal schedule to run first
 Start-Sleep -Seconds 300  # 5-minute delay
 
 # Then call actual script
-& C:\Repos\WinHarden\scripts\Monitor_Audit_Logs.ps1
+& <WINHARDEN_REPO>\scripts\Monitor_Audit_Logs.ps1
 
 # Schedule wrapper instead of original script
 schtasks /create /tn "Hardening\Daily-Security-Monitor-Delayed" `
-    /tr "powershell.exe -File C:\Repos\WinHarden\scripts\Delayed_Monitor_Audit_Logs.ps1" `
+    /tr "powershell.exe -File <WINHARDEN_REPO>\scripts\Delayed_Monitor_Audit_Logs.ps1" `
     /sc DAILY /st 09:00 /ru SYSTEM /z /f
 ```
 
@@ -520,9 +520,9 @@ schtasks /create /tn "Hardening\Daily-Security-Monitor-Delayed" `
 ```powershell
 # Create intelligent wrapper that only catches up if system was actually offline
 
-# Save as: C:\Repos\WinHarden\scripts\Smart_Catchup_Monitor_Audit_Logs.ps1
+# Save as: <WINHARDEN_REPO>\scripts\Smart_Catchup_Monitor_Audit_Logs.ps1
 
-$lastRunFile = "C:\Repos\WinHarden\logs\.last_run_timestamp"
+$lastRunFile = "<WINHARDEN_REPO>\logs\.last_run_timestamp"
 
 # Check if this is first run or catchup run
 $currentTime = Get-Date
@@ -545,7 +545,7 @@ if ($isFirstRun) {
 $currentTime.ToString('o') | Set-Content -Path $lastRunFile
 
 # Execute actual monitoring script
-& C:\Repos\WinHarden\scripts\Monitor_Audit_Logs.ps1
+& <WINHARDEN_REPO>\scripts\Monitor_Audit_Logs.ps1
 ```
 
 ---
@@ -589,7 +589,7 @@ Get-ScheduledTask -TaskName "Archive-Old-Reports" |
     Unregister-ScheduledTask -Confirm:$false
 
 schtasks /create /tn "Hardening\Archive-Old-Reports" `
-    /tr "powershell.exe -File C:\Repos\WinHarden\scripts\Archive_Old_Reports.ps1" `
+    /tr "powershell.exe -File <WINHARDEN_REPO>\scripts\Archive_Old_Reports.ps1" `
     /sc MONTHLY /d 2 /st 09:00 /ru SYSTEM /f
     # No /z flag
 
@@ -657,7 +657,7 @@ Get-ScheduledTask -TaskPath '\Hardening\*' |
     Unregister-ScheduledTask -Confirm:$false
 
 # Reinstall fresh
-& C:\Repos\WinHarden\scripts\Set-ScheduledTasksHardening.ps1 -Force
+& <WINHARDEN_REPO>\scripts\Set-ScheduledTasksHardening.ps1 -Force
 
 # Option 3: Monitor resource usage during catchup
 # Stagger task execution to spread load

@@ -1,4 +1,4 @@
-# WinHarden – Testing Quick Reference
+﻿# WinHarden – Testing Quick Reference
 
 **Für schnelle Lookups während Test-Entwicklung.**
 

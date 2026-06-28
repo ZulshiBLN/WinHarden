@@ -1,4 +1,4 @@
-# WinHarden – STRUCTURE.md
+﻿# WinHarden – STRUCTURE.md
 
 Projekt-spezifische Struktur- und Organisationsregeln für WinHarden.
 

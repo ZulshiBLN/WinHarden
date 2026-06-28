@@ -1,4 +1,4 @@
-# WinHarden Automations - Quickstart Guide
+﻿# WinHarden Automations - Quickstart Guide
 
 **Get WinHarden automation tasks running in under 5 minutes.**
 
@@ -21,7 +21,7 @@ Before you start, verify you have:
 - **Windows Server 2016+** or **Windows 10/11**
 - **PowerShell 5.1+** (built into Windows 7+)
 - **Administrator privileges** (required for Task Scheduler access)
-- **WinHarden repository** cloned to `C:\Repos\WinHarden`
+- **WinHarden repository** cloned to `<WINHARDEN_REPO>`
 - **Network access** (for Windows Update checks, compliance verification)
 
 **Quick Check:**
@@ -33,7 +33,7 @@ Write-Host "PowerShell version OK"
 $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
 Write-Host "Administrator: $(if($isAdmin) { 'YES' } else { 'NO - RESTART AS ADMIN' })"
 
-Test-Path "C:\Repos\WinHarden"
+Test-Path "<WINHARDEN_REPO>"
 Write-Host "Repository path OK"
 ```
 
@@ -54,7 +54,7 @@ Write-Host "Repository path OK"
 ### Step 2: Navigate to Scripts Directory (30 seconds)
 
 ```powershell
-cd C:\Repos\WinHarden\scripts
+cd <WINHARDEN_REPO>\scripts
 ```
 
 Verify you're in the correct directory:
@@ -123,7 +123,7 @@ Five automated security and compliance tasks are created:
 | Monthly-Compliance-Audit | Monthly | 1st day, 08:00 AM | Full compliance verification |
 | Archive-Old-Reports | Monthly | 2nd day, 09:00 AM | Archive reports older than 6 months |
 
-**Output Directory:** All results saved to `C:\Repos\WinHarden\logs\`
+**Output Directory:** All results saved to `<WINHARDEN_REPO>\logs\`
 
 ---
 
@@ -158,7 +158,7 @@ schtasks /run /tn "Hardening\Daily-Security-Monitor"
 
 # Wait a moment and check for logs
 Start-Sleep -Seconds 5
-ls C:\Repos\WinHarden\logs\daily_security_*.csv
+ls <WINHARDEN_REPO>\logs\daily_security_*.csv
 ```
 
 ---
@@ -187,7 +187,7 @@ $required = @(
 )
 
 foreach ($script in $required) {
-    $path = "C:\Repos\WinHarden\scripts\$script"
+    $path = "<WINHARDEN_REPO>\scripts\$script"
     $status = if (Test-Path $path) { "[OK]" } else { "[MISSING]" }
     Write-Host "$script $status"
 }
@@ -198,7 +198,7 @@ foreach ($script in $required) {
 **Fix:** Verify logs directory is writable
 ```powershell
 # Test write permission
-$testFile = "C:\Repos\WinHarden\logs\test_write.txt"
+$testFile = "<WINHARDEN_REPO>\logs\test_write.txt"
 "test" | Out-File -FilePath $testFile -ErrorAction SilentlyContinue
 
 if (Test-Path $testFile) {
@@ -206,7 +206,7 @@ if (Test-Path $testFile) {
     Write-Host "Logs directory is writable [OK]"
 } else {
     Write-Host "Cannot write to logs directory [ERROR]"
-    Write-Host "Run: icacls C:\Repos\WinHarden\logs /grant:r '%USERNAME%:(F)'"
+    Write-Host "Run: icacls <WINHARDEN_REPO>\logs /grant:r '%USERNAME%:(F)'"
 }
 ```
 
@@ -231,7 +231,7 @@ Get-ScheduledTask -TaskName "Daily-Security-Monitor" | Select-Object TaskName, E
 3. [ ] Check Event Viewer for task execution logs
 
 ### Short-term (This week)
-1. [ ] Review output logs in `C:\Repos\WinHarden\logs\`
+1. [ ] Review output logs in `<WINHARDEN_REPO>\logs\`
 2. [ ] Verify daily/weekly tasks are creating reports
 3. [ ] Check Event Viewer for any task errors
 
@@ -263,7 +263,7 @@ Disable-ScheduledTask -TaskName "Monthly-Compliance-Audit"
 Enable-ScheduledTask -TaskName "Monthly-Compliance-Audit"
 
 # Check logs directory
-ls C:\Repos\WinHarden\logs\ | Sort-Object LastWriteTime -Descending | Select-Object Name, LastWriteTime -First 10
+ls <WINHARDEN_REPO>\logs\ | Sort-Object LastWriteTime -Descending | Select-Object Name, LastWriteTime -First 10
 
 # View recent task execution events
 Get-EventLog -LogName System -Source "TaskScheduler" -Newest 20 | Format-Table TimeGenerated, Message

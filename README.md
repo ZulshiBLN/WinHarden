@@ -1,4 +1,4 @@
-# WinHarden - Windows Hardening System
+﻿# WinHarden - Windows Hardening System
 
 **Version:** 1.11  
 **Status:** Production Ready (Grade A+)  

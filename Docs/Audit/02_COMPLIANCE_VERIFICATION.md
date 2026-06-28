@@ -1,4 +1,4 @@
-# WinHarden Compliance Verification
+﻿# WinHarden Compliance Verification
 
 Architectural and operational compliance audit of the WinHarden PowerShell Security Hardening Toolkit.
 

@@ -1,4 +1,4 @@
-# WinHarden Security Assessment
+﻿# WinHarden Security Assessment
 
 Comprehensive security analysis of the WinHarden PowerShell Security Hardening Toolkit.
 

@@ -1,4 +1,4 @@
-# WinHarden - Architecture
+﻿# WinHarden - Architecture
 
 **Technical design, components, and system architecture of WinHarden.**
 
@@ -71,7 +71,7 @@ WinHarden is built on the following architectural principles:
 
 **Storage:**
 ```
-C:\Repos\WinHarden\baselines\
+<WINHARDEN_REPO>\baselines\
   ├── Default-Baseline.xml
   ├── Production-Baseline.xml
   ├── Development-Baseline.xml
@@ -222,7 +222,7 @@ User Account Drift
 
 **Log Locations:**
 ```
-C:\Repos\WinHarden\logs\
+<WINHARDEN_REPO>\logs\
 ├── hardening_operations.log
 ├── compliance_*.csv
 ├── drift_*.csv

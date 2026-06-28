@@ -1,4 +1,4 @@
-# WinHarden Documentation
+﻿# WinHarden Documentation
 
 Comprehensive documentation for the WinHarden PowerShell automation and security hardening toolkit for Windows Server.
 
@@ -191,8 +191,8 @@ Get-EventLog -LogName System -Source "TaskScheduler" -Newest 20
 
 | Resource | Location |
 |----------|----------|
-| Logs and reports | `C:\Repos\WinHarden\logs\` |
-| Archived reports | `C:\Repos\WinHarden\logs\archive\` |
+| Logs and reports | `<WINHARDEN_REPO>\logs\` |
+| Archived reports | `<WINHARDEN_REPO>\logs\archive\` |
 | Scheduled tasks | Task Scheduler > Hardening folder |
 | Task events | Event Viewer > Windows Logs > System |
 | Security audit logs | Event Viewer > Windows Logs > Security |

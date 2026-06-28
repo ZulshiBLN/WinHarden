@@ -1,4 +1,4 @@
-# WinHarden – CLAUDE.md
+﻿# WinHarden – CLAUDE.md
 
 PowerShell Automation & Operations Toolkit für Windows Server-Administration.
 

@@ -1,4 +1,4 @@
-# WinHarden Automations - Setup Guide
+﻿# WinHarden Automations - Setup Guide
 
 **Complete reference for configuring, deploying, and managing WinHarden automation tasks.**
 
@@ -83,9 +83,9 @@ Before running the setup script, verify:
 
 - [ ] Administrator privileges available
 - [ ] PowerShell 5.1+ installed
-- [ ] WinHarden repository exists at `C:\Repos\WinHarden`
+- [ ] WinHarden repository exists at `<WINHARDEN_REPO>`
 - [ ] Network connectivity for update checks
-- [ ] Logs directory writable: `C:\Repos\WinHarden\logs\`
+- [ ] Logs directory writable: `<WINHARDEN_REPO>\logs\`
 - [ ] Event Viewer access available
 - [ ] Task Scheduler service running
 
@@ -107,7 +107,7 @@ $PSVersionTable.PSVersion
 # Expected: Major=5, Minor=1 or higher
 
 # 2. Verify repository structure
-$repoPath = "C:\Repos\WinHarden"
+$repoPath = "<WINHARDEN_REPO>"
 Test-Path "$repoPath\scripts\Set-ScheduledTasksHardening.ps1"
 Test-Path "$repoPath\logs"
 Test-Path "$repoPath\docs"
@@ -186,7 +186,7 @@ EventID,TimeGenerated,Source,Category,Severity
 **Configuration options:**
 ```powershell
 # Run manually with verbose output
-powershell.exe -File C:\Repos\WinHarden\scripts\Monitor_Audit_Logs.ps1 -Verbose
+powershell.exe -File <WINHARDEN_REPO>\scripts\Monitor_Audit_Logs.ps1 -Verbose
 
 # Modify schedule (optional)
 schtasks /change /tn "Hardening\Daily-Security-Monitor" /st 08:00
@@ -227,7 +227,7 @@ KB5032189,Security Update,Security,High,,Available
 **Configuration options:**
 ```powershell
 # Check updates manually
-powershell.exe -File C:\Repos\WinHarden\scripts\Monitor_Windows_Updates.ps1
+powershell.exe -File <WINHARDEN_REPO>\scripts\Monitor_Windows_Updates.ps1
 
 # Change schedule to weekly Friday
 schtasks /change /tn "Hardening\Monitor-Windows-Updates" /d FR /st 14:00
@@ -271,7 +271,7 @@ BitLocker,Encrypted,Encrypted,[OK],None
 **Configuration options:**
 ```powershell
 # Test drift detection manually
-powershell.exe -File C:\Repos\WinHarden\scripts\Detect_Security_Drift.ps1 -Verbose
+powershell.exe -File <WINHARDEN_REPO>\scripts\Detect_Security_Drift.ps1 -Verbose
 
 # Schedule twice weekly (Monday & Thursday)
 # Note: Requires manual dual-task setup - see Advanced Configuration
@@ -346,7 +346,7 @@ Output:        archive/reports_YYYYMM.zip
 
 **Archive organization:**
 ```
-C:\Repos\WinHarden\logs\archive\
+<WINHARDEN_REPO>\logs\archive\
   reports_202301.zip (January 2023 reports)
   reports_202302.zip (February 2023 reports)
   reports_202303.zip (March 2023 reports)
@@ -359,7 +359,7 @@ C:\Repos\WinHarden\logs\archive\
 # Requires editing script - see Advanced Configuration
 
 # Run archival manually
-powershell.exe -File C:\Repos\WinHarden\scripts\Archive_Old_Reports.ps1
+powershell.exe -File <WINHARDEN_REPO>\scripts\Archive_Old_Reports.ps1
 ```
 
 ---
@@ -373,7 +373,7 @@ powershell.exe -File C:\Repos\WinHarden\scripts\Archive_Old_Reports.ps1
 # Win + X -> PowerShell (Admin)
 
 # Step 2: Navigate to scripts directory
-cd C:\Repos\WinHarden\scripts
+cd <WINHARDEN_REPO>\scripts
 
 # Step 3: Run setup script
 .\Set-ScheduledTasksHardening.ps1
@@ -413,7 +413,7 @@ For specific control, create tasks manually:
 # Example: Create Daily-Security-Monitor task
 schtasks /create `
   /tn "Hardening\Daily-Security-Monitor" `
-  /tr "powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Repos\WinHarden\scripts\Monitor_Audit_Logs.ps1" `
+  /tr "powershell.exe -NoProfile -ExecutionPolicy Bypass -File <WINHARDEN_REPO>\scripts\Monitor_Audit_Logs.ps1" `
   /sc DAILY `
   /st 09:00 `
   /ru SYSTEM `
@@ -477,7 +477,7 @@ schtasks /run /tn "Hardening\Daily-Security-Monitor"
 Start-Sleep -Seconds 10
 
 # 3. Check output logs
-ls C:\Repos\WinHarden\logs\daily_security_*.csv | 
+ls <WINHARDEN_REPO>\logs\daily_security_*.csv | 
     Select-Object Name, LastWriteTime | 
     Format-Table -AutoSize
 
@@ -524,7 +524,7 @@ Get-ScheduledTask -TaskPath '\Hardening\*' |
     }
 
 # Review latest logs
-ls C:\Repos\WinHarden\logs\ -Filter *.csv | 
+ls <WINHARDEN_REPO>\logs\ -Filter *.csv | 
     Sort-Object LastWriteTime -Descending | 
     Select-Object Name, LastWriteTime -First 5
 ```
@@ -550,7 +550,7 @@ Get-EventLog -LogName System -Source "TaskScheduler" -After (Get-Date).AddDays(-
     Select-Object Count
 
 # 4. Check disk usage
-$logsSize = (Get-ChildItem C:\Repos\WinHarden\logs\ -Recurse | 
+$logsSize = (Get-ChildItem <WINHARDEN_REPO>\logs\ -Recurse | 
     Measure-Object -Property Length -Sum).Sum / 1MB
 Write-Host "Logs directory size: $([Math]::Round($logsSize, 2)) MB"
 ```
@@ -559,25 +559,25 @@ Write-Host "Logs directory size: $([Math]::Round($logsSize, 2)) MB"
 
 ```powershell
 # 1. Generate compliance summary
-ls C:\Repos\WinHarden\logs\audit_*.csv | 
+ls <WINHARDEN_REPO>\logs\audit_*.csv | 
     Sort-Object LastWriteTime -Descending | 
     Select-Object Name, LastWriteTime -First 1
 
 # 2. Check drift reports
-ls C:\Repos\WinHarden\logs\drift_*.csv | 
+ls <WINHARDEN_REPO>\logs\drift_*.csv | 
     Sort-Object LastWriteTime -Descending | 
     Select-Object Name, LastWriteTime -First 1
 
 # 3. Verify archive completion
-ls C:\Repos\WinHarden\logs\archive\*.zip | 
+ls <WINHARDEN_REPO>\logs\archive\*.zip | 
     Select-Object Name, Length -First 5
 
 # 4. Calculate total reports generated
 $reportCount = @(
-    (ls C:\Repos\WinHarden\logs\daily_security_*.csv | Measure-Object).Count,
-    (ls C:\Repos\WinHarden\logs\updates_*.csv | Measure-Object).Count,
-    (ls C:\Repos\WinHarden\logs\drift_*.csv | Measure-Object).Count,
-    (ls C:\Repos\WinHarden\logs\audit_*.csv | Measure-Object).Count
+    (ls <WINHARDEN_REPO>\logs\daily_security_*.csv | Measure-Object).Count,
+    (ls <WINHARDEN_REPO>\logs\updates_*.csv | Measure-Object).Count,
+    (ls <WINHARDEN_REPO>\logs\drift_*.csv | Measure-Object).Count,
+    (ls <WINHARDEN_REPO>\logs\audit_*.csv | Measure-Object).Count
 )
 Write-Host "Total reports generated: $($reportCount | Measure-Object -Sum | Select -Expand Sum)"
 ```
@@ -621,7 +621,7 @@ schtasks /change /tn "Hardening\Detect-Configuration-Drift" /d MO,TH
 # Create a second instance of Daily-Security-Monitor running at midnight
 schtasks /create `
   /tn "Hardening\Daily-Security-Monitor-Midnight" `
-  /tr "powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Repos\WinHarden\scripts\Monitor_Audit_Logs.ps1" `
+  /tr "powershell.exe -NoProfile -ExecutionPolicy Bypass -File <WINHARDEN_REPO>\scripts\Monitor_Audit_Logs.ps1" `
   /sc DAILY `
   /st 00:00 `
   /ru SYSTEM `
@@ -666,7 +666,7 @@ Get-EventLog -LogName System -Source "TaskScheduler" -Newest 20 |
     Where-Object { $_.Message -like '*Daily-Security-Monitor*' }
 
 # 4. Test script manually
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Repos\WinHarden\scripts\Monitor_Audit_Logs.ps1 -Verbose
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File <WINHARDEN_REPO>\scripts\Monitor_Audit_Logs.ps1 -Verbose
 ```
 
 **Solutions:**
@@ -690,7 +690,7 @@ Get-ScheduledTask -TaskName "Daily-Security-Monitor" |
 **Diagnosis:**
 ```powershell
 # Verify script path
-Test-Path C:\Repos\WinHarden\scripts\Monitor_Audit_Logs.ps1
+Test-Path <WINHARDEN_REPO>\scripts\Monitor_Audit_Logs.ps1
 
 # Check actual error message
 Get-EventLog -LogName System -Source "TaskScheduler" -Newest 5 | 
@@ -701,7 +701,7 @@ Get-EventLog -LogName System -Source "TaskScheduler" -Newest 5 |
 **Solutions:**
 ```powershell
 # Verify all scripts exist
-ls C:\Repos\WinHarden\scripts\*.ps1 | Select-Object Name
+ls <WINHARDEN_REPO>\scripts\*.ps1 | Select-Object Name
 
 # If repository is in different location, recreate tasks:
 # 1. Edit Set-ScheduledTasksHardening.ps1
@@ -716,10 +716,10 @@ ls C:\Repos\WinHarden\scripts\*.ps1 | Select-Object Name
 **Diagnosis:**
 ```powershell
 # 1. Run script manually to see errors
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Repos\WinHarden\scripts\Monitor_Audit_Logs.ps1 -Verbose
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File <WINHARDEN_REPO>\scripts\Monitor_Audit_Logs.ps1 -Verbose
 
 # 2. Check logs directory permissions
-icacls C:\Repos\WinHarden\logs\
+icacls <WINHARDEN_REPO>\logs\
 
 # 3. Check script errors
 Get-EventLog -LogName System -Source "TaskScheduler" -Newest 10 | 
@@ -730,10 +730,10 @@ Get-EventLog -LogName System -Source "TaskScheduler" -Newest 10 |
 **Solutions:**
 ```powershell
 # Verify logs directory permissions
-icacls C:\Repos\WinHarden\logs\ /grant:r 'SYSTEM:(F)'
+icacls <WINHARDEN_REPO>\logs\ /grant:r 'SYSTEM:(F)'
 
 # Set logs directory full permissions
-$aclPath = 'C:\Repos\WinHarden\logs'
+$aclPath = '<WINHARDEN_REPO>\logs'
 $acl = Get-Acl $aclPath
 $rule = New-Object System.Security.AccessControl.FileSystemAccessRule(
     'SYSTEM', 'FullControl', 'ContainerInherit,ObjectInherit', 'None', 'Allow')
@@ -829,7 +829,7 @@ Get-ScheduledTask -TaskName "Daily-Security-Monitor" |
     Unregister-ScheduledTask -Confirm:$false
 
 # View recent logs
-ls C:\Repos\WinHarden\logs\ | Sort-Object LastWriteTime -Descending
+ls <WINHARDEN_REPO>\logs\ | Sort-Object LastWriteTime -Descending
 ```
 
 ---

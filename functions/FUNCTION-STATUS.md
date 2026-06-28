@@ -1,4 +1,4 @@
-# WinHarden – FUNCTION-STATUS.md
+﻿# WinHarden – FUNCTION-STATUS.md
 
 Arbeitsstand und Modul-Informationen für alle PowerShell-Funktionen.
 
@@ -213,10 +213,10 @@ is not recognized as the name of a cmdlet, function, script file, or operable pr
 - Test file exists but function implementation is missing
 
 **Debugging Steps:**
-1. Check if file exists: `Test-Path C:\Repos\WinHarden\functions\System\Utility\Get-UpdateHistory.ps1`
-2. Search for function definition: `Get-Content C:\Repos\WinHarden\functions\System\Utility\*.ps1 | Select-String 'function Get-UpdateHistory'`
-3. Check module exports in PSM1: `Get-Content C:\Repos\WinHarden\WinHarden.psm1 | Select-String 'Get-UpdateHistory'`
-4. List all utility functions: `Get-ChildItem C:\Repos\WinHarden\functions\System\Utility\`
+1. Check if file exists: `Test-Path <WINHARDEN_REPO>\functions\System\Utility\Get-UpdateHistory.ps1`
+2. Search for function definition: `Get-Content <WINHARDEN_REPO>\functions\System\Utility\*.ps1 | Select-String 'function Get-UpdateHistory'`
+3. Check module exports in PSM1: `Get-Content <WINHARDEN_REPO>\WinHarden.psm1 | Select-String 'Get-UpdateHistory'`
+4. List all utility functions: `Get-ChildItem <WINHARDEN_REPO>\functions\System\Utility\`
 
 **Remediation Options:**
 - **Option A (2 hours):** Implement Get-UpdateHistory function based on test specifications
@@ -239,7 +239,7 @@ is not recognized as the name of a cmdlet, function, script file, or operable pr
 **Exact Error Messages:**
 ```
 CommandNotFoundException: Could not find Command Write-Log
-At C:\Repos\WinHarden\functions\System\Drift\Get-NetworkSecurityDrift.ps1:121 char:24
+At <WINHARDEN_REPO>\functions\System\Drift\Get-NetworkSecurityDrift.ps1:121 char:24
 ```
 
 **Affected Test Categories:**
@@ -296,10 +296,10 @@ At C:\Repos\WinHarden\functions\System\Drift\Get-NetworkSecurityDrift.ps1:121 ch
 
 **Debugging Steps:**
 1. Check function exists: `Get-Command Write-Log -ErrorAction SilentlyContinue`
-2. Check module import in pester setup: `Get-Content C:\Repos\WinHarden\tests\Get-NetworkSecurityDrift.Tests.ps1 | Select-String 'Import-Module|BeforeAll'`
-3. Verify Core module loads: `Test-Path C:\Repos\WinHarden\functions\Core\Write-Log.ps1`
-4. Check main module manifest: `Get-Content C:\Repos\WinHarden\WinHarden.psd1 | Select-String 'NestedModules|FunctionsToExport'`
-5. Test manual import: `Import-Module C:\Repos\WinHarden\WinHarden.psd1 -Force; Get-Command Write-Log`
+2. Check module import in pester setup: `Get-Content <WINHARDEN_REPO>\tests\Get-NetworkSecurityDrift.Tests.ps1 | Select-String 'Import-Module|BeforeAll'`
+3. Verify Core module loads: `Test-Path <WINHARDEN_REPO>\functions\Core\Write-Log.ps1`
+4. Check main module manifest: `Get-Content <WINHARDEN_REPO>\WinHarden.psd1 | Select-String 'NestedModules|FunctionsToExport'`
+5. Test manual import: `Import-Module <WINHARDEN_REPO>\WinHarden.psd1 -Force; Get-Command Write-Log`
 
 **Remediation Options:**
 - **Option A (1 hour):** Add Write-Log to test BeforeAll block explicit import
@@ -326,7 +326,7 @@ At C:\Repos\WinHarden\functions\System\Drift\Get-NetworkSecurityDrift.ps1:121 ch
 Expected 1, but got $null.
 Expected: 1
 Actual: $null
-Location: C:\Repos\WinHarden\tests\Get-AccountPoliciesDrift.Tests.ps1:62
+Location: <WINHARDEN_REPO>\tests\Get-AccountPoliciesDrift.Tests.ps1:62
 ```
 - Function returns null instead of drift object
 - Registry mock likely not working correctly
@@ -336,7 +336,7 @@ Location: C:\Repos\WinHarden\tests\Get-AccountPoliciesDrift.Tests.ps1:62
 Expected $null or empty, but got @{Category=Account Policy; ...}
 Expected: $null or empty
 Actual: Drift object with Minimum Password Length 10 vs 8
-Location: C:\Repos\WinHarden\tests\Get-AccountPoliciesDrift.Tests.ps1:107
+Location: <WINHARDEN_REPO>\tests\Get-AccountPoliciesDrift.Tests.ps1:107
 ```
 - Custom parameter value (10) not accepted
 - Function ignores custom minimum password length parameter
@@ -346,7 +346,7 @@ Location: C:\Repos\WinHarden\tests\Get-AccountPoliciesDrift.Tests.ps1:107
 Expected 1, but got $null.
 Expected: 1
 Actual: $null
-Location: C:\Repos\WinHarden\tests\Get-AccountPoliciesDrift.Tests.ps1:129
+Location: <WINHARDEN_REPO>\tests\Get-AccountPoliciesDrift.Tests.ps1:129
 ```
 - Function returns null instead of drift object for complexity check
 
@@ -355,7 +355,7 @@ Location: C:\Repos\WinHarden\tests\Get-AccountPoliciesDrift.Tests.ps1:129
 Expected $null or empty, but got @{Category=Account Policy; ...}
 Expected: $null or empty  
 Actual: Drift object with Password Complexity Expected=Disabled (0), Actual=Enabled (1)
-Location: C:\Repos\WinHarden\tests\Get-AccountPoliciesDrift.Tests.ps1:255
+Location: <WINHARDEN_REPO>\tests\Get-AccountPoliciesDrift.Tests.ps1:255
 ```
 - Custom RequirePasswordComplexity parameter not working
 
@@ -369,7 +369,7 @@ Location: Pester mock invocation failure
 **Test 6: "returns PSCustomObject with required properties" (Line 280)**
 ```
 ParameterBindingException: Parameter set cannot be resolved using the specified named parameters.
-Location: C:\Repos\WinHarden\tests\Get-AccountPoliciesDrift.Tests.ps1:280
+Location: <WINHARDEN_REPO>\tests\Get-AccountPoliciesDrift.Tests.ps1:280
 ```
 - Invalid parameter binding in function call
 
@@ -382,9 +382,9 @@ Location: C:\Repos\WinHarden\tests\Get-AccountPoliciesDrift.Tests.ps1:280
 - Parameter set definitions may not match test expectations
 
 **Debugging Steps:**
-1. View function signature: `Get-Content C:\Repos\WinHarden\functions\System\Drift\Get-AccountPoliciesDrift.ps1 | Select-String 'param\|MinimumPasswordLength|RequirePasswordComplexity' -Context 3`
+1. View function signature: `Get-Content <WINHARDEN_REPO>\functions\System\Drift\Get-AccountPoliciesDrift.ps1 | Select-String 'param\|MinimumPasswordLength|RequirePasswordComplexity' -Context 3`
 2. Check parameter defaults: `Get-Command Get-AccountPoliciesDrift | Select-Object -ExpandProperty Parameters`
-3. Review mock setup in test: `Get-Content C:\Repos\WinHarden\tests\Get-AccountPoliciesDrift.Tests.ps1 | Select-String 'Mock|Registry' -Context 2`
+3. Review mock setup in test: `Get-Content <WINHARDEN_REPO>\tests\Get-AccountPoliciesDrift.Tests.ps1 | Select-String 'Mock|Registry' -Context 2`
 4. Test function manually: `Get-AccountPoliciesDrift -MinimumPasswordLength 10 -Verbose`
 5. Check registry values: `Get-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters'`
 
@@ -409,7 +409,7 @@ Location: C:\Repos\WinHarden\tests\Get-AccountPoliciesDrift.Tests.ps1:280
 **Root Cause:** Not yet analyzed in detail from test output
 
 **Debugging Steps:**
-1. Run isolated test: `Invoke-Pester -Path C:\Repos\WinHarden\tests\Invoke-SecurityHardening.Tests.ps1 -Verbose`
+1. Run isolated test: `Invoke-Pester -Path <WINHARDEN_REPO>\tests\Invoke-SecurityHardening.Tests.ps1 -Verbose`
 2. Review failed test details: Check test output for specific assertions
 3. Verify parallel execution: Check if `-Parallel` flag causes race conditions
 4. Test rule application: Manually test each rule type (Registry, Firewall, Service, Audit, Encryption)

@@ -1,4 +1,4 @@
-# WinHarden - Performance Guide
+﻿# WinHarden - Performance Guide
 
 **Performance metrics, benchmarks, and optimization strategies.**
 
@@ -170,7 +170,7 @@ function Monitor-WinHardenPerformance {
 # Generate performance report
 function New-PerformanceReport {
     param(
-        [string]$OutputPath = "C:\Repos\WinHarden\logs"
+        [string]$OutputPath = "<WINHARDEN_REPO>\logs"
     )
     
     $report = @()
@@ -342,7 +342,7 @@ foreach ($process in $winhardProcesses) {
 
 ```powershell
 # Compress old logs to reduce disk usage
-$logPath = "C:\Repos\WinHarden\logs"
+$logPath = "<WINHARDEN_REPO>\logs"
 $archivePath = "$logPath\archive"
 
 # Find logs older than 6 months
@@ -407,7 +407,7 @@ $compliance = Test-SystemCompliance `
 # Generate comprehensive reports
 New-SecurityDriftReport `
     -BaselineName "Production-Baseline" `
-    -OutputPath "C:\Repos\WinHarden\logs" `
+    -OutputPath "<WINHARDEN_REPO>\logs" `
     -IncludeHistorical
 ```
 

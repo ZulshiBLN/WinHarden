@@ -1,4 +1,4 @@
-# WinHarden - Deployment Guide
+﻿# WinHarden - Deployment Guide
 
 **Complete step-by-step deployment procedures for enterprise hardening.**
 
@@ -32,8 +32,8 @@
 
 ```powershell
 # 1. Verify repository access
-Test-Path C:\Repos\WinHarden
-Get-ChildItem C:\Repos\WinHarden | Select-Object Name
+Test-Path <WINHARDEN_REPO>
+Get-ChildItem <WINHARDEN_REPO> | Select-Object Name
 
 # 2. Verify PowerShell version
 $PSVersionTable.PSVersion  # Should be 5.1+
@@ -56,7 +56,7 @@ Get-EventLog -List | Select-Object Log
 
 # 8. Create backup of current state
 Invoke-Command -ScriptBlock {
-    $backupPath = "C:\Repos\WinHarden\backups\pre_deployment_$(Get-Date -Format 'yyyyMMdd_HHmmss')"
+    $backupPath = "<WINHARDEN_REPO>\backups\pre_deployment_$(Get-Date -Format 'yyyyMMdd_HHmmss')"
     New-Item -ItemType Directory -Path $backupPath -Force
     Write-Host "Backup directory created: $backupPath"
 }
@@ -96,7 +96,7 @@ COMMUNICATION:
 - Escalation contacts: [Contacts]
 "@
 
-$plan | Out-File "C:\Repos\WinHarden\deployment_plan_$(Get-Date -Format 'yyyyMMdd').txt"
+$plan | Out-File "<WINHARDEN_REPO>\deployment_plan_$(Get-Date -Format 'yyyyMMdd').txt"
 ```
 
 ---
@@ -107,7 +107,7 @@ $plan | Out-File "C:\Repos\WinHarden\deployment_plan_$(Get-Date -Format 'yyyyMMd
 
 ```powershell
 # Create comprehensive system backup before any changes
-$backupPath = "C:\Repos\WinHarden\backups\pre_deployment_$(Get-Date -Format 'yyyyMMdd_HHmmss')"
+$backupPath = "<WINHARDEN_REPO>\backups\pre_deployment_$(Get-Date -Format 'yyyyMMdd_HHmmss')"
 New-Item -ItemType Directory -Path $backupPath -Force
 
 # 1. Backup firewall rules
@@ -145,7 +145,7 @@ Get-ChildItem $backupPath | Measure-Object
 
 ```powershell
 # Before applying any hardening, create baseline of current state
-Import-Module C:\Repos\WinHarden -Force
+Import-Module <WINHARDEN_REPO> -Force
 
 # Create baseline
 New-HardeningBaseline `
@@ -177,7 +177,7 @@ New-HardeningBaseline `
 Invoke-HardeningRemediation `
     -BaselineName "Test-Baseline" `
     -WhatIf `
-    -Verbose | Tee-Object -FilePath "C:\Repos\WinHarden\logs\test_deployment_whatif.txt"
+    -Verbose | Tee-Object -FilePath "<WINHARDEN_REPO>\logs\test_deployment_whatif.txt"
 ```
 
 ---
@@ -188,7 +188,7 @@ Invoke-HardeningRemediation `
 
 ```powershell
 # Load module
-Import-Module C:\Repos\WinHarden -Force
+Import-Module <WINHARDEN_REPO> -Force
 
 # Check current compliance
 $compliance = Test-SystemCompliance -BaselineName "Default-Baseline"
@@ -201,9 +201,9 @@ $issues | Where-Object Severity -in @("Critical", "High") | Format-Table
 # Generate assessment report
 New-SecurityDriftReport `
     -BaselineName "Default-Baseline" `
-    -OutputPath "C:\Repos\WinHarden\logs"
+    -OutputPath "<WINHARDEN_REPO>\logs"
 
-Write-Host "Assessment complete. Review logs at C:\Repos\WinHarden\logs\"
+Write-Host "Assessment complete. Review logs at <WINHARDEN_REPO>\logs\"
 ```
 
 ### Step 2: Test Deployment (WhatIf mode) (30 minutes)
@@ -217,7 +217,7 @@ Invoke-HardeningRemediation `
     -WhatIf `
     -Verbose `
     -ErrorAction Continue `
-    | Tee-Object -FilePath "C:\Repos\WinHarden\logs\whatif_preview_$(Get-Date -Format 'yyyyMMdd_HHmmss').txt"
+    | Tee-Object -FilePath "<WINHARDEN_REPO>\logs\whatif_preview_$(Get-Date -Format 'yyyyMMdd_HHmmss').txt"
 
 Write-Host "Review preview above. Confirm before proceeding with actual deployment."
 ```
@@ -228,7 +228,7 @@ Write-Host "Review preview above. Confirm before proceeding with actual deployme
 # Final checks before live deployment
 
 # 1. Verify backup completed
-$backupPath = Get-ChildItem C:\Repos\WinHarden\backups\ -Directory | Sort-Object CreationTime -Descending | Select-Object -First 1
+$backupPath = Get-ChildItem <WINHARDEN_REPO>\backups\ -Directory | Sort-Object CreationTime -Descending | Select-Object -First 1
 Write-Host "Latest backup: $($backupPath.FullName)"
 Get-ChildItem $backupPath.FullName | Measure-Object
 
@@ -260,7 +260,7 @@ Write-Host "Time: $(Get-Date)"
 Write-Host "Server: $($env:COMPUTERNAME)"
 
 # Start logging
-$logPath = "C:\Repos\WinHarden\logs\deployment_$(Get-Date -Format 'yyyyMMdd_HHmmss').log"
+$logPath = "<WINHARDEN_REPO>\logs\deployment_$(Get-Date -Format 'yyyyMMdd_HHmmss').log"
 
 # Execute with full logging
 Invoke-HardeningRemediation `
@@ -308,7 +308,7 @@ Write-Host "System uptime: $($uptime.TotalMinutes) minutes"
 # 5. Generate final report
 New-SecurityDriftReport `
     -BaselineName "Default-Baseline" `
-    -OutputPath "C:\Repos\WinHarden\logs"
+    -OutputPath "<WINHARDEN_REPO>\logs"
 
 Write-Host "Deployment validation complete."
 ```
@@ -328,10 +328,10 @@ server3.example.com,staging,firewall
 server4.example.com,development,all
 "@
 
-$servers | Out-File "C:\Repos\WinHarden\servers_deployment.csv"
+$servers | Out-File "<WINHARDEN_REPO>\servers_deployment.csv"
 
 # Verify connectivity to all servers
-$serverList = Import-Csv "C:\Repos\WinHarden\servers_deployment.csv" -Header Name,Env,Scope
+$serverList = Import-Csv "<WINHARDEN_REPO>\servers_deployment.csv" -Header Name,Env,Scope
 foreach ($server in $serverList) {
     $result = Test-Connection -ComputerName $server.Name -Count 1 -Quiet
     Write-Host "$($server.Name): $(if($result) { 'ONLINE' } else { 'OFFLINE' })"
@@ -365,11 +365,11 @@ foreach ($phase in $phases) {
         $session = New-PSSession -ComputerName $server
         
         # Copy module
-        Copy-Item -Path "C:\Repos\WinHarden" -Destination "C:\Repos\WinHarden" -ToSession $session -Recurse -Force
+        Copy-Item -Path "<WINHARDEN_REPO>" -Destination "<WINHARDEN_REPO>" -ToSession $session -Recurse -Force
         
         # Deploy
         Invoke-Command -Session $session -ScriptBlock {
-            Import-Module C:\Repos\WinHarden
+            Import-Module <WINHARDEN_REPO>
             Invoke-HardeningRemediation -BaselineName "Default-Baseline" -Force -Verbose
         }
         
@@ -399,11 +399,11 @@ foreach ($phase in $phases) {
 # 1. Create GPO deployment script
 $gpoScript = @"
 # Deploy WinHarden via GPO
-Import-Module C:\Repos\WinHarden
+Import-Module <WINHARDEN_REPO>
 Invoke-HardeningRemediation -BaselineName "Enterprise-Baseline" -Force
 "@
 
-$gpoScript | Out-File "C:\Repos\WinHarden\scripts\GPO_Deployment.ps1"
+$gpoScript | Out-File "<WINHARDEN_REPO>\scripts\GPO_Deployment.ps1"
 
 # 2. Create Group Policy Object (requires Domain Admin)
 # New-GPO -Name "WinHarden-Deployment" -Comment "WinHarden hardening deployment"
@@ -423,7 +423,7 @@ $gpoScript | Out-File "C:\Repos\WinHarden\scripts\GPO_Deployment.ps1"
 # Collect compliance data from all servers
 $complianceReport = @()
 
-$servers = Import-Csv "C:\Repos\WinHarden\servers_deployment.csv" -Header Name,Env,Scope
+$servers = Import-Csv "<WINHARDEN_REPO>\servers_deployment.csv" -Header Name,Env,Scope
 
 foreach ($server in $servers) {
     Write-Host "Collecting compliance from $($server.Name)..."
@@ -431,7 +431,7 @@ foreach ($server in $servers) {
     $session = New-PSSession -ComputerName $server.Name
     
     $compliance = Invoke-Command -Session $session -ScriptBlock {
-        Import-Module C:\Repos\WinHarden
+        Import-Module <WINHARDEN_REPO>
         Test-SystemCompliance -BaselineName "Default-Baseline"
     }
     
@@ -448,7 +448,7 @@ foreach ($server in $servers) {
 }
 
 # Export to CSV for analysis
-$complianceReport | Export-Csv -Path "C:\Repos\WinHarden\logs\enterprise_compliance_$(Get-Date -Format 'yyyyMMdd').csv"
+$complianceReport | Export-Csv -Path "<WINHARDEN_REPO>\logs\enterprise_compliance_$(Get-Date -Format 'yyyyMMdd').csv"
 
 # Display summary
 $complianceReport | Format-Table Server, Environment, Compliance, Failed, Passed -AutoSize
@@ -466,7 +466,7 @@ $complianceReport | Format-Table Server, Environment, Compliance, Failed, Passed
 function Test-DeploymentSuccess {
     param(
         [string]$BaselineName = "Default-Baseline",
-        [string]$OutputPath = "C:\Repos\WinHarden\logs"
+        [string]$OutputPath = "<WINHARDEN_REPO>\logs"
     )
     
     $testResults = @()
@@ -547,13 +547,13 @@ Write-Host "Time: $(Get-Date)"
 Get-ScheduledTask -TaskPath '\Hardening\*' | Disable-ScheduledTask
 
 # Step 2: Restore registry from backup
-# reg import "C:\Repos\WinHarden\backups\pre_deployment_*/windows_version.reg"
+# reg import "<WINHARDEN_REPO>\backups\pre_deployment_*/windows_version.reg"
 
 # Step 3: Restore firewall rules
 # (See backup restoration procedure)
 
 # Step 4: Restore services to original state
-# Get-Content "C:\Repos\WinHarden\backups\pre_deployment_*/services.csv" | ForEach-Object {
+# Get-Content "<WINHARDEN_REPO>\backups\pre_deployment_*/services.csv" | ForEach-Object {
 #     $svc = Import-Csv
 #     Set-Service -Name $svc.Name -StartupType $svc.StartType
 # }

@@ -1,4 +1,4 @@
-# WinHarden Audit Report Summary
+﻿# WinHarden Audit Report Summary
 
 Executive-level audit summary for the WinHarden PowerShell Security Hardening Toolkit.
 

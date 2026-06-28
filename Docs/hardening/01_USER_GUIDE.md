@@ -1,4 +1,4 @@
-# WinHarden - User Guide
+﻿# WinHarden - User Guide
 
 **Complete reference for using WinHarden hardening features and cmdlets.**
 
@@ -66,10 +66,10 @@ Get-ChildItem functions/ -Recurse -Filter *.ps1 | Select-Object Name
 
 ```powershell
 # Method 1: Import entire module
-Import-Module C:\Repos\WinHarden -Force
+Import-Module <WINHARDEN_REPO> -Force
 
 # Method 2: Dot-source specific functions
-. C:\Repos\WinHarden\functions\Hardening\New-HardeningBaseline.ps1
+. <WINHARDEN_REPO>\functions\Hardening\New-HardeningBaseline.ps1
 
 # Verify functions are loaded
 Get-Command -Module WinHarden | Select-Object Name | Format-Table
@@ -115,10 +115,10 @@ New-HardeningBaseline `
     -IncludeAuditPolicy $true
 
 # Verify baseline created
-Get-ChildItem C:\Repos\WinHarden\baselines\ | Select-Object Name, LastWriteTime
+Get-ChildItem <WINHARDEN_REPO>\baselines\ | Select-Object Name, LastWriteTime
 ```
 
-**Output:** Baseline file created in `C:\Repos\WinHarden\baselines\`
+**Output:** Baseline file created in `<WINHARDEN_REPO>\baselines\`
 
 #### Get-HardeningBaseline
 
@@ -136,7 +136,7 @@ Get-HardeningBaseline -Name "Production-Baseline-2026" | Format-List
 
 # Export baseline
 $baseline = Get-HardeningBaseline -Name "Production-Baseline-2026"
-$baseline | Export-Clixml -Path "C:\Repos\WinHarden\baselines\backup_prod.xml"
+$baseline | Export-Clixml -Path "<WINHARDEN_REPO>\baselines\backup_prod.xml"
 ```
 
 ### Compliance Operations
@@ -156,7 +156,7 @@ $result | Select-Object Category, ComplianceRate, IssueCount
 $result | Format-List
 
 # Export compliance report
-$result | Export-Csv -Path "C:\Repos\WinHarden\logs\compliance_report_$(Get-Date -Format 'yyyyMMdd').csv"
+$result | Export-Csv -Path "<WINHARDEN_REPO>\logs\compliance_report_$(Get-Date -Format 'yyyyMMdd').csv"
 
 # Test specific categories only
 Test-SystemCompliance `
@@ -184,7 +184,7 @@ Invoke-HardeningRemediation `
 Invoke-HardeningRemediation `
     -BaselineName "Production-Baseline-2026" `
     -Verbose `
-    -LogPath "C:\Repos\WinHarden\logs\remediation_$(Get-Date -Format 'yyyyMMdd_HHmmss').log"
+    -LogPath "<WINHARDEN_REPO>\logs\remediation_$(Get-Date -Format 'yyyyMMdd_HHmmss').log"
 ```
 
 ### Drift Detection
@@ -207,7 +207,7 @@ $drift | Where-Object Status -eq "Drift" | Format-Table
 $drift | Where-Object Severity -in @("High", "Critical") | Format-Table
 
 # Export drift report
-$drift | Export-Csv -Path "C:\Repos\WinHarden\logs\drift_report_$(Get-Date -Format 'yyyyMMdd').csv"
+$drift | Export-Csv -Path "<WINHARDEN_REPO>\logs\drift_report_$(Get-Date -Format 'yyyyMMdd').csv"
 ```
 
 ### Reporting
@@ -220,18 +220,18 @@ Generates comprehensive security drift report.
 # Generate full drift report
 New-SecurityDriftReport `
     -BaselineName "Production-Baseline-2026" `
-    -OutputPath "C:\Repos\WinHarden\logs"
+    -OutputPath "<WINHARDEN_REPO>\logs"
 
 # Generate with summary only
 New-SecurityDriftReport `
     -BaselineName "Production-Baseline-2026" `
-    -OutputPath "C:\Repos\WinHarden\logs" `
+    -OutputPath "<WINHARDEN_REPO>\logs" `
     -SummaryOnly
 
 # Generate for specific category
 New-SecurityDriftReport `
     -BaselineName "Production-Baseline-2026" `
-    -OutputPath "C:\Repos\WinHarden\logs" `
+    -OutputPath "<WINHARDEN_REPO>\logs" `
     -Category "Firewall"
 ```
 
@@ -248,7 +248,7 @@ New-SecurityDriftReport `
 New-HardeningBaseline -Name "MyServer-Baseline" -Description "Initial baseline"
 
 # Step 2: Manually adjust baseline if needed
-# Edit baseline file in C:\Repos\WinHarden\baselines\
+# Edit baseline file in <WINHARDEN_REPO>\baselines\
 
 # Step 3: Test compliance before applying
 $compliance = Test-SystemCompliance -BaselineName "MyServer-Baseline"
@@ -276,11 +276,11 @@ if ($drift | Where-Object Status -eq "Drift") {
 }
 
 # Weekly: Generate drift report
-New-SecurityDriftReport -BaselineName "MyServer-Baseline" -OutputPath "C:\Repos\WinHarden\logs"
+New-SecurityDriftReport -BaselineName "MyServer-Baseline" -OutputPath "<WINHARDEN_REPO>\logs"
 
 # Monthly: Full compliance audit
 $compliance = Test-SystemCompliance -BaselineName "MyServer-Baseline"
-$compliance | Export-Csv -Path "C:\Repos\WinHarden\logs\monthly_compliance_$(Get-Date -Format 'yyyyMM').csv"
+$compliance | Export-Csv -Path "<WINHARDEN_REPO>\logs\monthly_compliance_$(Get-Date -Format 'yyyyMM').csv"
 ```
 
 ### Task 3: Multi-Server Hardening
@@ -317,7 +317,7 @@ $drift | Where-Object Status -eq "Drift" | Format-Table
 # Generate incident report
 New-SecurityDriftReport `
     -BaselineName "MyServer-Baseline" `
-    -OutputPath "C:\Repos\WinHarden\logs" `
+    -OutputPath "<WINHARDEN_REPO>\logs" `
     -IncidentReport
 ```
 
@@ -329,13 +329,13 @@ New-SecurityDriftReport `
 
 ```powershell
 # List all logs
-Get-ChildItem C:\Repos\WinHarden\logs\ | Select-Object Name, LastWriteTime
+Get-ChildItem <WINHARDEN_REPO>\logs\ | Select-Object Name, LastWriteTime
 
 # View latest hardening operations
-Get-Content C:\Repos\WinHarden\logs\hardening_operations.log -Tail 50
+Get-Content <WINHARDEN_REPO>\logs\hardening_operations.log -Tail 50
 
 # Filter for errors
-Get-Content C:\Repos\WinHarden\logs\hardening_operations.log | 
+Get-Content <WINHARDEN_REPO>\logs\hardening_operations.log | 
     Select-String -Pattern "ERROR|WARN" |
     Format-Table
 ```
@@ -392,7 +392,7 @@ Write-Host "Admin: $isAdmin"
 **Solution:**
 ```powershell
 # List available baselines
-Get-ChildItem C:\Repos\WinHarden\baselines\ -Filter "*.xml"
+Get-ChildItem <WINHARDEN_REPO>\baselines\ -Filter "*.xml"
 
 # Create baseline if missing
 New-HardeningBaseline -Name "MyServer-Baseline"
@@ -403,12 +403,12 @@ New-HardeningBaseline -Name "MyServer-Baseline"
 **Solution:**
 ```powershell
 # Verify SYSTEM account can access paths
-icacls C:\Repos\WinHarden\
-icacls C:\Repos\WinHarden\baselines\
-icacls C:\Repos\WinHarden\logs\
+icacls <WINHARDEN_REPO>\
+icacls <WINHARDEN_REPO>\baselines\
+icacls <WINHARDEN_REPO>\logs\
 
 # Grant permissions if needed
-icacls C:\Repos\WinHarden /grant:r "SYSTEM:(F)" /T
+icacls <WINHARDEN_REPO> /grant:r "SYSTEM:(F)" /T
 ```
 
 ### Issue: Performance degradation during remediation
@@ -463,7 +463,7 @@ $baseline = @{
 # Create scheduled task for daily compliance check
 $action = New-ScheduledTaskAction `
     -Execute "powershell.exe" `
-    -Argument "-NoProfile -ExecutionPolicy Bypass -File C:\Repos\WinHarden\scripts\Daily-Compliance-Check.ps1"
+    -Argument "-NoProfile -ExecutionPolicy Bypass -File <WINHARDEN_REPO>\scripts\Daily-Compliance-Check.ps1"
 
 $trigger = New-ScheduledTaskTrigger -Daily -At 02:00AM
 
@@ -517,7 +517,7 @@ Get-SecurityDrift -BaselineName "MyBaseline"
 Invoke-HardeningRemediation -BaselineName "MyBaseline" -Force
 
 # Generate report
-New-SecurityDriftReport -BaselineName "MyBaseline" -OutputPath "C:\Repos\WinHarden\logs"
+New-SecurityDriftReport -BaselineName "MyBaseline" -OutputPath "<WINHARDEN_REPO>\logs"
 
 # Get help
 Get-Help New-HardeningBaseline -Full

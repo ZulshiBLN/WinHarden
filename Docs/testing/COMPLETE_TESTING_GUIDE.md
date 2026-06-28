@@ -1,4 +1,4 @@
-# WinHarden Complete Testing Guide
+﻿# WinHarden Complete Testing Guide
 
 **Comprehensive Documentation of 5-Phase Testing Suite**
 
