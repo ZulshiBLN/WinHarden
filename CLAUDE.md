@@ -241,7 +241,7 @@ Nur Entscheidungen, die das Projekt **massgeblich ändern**, bekommen eine ADR:
 
 ---
 
-## Git-Workflow
+## Git-Workflow: Three-Tier Release Model
 
 ### Repository Remotes
 
@@ -252,65 +252,156 @@ Nur Entscheidungen, die das Projekt **massgeblich ändern**, bekommen eine ADR:
 
 **Synk-Strategie:** Alle Branches und Tags werden zu **BEIDEN Systemen** gepusht (Redundanz + Public Spiegelung).
 
-### Branch-Konvention
+### Branch-Struktur (Three-Tier Model)
 
-| Commit-Typ  | Branch         | Wann                                    |
-|-------------|----------------|-----------------------------------------|
-| `Feature:`  | `dev/feature`  | Neue Funktionen, Module, Cmdlets        |
-| `Fix:`      | `dev/fix`      | Bugfixes                                |
-| `Cleanup:`  | `dev/cleanup`  | Unused code, Umbenennungen, Formatierung|
-| `Refactor:` | `dev/refactor` | Struktur-Änderungen ohne neues Verhalten|
-| `Docs:`     | `dev/docs`     | CLAUDE.md-Updates, Kommentare           |
+```
+develop (Aktive Entwicklung)
+    ↓
+prerelease (Testing/Beta)
+    ↓
+main (Stable Production)
+```
 
-CLAUDE.md-Updates begleiten Code-Commits auf **gleichem Branch**.
+| Branch | Typ | Zweck | Commits | Releases |
+|--------|-----|-------|---------|----------|
+| `develop` | Integration | Aktive Entwicklung | Täglich | Keine |
+| `prerelease` | Testing | Pre-Release/Beta Testing | Bugfixes | v1.x.x-beta.* |
+| `main` | Production | Stable Releases | Merges nur | v1.x.x |
 
-### Auto-Backup nach jeder Änderung
+### Entwicklungs-Zyklus
 
-Reihenfolge: **Build → commit → push (zu BEIDEN Remotes)**
+#### Phase 1: Development (develop branch)
+
+Täglich arbeiten auf `develop`:
 
 ```powershell
-git checkout <dev/branch>
+git checkout develop
 git add <Dateien>
 git commit -m "<Typ>: <Beschreibung>"
-git push origin <dev/branch>      # Azure DevOps
-git push github <dev/branch>      # GitHub (parallel)
+git push origin develop
+git push github develop
 ```
 
-**Oder schneller (beide gleichzeitig):**
+**Commit-Typen:**
+- `Feature:` Neue Funktionen, Module, Cmdlets
+- `Fix:` Bugfixes
+- `Refactor:` Struktur-Änderungen
+- `Docs:` Dokumentation, Kommentare
+- `Test:` Tests, Test-Fixtures
+
+**Regel:** Beliebig viele Commits, keine Rücksicht auf Stabilität erforderlich.
+
+#### Phase 2: Pre-Release (prerelease branch)
+
+Nach Feature-Completion → Testing-Phase:
+
 ```powershell
-git push --all  # Pusht zu origin UND github
+# 1. Merge develop in prerelease
+git checkout prerelease
+git merge develop
+git push origin prerelease && git push github prerelease
+
+# 2. Update Version
+# WinHarden.psd1: ModuleVersion = '1.12.0'
+# CLAUDE.md: Version = v1.12.0
+# README.md: Version + Release notes
+
+git add WinHarden.psd1 CLAUDE.md README.md
+git commit -m "Release: v1.12.0-beta.1 - Version bump"
+git push origin prerelease && git push github prerelease
+
+# 3. Beta-Tag erstellen
+git tag -a v1.12.0-beta.1 -m "Release: v1.12.0-beta.1 - Description of features
+
+## What's New
+- Feature: Description
+- Fix: Description
+
+## Testing Focus
+- Test area 1
+- Test area 2"
+
+git push origin v1.12.0-beta.1 && git push github v1.12.0-beta.1
 ```
 
-**Git-Alias (optional):**
+**GitHub Release Automation:**
+- Release erstellt (Pre-release Checkbox aktiviert)
+- ZIP-Download verfügbar
+- **NICHT** zu PowerShell Gallery published
+
+**Regel:** Bugfixes direkt auf prerelease, danach rebase develop von prerelease.
+
+#### Phase 3: Stable Release (main branch)
+
+Nach bestandenem Testing → Stable:
+
 ```powershell
-git config --global alias.push-all '!git push origin main && git push github main'
-git push-all  # Schneller für main branch
+# 1. Merge prerelease in main
+git checkout main
+git merge prerelease
+git push origin main && git push github main
+
+# 2. Stable-Tag erstellen
+git tag -a v1.12.0 -m "Release: v1.12.0 - Full Release Notes
+
+## What's New
+- Feature: Description
+- Fix: Critical bug in X
+
+## Installation
+Install-Module -Name WinHarden -RequiredVersion 1.12.0
+
+## Compatibility
+- Windows Server 2019, 2022, 2025
+- PowerShell 5.1, 7.x"
+
+git push origin v1.12.0 && git push github v1.12.0
 ```
 
-### Stable Release auf `main` (nur auf explizite Aufforderung)
+**Automation:**
+- GitHub Release erstellt (Final Release)
+- ZIP-Download verfügbar
+- **Automatisch** zu PowerShell Gallery published (~4-5 Min)
 
-1. Build-Check durchführen
-2. Merge zu main:
-   ```powershell
-   git checkout main
-   git merge dev/fix
-   git merge dev/refactor
-   git merge dev/cleanup
-   git merge dev/feature
-   git merge dev/docs
-   git push origin main      # Azure DevOps
-   git push github main      # GitHub
-   ```
-3. `main` zurückmergen in alle `dev/*` (Sync zu BEIDEN):
-   ```powershell
-   git checkout dev/feature; git merge main; git push origin dev/feature; git push github dev/feature
-   git checkout dev/fix; git merge main; git push origin dev/fix; git push github dev/fix
-   git checkout dev/refactor; git merge main; git push origin dev/refactor; git push github dev/refactor
-   git checkout dev/cleanup; git merge main; git push origin dev/cleanup; git push github dev/cleanup
-   git checkout dev/docs; git merge main; git push origin dev/docs; git push github dev/docs
-   ```
+### Versionierung (Semantic Versioning)
 
-**Regel:** Nie eigenständig in `main` mergen – immer auf explizite Aufforderung warten.
+```
+MAJOR.MINOR.PATCH
+1.12.0
+│ │   │
+│ │   └─ PATCH (Bugfixes): v1.12.0 → v1.12.1
+│ └───── MINOR (Features): v1.12.0 → v1.13.0
+└─────── MAJOR (Breaking): v1.x → v2.0.0
+```
+
+**Pre-Release Versionen:**
+- `v1.12.0-beta.1`, `v1.12.0-beta.2` - Beta
+- `v1.12.0-rc.1` - Release Candidate (optional)
+- `v1.12.0` - Final Stable
+
+### Tag-Format & Annotations
+
+**Alle Tags müssen annotiert sein** (mit `-a` Flag):
+
+```powershell
+# ✅ RICHTIG
+git tag -a v1.12.0 -m "Release: v1.12.0 - Description"
+
+# ❌ FALSCH
+git tag v1.12.0
+```
+
+### Merge-Richtung
+
+```
+develop → prerelease → main (nur forward)
+```
+
+**Regeln:**
+- ✅ develop → prerelease
+- ✅ prerelease → main
+- ✅ Bugfixes in prerelease, rebase develop
+- ❌ Nie von main zurück mergen
 
 ---
 

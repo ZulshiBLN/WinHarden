@@ -26,6 +26,13 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "tag=$TAG" >> $GITHUB_OUTPUT
 
+          # Determine if this is a pre-release (beta, rc) or stable
+          if [[ "$TAG" == *"-beta"* ]] || [[ "$TAG" == *"-rc"* ]]; then
+            echo "is_prerelease=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_prerelease=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Generate Release Notes
         id: release_notes
         run: |
@@ -80,17 +87,26 @@ jobs:
           body: ${{ steps.release_notes.outputs.release_notes }}
           files: WinHarden-${{ steps.version.outputs.tag }}.zip
           draft: false
-          prerelease: false
+          prerelease: ${{ steps.version.outputs.is_prerelease }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Run PowerShell Publishing Script
+      - name: Run PowerShell Publishing Script (Stable Only)
         shell: pwsh
         env:
           PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
+          IS_PRERELEASE: ${{ steps.version.outputs.is_prerelease }}
         run: |
           Write-Host "Publishing to PowerShell Gallery..."
           Write-Host "Version: ${{ steps.version.outputs.version }}"
+          Write-Host "Is Pre-Release: $env:IS_PRERELEASE"
+
+          # Skip publishing for pre-release/beta versions
+          if ($env:IS_PRERELEASE -eq "true") {
+            Write-Host "⏭ Skipping PowerShell Gallery publishing for pre-release version"
+            Write-Host "This is a beta/RC release. Manual publishing will be done for stable release."
+            exit 0
+          }
 
           if ([string]::IsNullOrEmpty($env:PSGALLERY_API_KEY)) {
             Write-Host "⚠ PSGALLERY_API_KEY not set - skipping PowerShell Gallery publishing"
@@ -98,13 +114,13 @@ jobs:
             exit 0
           }
 
-          # Run publish script with API key
+          # Run publish script with API key (only for stable releases)
           .\Publish-ToGallery.ps1 `
             -NuGetApiKey "$env:PSGALLERY_API_KEY" `
             -ModulePath "." `
             -ErrorAction Stop
 
-          Write-Host "Publishing to PowerShell Gallery completed!"
+          Write-Host "✓ Publishing to PowerShell Gallery completed!"
 
       - name: Verify PowerShell Gallery Publication
         shell: pwsh

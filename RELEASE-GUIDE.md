@@ -1,243 +1,465 @@
 # WinHarden Release Guide
 
-Complete guide for releasing WinHarden to GitHub and PowerShell Gallery.
+Complete guide for the Three-Tier Release Model: Development → Pre-Release → Stable Release.
 
 ---
 
-## Quick Release (1 Step - Fully Automated!)
+## Quick Reference
 
+### Development Phase
 ```powershell
-# Create tag and push (both GitHub Release & PSGallery publishing are automatic!)
-git tag -a v1.12.0 -m "Release: v1.12.0 - Description here"
-git push origin v1.12.0
-git push github v1.12.0
-
-# Done! Workflow handles everything:
-# - Creates GitHub Release (~1 min)
-# - Publishes to PowerShell Gallery (~2 min)
-# - Verifies publication (~30 sec)
+git checkout develop
+git add <files>
+git commit -m "Feature: Description"
+git push origin develop && git push github develop
 ```
 
-**Watch the automation:**
-- GitHub: https://github.com/ZulshiBLN/WinHarden/actions
-- Check progress in "Workflows" tab
+### Pre-Release Phase
+```powershell
+git checkout prerelease
+git merge develop
+git tag -a v1.12.0-beta.1 -m "Release: v1.12.0-beta.1 - Description"
+git push origin prerelease && git push github prerelease
+git push origin v1.12.0-beta.1 && git push github v1.12.0-beta.1
+```
+
+### Stable Release Phase
+```powershell
+git checkout main
+git merge prerelease
+git tag -a v1.12.0 -m "Release: v1.12.0 - Description"
+git push origin main && git push github main
+git push origin v1.12.0 && git push github v1.12.0
+```
 
 ---
 
 ## Detailed Release Process
 
-### Phase 1: Prepare Release
+### Phase 1: Development (develop branch)
 
-1. **Update Version Numbers**
-   ```powershell
-   # Update WinHarden.psd1
-   ModuleVersion = '1.12.0'
-   ReleaseNotes = 'https://github.com/ZulshiBLN/WinHarden/releases/tag/v1.12.0'
-   ```
+**Duration:** Usually 2-4 weeks
 
-2. **Update CLAUDE.md Release Notes** (if major changes)
-   ```markdown
-   **Version:** v1.12.0  
-   **Release:** v1.12.0 - Feature description
-   ```
+#### What to do on `develop`:
+- Create new features
+- Fix bugs
+- Update documentation
+- Write tests
+- No version changes needed
 
-3. **Test Everything**
-   ```powershell
-   .\build.ps1 -Validate
-   Invoke-Pester -Path tests/ -CodeCoverage
-   ```
+#### Daily workflow:
+```powershell
+git checkout develop
+git add src/ tests/ docs/
+git commit -m "Feature: New hardening profile
 
-4. **Commit & Push**
-   ```powershell
-   git add WinHarden.psd1 CLAUDE.md
-   git commit -m "Release: v1.12.0 - Description"
-   git push origin main
-   git push github main
-   ```
+- Add Baseline profile
+- Update documentation
+- Add unit tests"
 
-### Phase 2: Create Release Tag
+git push origin develop
+git push github develop
+```
+
+#### Commit message types:
+- `Feature:` New functionality
+- `Fix:` Bug fixes
+- `Refactor:` Code structure changes
+- `Test:` Test additions/improvements
+- `Docs:` Documentation updates
+- `Cleanup:` Code cleanup
+
+#### Rules:
+- ✅ Commit early and often
+- ✅ Keep develop always building (run `.\build.ps1 -Validate`)
+- ❌ Don't change version numbers
+- ❌ Don't create tags
+- ❌ Don't merge to other branches
+
+---
+
+### Phase 2: Pre-Release (prerelease branch)
+
+**Duration:** Usually 1-2 weeks
+
+#### When to move to pre-release:
+- All planned features completed
+- Main bugs fixed
+- Code review complete
+- Ready for community testing
+
+#### Step 1: Merge develop → prerelease
 
 ```powershell
-# Create annotated tag (recommended)
-git tag -a v1.12.0 -m "Release: v1.12.0 - Feature X, Bug fixes Y"
+git checkout prerelease
+git merge develop
+
+# Verify merge went clean
+git log --oneline -5
 
 # Push to both remotes
-git push origin v1.12.0
-git push github v1.12.0
+git push origin prerelease
+git push github prerelease
 ```
 
-**This automatically:**
-- Triggers GitHub Actions workflow
-- Creates GitHub Release
+#### Step 2: Update version files
+
+```powershell
+# Update WinHarden.psd1
+ModuleVersion = '1.12.0'
+
+# Update CLAUDE.md
+**Version:** v1.12.0
+
+# Update README.md
+**Version:** 1.12.0
+**Release:** v1.12.0 - Feature descriptions
+
+# Commit
+git add WinHarden.psd1 CLAUDE.md README.md
+git commit -m "Release: v1.12.0-beta.1 - Version bump"
+git push origin prerelease && git push github prerelease
+```
+
+#### Step 3: Create beta tag
+
+```powershell
+git tag -a v1.12.0-beta.1 -m "Release: v1.12.0-beta.1 - Initial Beta Release
+
+## What's New
+- Feature: New hardening profiles (Baseline, Standard, Strict+)
+- Feature: SIEM integration improvements
+- Fix: Critical bug in compliance checking
+- Fix: PowerShell 7.x compatibility issues
+
+## Testing Focus
+Please test:
+- All three hardening profiles on WS2019, 2022, 2025
+- Remote deployment with -ComputerName parameter
+- SIEM integration with Splunk/Elasticsearch
+- Compliance reporting in all formats (JSON, CSV, HTML)
+
+## Known Issues
+- Issue 1: Performance degradation on large enterprise networks
+- Issue 2: Minor UI glitch in HTML reports
+
+## Installation
+Install-Module -Name WinHarden -Repository PSGallery -RequiredVersion 1.12.0-beta.1
+
+## Support
+Report issues: https://github.com/ZulshiBLN/WinHarden/issues"
+
+git push origin v1.12.0-beta.1
+git push github v1.12.0-beta.1
+```
+
+#### Step 4: GitHub Release automation
+
+GitHub Actions automatically:
+- Creates GitHub Release with "Pre-release" checkbox
 - Generates ZIP download
-- Creates release notes from commits
+- **Does NOT** publish to PowerShell Gallery
 
-### Phase 3: Automatic PowerShell Gallery Publishing ✅ AUTOMATED
+**Verify:**
+- https://github.com/ZulshiBLN/WinHarden/releases/tag/v1.12.0-beta.1
+- Download ZIP
+- Test installation from GitHub
 
-GitHub Actions automatically handles PowerShell Gallery publishing!
+#### Step 5: Community testing & feedback
 
-**Prerequisites (Setup Once):**
-1. Register at https://www.powershellgallery.com
-2. Create API key: https://www.powershellgallery.com/account/apikeys
-3. Add to GitHub Secrets:
-   - Repo Settings → Secrets and variables → Actions
-   - New secret: `PSGALLERY_API_KEY = "oy2a1b2c3d4e5f6g7h8i9j0k1l2m3n4o"`
+**During pre-release phase:**
+- Share beta version in community forums
+- Gather feedback from early adopters
+- Fix reported bugs on `prerelease` branch
 
-**That's it!** Tag push automatically triggers:
+#### Fixing bugs during pre-release:
+
 ```powershell
-git tag v1.12.0
-git push github v1.12.0
-# → GitHub Actions automatically publishes to PSGallery
+# Fix bugs on prerelease
+git checkout prerelease
+git add fixes/
+git commit -m "Fix: Critical bug in hardening profile parsing"
+git push origin prerelease && git push github prerelease
+
+# After fixes, create new beta tag
+git tag -a v1.12.0-beta.2 -m "Release: v1.12.0-beta.2 - Bug fixes
+
+## Changes
+- Fix: Hardening profile parsing error
+- Fix: CSV export encoding issue
+- Improvement: Better error messages"
+
+git push origin v1.12.0-beta.2 && git push github v1.12.0-beta.2
+
+# Optional: Update develop with fixes
+git checkout develop
+git merge prerelease
+git push origin develop && git push github develop
 ```
 
-**Monitor Publication:**
-- GitHub Actions: https://github.com/ZulshiBLN/WinHarden/actions
-- Watch "Create Release & Publish" workflow
-- Should complete in ~3-5 minutes total
+#### Release Candidate (optional):
 
-**Verify Publication:**
+After 2-3 betas, optionally create RC:
+
 ```powershell
-# Check GitHub Release (instant, ~1 min)
-# https://github.com/ZulshiBLN/WinHarden/releases
+git tag -a v1.12.0-rc.1 -m "Release: v1.12.0-rc.1 - Release Candidate
 
-# Check PowerShell Gallery (takes 5-10 min to index)
-Find-Module -Name WinHarden -Repository PSGallery
+Final candidate for v1.12.0. No new features, critical fixes only."
 
-# Install to test
-Install-Module -Name WinHarden -RequiredVersion 1.12.0 -Scope CurrentUser
+git push origin v1.12.0-rc.1 && git push github v1.12.0-rc.1
 ```
 
 ---
 
-## Release Channels
+### Phase 3: Stable Release (main branch)
 
-### GitHub Releases
-- **What:** ZIP download with full code
-- **When:** Automatic on tag push
-- **Who:** Developers, manual/scripted downloads
-- **Where:** https://github.com/ZulshiBLN/WinHarden/releases
+**Duration:** Final approval and publication
+
+#### When to promote to stable:
+- All reported beta issues resolved
+- Testing confirms stability
+- Ready for production deployment
+- Version numbers final
+
+#### Step 1: Merge prerelease → main
+
+```powershell
+git checkout main
+git merge prerelease
+
+# Verify
+git log --oneline -5
+
+# Push to both remotes
+git push origin main
+git push github main
+```
+
+#### Step 2: Create stable tag
+
+```powershell
+git tag -a v1.12.0 -m "Release: v1.12.0 - Stable Release
+
+WinHarden v1.12.0 is ready for production deployment.
+
+## What's New
+- Feature: New hardening profiles (Baseline, Standard, Strict+)
+- Feature: SIEM integration improvements
+- Feature: Enhanced compliance reporting
+- Fix: Critical bug in compliance checking
+- Fix: PowerShell 7.x compatibility issues
+- Improvement: 30% performance improvement on large networks
+- Improvement: Better error messages and logging
+
+## Breaking Changes
+None - Fully backward compatible with v1.11.x
+
+## Installation
 
 ### PowerShell Gallery
-- **What:** Installable module via `Install-Module`
-- **When:** Manual publish (after GitHub Release)
-- **Who:** Enterprise/standard users
-- **Where:** https://www.powershellgallery.com/packages/WinHarden
+\`\`\`powershell
+Install-Module -Name WinHarden -RequiredVersion 1.12.0
+\`\`\`
 
-### Azure DevOps
-- **What:** Same as GitHub (dual sync)
-- **When:** Every commit pushed
-- **Who:** Internal teams
-- **Where:** Azure DevOps repository
+### Manual Download
+https://github.com/ZulshiBLN/WinHarden/releases/tag/v1.12.0
+
+## System Requirements
+- Windows Server 2019, 2022, 2025
+- Windows 11 Client
+- PowerShell 5.1 or 7.x
+- .NET Framework 4.5+
+
+## Tested On
+- Windows Server 2019 SP2
+- Windows Server 2022 RTM, 21H2
+- Windows Server 2025 (Preview)
+- PowerShell 5.1 (Windows 10/11)
+- PowerShell 7.4 (Core)
+
+## Documentation
+- [User Guide](https://github.com/ZulshiBLN/WinHarden/blob/main/docs/hardening/01_USER_GUIDE.md)
+- [Deployment Guide](https://github.com/ZulshiBLN/WinHarden/blob/main/docs/hardening/02_DEPLOYMENT_GUIDE.md)
+- [Architecture](https://github.com/ZulshiBLN/WinHarden/blob/main/docs/hardening/03_ARCHITECTURE.md)
+
+## Support & Issues
+- Report bugs: https://github.com/ZulshiBLN/WinHarden/issues
+- Discussions: https://github.com/ZulshiBLN/WinHarden/discussions
+
+## Contributors
+- Michel Brosche (@ZulshiBLN)
+
+---
+
+**Status:** ✓ Production Ready (Grade A+)
+**Published:** $(date)"
+
+git push origin v1.12.0
+git push github v1.12.0
+```
+
+#### Step 3: Automated publishing
+
+GitHub Actions automatically:
+- Creates GitHub Release (Final)
+- Publishes to PowerShell Gallery
+- Verifies publication
+- Sends notification
+
+**Expected timeline:**
+- 0-1 min: GitHub Release created
+- 1-2 min: ZIP archive generated
+- 2-3 min: PowerShell Gallery publishing
+- 3-5 min: Verification complete
+
+**Verify publication:**
+```powershell
+# Wait 5-10 minutes for PSGallery indexing
+Find-Module -Name WinHarden -Repository PSGallery
+
+# Install from PSGallery
+Install-Module -Name WinHarden -RequiredVersion 1.12.0
+
+# Verify installation
+Get-Module WinHarden -ListAvailable
+```
+
+---
+
+## Version Numbering Scheme
+
+### Semantic Versioning (SemVer)
+
+```
+MAJOR.MINOR.PATCH
+1.12.0
+│ │   │
+│ │   └─ PATCH: Bugfixes only (v1.12.0 → v1.12.1)
+│ └───── MINOR: New features, backward compatible (v1.12.0 → v1.13.0)
+└─────── MAJOR: Breaking changes (v1.x → v2.0.0)
+```
+
+### Examples
+
+| Scenario | Old | New | Type |
+|----------|-----|-----|------|
+| Bugfixes in v1.12.0 | v1.12.0 | v1.12.1 | PATCH |
+| New features | v1.12.1 | v1.13.0 | MINOR |
+| API redesign | v1.x | v2.0.0 | MAJOR |
+| Beta 1 | - | v1.12.0-beta.1 | Pre-release |
+| Beta 2 | v1.12.0-beta.1 | v1.12.0-beta.2 | Pre-release |
+| Release Candidate | - | v1.12.0-rc.1 | Pre-release |
+| Final Stable | v1.12.0-rc.1 | v1.12.0 | Release |
 
 ---
 
 ## Release Checklist
 
-- [ ] Version updated in WinHarden.psd1
-- [ ] CLAUDE.md updated with version
+### Pre-Release Preparation
+- [ ] All features on `develop` branch
 - [ ] `.\build.ps1 -Validate` passes
-- [ ] Pester tests pass: `Invoke-Pester -Path tests/`
-- [ ] Commit & push to main
-- [ ] Git tag created: `git tag -a v1.12.0 -m "Release: ..."`
-- [ ] Tag pushed: `git push origin v1.12.0 && git push github v1.12.0`
-- [ ] GitHub Release created automatically
-- [ ] ZIP download available on GitHub
-- [ ] PowerShell Gallery API key ready
-- [ ] Run: `.\Publish-ToGallery.ps1 -NuGetApiKey <KEY>`
-- [ ] Wait 5-10 min for PSGallery indexing
-- [ ] Verify: `Find-Module -Name WinHarden`
-- [ ] Test install: `Install-Module -Name WinHarden -RequiredVersion 1.12.0`
+- [ ] All tests pass: `Invoke-Pester -Path tests/`
+- [ ] Code review complete
+- [ ] Documentation updated
+- [ ] CHANGELOG updated (if applicable)
+
+### Beta Release
+- [ ] `develop` merged into `prerelease`
+- [ ] Version numbers updated (all files)
+- [ ] Beta tag created with full release notes
+- [ ] Tag pushed to both remotes
+- [ ] GitHub Release created (verified Pre-release checkbox)
+- [ ] Community notified for testing
+
+### Bug Fix During Beta
+- [ ] Bugs fixed on `prerelease`
+- [ ] Tests pass
+- [ ] New beta tag created (beta.2, beta.3, etc.)
+- [ ] Feedback gathered
+
+### Stable Release
+- [ ] All beta issues resolved
+- [ ] Final testing complete
+- [ ] `prerelease` merged into `main`
+- [ ] Version numbers finalized
+- [ ] Stable tag created with complete release notes
+- [ ] Tag pushed to both remotes
+- [ ] GitHub Release published (verify Final Release)
+- [ ] PowerShell Gallery publication verified
+- [ ] Announcement sent
+
+---
+
+## Hotfixes (Emergency Releases)
+
+For critical bugs in stable version:
+
+```powershell
+# Create hotfix branch from main
+git checkout main
+git checkout -b hotfix/critical-bug
+
+# Fix the issue
+git add fixes/
+git commit -m "Hotfix: Critical security issue in hardening"
+
+# Create patch version tag
+git tag -a v1.12.1 -m "Hotfix: v1.12.1 - Critical Security Fix"
+
+# Push directly to main (exception to normal flow)
+git checkout main
+git merge hotfix/critical-bug
+git push origin main && git push github main
+git push origin v1.12.1 && git push github v1.12.1
+
+# Clean up hotfix branch
+git branch -d hotfix/critical-bug
+```
 
 ---
 
 ## Troubleshooting
 
 ### GitHub Release not created
-```powershell
-# Check: Is tag pushed correctly?
-git push origin v1.12.0
-git push github v1.12.0
-
-# Check: GitHub Actions status
-# https://github.com/ZulshiBLN/WinHarden/actions
+```
+Check: GitHub Actions at https://github.com/ZulshiBLN/WinHarden/actions
+Likely causes:
+1. Tag not pushed: git push github v1.12.0
+2. Permissions issue: Check GITHUB_TOKEN permissions
+3. Workflow error: Check Actions log details
 ```
 
-### PowerShell Gallery publish fails
-```powershell
-# Validate manifest first
-Test-ModuleManifest .\WinHarden.psd1
+### PowerShell Gallery publish failed
+```
+Check: GitHub Actions logs (PSGallery section)
+Likely causes:
+1. API Key incorrect in GitHub Secret
+2. Version already published
+3. Manifest validation failed
 
-# Check API key format
-Write-Host $NuGetApiKey.Length  # Should be ~40 chars
-
-# Try manual publish
-Publish-Module -Path . -NuGetApiKey $key -Repository PSGallery -Verbose
+Solution:
+1. Test locally: .\Publish-ToGallery.ps1 -NuGetApiKey $key
+2. Check manifest: Test-ModuleManifest .\WinHarden.psd1
+3. Increment version and retry
 ```
 
-### Module not found after publish
-```powershell
-# Wait 5-10 minutes for indexing
-Get-PSRepository  # Verify PSGallery is registered
-Find-Module -Name WinHarden -Repository PSGallery -ErrorAction Stop
+### Module not installing from PSGallery
+```
+PowerShell Gallery indexing takes 5-10 minutes
 
-# Clear cache if needed
-$moduleCachePath = "$env:APPDATA\NuGet\Cache"
-Remove-Item -Path $moduleCachePath -Force -Recurse -ErrorAction SilentlyContinue
+Check:
+1. Wait 10 minutes
+2. Run: Find-Module -Name WinHarden -Repository PSGallery
+3. Clear cache: Remove-Item "$env:APPDATA\NuGet\Cache" -Recurse
+4. Retry: Install-Module -Name WinHarden
 ```
 
 ---
 
-## Version Numbering
+## Related Documentation
 
-WinHarden uses **Semantic Versioning**: MAJOR.MINOR.PATCH
+- [CLAUDE.md](CLAUDE.md) - Git Workflow & Branch Rules
+- [RELEASE-GUIDE.md](RELEASE-GUIDE.md) - This file
+- [GitHub Releases](https://github.com/ZulshiBLN/WinHarden/releases) - Published releases
+- [PowerShell Gallery](https://www.powershellgallery.com/packages/WinHarden) - Module repository
 
-- **MAJOR** (v2.0.0): Breaking changes, architectural redesign
-- **MINOR** (v1.12.0): New features, backward compatible
-- **PATCH** (v1.11.1): Bug fixes only
-
-Examples:
-- v1.11.0 → v1.12.0 (new feature: Scheduling)
-- v1.12.0 → v1.12.1 (bug fix)
-- v1.x → v2.0.0 (breaking changes)
-
----
-
-## Fully Automated Release (ENABLED ✅)
-
-Your release pipeline is **fully automated**!
-
-### Setup (One-time)
-```
-GitHub Repo → Settings → Secrets and variables → Actions
-→ New secret: PSGALLERY_API_KEY = "your-api-key"
-```
-
-### Release (Just tag & push)
-```powershell
-git tag -a v1.12.0 -m "Release: v1.12.0 - Description"
-git push origin v1.12.0
-git push github v1.12.0
-```
-
-### What happens automatically
-1. **GitHub Actions triggered** (0 sec)
-2. **GitHub Release created** (~1 min)
-3. **ZIP archive generated** (~1 min)
-4. **PowerShell Gallery publish** (~2 min)
-5. **Publication verified** (~30 sec)
-
-Total time: **~4-5 minutes** ⚡
-
-### Monitor progress
-- Open: https://github.com/ZulshiBLN/WinHarden/actions
-- Click latest workflow run
-- Watch each step execute
-
----
-
-## Support
-
-For release issues:
-- GitHub Issues: https://github.com/ZulshiBLN/WinHarden/issues
-- PowerShell Gallery: Contact support at PSGallery
-- Azure DevOps: Check repository settings
