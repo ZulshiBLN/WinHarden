@@ -101,7 +101,7 @@ if (-not $SkipValidation) {
 # Step 3: Test module import
 Write-Header "Testing Module Import"
 try {
-    Import-Module -Path $manifestPath -Force -ErrorAction Stop | Out-Null
+    Import-Module $manifestPath -Force -ErrorAction Stop | Out-Null
     Write-Success "Module imported successfully"
 
     # Get exported functions
