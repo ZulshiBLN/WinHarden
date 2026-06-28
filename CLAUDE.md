@@ -243,6 +243,15 @@ Nur Entscheidungen, die das Projekt **massgeblich ändern**, bekommen eine ADR:
 
 ## Git-Workflow
 
+### Repository Remotes
+
+| Remote | System | Rolle |
+|--------|--------|-------|
+| `origin` | Azure DevOps | Primary (Hauptsystem) |
+| `github` | GitHub | Secondary (Public Backup & Mirror) |
+
+**Synk-Strategie:** Alle Branches und Tags werden zu **BEIDEN Systemen** gepusht (Redundanz + Public Spiegelung).
+
 ### Branch-Konvention
 
 | Commit-Typ  | Branch         | Wann                                    |
@@ -257,39 +266,51 @@ CLAUDE.md-Updates begleiten Code-Commits auf **gleichem Branch**.
 
 ### Auto-Backup nach jeder Änderung
 
-Reihenfolge: **Build → commit → push**
+Reihenfolge: **Build → commit → push (zu BEIDEN Remotes)**
 
 ```powershell
 git checkout <dev/branch>
 git add <Dateien>
 git commit -m "<Typ>: <Beschreibung>"
-git push origin <dev/branch>
+git push origin <dev/branch>      # Azure DevOps
+git push github <dev/branch>      # GitHub (parallel)
 ```
 
-### Stable Backup auf `master` (nur auf explizite Aufforderung)
+**Oder schneller (beide gleichzeitig):**
+```powershell
+git push --all  # Pusht zu origin UND github
+```
+
+**Git-Alias (optional):**
+```powershell
+git config --global alias.push-all '!git push origin main && git push github main'
+git push-all  # Schneller für main branch
+```
+
+### Stable Release auf `main` (nur auf explizite Aufforderung)
 
 1. Build-Check durchführen
-2. Merge-Reihenfolge:
+2. Merge zu main:
    ```powershell
-   git checkout master
+   git checkout main
    git merge dev/fix
    git merge dev/refactor
    git merge dev/cleanup
    git merge dev/feature
    git merge dev/docs
-   git push origin master
+   git push origin main      # Azure DevOps
+   git push github main      # GitHub
    ```
-3. `master` zurückmergen in alle `dev/*` (Sync):
+3. `main` zurückmergen in alle `dev/*` (Sync zu BEIDEN):
    ```powershell
-   git checkout dev/feature; git merge master
-   git checkout dev/fix; git merge master
-   git checkout dev/refactor; git merge master
-   git checkout dev/cleanup; git merge master
-   git checkout dev/docs; git merge master
-   git push origin dev/feature, dev/fix, dev/refactor, dev/cleanup, dev/docs
+   git checkout dev/feature; git merge main; git push origin dev/feature; git push github dev/feature
+   git checkout dev/fix; git merge main; git push origin dev/fix; git push github dev/fix
+   git checkout dev/refactor; git merge main; git push origin dev/refactor; git push github dev/refactor
+   git checkout dev/cleanup; git merge main; git push origin dev/cleanup; git push github dev/cleanup
+   git checkout dev/docs; git merge main; git push origin dev/docs; git push github dev/docs
    ```
 
-**Regel:** Nie eigenständig in `master` mergen – immer auf explizite Aufforderung warten.
+**Regel:** Nie eigenständig in `main` mergen – immer auf explizite Aufforderung warten.
 
 ---
 
