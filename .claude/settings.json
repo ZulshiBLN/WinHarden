@@ -5,7 +5,6 @@
       "Edit(*.ps1)",
       "Edit(*.json)",
       "Edit(*.md)",
-      "Read(//c/Users/MichelBrosche/.claude/projects/c--Repos-WinHarden/memory/**)",
       "Bash(powershell -Command \"& .\\\\build.ps1 -SkipTests -Validate\")",
       "Bash(powershell -NoProfile -Command ' *)"
     ]
