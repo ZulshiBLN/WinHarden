@@ -241,3 +241,8 @@ For release issues:
 - GitHub Issues: https://github.com/ZulshiBLN/WinHarden/issues
 - PowerShell Gallery: Contact support at PSGallery
 - Azure DevOps: Check repository settings
+
+
+## Test Entry
+
+This is a test beta release.
